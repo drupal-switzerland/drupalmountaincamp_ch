@@ -1,0 +1,6 @@
+### AmazeeIO Drupal 8 production environment services file.
+parameters:
+  twig.config:
+    debug: false
+    auto_reload: null
+    cache: true
