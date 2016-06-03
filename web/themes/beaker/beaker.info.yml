@@ -1,0 +1,13 @@
+name: Beaker 1.0.5
+type: theme
+base theme: classy
+description: 'Custom Theme made by Amazee Labs'
+package: Core
+core: 8.x
+libraries:
+  - beaker/base
+stylesheets-remove:
+regions:
+  header: Header
+  content: Content
+  footer: Footer

@@ -1,0 +1,43 @@
+@if $use-drupal-system-styling {
+
+  // =============================================================================
+  // =============================================================================
+  // Login styles
+
+  .path-user   #block-beaker-content {
+
+    .user-pass-reset,
+    .user-login-form,
+    .user-pass {
+      background: $system__blue;
+      border: 2px solid darken($system__blue,10);
+      color: darken($system__blue, 50);
+      padding: 40px;
+
+      label {
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      input[type='submit'] {
+        @include button(darken($system__blue, 50));
+      }
+    }
+  }
+
+
+  // =============================================================================
+  // =============================================================================
+  // Error styles
+
+  .page--error--403 .block-system-main-block,
+  .page--error--404 .block-system-main-block {
+    background: $system__pink;
+    border: 2px solid darken($system__pink,10);
+    padding: 40px;
+    margin-bottom: 80px;
+  }
+}

@@ -1,0 +1,263 @@
+// This file include some basic styling for forms
+
+@if $use-basic-form-styling {
+
+  // REMOVE BROWSER DEFAULT FOCUS STATES
+  // =============================================================================
+  *:focus {
+    outline: 0;
+  }
+
+  // HIDE GRIPPIE
+  // =============================================================================
+  .grippie {
+    display: none;
+  }
+
+  // REMOVE WEBKIT'S ASSUMPTIONS ABOUT OUR BUTTONS!
+  // =============================================================================
+  button,
+  input[type="button"],
+  input[type="reset"],
+  input[type="submit"],
+  input[type="text"],
+  input[type="password"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="color"]
+  {
+    appearance: none;
+  }
+
+  button,
+  input[type="button"],
+  input[type="submit"]
+  {
+    @include button($blue);
+  }
+
+  // STANDARD FORM STYLES
+  // =============================================================================
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  textarea
+  {
+    @include text-input;
+    max-width: 100%;
+
+    @include breakpoint($mobile) {
+      width: 100%;
+    }
+  }
+
+  // ERROR
+  // =============================================================================
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  textarea
+  {
+    &.error {
+      border: 1px solid $red !important;
+    }
+  }
+
+  //Chosen Error styling
+  .form-select.error {
+    .chosen-single {
+      border: 0px none;
+
+      span {
+        border: 1px solid $red;
+      }
+    }
+  }
+
+  //Error styling for Radio & Checkbox
+  input[type="checkbox"].error + label.option span,
+  input[type="radio"].error + label.option span
+  {
+    border: 1px solid $red;
+  }
+
+  // FILE UPLOAD FIELD
+  // =============================================================================
+  // input[type="file"] { }
+  // select[multiple], select[size] { }
+
+  input[type=file] {
+    width: 100%;
+  }
+
+  // FORM LABELS
+  // =============================================================================
+  .form-item label, .form-actions label {
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+
+  // REQUIRED COLOR
+  // =============================================================================
+  .marker, .form-required {
+    color: $red;
+  }
+
+  // TEXTAREA
+  // =============================================================================
+  textarea {
+    max-width: 100%;
+    min-height: 400px;
+  }
+
+  // SUBMIT BUTTONS
+  // =============================================================================
+  #edit-submit {
+    margin-top: 15px;
+  }
+
+  // DESCRIPTION
+  // =============================================================================
+  form .help-block,
+  form .description,
+  form .help
+  {
+    clear: both;
+    display: block;
+    margin-top: 5px;
+  }
+
+  // FIELDSET
+  // =============================================================================
+  // fieldset {
+  //     padding: 0;
+  //     margin: 0;
+  //     border: 0;
+  //     clear: both;
+  //     height: auto !important;
+  //     @include after;
+  //
+  //     legend {
+  //         width: 100%;
+  //     }
+  //
+  //     &.collapsed {
+  //         min-height: 30px;
+  //     }
+  // }
+
+
+  // AUTOCOMPLETE FIELD
+  // =============================================================================
+  html.js .form-autocomplete {
+    background-image: none;
+    &.throbbing {
+      background-image: url(../images/icons/loader.gif);
+      background-repeat: no-repeat;
+      background-position: right;
+      background-position: calc(100% - 5px);
+      background-size: 22px;
+    }
+  }
+
+
+  // RADIO & CHECKBOX
+  // =============================================================================
+
+  .form-type-radio,
+  .form-type-checkbox
+  {
+    @include clearfix;
+
+    input[type="checkbox"],
+    input[type="radio"]
+    {
+      display: none;
+      @include user-select(none);
+    }
+
+    label {
+      float: left;
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 32px;
+      @include user-select(none);
+    }
+
+    span.radio,
+    span.checkbox
+    {
+      display: inline-block;
+      position: relative;
+      left: -10px;
+      top: -1px;
+      width: 15px;
+      height: 15px;
+      margin: 0 0 0 -20px;
+      vertical-align: middle;
+      background-color: $white;
+      border: 1px solid $black;
+      cursor: pointer;
+
+      &:hover {
+        border-color: $black;
+      }
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      .section-feedback-form & {
+        margin: 0px;
+      }
+
+      &.checked {
+        border-color: $black;
+
+        &:before {
+          content: "";
+          display: block;
+          width: 70%;
+          height: 70%;
+          margin: 15%;
+          background: $black;
+        }
+      }
+    }
+  }
+
+  .form-type-radio {
+    span.radio {
+      border-radius: 50%;
+
+      &.checked {
+        // background: $white url(../images/icons/radio.png) no-repeat center center;
+        // @include background-size(80%);
+        &:before {
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  .form-type-checkbox {
+    span.checkbox {
+      &.checked {
+        // background: $white url(../images/icons/checkbox.png) no-repeat center center;
+        // @include background-size(80%);
+      }
+    }
+  }
+  // ===========================================================================
+  // ===========================================================================
+  // end if
+}

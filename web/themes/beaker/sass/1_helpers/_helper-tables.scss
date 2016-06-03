@@ -1,0 +1,64 @@
+// This file include some basic styling for tables
+
+@if $use-basic-tables-styling {
+
+  table {
+    width: 100%;
+    border: 1px solid $black;
+    margin-bottom: 20px;
+
+    th {
+      font-weight: normal;
+      color: $text;
+      background: lighten($black,20%);
+      border-color: $black;
+    }
+
+    td {
+      border-color: lighten($black,20%);
+    }
+
+    //Body & Head
+    tr {
+      th, td {
+        font-size: 15px;
+        padding: 10px 14px 6px;
+      }
+    }
+
+    //Head specific
+    thead {
+      tr th {
+        color: $white;
+        background: lighten($black,20%);
+        border-color: darken($black,20);
+      }
+    }
+
+    //Body specific
+    tbody {
+      tr {
+        &:nth-child(even) {
+        th {
+          background: lighten($black,20%);
+        }
+        td {
+          background: lighten($black,20%);
+        }
+      }
+
+      &:nth-child(odd) {
+        th {
+          background: lighten($black,20%);
+        }
+        td {
+          background: $white;
+        }
+      }
+      }
+    }
+  }
+  // ===========================================================================
+  // ===========================================================================
+  // end if
+}

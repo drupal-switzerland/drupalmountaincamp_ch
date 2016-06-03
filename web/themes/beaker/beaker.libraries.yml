@@ -1,0 +1,11 @@
+base:
+  version: VERSION
+  css:
+    theme:
+      css/styles.css: {}
+  js:
+    js/behaviors.js: {}
+    js/jquery.browser.min.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

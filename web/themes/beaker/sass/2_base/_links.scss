@@ -1,0 +1,12 @@
+// LINK STYLES
+// =============================================================================
+a:link,
+a:visited {
+  @include font-semibold;
+  text-decoration: none;
+  color: $black;
+}
+
+a:hover {
+  text-decoration: none;
+}

@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the standard theme.
+ */
+
+ use Drupal\Component\Utility\Html;
+ use Drupal\Component\Utility\SafeMarkup;
+ use Drupal\Core\Render\Element;
+ use Drupal\Core\Url;
+ use Drupal\file\Entity\File;
+ use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_preprocess_HOOK for html().
+ */
+function beaker_preprocess_html(&$variables) {
+  // Add classes to body
+  $variables['attributes']['class'][] = empty($variables['logged_in']) ? '' : 'user-logged-in';
+  $variables['attributes']['class'][] = empty($variables['root_path']) ? 'path-frontpage' : '';
+  $variables['attributes']['class'][] = empty($variables['node_type']) ? '' : 'node--type-' . \Drupal\Component\Utility\Html::getClass($variables['node_type']);
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node) {
+    $variables['attributes']['class'][] = 'node--id-' . $node->nid->value;
+  }
+  $request = \Drupal::request();
+  if ($request->attributes->get('exception')) {
+    $variables['attributes']['class'][] = 'page--error--'. $request->attributes->get('exception')->getStatusCode();
+  }
+
+  // setup the page title
+  if (empty($variables['head_title']['title']) && $request) {
+    if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+      $variables['head_title']['title'] = \Drupal::service('title_resolver')->getTitle($request, $route);
+    }
+  }
+}

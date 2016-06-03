@@ -1,0 +1,50 @@
+// BASE FONT
+// =============================================================================
+
+html {
+  @include font-regular;
+  @include font-size($base-font-size,true);
+  @include breakpoint($mobile) {
+    font-size: 87.5%;
+    line-height: 1.5;
+  }
+  -webkit-font-smoothing: antialiased;
+}
+
+// HEADER STYLES
+// =============================================================================
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $black;
+}
+
+h1 {
+  @include h1;
+  @include font-size(70,true);
+}
+
+h2 {
+  @include h2;
+  @include font-size(34,true);
+}
+
+h3 {
+  @include h3;
+   @include font-size(22,true);
+}
+
+h4 {
+  @include h4;
+  @include font-size(18,true);
+  margin: 0;
+}
+
+// TEXT STYLES
+// =============================================================================
+b, em, strong {
+  @include font-semibold;
+}

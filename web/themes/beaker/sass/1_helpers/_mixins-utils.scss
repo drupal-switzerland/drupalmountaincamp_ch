@@ -1,0 +1,164 @@
+// FLEXBOX RELATED MIXINS
+// =============================================================================
+
+@mixin flex {
+  display: flexbox;
+  display: flex;
+}
+
+@mixin flex-basis($val) {
+  flex-basis: $val;
+}
+
+@mixin align-items($val) {
+  align-items: $val;
+}
+
+@mixin align-content($val) {
+  align-content: $val;
+}
+
+@mixin flex-grow($val) {
+  flex-grow: $val;
+}
+
+@mixin justify-content($val) {
+  justify-content: $val;
+}
+
+@mixin flex-wrap($val) {
+  flex-wrap: $val;
+}
+
+// PX TO REM MIXIN
+// =============================================================================
+
+@mixin font-size($sizeInPx: $base-font-size, $line: false) {
+  font-size: rem($sizeInPx);
+
+  @if( $line == true ) {
+    $line: $sizeInPx * 1.66666667;
+  }
+
+  @if( $line != false ) {
+    line-height: ($line / $base-font-size) + rem;
+  }
+}
+
+// CLEARFIX MIXINS
+// =============================================================================
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin after {
+  @include clearfix;
+}
+
+// DISABLE DRAG & DROP (E.G. OF IMAGES)
+// =============================================================================
+
+@mixin user-drag($var) {
+  user-drag: $var;
+}
+
+// DISABLE TEXT SELECTION
+// =============================================================================
+
+@mixin user-select($var) {
+  user-select: $var;
+}
+
+// KEYFRAMES MIXIN (TO USE WITH ANIMATIONS)
+// =============================================================================
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// ANIMATION MIXIN
+// =============================================================================
+
+@mixin animation($name,$delay:false) {
+  @include translate3d(0,0,0,0);
+  animation: #{$name};
+  animation-fill-mode: forwards;
+
+  @if($delay != false) {
+    animation-delay: $delay;
+  }
+}
+
+@mixin animation-delay($delay) {
+  animation-delay: $delay;
+}
+
+
+// FADE IN MIXIN
+// =============================================================================
+
+@mixin fadein($duration) {
+    @include animation(fadein #{$duration} 1 ease-in-out);
+}
+
+
+// LINEAR GRADIENT
+// =============================================================================
+
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
+
+  // background: nth(nth($color-stops, 1), 1);
+  background: linear-gradient($direction, $color-stops);
+}
+
+// RADIAL BACKGROUND
+// =============================================================================
+
+@mixin radial-background($direction, $color1, $color2, $color3:$color2, $color4:$color2) {
+  background: $color1;
+  background: radial-gradient($direction, $color1, $color2, $color3, $color4);
+}
+
+
+// FONT-FACE MIXIN
+// =============================================================================
+
+@mixin font-face($style-name, $file, $folder, $category:"") {
+  $filepath: "../fonts/" + $folder + "/" + $file;
+  @font-face {
+    font-family: "#{$style-name}";
+    src: url($filepath + ".eot");
+    src: url($filepath + ".eot?#iefix") format('embedded-opentype'), url($filepath + ".woff") format('woff'), url($filepath + ".ttf")  format('truetype'), url($filepath + ".svg#" + $style-name + "") format('svg');
+  }
+  %#{$style-name} {
+    font: {
+      @if $category != "" {
+        family: "#{$style-name}", $category;
+      }
+      @else {
+        family: "#{$style-name}";
+        weight: normal;
+      }
+    }
+  }
+}
+
+// IMAGE URL FUNCTION
+// =============================================================================
+
+@function image-url($image) {
+  $url: unquote('url(../images/' + $image + ')');
+  @return $url;
+}

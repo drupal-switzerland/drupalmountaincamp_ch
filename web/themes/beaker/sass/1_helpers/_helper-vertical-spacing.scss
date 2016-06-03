@@ -1,0 +1,32 @@
+
+@if $use-dynamic-vertical-spacing {
+  // ==================================================================
+  // SINGLE DIRECTION SPACING
+  // =====
+  //
+  // So to not have to think about vertical spacing. This litle
+  // thing calculates bottom margin based on font size and line height.
+  //
+  // =====
+  // READ MORE HERE: http://csswizardry.com/2012/06/single-direction-margin-declarations/
+  // ==================================================================
+
+  h1,h2,h3,h4,h5,h6,hgroup,
+  ul,ol,dl,
+  blockquote,p,address,
+  table,
+  fieldset,figure,
+  pre,hr {
+    margin-top: 0;
+    margin-bottom:$base-line-height*1px;
+    margin-bottom:($base-line-height/$base-font-size)*1rem;
+  }
+  // ===========================================================================
+  // ===========================================================================
+  // end if
+}
+
+@mixin baseLineSpacing($type: "margin",$direction: "bottom",$steps: 1) {
+  #{$type}-#{$direction}:$steps*($base-line-height*1px);
+  #{$type}-#{$direction}:$steps*(($base-line-height/$base-font-size)*1rem);
+}

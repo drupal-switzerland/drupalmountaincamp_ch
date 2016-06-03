@@ -1,0 +1,397 @@
+@mixin opacity($val) {
+  opacity: $val;
+}
+
+@mixin border-radius($val) {
+  border-radius: $val;
+}
+
+@mixin background-size($val) {
+  background-size: $val;
+}
+
+@mixin user-select($val) {
+  user-select: $val;
+}
+
+@mixin box-sizing($val) {
+  box-sizing: $val;
+}
+
+@mixin box-shadow($vals...) {
+  box-shadow: #{$vals};
+}
+
+@mixin transition($vals...) {
+  transition: #{$vals};
+}
+
+@mixin translate3d($val:0,$val2:0,$val3:0,$val4:0) {
+  transform: translateZ($val) translate3d($val2,$val3,$val4);
+}
+
+@mixin background-clip($val) {
+  background-clip: $val;
+}
+
+@mixin text-shadow($vals...) {
+  text-shadow: #{$vals};
+}
+
+@mixin background-image($vals...) {
+  background-image: #{$vals};
+}
+
+
+/*
+* Compass Core Mixins
+*/
+
+// Legacy support.
+$legacy-support-for-ie6: false;
+$legacy-support-for-ie7: false;
+$legacy-support-for-ie8: false;
+
+$default-capability-options: (
+  (full-support: true),
+  (partial-support: true)
+);
+$current-browser-versions: ();
+$debug-browser-support: false;
+$current-prefix: null;
+$prefix-context: null;
+$graceful-usage-threshold: 0.1;
+$critical-usage-threshold: 0.01;
+$default-transition-property: all;
+$default-transition-duration: 1s;
+$default-transition-function: null;
+$default-transition-delay: null;
+
+$transform-support-threshold: $graceful-usage-threshold;
+$box-sizing-support-threshold: $critical-usage-threshold;
+$transition-support-threshold: $graceful-usage-threshold;
+$background-clip-support-threshold: $critical-usage-threshold;
+
+@function prefix-identifier($ident, $prefix: $current-prefix) {
+  @return unquote(#{$prefix}#{if($prefix, "-", null)}#{$ident});
+}
+
+@function comma-list($list: ()) {
+  @return join((), $list, comma);
+}
+
+@function transition-map($transition) {
+  $transition-map: ();
+  @each $item in $transition {
+    @if is-time($item) {
+      @if map-has-key($transition-map, duration) {
+        $transition-map: map-merge($transition-map, (delay: $item));
+      }
+      @else {
+        $transition-map: map-merge($transition-map, (duration: $item));
+      }
+    }
+    @else if map-has-key($transition-map, property) {
+      $transition-map: map-merge($transition-map, (timing-function: $item));
+    }
+    @else {
+      $transition-map: map-merge($transition-map, (property: $item));
+    }
+  }
+  @return $transition-map;
+}
+
+@function prefixed-for-transition($prefix, $property) {
+  @if not $prefix {
+    @return $property;
+  }
+  @if type-of($property) == list or type-of($property) == arglist {
+    $new-list: comma-list();
+    @each $v in $property {
+      $new-list: append($new-list, prefixed-for-transition($prefix, $v));
+    }
+    @return $new-list;
+  }
+  @else {
+    @if index($transitionable-prefixed-values, $property) {
+      @return #{$prefix}-#{$property};
+    }
+    @else {
+      @return $property;
+    }
+  }
+}
+
+@function set-arglist-default($arglist, $default) {
+  $default-index: index($arglist, default);
+  @if $default-index {
+    $arglist: set-nth($arglist, $default-index, $default);
+  }
+  @return if(length($arglist) > 0, $arglist, $default);
+}
+
+@mixin prefix-prop($property, $value, $prefix: $current-prefix) {
+  #{prefix-identifier($property, $prefix)}: $value;
+}
+
+@mixin prefixed-properties($capability, $threshold, $properties, $capability-options: $default-capability-options) {
+  @include with-each-prefix($capability, $threshold, $capability-options) {
+    @each $prop, $value in $properties {
+      @include prefix-prop($prop, $value);
+    }
+  }
+}
+
+@mixin with-prefix($prefix) {
+  @if $current-prefix or $prefix-context {
+    @if $current-prefix == $prefix or $prefix-context == $prefix {
+      @if $debug-browser-support {
+        @if $prefix {
+          // content for #{$prefix} because #{$current-prefix or $prefix-context} is already in scope.
+        }
+        @else {
+          // unprefixed content. #{$current-prefix or $prefix-context} is already in scope.
+        }
+      }
+      $old-prefix-context: $prefix-context;
+      $old-prefix: $current-prefix;
+      $prefix-context: $prefix-context or $current-prefix !global;
+      $current-prefix: $prefix !global;
+      @content;
+      $prefix-context: $old-prefix-context !global;
+      $current-prefix: $old-prefix !global;
+    }
+    @else if $prefix == null {
+      $old-prefix-context: $prefix-context;
+      $prefix-context: $prefix-context or $current-prefix !global;
+      $current-prefix: null !global;
+      @if $debug-browser-support {
+        // Content for official syntax. Prefix context is still #{$prefix-context}.
+      }
+      @content;
+      $current-prefix: $prefix-context !global;
+      $prefix-context: $old-prefix-context !global;
+    }
+    @else if $debug-browser-support {
+      // Omitting content for #{$prefix} because #{$current-prefix} is already in scope.
+    }
+  }
+  @else {
+    @if $debug-browser-support and $prefix {
+      //Creating new #{$prefix} context.
+    }
+    $prefix-context: $prefix !global;
+    $current-prefix: $prefix !global;
+    @content;
+    $current-prefix: null !global;
+    $prefix-context: null !global;
+  }
+}
+
+@mixin with-each-prefix($capability, $threshold, $capability-options: $default-capability-options) {
+  @each $prefix, $should-use-prefix in prefixes-for-capability($capability, $threshold, $capability-options) {
+    @if $should-use-prefix {
+      @if $debug-browser-support and type-of($should-use-prefix) == list {
+        // Capability #{$capability} is prefixed with #{$prefix} because #{$should-use-prefix} is required.
+      }
+      @else if $debug-browser-support and type-of($should-use-prefix) == number {
+        // Capability #{$capability} is prefixed with #{$prefix} because #{$should-use-prefix}% of users need it which is more than the threshold of #{$threshold}%.
+      }
+      @include with-prefix($prefix) {
+        @include with-browser-ranges($capability) {
+          @content;
+        }
+      }
+    }
+    @else if $debug-browser-support {
+      // Capability #{$capability} is not prefixed with #{$prefix} because #{prefix-usage($prefix, $capability, $capability-options)}% of users are affected which is less than the threshold of #{$threshold}.
+    }
+  }
+  @include with-prefix(null) {
+    @include with-browser-ranges($capability) {
+      @content;
+    }
+  }
+}
+
+@mixin with-browser-ranges($capability, $prefix: $current-prefix) {
+  $new-ranges: null;
+  @if type-of($capability) == map {
+    $new-ranges: $capability;
+  }
+  @else {
+    $new-ranges: browser-ranges($capability, $prefix);
+  }
+  @if has-browser-subset($current-browser-versions, $new-ranges) {
+    $old-ranges: $current-browser-versions;
+    $current-browser-versions: intersect-browser-ranges($old-ranges, $new-ranges) !global;
+    @content;
+    $current-browser-versions: $old-ranges !global;
+  }
+  @else if $debug-browser-support {
+    // Excluding content because #{inspect($new-ranges)} is not included within
+    //  #{inspect($current-browser-versions)}
+  }
+}
+
+@mixin transform($transform, $only3d: false) {
+  $capability: if($only3d, transforms3d, transforms2d);
+  @include prefixed-properties($capability, $transform-support-threshold, (transform: $transform));
+}
+
+@mixin transform3d($trans) {
+  @include transform($trans, true);
+}
+
+@mixin translate($translate-x: $default-translate-x, $translate-y: $default-translate-y, $perspective: false, $only3d: false) {
+  $trans: translate($translate-x, $translate-y);
+  @if $perspective {
+    $trans: perspective($perspective) $trans;
+  }
+  @include transform($trans, $only3d);
+}
+
+@mixin translateX($trans-x: $default-translate-x, $perspective: false, $only3d: false) {
+  $trans: translateX($trans-x);
+  @if $perspective {
+    $trans: perspective($perspective) $trans;
+  }
+  @include transform($trans, $only3d);
+}
+
+@mixin translateY($trans-y: $default-translate-y, $perspective: false, $only3d: false) {
+  $trans: translateY($trans-y);
+  @if $perspective {
+    $trans: perspective($perspective) $trans;
+  }
+  @include transform($trans, $only3d);
+}
+
+@mixin translateZ($trans-z: $default-translate-z, $perspective: false) {
+  $trans: translateZ($trans-z);
+  @if $perspective {
+    $trans: perspective($perspective) $trans;
+  }
+  @include transform3d($trans);
+}
+
+@mixin rotate($rotate: $default-rotate, $perspective: false, $only3d: false) {
+  $trans: rotate($rotate);
+  @if $perspective {
+    $trans: perspective($perspective) $trans;
+  }
+  @include transform($trans, $only3d);
+}
+
+// @mixin font-face($name, $font-files, $eot: false, $weight: false, $style: false) {
+//   $iefont: unquote("#{$eot}?#iefix");
+//   @font-face {
+//     font-family: quote($name);
+//     @if $eot {
+//       src: font-url($eot);
+//       $font-files: font-url($iefont) unquote("format('embedded-opentype')"), $font-files;
+//     }
+//     src: $font-files;
+//     @if $weight {
+//       font-weight: $weight;
+//     }
+//     @if $style {
+//       font-style: $style;
+//     }
+//   }
+// }
+
+@mixin scale($scale-x: $default-scale-x, $scale-y: $scale-x, $perspective: false, $only3d: false) {
+  $trans: scale($scale-x, $scale-y);
+  @if $perspective {
+    $trans: perspective($perspective) $trans;
+  }
+  @include transform($trans, $only3d);
+}
+
+@mixin background-clip($clip...) {
+  $output: ();
+  $deprecated: ();
+  @if length($clip) > 0 {
+    @each $layer in $clip {
+      $output: append($output, unquote($layer), comma);
+      $deprecated: append($deprecated, legacy-box($layer), comma);
+    }
+  }
+  @else {
+    $output: $default-background-clip;
+    $deprecated: legacy-box($default-background-clip);
+  }
+  @include with-each-prefix(background-img-opts, $background-clip-support-threshold) {
+    @if $current-prefix == -moz or $current-prefix == -webkit {
+      // Legacy versions of Mozilla support a different syntax, prefixed.
+      @include prefix-prop(background-clip, $deprecated);
+    }
+    @else {
+      @include prefix-prop(background-clip, $output);
+    }
+  }
+}
+
+
+@mixin reset-box-model {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+@mixin horizontal-list-container {
+  @include reset-box-model;
+  @include clearfix;
+}
+
+@mixin horizontal-list($padding: 4px, $direction: left) {
+  @include horizontal-list-container;
+  li {
+    @include horizontal-list-item($padding, $direction);
+  }
+}
+
+@mixin horizontal-list-item($padding: 4px, $direction: left) {
+  @include no-bullet;
+  white-space: nowrap;
+  @include float($direction);
+  @if $padding {
+    padding: {
+      left: $padding;
+      right: $padding;
+    };
+    &.first {
+      @if $direction == left {
+        padding-left: 0;
+      } @else {
+        padding-right: 0;
+      }
+    }
+
+    &.last {
+      @if $direction == left {
+        padding-right: 0;
+      } @else {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+@mixin no-bullet {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+
+$css-sel2-support-threshold: $critical-usage-threshold;
+$legacy-float-support-threshold: $critical-usage-threshold;
+
+@mixin float($side: left) {
+  float: unquote($side);
+  @if support-legacy-browser("ie", "6", $threshold: $legacy-float-support-threshold) {
+    display: inline;
+  }
+}

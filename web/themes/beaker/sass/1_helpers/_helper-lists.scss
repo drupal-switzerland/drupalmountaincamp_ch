@@ -1,0 +1,39 @@
+// This file include some basic styling for lists
+
+@if $use-basic-lists-styling {
+
+  .pane-page-content {
+    ul:not(.links)
+      :not(.contextual-links)
+      :not(.slides)
+      :not(.menu)
+      :not(.links--inline)
+      {
+      margin-bottom: 20px;
+
+      li {
+        position: relative;
+        left: 20px;
+        margin-bottom: 6px;
+
+        &:before {
+          content: "\2022";
+          display: inline-block;
+          position: relative;
+          left: -12px;
+          top: 3px; //-3px;
+          margin-left: -7px;
+          // width: 8px;
+          // height: 8px;
+          // background: $black;
+          // border-radius: 50%;
+          font-size: 200%;
+          line-height: 0;
+        }
+      }
+    }
+  }
+  // ===========================================================================
+  // ===========================================================================
+  // end if
+}
