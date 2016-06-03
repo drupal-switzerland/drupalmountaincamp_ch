@@ -1,8 +1,8 @@
 <?php
 
-$sitename = 'd8-starter_io';   //use the username on our servers like testsite_ch
+$sitename = 'd8-starter-composer';   //use the username on our servers like testsite_ch
 $options['newrelic-api-key'] = 'CHANGEME';
-$options['deploy-repository'] = 'git@github.com:AmazeeLabs/d8-starter.git';
+$options['deploy-repository'] = 'git@github.com:AmazeeLabs/d8-starter-composer.git';
 
 // - And we load the aliases file here
 global $aliases_stub;
