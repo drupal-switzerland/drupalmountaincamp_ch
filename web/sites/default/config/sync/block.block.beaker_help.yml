@@ -1,0 +1,20 @@
+uuid: c3bc8358-212e-4981-8e5b-91c051f1332d
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - beaker
+id: beaker_help
+theme: beaker
+region: content
+weight: -30
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

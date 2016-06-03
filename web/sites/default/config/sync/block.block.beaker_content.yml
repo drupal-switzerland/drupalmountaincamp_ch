@@ -1,0 +1,20 @@
+uuid: 018f2491-f7ef-47e9-ba08-8d94fb4b9540
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - beaker
+id: beaker_content
+theme: beaker
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

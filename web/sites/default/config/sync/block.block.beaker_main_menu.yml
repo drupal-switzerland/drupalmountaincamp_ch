@@ -1,0 +1,24 @@
+uuid: 45b6f0e5-bcd9-4538-950e-14a3efc6c2b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - beaker
+id: beaker_main_menu
+theme: beaker
+region: header
+weight: 0
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+visibility: {  }

@@ -1,0 +1,10 @@
+uuid: faca4b13-5e38-49ae-a50e-14c3711dfd12
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.register
+label: Register
+targetEntityType: user
+cache: true

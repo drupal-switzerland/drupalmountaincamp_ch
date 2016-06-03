@@ -1,0 +1,24 @@
+uuid: 6807d58b-e5f7-4e7a-8c11-173c85e08e4f
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.tools
+  module:
+    - system
+  theme:
+    - beaker
+id: beaker_tools
+theme: beaker
+region: header
+weight: 0
+provider: null
+plugin: 'system_menu_block:tools'
+settings:
+  id: 'system_menu_block:tools'
+  label: Tools
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 0
+visibility: {  }

@@ -1,0 +1,13 @@
+uuid: 29cda04b-665b-460f-9707-073052d91667
+name: d8-starter
+mail: technology+d8-starter@amazeelabs.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+mail_notification: ''

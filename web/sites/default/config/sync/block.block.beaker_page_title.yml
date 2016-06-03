@@ -1,0 +1,18 @@
+uuid: 954986ce-1100-4cb8-b529-41472f50a2ef
+langcode: en
+status: true
+dependencies:
+  theme:
+    - beaker
+id: beaker_page_title
+theme: beaker
+region: content
+weight: -50
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

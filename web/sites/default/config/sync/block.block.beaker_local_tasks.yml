@@ -1,0 +1,20 @@
+uuid: a7e480ca-462b-4094-af24-36b691eca649
+langcode: en
+status: true
+dependencies:
+  theme:
+    - beaker
+id: beaker_local_tasks
+theme: beaker
+region: content
+weight: -40
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

@@ -1,0 +1,20 @@
+uuid: fd884642-fe57-46ac-b900-a961440c2a4c
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - beaker
+id: beaker_messages
+theme: beaker
+region: header
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }
