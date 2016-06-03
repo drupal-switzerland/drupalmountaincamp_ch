@@ -1,0 +1,50 @@
+{
+  "name": "beaker-theme",
+  "version": "1.0.5",
+  "description": "Amazee Labs Standard Theme",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "autoprefixer": ">=6.0.0",
+    "bower": ">=1.6.5",
+    "browser-sync": ">=2.9.11",
+    "colors": ">=1.1.2",
+    "css-mqpacker": ">=4.0.0",
+    "csswring": ">=4.0.0",
+    "gulp": ">=3.9.0",
+    "gulp-css-globbing": ">=0.1.8",
+    "gulp-duration": "0.0.0",
+    "gulp-filter": ">=3.0.1",
+    "gulp-iconfont": "^6.0.0",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-jshint": ">=1.11.2",
+    "gulp-postcss": ">=6.0.1",
+    "gulp-sass": "==2.0.4",
+    "gulp-sourcemaps": ">=1.6.0",
+    "gulp-util": ">=3.0.6",
+    "imagemin-pngquant": "^4.2.0",
+    "imagemin-svgo": "^4.1.2",
+    "js-yaml": "^3.6.1",
+    "jshint": "^2.8.0",
+    "jshint-stylish": ">=2.0.1",
+    "pngquant-bin": "^3.0.0",
+    "stream-browserify": "^2.0.1"
+  },
+  "optionalDependencies": {
+    "fsevents": ">=1.0.5"
+  },
+  "scripts": {
+    "postinstall": "find node_modules/ -name '*.info' -type f -delete; bower install --force",
+    "gulp": "gulp",
+    "bower": "bower"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AmazeeLabs/d8-starter-composer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmazeeLabs/d8-starter-composer/issues"
+  },
+  "homepage": "https://github.com/AmazeeLabs/d8-starter-composer"
+}

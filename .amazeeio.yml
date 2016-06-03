@@ -1,0 +1,22 @@
+deploy_tasks:
+  development:
+    before_deploy:
+      - composer install
+      - npm install
+      - npm run gulp -- compile
+    after_deploy:
+      - drush -y updb --cache-clear=0
+      - drush -y cr
+  production:
+    before_deploy:
+      - composer install
+      - npm install
+      - npm run gulp -- build
+      - rm -rf node_modules
+    after_deploy:
+      - drush -y updb --cache-clear=0
+      - drush -y cr
+shared:
+  production:
+    - src: files
+      dst: sites/default/files
