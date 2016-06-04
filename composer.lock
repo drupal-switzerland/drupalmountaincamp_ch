@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae28aaf781420a964a6943b724094cb1",
-    "content-hash": "6b829f5bf26586b54a9459f7ce45113a",
+    "hash": "873d8c2e6955ee8a6db84c204d3cb383",
+    "content-hash": "830c727ecf6162e137c2821208d34aa1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -793,17 +793,11 @@
         },
         {
             "name": "drupal/config_installer",
-            "version": "8.1.3",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_installer.git",
-                "reference": "071213c9a7507bddcd6f6018d3f24217c13bb9d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_installer-8.x-1.3.zip",
-                "reference": "071213c9a7507bddcd6f6018d3f24217c13bb9d7",
-                "shasum": null
+                "reference": "128ab9096391ba7d078a6e1c180d613c6bc1176b"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -820,7 +814,7 @@
             ],
             "description": "Use configuration from another Drupal site to install a Drupal instance. Suitable for advanced users.",
             "homepage": "https://www.drupal.org/project/config_installer",
-            "time": "2016-05-05 16:43:19"
+            "time": "2016-05-09 12:21:05"
         },
         {
             "name": "drupal/console",
@@ -4575,7 +4569,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "drupal/config_installer": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],

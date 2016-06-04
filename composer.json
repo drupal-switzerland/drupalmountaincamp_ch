@@ -41,7 +41,7 @@
         "drupal/redirect": "~8.0",
         "drupal/token": "~8.0",
         "drupal/entity_reference_revisions": "~8.0",
-        "drupal/config_installer": "~8.0",
+        "drupal/config_installer": "8.1.x-dev",
         "drupal/varnish": "~8.0"
     },
     "conflict": {
