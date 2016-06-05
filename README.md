@@ -8,11 +8,12 @@ A Drupal 8 starter project built with Composer.
 
 ## Installing custom modules from Github repository
 
-First edit the `repositories` section of the `composer.json` file and add the following:
+First, the module repository should be registered as package in the `composer.json` as the following:
 
 ```
+    "repositories": [
         {
-            "type":"package",
+            "type": "package",
             "package": {
                 "name": "drupal/{MODULE_NAME}",
                 "version": "8.1.0-dev",
@@ -24,10 +25,15 @@ First edit the `repositories` section of the `composer.json` file and add the fo
                 }
             }
         },
+        {
+            "type": "composer",
+            "url": "https://packagist.drupal-composer.org"
+        }
+    ],
 ```
-It is important that this repository is added before the `packagist.drupal-composer.org`.
+It is important that the package is registered before the `packagist.drupal-composer.org`.
 
-When the `composer.json` is updated, `composer require` can be used as usual. Composer should take the custom module version even if there is a contrib module with the same name.
+When the `composer.json` is updated, `composer require` can be used as usual. Composer will take the custom module version even if there is a contrib module with the same name.
 
 ## Updating Drupal core/modules
 
