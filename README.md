@@ -48,11 +48,10 @@ When the `composer.json` is updated, `composer require drupal/<MODULE_NAME>:~8.0
 
 ### Updating Drupal core/modules
 
-1. Run `composer update`
-1. Review changes made to `composer.lock`, there you'll see package version changes
-1. If everything is fine, run `drush -y updb`
+1. Run `composer update` (add `--dry-run` to just check for updates)
+1. Run `drush -y updb`
 1. Export possible config changes with `drush -y config-export`
-1. Check via Git if there are any changes made to the Drupal core files (this can be done by `drupal-scaffold`), review them carefully, ensure that all Amazee-specific stuff is still on its place
+1. Check via Git if there are any changes made to the Drupal core files (this can be done by `drupal-composer/drupal-scaffold`), review them carefully, ensure that all Amazee-specific stuff is still on its place
 1. Commit/push changes
 
 ### Switch a dependency package to a forked version
