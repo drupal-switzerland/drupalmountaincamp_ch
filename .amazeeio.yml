@@ -5,9 +5,8 @@ deploy_tasks:
       - npm install
       - npm run gulp -- compile
     after_deploy:
-      - cd web
-      - drush -y updb --cache-clear=0
-      - drush -y cr
+      - cd web && drush -y updb --cache-clear=0
+      - cd web && drush -y cr
   production:
     before_deploy:
       - composer install
@@ -15,8 +14,8 @@ deploy_tasks:
       - npm run gulp -- build
       - rm -rf node_modules
     after_deploy:
-      - drush -y updb --cache-clear=0
-      - drush -y cr
+      - cd web && drush -y updb --cache-clear=0
+      - cd web && drush -y cr
 shared:
   production:
     - src: files
