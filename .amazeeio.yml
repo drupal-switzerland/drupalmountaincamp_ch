@@ -5,6 +5,7 @@ deploy_tasks:
       - npm install
       - npm run gulp -- compile
     after_deploy:
+      - cd web
       - drush -y updb --cache-clear=0
       - drush -y cr
   production:
