@@ -33,6 +33,8 @@ First, the module repository should be registered as a package in the `repositor
 ```
 It is important that the package is registered before the `packagist.drupal-composer.org`.
 
+Example: https://github.com/AmazeeLabs/d8-starter-composer/blob/a5c615f/composer.json#L6-L18
+
 When the `composer.json` is updated, `composer require` can be used as usual to add the module. Composer will take the custom module version even if there is a contrib module with the same name.
 
 ## Updating Drupal core/modules
