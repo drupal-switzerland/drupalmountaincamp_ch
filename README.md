@@ -35,7 +35,7 @@ It is important that the package is registered before the `packagist.drupal-comp
 
 Example: https://github.com/AmazeeLabs/d8-starter-composer/blob/a5c615f/composer.json#L6-L18
 
-When the `composer.json` is updated, `composer require` can be used as usual to add the module. Composer will take the custom module version even if there is a contrib module with the same name.
+When the `composer.json` is updated, `composer require` can be used as usual to add the module. Composer will take the custom module version even if there is a contrib module with the same name. @todo: we need a composer-ninja to conform or update this info, there might be version-dependent stuff.
 
 ## Updating Drupal core/modules
 
