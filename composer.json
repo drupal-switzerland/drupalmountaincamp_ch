@@ -1,5 +1,5 @@
 {
-    "name": "d8-starter_io_composer",
+    "name": "AmazeeLabs/d8-starter-composer",
     "description": "A Drupal 8 starter project built with Composer",
     "type": "project",
     "repositories": [
