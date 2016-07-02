@@ -2,11 +2,15 @@
 
 A Drupal 8 starter project built with Composer.
 
-## Installing contrib modules
+## Recipes
+
+The most recent version of the following recipes can be found at https://github.com/AmazeeLabs/d8-starter-composer#readme
+
+### Installing contrib modules
 
 ```composer require drupal/<MODULE_NAME>:~8.0```
 
-## Installing custom modules from Github repository
+### Installing custom modules from Github repository
 
 First, the module repository should be registered as a package in the `repositories` section of the `composer.json`:
 
@@ -37,7 +41,7 @@ Example: https://github.com/AmazeeLabs/d8-starter-composer/blob/a5c615f/composer
 
 When the `composer.json` is updated, `composer require` can be used as usual to add the module. Composer will take the custom module version even if there is a contrib module with the same name. @todo: we need a composer-ninja to conform or update this info, there might be version-dependent stuff.
 
-## Updating Drupal core/modules
+### Updating Drupal core/modules
 
 1. Run `composer update`
 1. Review changes made to `composer.lock`, there you'll see package version changes
@@ -46,7 +50,7 @@ When the `composer.json` is updated, `composer require` can be used as usual to 
 1. Check via Git if there are any changes made to the Drupal core files (this can be done by `drupal-scaffold`), review them carefully, ensure that all Amazee-specific stuff is still on its place
 1. Commit/push changes
 
-## Switch a dependency package to a forked version
+### Switch a dependency package to a forked version
 
 1. Add the forked repository to the `composer.json`
 1. Change the package version to the branch name prefixed with `dev-`
