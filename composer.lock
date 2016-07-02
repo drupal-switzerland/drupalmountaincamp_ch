@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "873d8c2e6955ee8a6db84c204d3cb383",
-    "content-hash": "830c727ecf6162e137c2821208d34aa1",
+    "hash": "d99f967c0214160a42c2bedece7cd6ce",
+    "content-hash": "c98896e3175f66ff90f55964444c6fe1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -233,16 +233,16 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "1.5.0",
+            "version": "dev-exit-on-failure",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cweagans/composer-patches.git",
-                "reference": "8de7c73b2eae217f4e7028d7262ff2330aa4b4e8"
+                "url": "https://github.com/AmazeeLabs/composer-patches.git",
+                "reference": "a3ea4f5be9d74a70c333788cebe368a3ee0b5534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/8de7c73b2eae217f4e7028d7262ff2330aa4b4e8",
-                "reference": "8de7c73b2eae217f4e7028d7262ff2330aa4b4e8",
+                "url": "https://api.github.com/repos/AmazeeLabs/composer-patches/zipball/a3ea4f5be9d74a70c333788cebe368a3ee0b5534",
+                "reference": "a3ea4f5be9d74a70c333788cebe368a3ee0b5534",
                 "shasum": ""
             },
             "require": {
@@ -262,7 +262,11 @@
                     "cweagans\\Composer\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "cweagans\\Composer\\Tests\\": "tests"
+                }
+            },
             "license": [
                 "BSD"
             ],
@@ -273,7 +277,10 @@
                 }
             ],
             "description": "Provides a way to patch Composer packages.",
-            "time": "2016-03-28 18:54:21"
+            "support": {
+                "source": "https://github.com/AmazeeLabs/composer-patches/tree/exit-on-failure"
+            },
+            "time": "2016-06-29 11:44:03"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1046,6 +1053,11 @@
                 "symfony/css-selector": "~2.8"
             },
             "type": "drupal-core",
+            "extra": {
+                "patches_applied": {
+                    "Route normalizer: Global Redirect in core": "https://www.drupal.org/files/issues/2746253-2.patch"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Drupal\\Core\\": "lib/Drupal/Core",
@@ -4570,6 +4582,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cweagans/composer-patches": 20,
         "drupal/config_installer": 20
     },
     "prefer-stable": true,
