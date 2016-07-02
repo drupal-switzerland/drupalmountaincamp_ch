@@ -45,3 +45,11 @@ When the `composer.json` is updated, `composer require` can be used as usual to 
 1. Export possible config changes with `drush -y config-export`
 1. Check via Git if there are any changes made to the Drupal core files (this can be done by `drupal-scaffold`), review them carefully, ensure that all Amazee-specific stuff is still on its place
 1. Commit/push changes
+
+## Switch a dependency package to a forked version
+
+1. Add the forked repository to the `composer.json`
+1. Change the package version to the branch name prefixed with `dev-`
+1. Run `composer update <package/name>` (`composer.lock` will be updated)
+
+Example: https://github.com/AmazeeLabs/d8-starter-composer/commit/cbe1481
