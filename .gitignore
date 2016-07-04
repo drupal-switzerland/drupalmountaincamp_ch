@@ -32,5 +32,5 @@ css/map
 # Ignore css files from custom themes
 /web/themes/*/css/*.*
 
-Other
+# Other
 .DS_Store
