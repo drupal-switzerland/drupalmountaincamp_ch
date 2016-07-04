@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d99f967c0214160a42c2bedece7cd6ce",
-    "content-hash": "c98896e3175f66ff90f55964444c6fe1",
+    "hash": "a383e557c1ccba8fb6d5f5a9a83c7624",
+    "content-hash": "16c17253d9c05235a336778aad665302",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1127,7 +1127,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
-                "reference": null,
+                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242",
                 "shasum": null
             },
             "require": {
@@ -1561,7 +1561,7 @@
         },
         {
             "name": "drupal/varnish",
-            "version": "8.1.0-dev",
+            "version": "dev-amazee",
             "source": {
                 "type": "git",
                 "url": "git@github.com:AmazeeLabs/varnish.git",
@@ -4587,7 +4587,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cweagans/composer-patches": 20,
-        "drupal/config_installer": 20
+        "drupal/config_installer": 20,
+        "drupal/varnish": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

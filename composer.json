@@ -7,7 +7,7 @@
             "type":"package",
             "package": {
                 "name": "drupal/varnish",
-                "version": "8.1.0-dev",
+                "version": "dev-amazee",
                 "type": "drupal-module",
                 "source": {
                     "type": "git",
@@ -45,8 +45,8 @@
         "drupal/redirect": "~8.0",
         "drupal/token": "~8.0",
         "drupal/entity_reference_revisions": "~8.0",
-        "drupal/config_installer": "8.1.x-dev",
-        "drupal/varnish": "~8.0"
+        "drupal/config_installer": "dev-8.x-1.x",
+        "drupal/varnish": "dev-amazee"
     },
     "conflict": {
         "drupal/drupal": "*"
