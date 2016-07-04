@@ -12,11 +12,26 @@ The most recent version of the following recipes can be found at https://github.
 
 ### Installing contrib modules
 
-```composer require drupal/<MODULE_NAME>:~8.0```
+```composer require drupal/<MODULE_NAME>:~8.0``` to get latest stable version (or latest dev, if there is no stable release)
+```composer require drupal/<MODULE_NAME>:dev-<BRANCH_NAME>#<COMMIT_HASH>``` for specific version
 
-### Installing custom modules from Github repository
+### Installing custom/forked modules from Github repository
 
-First, the module repository should be registered as a package in the `repositories` section of the `composer.json`:
+#### For the case if module reposiroty contains its own `composer.json`
+
+```
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/<REPOSITORY/NAME>"
+        },
+        ...
+    ],
+```
+
+Use `composer require drupal/<MODULE_NAME>:dev-<BRANCH_NAME>#<COMMIT_HASH>` to add the module.
+
+#### For the case if `composer.json` is missing in the module reposiroty
 
 ```
     "repositories": [
@@ -24,7 +39,7 @@ First, the module repository should be registered as a package in the `repositor
             "type": "package",
             "package": {
                 "name": "drupal/<MODULE_NAME>",
-                "version": "8.1.0-dev",
+                "version": "dev-amazee",
                 "type": "drupal-module",
                 "source": {
                     "type": "git",
@@ -33,18 +48,22 @@ First, the module repository should be registered as a package in the `repositor
                 }
             }
         },
-        {
-            "type": "composer",
-            "url": "https://packagist.drupal-composer.org"
-        }
+        ...
     ],
 ```
-It is important that the package is registered before the `packagist.drupal-composer.org`.
 
-Example: https://github.com/AmazeeLabs/d8-starter-composer/blob/a5c615f/composer.json#L6-L18
+Use `composer require drupal/<MODULE_NAME>:dev-amazee#<COMMIT_HASH>` to add the module.
 
-When the `composer.json` is updated, `composer require drupal/<MODULE_NAME>:~8.0` can be used as usual to add the module. Composer will take the custom module version even if there is a contrib module with the same name.  
-**@todo:** we need a composer-ninja to confirm or update this info, there might be version-dependent stuff.
+#### For the case when destination path should be other than `modules/contrib/<MODULE_NAME>`
+
+```
+    "extra": {
+        "installer-paths": {
+            "web/modules/custom/<MODULE_NAME>": ["drupal/<MODULE_NAME>"],
+            ...
+        }
+    }
+```
 
 ### Updating Drupal core/modules
 
