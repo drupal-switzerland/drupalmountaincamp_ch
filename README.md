@@ -109,3 +109,7 @@ Use `composer require drupal/<MODULE_NAME>:dev-amazee#<COMMIT_HASH>` to add the 
 1. Run `composer update <package/name>` (`composer.lock` will be updated)
 
 Example: https://github.com/AmazeeLabs/d8-starter-composer/commit/cbe1481
+
+### Update existing Drupal 8 project to use composer
+
+Example: https://github.com/AmazeeLabs/heks_ch/compare/5a5af8c...031914d
