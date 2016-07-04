@@ -12,8 +12,9 @@ The most recent version of the following recipes can be found at https://github.
 
 ### Installing contrib modules
 
-```composer require drupal/<MODULE_NAME>:~8.0``` to get latest stable version (or latest dev, if there is no stable release)
-```composer require drupal/<MODULE_NAME>:dev-<BRANCH_NAME>#<COMMIT_HASH>``` for specific version
+- ```composer require drupal/<MODULE_NAME>:~8.0``` to get latest stable version (or latest dev, if there is no stable release)
+- ```composer require drupal/<MODULE_NAME>:dev-<BRANCH_NAME>``` to get latest dev version
+- ```composer require drupal/<MODULE_NAME>:dev-<BRANCH_NAME>#<COMMIT_HASH>``` to get specific version
 
 ### Updating Drupal core/modules
 
