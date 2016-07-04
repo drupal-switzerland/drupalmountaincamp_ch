@@ -7,3 +7,5 @@
  */
  // Disable Google Analytics from sending dev GA data.
 $config['google_analytics.settings']['account'] = 'UA-XXXXXXXX-YY';
+
+$config['system.logging']['error_level'] = 'all';

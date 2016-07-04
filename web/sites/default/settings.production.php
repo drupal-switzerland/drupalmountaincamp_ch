@@ -25,3 +25,5 @@ $settings['trusted_host_patterns'] = array(
 $config['system.performance']['cache']['page']['max_age'] = 600;
 $config['system.performance']['css']['preprocess'] = 1;
 $config['system.performance']['js']['preprocess'] = 1;
+
+$config['system.logging']['error_level'] = 'hide';

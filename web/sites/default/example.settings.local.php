@@ -10,3 +10,5 @@
 // Disable render caches, necessary for twig files to be newly loaded all the time
 $settings['cache']['bins']['render'] = 'cache.backend.null';
 $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
+
+$config['system.logging']['error_level'] = 'verbose';
