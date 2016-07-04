@@ -24,6 +24,34 @@ The most recent version of the following recipes can be found at https://github.
 1. Check via Git if there are any changes made to the Drupal core files (this can be done by `drupal-composer/drupal-scaffold`), review them carefully, ensure that all Amazee-specific stuff is still on its place
 1. Commit/push changes
 
+### Patching packages
+
+```
+    "extra": {
+        "patches": {
+            "<PACKAGE/NAME>": {
+                "<PATCH DESCRIPTION>": "<PATH/TO/PATCH>",
+                ...
+            },
+            ...
+        },
+        "composer-exit-on-patch-failure": true
+    }
+```
+
+Example:
+
+```
+    "extra": {
+        "patches": {
+            "drupal/core": {
+                "HEKS-102 Fix language detection": "patches/2189267-24.patch"
+            }
+        },
+        "composer-exit-on-patch-failure": true
+    }
+```
+
 ### Installing custom/forked modules from Github repository
 
 #### For the case if module reposiroty contains its own `composer.json`
