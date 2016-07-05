@@ -2,6 +2,8 @@
 
 A Drupal 8 starter project built with Composer.
 
+How to setup a new project from d8-starter-composer: http://confluence.amazeelabs.com/display/KNOWLEDGE/Create+new+Drupal+8+Composer+project
+
 ## Todo
 
 - Switch `cweagans/composer-patches` to original repository once [#46](https://github.com/cweagans/composer-patches/pull/46) gets in.
