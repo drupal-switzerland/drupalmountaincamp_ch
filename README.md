@@ -114,4 +114,10 @@ Example: https://github.com/AmazeeLabs/d8-starter-composer/commit/cbe1481
 
 ### Update existing Drupal 8 project to use composer
 
-Example: https://github.com/AmazeeLabs/heks_ch/compare/5a5af8c...031914d (better to view in a desktop app because of huge commit diffs)
+You will need:
+- Move files around, setup composer stuff, example: https://github.com/AmazeeLabs/heks_ch/compare/5a5af8c...031914d (better to view in a desktop app because of huge commit diffs)
+- Ask @devops to update environment(s) configuration and deloyment script as for composer-based project
+- After deployment, on server(s):
+  - Manually move the `sites/default/files` directory to `web/sites/default/files`
+  - Manually remove all leftover derictories that should not be there anymore (like `modules`, `themes`, etc)
+  - Update bash aliases, example: https://github.com/AmazeeLabs/devops/commit/e257359
