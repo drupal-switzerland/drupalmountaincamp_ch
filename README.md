@@ -6,7 +6,7 @@ How to setup a new project from d8-starter-composer: http://confluence.amazeelab
 
 ## Todo
 
-- Switch `cweagans/composer-patches` to original repository once [#46](https://github.com/cweagans/composer-patches/pull/46) gets in.
+- Switch `cweagans/composer-patches` to original repository once [#46](https://github.com/cweagans/composer-patches/pull/46) and [#57](https://github.com/cweagans/composer-patches/pull/57) get in.
 
 ## Recipes
 

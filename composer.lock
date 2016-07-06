@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a383e557c1ccba8fb6d5f5a9a83c7624",
-    "content-hash": "16c17253d9c05235a336778aad665302",
+    "hash": "deedf516c13485c9a33d3a4b3f5b7100",
+    "content-hash": "53431ec14173382a40dc41fa9fb4cb93",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -233,16 +233,16 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "dev-exit-on-failure",
+            "version": "dev-amazee",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AmazeeLabs/composer-patches.git",
-                "reference": "a3ea4f5be9d74a70c333788cebe368a3ee0b5534"
+                "reference": "2ae72000426ddd1ecd9f0a366e2016b6fdd0995f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AmazeeLabs/composer-patches/zipball/a3ea4f5be9d74a70c333788cebe368a3ee0b5534",
-                "reference": "a3ea4f5be9d74a70c333788cebe368a3ee0b5534",
+                "url": "https://api.github.com/repos/AmazeeLabs/composer-patches/zipball/2ae72000426ddd1ecd9f0a366e2016b6fdd0995f",
+                "reference": "2ae72000426ddd1ecd9f0a366e2016b6fdd0995f",
                 "shasum": ""
             },
             "require": {
@@ -278,9 +278,9 @@
             ],
             "description": "Provides a way to patch Composer packages.",
             "support": {
-                "source": "https://github.com/AmazeeLabs/composer-patches/tree/exit-on-failure"
+                "source": "https://github.com/AmazeeLabs/composer-patches/tree/amazee"
             },
-            "time": "2016-06-29 11:44:03"
+            "time": "2016-07-06 13:47:11"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
