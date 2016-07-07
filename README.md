@@ -104,6 +104,12 @@ Use `composer require drupal/<MODULE_NAME>:dev-amazee#<COMMIT_HASH>` to add the 
     }
 ```
 
+### Add a JS library
+
+Most of libraries can be added easily with composer. The tricky part is that most of Drupal modules require that libraries are saved under `libraries` directory while Composer installs them to `vendor`. The `composer/installers` can override package paths, but only for packages that depend on it. So, you'll need to write (or override) the `composer.json` file of the library stating that it has `composer/installers` dependency.
+
+Example: https://github.com/AmazeeLabs/heks_ch/commit/e9b1aeb
+
 ### Switch a dependency package to a forked version
 
 1. Add the forked repository to the `composer.json`
