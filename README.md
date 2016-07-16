@@ -2,6 +2,8 @@
 
 A Drupal 8 starter project built with Composer.
 
+The starter lives at http://d8-starter-composer.io.dev.dev1.compact.amazee.io/ (be sure to export/commit/push any config changes you make)
+
 How to setup a new project from d8-starter-composer: http://confluence.amazeelabs.com/display/KNOWLEDGE/Create+new+Drupal+8+Composer+project
 
 ## Todo
