@@ -1,3 +1,4 @@
+sitegroup: d8-starter_io_composer
 deploy_tasks:
   development:
     before_deploy:
