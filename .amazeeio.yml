@@ -22,4 +22,4 @@ shared:
     - src: files
       dst: sites/default/files
 versions:
-  node: 4
+  node: 0.12
