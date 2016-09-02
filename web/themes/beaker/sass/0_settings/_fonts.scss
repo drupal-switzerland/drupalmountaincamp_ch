@@ -1,8 +1,9 @@
 // BASE FONT VARIABLES
 // =============================================================================
-
-$base-font-size:    16px;
-$base-line-height:  28px;
+// Don't put px suffix on the end of these as the mixins use this as an integer
+// to make the rem.
+$base-font-size:    16;
+$base-line-height:  28;
 
 // FONT INCLUDES
 // =============================================================================
