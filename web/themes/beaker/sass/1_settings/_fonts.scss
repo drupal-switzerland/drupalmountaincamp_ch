@@ -43,7 +43,7 @@ $base-line-height:  28px;
 
 @mixin h1 {
   @include font-bold;
-  font-size: rem(70px);
+  font-size: rem(48px);
 }
 
 @mixin h2 {
