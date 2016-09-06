@@ -161,6 +161,7 @@ gulp.task('browser-sync', function() {
     notify: false,
     logConnections: true,
     reloadOnRestart: true,
+    injectChanges: true,
     ghostMode: {
       clicks: vghostmode,
       forms: vghostmode,
@@ -179,6 +180,7 @@ gulp.task('test', function() {
     notify: false,
     logConnections: true,
     reloadOnRestart: true,
+    injectChanges: true,
     ghostMode: {
       clicks: true,
       forms: true,
