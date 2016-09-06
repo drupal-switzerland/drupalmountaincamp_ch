@@ -1,0 +1,18 @@
+<a name="{{ key }}"></a>
+<div class="styleguide-item">
+  <div class="grid">
+    <div class="inner">
+      <div class="left">
+        <h2 class="styleguide">{{ item.title }}</h2>
+        {% if item.description %}
+          <p class="styleguide-description">
+              {{ item.description }}
+          </p>
+        {% endif %}
+      </div>
+      <div class="right styleguide">
+          {{ content }}
+      </div>
+    </div>
+  </div>
+</div>

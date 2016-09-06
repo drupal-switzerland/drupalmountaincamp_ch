@@ -1,9 +1,7 @@
-// BASE FONT VARIABLES
 // =============================================================================
-// Don't put px suffix on the end of these as the mixins use this as an integer
-// to make the rem.
-$base-font-size:    16;
-$base-line-height:  28;
+
+$base-font-size:    16px;
+$base-line-height:  28px;
 
 // FONT INCLUDES
 // =============================================================================
@@ -44,19 +42,19 @@ $base-line-height:  28;
 }
 
 @mixin h1 {
-  @extend h1;
   @include font-bold;
+  font-size: rem(70px);
 }
 
 @mixin h2 {
-  @extend h2;
+  font-size: rem(34px);
 }
 
 @mixin h3 {
-  @extend h3;
+  font-size: rem(22px);
 }
 
 @mixin h4 {
-  @extend h4;
+  font-size: rem(18px);
 }
 

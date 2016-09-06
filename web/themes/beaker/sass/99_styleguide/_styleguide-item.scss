@@ -1,0 +1,33 @@
+.styleguide-item {
+  border-top: 0 none;
+
+  .inner {
+    padding-bottom: $sg-spacing;
+    margin-bottom: $sg-spacing;
+    border-bottom: 1px solid $sg-border-color;
+    @include clearfix;
+  }
+
+  .left {
+    float: left;
+    width: 250px;
+  }
+
+  .right {
+    float: left;
+    width: calc(100% - 250px);
+    padding-left: 30px;
+    padding-top: 0;
+  }
+
+  h2.styleguide {
+    font-size: 1.3rem;
+    text-transform: none;
+    color: $sg-base-color;
+    margin: 0;
+  }
+
+  .styleguide {
+    border: 0 none;
+  }
+}

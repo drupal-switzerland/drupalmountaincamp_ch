@@ -1,0 +1,46 @@
+.styleguide-content {
+  background: white;
+
+  .grid {
+    margin-left: $sg-sidebar-width;
+  }
+}
+
+.styleguide-content .region-header,
+.styleguide-content #block-beaker-local-tasks,
+.styleguide-content #block-beaker-branding,
+.styleguide-content #block-beaker-page-title
+{
+  display: none;
+}
+
+.styleguide img {
+  width: auto;
+}
+
+.amazee-logo {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: $sg-sidebar-width;
+  height: 60px;
+  background: $sg-sidebar-bg;
+  border-right: 1px solid $sg-border-color-light;
+  box-shadow: 0 -10px 20px $sg-sidebar-bg;
+
+  &:after {
+    content: "powered by";
+    color: #999;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+    position: absolute;
+    left: 20px;
+    bottom: -27px;
+    display: block;
+    width: 165px;
+    height: 70px;
+    background: url(https://www.amazeelabs.com/themes/amazeelabs/logo.svg) no-repeat right 0;
+    background-size: 55px;
+  }
+}

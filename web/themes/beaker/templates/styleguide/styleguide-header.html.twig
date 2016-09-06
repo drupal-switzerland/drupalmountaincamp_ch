@@ -1,0 +1,10 @@
+<div class="styleguide-header">
+  <div class="grid">
+    <h1>Style guide</h1>
+    <h2>{{ "Showing style guide for @name"|t({'@name': theme_info.name}) }}
+    </h2>
+    {% if theme_info.description %}
+        <p>{{ theme_info.description }}</p>
+    {% endif %}
+  </div>
+</div>

@@ -41,7 +41,7 @@
   }
 
   @if( $line != false ) {
-    line-height: ($line / $base-font-size) + rem;
+    line-height: strip-unit($line / $base-font-size) + rem;
   }
 }
 
