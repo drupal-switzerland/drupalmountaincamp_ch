@@ -50,6 +50,16 @@ if(getenv('AMAZEEIO_SITENAME')){
   );
 }
 
+### AMAZEE.IO Solr connection
+// WARNING: you have to create a search_api server having "solr" machine name at
+// /admin/config/search/search-api/add-server to make this work.
+if (getenv('AMAZEEIO_SOLR_HOST') && getenv('AMAZEEIO_SOLR_PORT')) {
+  $config['search_api.server.solr']['backend_config']['host'] = getenv('AMAZEEIO_SOLR_HOST');
+  $config['search_api.server.solr']['backend_config']['path'] = '/solr/' . getenv('AMAZEEIO_SITENAME') . '/';
+  $config['search_api.server.solr']['backend_config']['port'] = getenv('AMAZEEIO_SOLR_PORT');
+  $config['search_api.server.solr']['name'] = 'AmazeeIO Solr - Environment: ' . getenv('AMAZEEIO_SITE_ENVIRONMENT');
+}
+
 ### Base URL
 if (getenv('AMAZEEIO_BASE_URL')) {
   $base_url = getenv('AMAZEEIO_BASE_URL');
