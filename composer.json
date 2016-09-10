@@ -46,7 +46,13 @@
         "drupal/token": "~8.0",
         "drupal/entity_reference_revisions": "~8.0",
         "drupal/config_installer": "dev-8.x-1.x",
-        "drupal/varnish": "dev-amazee"
+        "drupal/varnish": "dev-amazee",
+        "drupal/focal_point": "~8.0",
+        "drupal/magnific_popup": "~8.0",
+        "drupal/media_entity": "~8.0",
+        "drupal/media_entity_instagram": "~8.0",
+        "drupal/media_entity_twitter": "~8.0",
+        "drupal/superfish": "~8.0"
     },
     "conflict": {
         "drupal/drupal": "*"
