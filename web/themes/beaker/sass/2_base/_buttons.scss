@@ -1,6 +1,7 @@
 @mixin button {
   padding: 12px 32px;
   border-radius: 5px;
+  border-style: none;
   color: $white !important;
   background-color: $red;
   text-transform: uppercase;
@@ -12,8 +13,10 @@
 
 .button{
   font-size: 18px;
+  font-weight: 500;
   padding: 10px 32px;
   border-radius: 5px;
+  border-style: none;
   color: $white !important;
   background-color: $red;
   text-transform: uppercase;

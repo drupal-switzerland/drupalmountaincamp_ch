@@ -18,4 +18,26 @@
   a.button{
     @include font-semibold;
   }
+
+  form {
+    width: 300px;
+    margin: 0 auto;
+    text-align: left;
+    input[type=text],
+    input[type=email] {
+      width: 100%;
+    }
+    .name, .email {
+      label {
+        display: block;
+      }
+      margin-bottom: 10px;
+    }
+    .interest {
+      label.checkbox-label {
+        display: block;
+      }
+      margin-bottom: 10px;
+    }
+  }
 }
