@@ -1,4 +1,30 @@
-.site-logo {
-  display: block;
-  width: 200px;
+.block-system-branding-block{
+  float: left;
+  .site-logo{ display: none; }
 }
+
+.top-banner-image{
+  margin-top: 80px;
+  background-image: url(../images/top-banner-image.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 50px 0;
+  display: table;
+  width: 100%;
+  .wrap-logo-image{
+    width: 500px;
+    margin: 0 auto;
+    @include breakpoint($mobile){
+      width: 250px;
+    }
+    img{
+      height: auto;
+      display: table-cell;
+      align-items: center;
+    }
+  }
+}
+
+// RESPONSIVE DESIGN
+// =============================================================================

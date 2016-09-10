@@ -3,7 +3,7 @@
 
 html {
   @include font-regular;
-  @include font-size($base-font-size,true);
+  @include font-size(24px,true);
   @include breakpoint($mobile) {
     font-size: 87.5%;
     line-height: 1.5;
@@ -20,29 +20,41 @@ h4,
 h5,
 h6 {
   color: $black;
-  line-height: 1.1em;
-  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 h1 {
   @include h1;
+  @include font-size(48px,true);
+  line-height: 45px;
 }
 
 h2 {
   @include h2;
+  line-height: 40px;
+  @include font-size(36px,true);
 }
 
 h3 {
   @include h3;
+  line-height: 36px;
+  @include font-size(24px,true);
 }
 
 h4 {
   @include h4;
+  @include font-size(18px,true);
   margin: 0;
 }
 
 // TEXT STYLES
 // =============================================================================
 b, em, strong {
-  @include font-bold;
+  @include font-semibold;
+}
+
+p{
+  @include font-light;
+  line-height: 32px;
+  @include font-size(18px,true);
 }

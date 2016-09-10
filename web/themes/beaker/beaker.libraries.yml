@@ -9,3 +9,6 @@ base:
   dependencies:
     - core/jquery
     - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/jquery.once

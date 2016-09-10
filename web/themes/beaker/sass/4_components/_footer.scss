@@ -1,0 +1,121 @@
+footer{
+  img{
+    transition: all .5s ease-out;
+    opacity: 1;
+    &:hover{
+      opacity: 0.5;
+    }
+  }
+  .footer-contact{
+    background-color: $red;
+    text-align: center;
+    padding: 90px;
+    @include breakpoint($mobile){
+      padding: 50px;
+    }
+    a,h1{
+      color: $white;
+    }
+    h1{
+      margin-bottom: 30px;
+      @include font-thick;
+      @include breakpoint($tablet){
+        font-size: 30px;
+        margin-bottom: 20px;
+        line-height: 40px;
+      }
+    }
+    a.email-addr{
+      transition: all .5s ease-out;
+      &:hover{
+        color: $blue;
+      }
+    }
+    a.twitter{
+      text-indent: -9999px;
+      display: list-item;
+      list-style: none;
+      width: 50px;
+      height: 50px;
+      background-size: 25px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      clear: both;
+      padding: 20px;
+      background-image: url(../images/icons/twitter.svg);
+      background-color: $white;
+      text-align: center;
+      margin: 35px auto 0;
+      transition: all 1s ease;
+      &:hover{
+        background-color: $blue;
+      }
+    }
+  }
+
+  .footer-copyright{
+    .amazeeio{
+      display: block;
+      height: auto;
+      max-width: 750px;
+      width: 90%;
+      margin: 0 auto;
+      border-bottom: 2px solid $grey;
+      padding: 0 5% 50px;
+      @include breakpoint($mobile) {
+        max-width: 80%;
+      }
+      p{
+        text-align: center;
+        padding: 40px 0 25px;
+        font-weight: bold;
+        color: $ioblack;
+        font-size: 16px;
+      }
+      .logo-item{
+        height: 145px;
+        width: 110px;
+        margin: 0 auto;
+      }
+    }
+    .copy-logos{
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 50px 0;
+      .logo-item{
+        display: flex;
+        justify-content: center;
+        @include breakpoint($mobile) {
+          flex: 0 0 100%;
+        }
+        img{
+          height: auto;
+          max-height: 125px;
+          width: auto;
+          margin: 0 auto;
+          &.d8-logo{
+            height: 85px;
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+    .copy-text {
+      background-color: $blue;
+      p{
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+        color: $white;
+        padding: 25px 0;
+      }
+    }
+  }
+}
+
+
+
+// RESPONSIVE DESIGN
+// =============================================================================

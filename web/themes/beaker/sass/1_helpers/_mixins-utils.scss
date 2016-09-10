@@ -34,15 +34,13 @@
 // =============================================================================
 
 @mixin font-size($sizeInPx: $base-font-size, $line: false) {
-  font-size: rem($sizeInPx);
+  font-size: $sizeInPx;
 
   @if( $line == true ) {
-    $line: $sizeInPx * 1.66666667;
+    line-height: 1.5em;
   }
 
-  @if( $line != false ) {
-    line-height: strip-unit($line / $base-font-size) + rem;
-  }
+
 }
 
 // CLEARFIX MIXINS

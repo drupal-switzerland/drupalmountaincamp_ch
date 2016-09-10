@@ -74,25 +74,72 @@
 #}
 <div id="page-wrapper">
   <div id="page">
-    <header id="header" class="header" role="banner" aria-label="{{ 'Site header'|t}}">
-      <div class="inner grid">
+    <header id="header" class="header sticky" role="banner" aria-label="{{ 'Site header'|t}}">
+      <div class="inner">
+        <div class="site-name">
+          <a href="/" title="Home" rel="home">Drupal Camp <span>Cape Town 2016</span></a>
+        </div>
         {{ page.header }}
+        <div class="menu-toggle">
+          <a href="#" id="menu-toggle">
+            <span class="toggle-icon"></span>
+          </a>
+        </div>
       </div>
     </header>
 
-    {{ page.messages }}
+    {% block fullpage %}
 
-    <main id="main" class="layout-main clearfix">
-      <div class="inner grid">
-        {% if is_front == false %}
-        {{ title }}
-        {% endif %}
-        {{ page.content }}
+      {{ page.messages }}
+
+      {% if page.banner %}
+      <div class="banner-wrapper clearfix">
+        <div class="inner">
+            <div class="layout-container clearfix">
+              {{ page.banner }}
+            </div>
+        </div>
       </div>
-    </main>
+      {% endif %}
+
+      <div class="content-wrapper clearfix">
+
+        <div class="content-top clearfix">
+          <div class="inner">
+            {% if page.content_top %}
+              <div class="layout-container clearfix">
+                {{ page.content_top }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <main id="main" class="layout-main clearfix">
+          <div class="inner">
+            {% if is_front == false %}
+              {{ title }}
+            {% endif %}
+
+            {{ page.content_main }}
+          </div>
+        </main>
+
+        <div class="content-bottom clearfix">
+          <div class="inner">
+            {% if page.content_bottom %}
+              <div class="layout-container clearfix">
+                {{ page.content_bottom }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+    {% endblock %}
 
     <footer class="site-footer">
-      <div class="inner grid">
+      <div class="inner">
         {% if page.footer %}
           <div class="site-footer__top layout-container clearfix">
             {{ page.footer }}

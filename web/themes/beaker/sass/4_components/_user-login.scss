@@ -1,0 +1,19 @@
+// USER LOGGED-IN
+// =============================================================================
+
+.user-logged-in, .path-user{
+  .content-wrapper {
+    margin-top: 150px;
+  }
+}
+
+.user-logged-in, .path-user{
+  .toolbar-bar{ position: fixed; }
+  header.header{
+    margin-top: 80px;
+    border-bottom: 2px solid $blue;
+    @include breakpoint($tablet) {
+      margin-top: 40px;
+    }
+  }
+}

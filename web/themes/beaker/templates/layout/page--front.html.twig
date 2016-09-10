@@ -72,19 +72,4 @@
  * @see html.html.twig
  */
 #}
-<div id="page-wrapper" class="styleguide-content">
-  <div id="page">
-
-    {{ page.messages }}
-
-    <main id="main" class="layout-main clearfix">
-      <div class="inner">
-        {% if is_front == false %}
-        {{ title }}
-        {% endif %}
-        {{ page.content }}
-      </div>
-    </main>
-
-  </div>
-</div>
+{% extends 'themes/beaker/templates/page.html.twig' %}

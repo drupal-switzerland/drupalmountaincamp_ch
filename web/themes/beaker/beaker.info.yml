@@ -9,5 +9,8 @@ libraries:
 stylesheets-remove:
 regions:
   header: Header
-  content: Content
+  banner: Banner
+  content_top: Content Top
+  content_main: Content Main
+  content_bottom: Content Bottom
   footer: Footer

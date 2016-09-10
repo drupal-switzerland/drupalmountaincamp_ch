@@ -1,3 +1,170 @@
 
 // NAVIGATION STYLES
 // =============================================================================
+$header: 80px;
+
+header.header{
+  background-color: $white;
+  height: 80px;
+  padding: 0 25px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  .inner{
+    max-width: 1920px;
+    .site-name a{
+      @include font-slab-bolder;
+      @include font-size(18px,false);
+      line-height: 80px;
+      text-transform: uppercase;
+      float: left;
+      color: $blue;
+      @include breakpoint($mobile){
+        font-size: 12px;
+      }
+      span{
+        color: $red;
+      }
+    }
+  }
+  .menu--main{
+    float: right;
+    height: $header;
+    ul.menu{
+      height: $header;
+      li{
+        margin: 0 15px;
+        padding: 0;
+        height: $header -2px;
+        float: left;
+        background-color: $white;
+        &:last-child{
+          margin-right: 0;
+          a{
+            @include button;
+            color: $blue;
+          }
+        }
+        a{
+          @include font-bold;
+          @include font-size(15px,false);
+          line-height: $header;
+          text-transform: uppercase;
+        }
+        &:hover, &.is-active, &.scrolled {
+          a { color: $red; }
+        }
+      }
+      //li:last-child{ display: none; }
+    }
+  }
+  .menu-toggle {
+    position: absolute;
+    right: 25px;
+    top: 22px;
+    display: none;
+    a{
+      cursor: pointer;
+      position: relative;
+      display: block;
+      float: right;
+      width: 24px;
+      height: 18px;
+      padding: 20px;
+      @include transition(all 0.25s ease);
+
+      span, span:before, span:after {
+        content: '';
+        position: absolute;
+        display: block;
+        cursor: pointer;
+        height: 3px;
+        width: 24px;
+        background: $blue;
+        @include transition(all 0.1s ease-in-out);
+      }
+
+      span {
+        text-indent: -9999px;
+        top: 17px;
+        right: 7.5px;
+        &:before { top: -7px; }
+        &:after { top: 7px; }
+      }
+
+      &:hover {
+        span {
+          &:before { top: -8px; }
+          &:after { top: 8px; }
+        }
+      }
+
+      &.expanded {
+        span {
+          background-color: transparent;
+          &:before, &:after {
+            top: 0px;
+            background: $blue;
+          }
+          &:before {
+            @include rotate(-45deg);
+          }
+          &:after {
+            @include rotate(45deg);
+          }
+        }
+      }
+    }
+  }
+  &.sticky{
+    position: fixed;
+    top: 0;
+    box-shadow: 0 0 2px 1px $black;
+    @include breakpoint($tablet-up) {
+      top: 0;
+    }
+  }
+}
+
+
+
+// RESPONSIVE DESIGN
+// =============================================================================
+@include breakpoint($tablet) {
+  header.header{
+    border-bottom: 2px solid $blue;
+    .menu--main{
+      display: none;
+      &.expanded{
+        display: block;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        height: 240px;
+        background-color: $white;
+        ul{
+          margin-left: 0;
+          li{
+            margin: 0;
+            padding: 0 0 0 22.5px;
+            width: 100%;
+            border-bottom: 1px solid $blue;
+            &:last-child{
+              width: 100%;
+              height: $header;
+              a{
+
+              }
+            }
+          }
+        }
+      }
+    }
+    .menu-toggle {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.date-banner{
+  background-color: $red;
+  padding: 35px 0;
+  text-align: center;
+  @include breakpoint($mobile){
+    padding: 35px 10px;
+  }
+  h1{
+    color: $white;
+    @include font-slab-thick;
+    @include breakpoint($tablet){
+      font-size: 28px;
+      line-height: 50px;
+    }
+  }
+  h2{
+    color: $blue;
+    @include font-thick;
+    @include breakpoint($mobile){
+      line-height: 32px;
+      margin-bottom: 20px;
+      font-size: 26px;
+    }
+  }
+  h3{
+    color: $white;
+    @include font-semibold;
+    @include breakpoint($mobile){
+      font-size: 19px;
+    }
+    a{
+      color: $grey;
+      &:hover{
+        color: $blue;
+      }
+    }
+  }
+}

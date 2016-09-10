@@ -1,0 +1,24 @@
+@mixin button {
+  padding: 12px 32px;
+  border-radius: 5px;
+  color: $white !important;
+  background-color: $red;
+  text-transform: uppercase;
+  transition: all 0.8s ease;
+  &:hover{
+    background-color: $red-shade;
+  }
+}
+
+.button{
+  font-size: 18px;
+  padding: 10px 32px;
+  border-radius: 5px;
+  color: $white !important;
+  background-color: $red;
+  text-transform: uppercase;
+  transition: all 0.8s ease;
+  &:hover{
+    background-color: $red-shade;
+  }
+}

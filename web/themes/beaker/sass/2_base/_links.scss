@@ -4,9 +4,13 @@ a:link,
 a:visited {
   @include font-semibold;
   text-decoration: none;
-  color: $black;
+  color: $blue;
 }
-
+a{
+  transition: 0.6s all ease;
+}
 a:hover {
   text-decoration: none;
+  cursor: pointer;
+  color: $blue;
 }

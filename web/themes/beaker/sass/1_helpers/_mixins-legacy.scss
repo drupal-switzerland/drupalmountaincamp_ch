@@ -18,12 +18,12 @@
   box-sizing: $val;
 }
 
-@mixin box-shadow($vals...) {
-  box-shadow: #{$vals};
+@mixin box-shadow($val) {
+  box-shadow: $val;
 }
 
-@mixin transition($vals...) {
-  transition: #{$vals};
+@mixin transition($val) {
+  transition: $val;
 }
 
 @mixin translate3d($val:0,$val2:0,$val3:0,$val4:0) {
@@ -34,12 +34,12 @@
   background-clip: $val;
 }
 
-@mixin text-shadow($vals...) {
-  text-shadow: #{$vals};
+@mixin text-shadow($val) {
+  text-shadow: $val;
 }
 
-@mixin background-image($vals...) {
-  background-image: #{$vals};
+@mixin background-image($val) {
+  background-image: $vals;
 }
 
 

@@ -9,14 +9,15 @@ $susy: (
   columns: 12,
   gutters: 20px/40px,
   column-width: 40px,
-  container: 1280px,
+  //container: 945px,
+  container: 1040px
   // gutter-position: inside-static,
-  debug: (
-    image: show-columns,
-    color: rgba($red,0.1),
+  //debug: (
+    //image: show-columns,
+    //color: rgba($red,0.1),
     // output: overlay,
     // toggle: bottom right,
-  ),
+  //),
 );
 
 
@@ -30,14 +31,14 @@ $susy: (
   }
 
   @include breakpoint($wide) {
-    @include container($wide);
+    @include container($susy);
   }
 
-  @include breakpoint($tablet) {
+  @include breakpoint($susy) {
     @include container(8);
   }
 
-  @include breakpoint($mobile) {
+  @include breakpoint($susy) {
     @include container(6);
   }
 

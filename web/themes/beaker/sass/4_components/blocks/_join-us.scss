@@ -1,0 +1,21 @@
+.join-us{
+  background-color: $white;
+  padding: 70px 0 30px;
+  text-align: center;
+  h1{
+    color: $red;
+    @include font-thick;
+    margin-bottom: 15px;
+    @include breakpoint($tablet){
+      font-size: 35px;
+      line-height: 40px;
+    }
+  }
+  p{
+    color: $body-text;
+    margin-bottom: 50px;
+  }
+  a.button{
+    @include font-semibold;
+  }
+}
