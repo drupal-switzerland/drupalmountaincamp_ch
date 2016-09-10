@@ -1,4 +1,4 @@
-sitegroup: d8-starter_io_composer
+sitegroup: drupalmountaincamp_ch
 deploy_tasks:
   development:
     before_deploy:

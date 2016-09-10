@@ -39,12 +39,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AmazeeLabs/d8-starter-composer.git"
+    "url": "https://github.com/AmazeeLabs/drupalmountaincamp_ch.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AmazeeLabs/d8-starter-composer/issues"
+    "url": "https://github.com/AmazeeLabs/drupalmountaincamp_ch/issues"
   },
-  "homepage": "https://github.com/AmazeeLabs/d8-starter-composer"
+  "homepage": "https://github.com/AmazeeLabs/drupalmountaincamp_ch"
 }
