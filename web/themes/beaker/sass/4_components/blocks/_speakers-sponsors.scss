@@ -66,7 +66,7 @@
       text-transform: uppercase;
       margin-bottom:1em;
     }
-    .gold,.silver,.individual {
+    .gold,.silver,.platinum {
       h4{
         font-weight: 600;
         margin-top: 60px;
@@ -123,6 +123,17 @@
       display: none;
       }
     }
+    .platinum {
+      h4 { color:$white !important;}
+      ul {
+        li {
+          color:$white;
+          &.prices {
+            color:$white
+          }
+        }
+      }
+    }
     .gold {
       h4 { color:$white !important;}
       ul {
@@ -135,17 +146,6 @@
       }
     }
     .silver {
-      h4 { color:$white !important;}
-      ul {
-        li {
-          color:$white;
-          &.prices {
-            color:$white
-          }
-        }
-      }
-    }
-    .individual {
       h4 { color:$white !important;}
       ul {
         li {
@@ -236,6 +236,7 @@
           text-align: left;
           margin: 0 0 26.5px;
           line-height: 20px;
+          height: 39px;
           color:$white;
           list-style-type: none;
           list-style: none;
@@ -270,9 +271,22 @@
     .col-2 {order:2;}
     .col-3 {order:3;}
     .col-4 {order:3;}
-    .gold,.silver,.individual {
+    .gold,.silver,.platinum {
       h4{
         font-weight: 600;
+      }
+    }
+    .platinum {
+      h4 {
+        color:$white !important;
+      }
+      ul {
+        li {
+          color:$white;
+          &.tick {
+            background-color:$red !important;
+          }
+        }
       }
     }
     .gold {
@@ -301,20 +315,12 @@
         }
       }
     }
-    .individual {
-      h4 {
-        color:$white !important;
-      }
-      ul {
-        li {
-          color:$white;
-          &.tick {
-            background-color:$red !important;
-          }
-        }
+    &.additional .col-2 {
+      width: 400px;
+      ul li {
+        width: auto;
       }
     }
-
   }
 }
 

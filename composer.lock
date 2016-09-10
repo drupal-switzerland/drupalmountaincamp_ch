@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "506be618dbe5dd1335eb0947ddc8dca7",
-    "content-hash": "4b7612b556b5c7a79e179907b03d5755",
+    "hash": "b8476b717bcdf8df27c0be4d17a11f5a",
+    "content-hash": "da5ed014e7f94093f1b796def94e2505",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1317,7 +1317,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/focal_point-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "5f122a98c854c6f70f2683a3f5583a769dcde85a",
                 "shasum": null
             },
             "require": {
@@ -1429,7 +1429,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/magnific_popup-8.x-1.2.zip",
-                "reference": null,
+                "reference": "ae15884f5477a309aed0c8a7ddd3aa9679d03708",
                 "shasum": null
             },
             "require": {
@@ -1460,7 +1460,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/media_entity-8.x-1.5.zip",
-                "reference": null,
+                "reference": "bc79ca090ad30a008960fdf5bcaa699494292230",
                 "shasum": null
             },
             "require": {
@@ -1495,7 +1495,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/media_entity_instagram-8.x-1.2.zip",
-                "reference": null,
+                "reference": "0ff8e721c8775c27031d85d45fa315fcc16beece",
                 "shasum": null
             },
             "require": {
@@ -1528,7 +1528,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/media_entity_twitter-8.x-1.2.zip",
-                "reference": null,
+                "reference": "f9b1e866b58bffa22b880967e28455ce3409856c",
                 "shasum": null
             },
             "require": {
@@ -1776,7 +1776,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/superfish-8.x-1.0-rc2.zip",
-                "reference": null,
+                "reference": "9b97cc5bf22531f3939ca016c6a306f35b2f56fb",
                 "shasum": null
             },
             "require": {

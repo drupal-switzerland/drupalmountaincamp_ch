@@ -1,9 +1,9 @@
 .party-with{
-  background-image: url(../images/party-banner.png);
+  background-image: url(../images/more-than-a-camp.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  padding: 100px 0;
+  padding: 170px 0;
   @include breakpoint($mobile){
     padding: 50px 0;
   }

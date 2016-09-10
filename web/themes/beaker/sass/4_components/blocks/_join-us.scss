@@ -5,7 +5,7 @@
   h1{
     color: $red;
     @include font-thick;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     @include breakpoint($tablet){
       font-size: 35px;
       line-height: 40px;
