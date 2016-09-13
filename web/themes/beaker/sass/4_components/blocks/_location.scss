@@ -1,8 +1,24 @@
-.cpt-video{
+.location{
   background: $blue;
   padding: 100px 0;
   @include breakpoint($mobile){
     padding: 60px 0;
+  }
+  p, a, a:link{
+    text-align: center;
+    color: $white;
+  }
+  p {
+    margin-bottom: 30px;
+  }
+  iframe {
+    @include breakpoint($tablet-up){
+      width: 50%;
+    }
+    height: 450px;
+  }
+  a:link {
+    text-decoration: underline;
   }
   h1{
     color: $red;
