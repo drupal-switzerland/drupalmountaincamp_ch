@@ -1,0 +1,25 @@
+uuid: cb90de11-8a84-45b5-8c38-6e0099f58255
+langcode: en
+status: false
+dependencies:
+  content:
+    - 'block_content:basic:eaf18576-8f5b-4ff5-9b37-96275fc99b2a'
+  module:
+    - block_content
+  theme:
+    - beaker
+id: topbannerimage
+theme: beaker
+region: '-1'
+weight: -4
+provider: null
+plugin: 'block_content:eaf18576-8f5b-4ff5-9b37-96275fc99b2a'
+settings:
+  id: 'block_content:eaf18576-8f5b-4ff5-9b37-96275fc99b2a'
+  label: 'Top Banner Image'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

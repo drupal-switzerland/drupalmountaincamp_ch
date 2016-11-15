@@ -6,8 +6,8 @@ dependencies:
     - beaker
 id: beaker_local_tasks
 theme: beaker
-region: content
-weight: -40
+region: content_top
+weight: -10
 provider: null
 plugin: local_tasks_block
 settings:

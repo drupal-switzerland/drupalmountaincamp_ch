@@ -1,0 +1,20 @@
+uuid: c55f2dc5-5e6d-4bb0-98fe-73d04388964e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_sponsorship_type_
+field_name: field_sponsorship_type_
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

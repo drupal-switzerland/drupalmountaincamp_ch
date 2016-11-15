@@ -1,0 +1,25 @@
+uuid: 8bf12358-cc9f-4ac5-b150-2162949a8264
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:649d68d1-8f13-45d1-87d4-6ec7ce1d8a4b'
+  module:
+    - block_content
+  theme:
+    - beaker
+id: footercontact
+theme: beaker
+region: footer
+weight: -12
+provider: null
+plugin: 'block_content:649d68d1-8f13-45d1-87d4-6ec7ce1d8a4b'
+settings:
+  id: 'block_content:649d68d1-8f13-45d1-87d4-6ec7ce1d8a4b'
+  label: 'Footer Contact'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

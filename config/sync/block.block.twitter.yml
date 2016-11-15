@@ -1,0 +1,25 @@
+uuid: 5208bdfe-c916-42d1-a24d-2c83055a20b2
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:068f5eee-b7f8-432f-abfe-cea5695825e3'
+  module:
+    - block_content
+  theme:
+    - beaker
+id: twitter
+theme: beaker
+region: footer
+weight: -11
+provider: null
+plugin: 'block_content:068f5eee-b7f8-432f-abfe-cea5695825e3'
+settings:
+  id: 'block_content:068f5eee-b7f8-432f-abfe-cea5695825e3'
+  label: Twitter
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

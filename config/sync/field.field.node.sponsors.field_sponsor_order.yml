@@ -1,0 +1,25 @@
+uuid: befb2498-99a2-4ecc-8977-014fe2d18c64
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sponsor_order
+    - node.type.sponsors
+id: node.sponsors.field_sponsor_order
+field_name: field_sponsor_order
+entity_type: node
+bundle: sponsors
+label: 'Sponsor Order'
+description: 'This is to order the sponsors on the front page. The lower the index the higher up the sponsor will be displayed.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  min: 1
+  max: 100
+  prefix: ''
+  suffix: ''
+field_type: integer

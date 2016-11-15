@@ -183,7 +183,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: true
+          value: '1'
           group: 1
           exposed: false
           expose:
@@ -301,6 +301,9 @@ display:
         options: {  }
       path: taxonomy/term/%
       display_extenders: {  }
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:

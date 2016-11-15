@@ -1,4 +1,4 @@
-uuid: 36140672-58c4-47bc-8f00-b38301a83c67
+uuid: 33b47ef4-e7d0-462a-bf79-156c12ce1524
 langcode: en
 status: true
 dependencies: {  }
@@ -7,5 +7,13 @@ _core:
 id: front
 label: 'Front page'
 tags:
+  referrer: no-referrer
   canonical_url: '[site:url]'
+  description: 'In February 2017 the Drupal community from Switzerland and the world will gather in beautiful Davos for the first Drupal Mountain Camp!'
+  image_src: '[site:url]/themes/beaker/images/logo_infos.jpg'
   shortlink: '[site:url]'
+  title: 'Drupal Mountain Camp Switzerland, 16 - 19 February 2017, Davos Switzerland'
+  og_site_name: 'Drupal Mountain Camp Switzerland 2017'
+  og_title: 'Drupal Mountain Camp Switzerland, 16 - 19 February 2017, Davos Switzerland'
+  og_description: 'In February 2017 the Drupal community from Switzerland and the world will gather in beautiful Davos for the first Drupal Mountain Camp!'
+  og_url: '[site:url]'

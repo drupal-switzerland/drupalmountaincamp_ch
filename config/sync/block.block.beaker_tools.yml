@@ -1,6 +1,6 @@
 uuid: 6807d58b-e5f7-4e7a-8c11-173c85e08e4f
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.tools
@@ -10,8 +10,8 @@ dependencies:
     - beaker
 id: beaker_tools
 theme: beaker
-region: header
-weight: 0
+region: '-1'
+weight: -5
 provider: null
 plugin: 'system_menu_block:tools'
 settings:

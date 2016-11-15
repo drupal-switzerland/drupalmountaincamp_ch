@@ -1,0 +1,31 @@
+uuid: 2ab9285b-7b4e-4bdd-ac87-72823ad26bff
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+  module:
+    - block_content
+    - system
+  theme:
+    - beaker
+id: calltospeakersandsponsors
+theme: beaker
+region: content_main
+weight: -9
+provider: null
+plugin: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+settings:
+  id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+  label: 'Call to Speakers and Sponsors'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

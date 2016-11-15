@@ -1,0 +1,25 @@
+uuid: b22a75ea-a508-4e8b-8edc-8e363fb0edeb
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:36dff034-b1ac-488d-b3de-44356051d869'
+  module:
+    - block_content
+  theme:
+    - beaker
+id: footerbottom
+theme: beaker
+region: footer
+weight: -10
+provider: null
+plugin: 'block_content:36dff034-b1ac-488d-b3de-44356051d869'
+settings:
+  id: 'block_content:36dff034-b1ac-488d-b3de-44356051d869'
+  label: 'Footer Bottom'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
