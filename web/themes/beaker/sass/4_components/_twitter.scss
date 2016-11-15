@@ -1,0 +1,28 @@
+footer{
+  .twitter{
+    background-color: $white;
+    text-align: center;
+    padding: 90px;
+    @include breakpoint($mobile){
+      padding: 50px;
+    }
+    a,h1{
+      color: $red;
+    }
+    iframe.twitter-timeline {
+      @include breakpoint($tablet-up){
+        width: 50% !important;
+      }
+      width: 250px!important;
+    }
+    h1{
+      margin-bottom: 30px;
+      @include font-thick;
+      @include breakpoint($tablet){
+        font-size: 30px;
+        margin-bottom: 20px;
+        line-height: 40px;
+      }
+    }
+  }
+}

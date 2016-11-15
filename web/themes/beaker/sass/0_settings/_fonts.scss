@@ -10,7 +10,6 @@ $base-line-height:  50px;
 
 $museo-sans: "museo-sans","Times New Roman", sans-serif;
 $museo-slab: "museo-slab","Times New Roman", sans-serif;
-$myriad-pro: "myriad-pro", Arial, 'Helvetica Neue', Helvetica, sans-serif;
 
 // museo san
 @mixin font-light {
@@ -60,25 +59,6 @@ $myriad-pro: "myriad-pro", Arial, 'Helvetica Neue', Helvetica, sans-serif;
   font-family: $museo-slab;
   font-style: normal;
   font-weight: 900;
-}
-
-// myriad-pro
-@mixin font-myriad-regular {
-  font-family: $myriad-pro;
-  font-style: normal;
-  font-weight: 400;
-}
-
-@mixin font-myriad-semibold {
-  font-family: $myriad-pro;
-  font-style: normal;
-  font-weight: 400;
-}
-
-@mixin font-myriad-bold {
-  font-family: $myriad-pro;
-  font-style: normal;
-  font-weight: 600;
 }
 
 @mixin h1 {
