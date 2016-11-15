@@ -21,5 +21,3 @@ shared:
   production:
     - src: files
       dst: web/sites/default/files
-versions:
-  node: 0.12
