@@ -1,0 +1,19 @@
+uuid: bee1b8f9-2ecd-4286-a811-ad3b61f8c0ad
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_sponsor_link
+field_name: field_sponsor_link
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

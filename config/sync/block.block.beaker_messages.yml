@@ -8,8 +8,8 @@ dependencies:
     - beaker
 id: beaker_messages
 theme: beaker
-region: header
-weight: 0
+region: content_top
+weight: -11
 provider: null
 plugin: system_messages_block
 settings:

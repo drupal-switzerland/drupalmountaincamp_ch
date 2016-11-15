@@ -1,6 +1,6 @@
 uuid: d3bf40c4-2518-4c30-ae5f-95e4454b6aeb
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.footer
@@ -10,8 +10,8 @@ dependencies:
     - beaker
 id: beaker_footer
 theme: beaker
-region: header
-weight: 0
+region: '-1'
+weight: -10
 provider: null
 plugin: 'system_menu_block:footer'
 settings:

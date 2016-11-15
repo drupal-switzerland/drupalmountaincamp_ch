@@ -1,0 +1,18 @@
+uuid: 877b69f4-bdb3-4727-8b36-5b148155f709
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Sponsors
+type: sponsors
+description: 'This content type is used to display sponsors on the front page.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

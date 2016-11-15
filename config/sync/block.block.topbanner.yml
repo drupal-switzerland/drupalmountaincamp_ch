@@ -1,0 +1,31 @@
+uuid: 01625825-5d73-4a0b-ac20-4167d9c1cfb1
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
+  module:
+    - block_content
+    - system
+  theme:
+    - beaker
+id: topbanner
+theme: beaker
+region: banner
+weight: -8
+provider: null
+plugin: 'block_content:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
+settings:
+  id: 'block_content:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
+  label: 'Top Banner'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

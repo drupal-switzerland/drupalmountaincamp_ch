@@ -107,7 +107,7 @@ display:
           id: status
           table: node_field_data
           field: status
-          value: true
+          value: '1'
           group: 0
           expose:
             operator: '0'
@@ -230,6 +230,9 @@ display:
         options: {  }
       path: archive
       display_extenders: {  }
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:

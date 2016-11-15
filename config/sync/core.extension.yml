@@ -7,6 +7,7 @@ module:
   ckeditor: 0
   config: 0
   contextual: 0
+  crop: 0
   ctools: 0
   datetime: 0
   dblog: 0
@@ -16,21 +17,27 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  focal_point: 0
   help: 0
   image: 0
+  layout_plugin: 0
   link: 0
   link_css: 0
   menu_ui: 0
   metatag: 0
   metatag_open_graph: 0
+  metatag_twitter_cards: 0
   node: 0
   options: 0
   page_cache: 0
+  page_layouts: 0
+  page_manager: 0
+  page_manager_ui: 0
   path: 0
   quickedit: 0
   rdf: 0
-  redirect: 0
   shortcut: 0
+  superfish: 0
   system: 0
   taxonomy: 0
   text: 0
@@ -38,10 +45,8 @@ module:
   toolbar: 0
   tour: 0
   user: 0
-  varnish: 0
   views_ui: 0
   menu_link_content: 1
-  pathauto: 1
   views: 10
   config_installer: 1000
 theme:

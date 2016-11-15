@@ -1,6 +1,6 @@
 uuid: ff1ffd69-85bc-4cae-bf00-dd0f414615f0
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.account
@@ -10,8 +10,8 @@ dependencies:
     - beaker
 id: beaker_account_menu
 theme: beaker
-region: header
-weight: 0
+region: '-1'
+weight: -3
 provider: null
 plugin: 'system_menu_block:account'
 settings:

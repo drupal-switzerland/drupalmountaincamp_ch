@@ -1,0 +1,21 @@
+uuid: 00a7171b-9a5b-4540-9dd6-9c868bd8bfb3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_summary
+    - node.type.speakers
+  module:
+    - text
+id: node.speakers.field_summary
+field_name: field_summary
+entity_type: node
+bundle: speakers
+label: Summary
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

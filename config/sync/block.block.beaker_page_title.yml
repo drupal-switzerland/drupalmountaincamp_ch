@@ -1,13 +1,15 @@
 uuid: 954986ce-1100-4cb8-b529-41472f50a2ef
 langcode: en
-status: true
+status: false
 dependencies:
+  module:
+    - system
   theme:
     - beaker
 id: beaker_page_title
 theme: beaker
-region: content
-weight: -50
+region: '-1'
+weight: -7
 provider: null
 plugin: page_title_block
 settings:
@@ -15,4 +17,9 @@ settings:
   label: 'Page title'
   provider: core
   label_display: '0'
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: true
+    context_mapping: {  }

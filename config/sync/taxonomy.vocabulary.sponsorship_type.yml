@@ -1,0 +1,9 @@
+uuid: 3ec444e8-c712-4c44-b41c-7a1f6caf24f6
+langcode: en
+status: true
+dependencies: {  }
+name: 'Sponsorship Type'
+vid: sponsorship_type
+description: 'Different levels of sponsorship depending on how much they contribute.'
+hierarchy: 0
+weight: 0

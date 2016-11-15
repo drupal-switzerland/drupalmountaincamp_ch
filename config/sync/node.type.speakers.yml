@@ -1,0 +1,18 @@
+uuid: 46d789e5-7708-4d17-ac6b-88cad0ddb4db
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Speakers
+type: speakers
+description: 'Speakers are people who present at DrupalCamp Cape Town'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

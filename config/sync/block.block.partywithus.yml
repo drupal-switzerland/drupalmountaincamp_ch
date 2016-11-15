@@ -1,0 +1,31 @@
+uuid: e0e54a74-4c3c-40f2-8939-946a61cc9430
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
+  module:
+    - block_content
+    - system
+  theme:
+    - beaker
+id: partywithus
+theme: beaker
+region: content_main
+weight: -8
+provider: null
+plugin: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
+settings:
+  id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
+  label: 'Party with us'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

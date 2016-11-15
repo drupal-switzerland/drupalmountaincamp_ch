@@ -1,6 +1,6 @@
 uuid: db130117-a5d1-45a1-8c1f-31cbe0a977b4
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - system
@@ -8,8 +8,8 @@ dependencies:
     - beaker
 id: beaker_breadcrumbs
 theme: beaker
-region: header
-weight: 0
+region: '-1'
+weight: -11
 provider: null
 plugin: system_breadcrumb_block
 settings:

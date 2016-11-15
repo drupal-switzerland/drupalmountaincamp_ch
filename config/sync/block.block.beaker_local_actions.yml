@@ -6,8 +6,8 @@ dependencies:
     - beaker
 id: beaker_local_actions
 theme: beaker
-region: content
-weight: -20
+region: content_top
+weight: -9
 provider: null
 plugin: local_actions_block
 settings:
