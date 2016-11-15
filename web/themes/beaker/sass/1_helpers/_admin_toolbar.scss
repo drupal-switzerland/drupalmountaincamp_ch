@@ -1,0 +1,32 @@
+
+@if ($enable-admintoolbar-fix == true) {
+
+  // ADMIN TOOLBAR
+  // The styling for the Beaker theme conflicts with styles from the Admin Toolbar
+  // module. The following styles override Beaker and make the toolbar appear
+  // consistently between theme and admin pages.
+  // =============================================================================
+  .toolbar {
+    font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
+    a {
+      font-weight: normal;
+    }
+    button, input[type="button"], input[type="submit"] {
+      letter-spacing: 0;
+    }
+  }
+  .toolbar-tray {
+    a:link,
+    a:visited {
+      color: #565656;
+      font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
+    }
+  }
+  .toolbar .toolbar-icon:before {
+    box-sizing: content-box; // Display the Druplicon at the correct size.
+  }
+  .menu-item:hover {
+    background-color: inherit;
+  }
+
+}

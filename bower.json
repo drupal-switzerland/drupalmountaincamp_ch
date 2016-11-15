@@ -1,9 +1,0 @@
-{
-  "name": "beaker-theme",
-  "version": "1.0.0",
-  "devDependencies": {
-    "susy": ">=2.2.5",
-    "breakpoint-sass": ">=2.6.1",
-    "animate-scss": ">=1.2.0"
-  }
-}
