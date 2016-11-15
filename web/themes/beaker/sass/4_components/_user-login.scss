@@ -5,8 +5,8 @@
 .user-logged-in, .path-user{
   .toolbar-bar{ position: fixed; }
   header.header{
-    margin-top: 80px;
-    border-bottom: 2px solid $blue;
+    position: relative;
+    height: auto;
     @include breakpoint($tablet) {
       margin-top: 40px;
     }
