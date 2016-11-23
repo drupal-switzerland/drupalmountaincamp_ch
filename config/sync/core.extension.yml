@@ -13,6 +13,7 @@ module:
   dblog: 0
   editor: 0
   entity_reference: 0
+  entity_reference_revisions: 0
   field: 0
   field_ui: 0
   file: 0
@@ -33,6 +34,7 @@ module:
   page_layouts: 0
   page_manager: 0
   page_manager_ui: 0
+  paragraphs: 0
   path: 0
   quickedit: 0
   rdf: 0
