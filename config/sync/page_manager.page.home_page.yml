@@ -13,7 +13,6 @@ dependencies:
     - 'block_content:basic:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
   module:
     - block_content
-    - block_page_layout
     - views
 id: home_page
 label: 'Home Page'
