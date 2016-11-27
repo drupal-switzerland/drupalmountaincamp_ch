@@ -1,17 +1,17 @@
-uuid: ffe2fc3d-aab8-43d8-91dc-bc51eff480b0
+uuid: 595b68f4-93dc-4959-81fe-43b06f840c40
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_session_downloads
+    - field.storage.node.field_session_slides_file
     - node.type.session
   module:
     - file
-id: node.session.field_session_downloads
-field_name: field_session_downloads
+id: node.session.field_session_slides_file
+field_name: field_session_slides_file
 entity_type: node
 bundle: session
-label: Downloads
+label: 'Slides Upload'
 description: ''
 required: false
 translatable: false

@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.session.body
-    - field.field.node.session.field_session_downloads
     - field.field.node.session.field_session_expertise_level
+    - field.field.node.session.field_session_slides_file
     - field.field.node.session.field_session_slides_link
     - field.field.node.session.field_session_speakers
     - field.field.node.session.field_session_track
@@ -30,19 +30,19 @@ content:
       placeholder: ''
       summary_rows: 5
     third_party_settings: {  }
-  field_session_downloads:
-    weight: 7
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
   field_session_expertise_level:
     weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
-  field_session_slides_link:
+  field_session_slides_file:
     weight: 8
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+  field_session_slides_link:
+    weight: 7
     settings:
       placeholder_url: ''
       placeholder_title: ''

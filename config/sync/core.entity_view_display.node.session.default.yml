@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.session.body
-    - field.field.node.session.field_session_downloads
     - field.field.node.session.field_session_expertise_level
+    - field.field.node.session.field_session_slides_file
     - field.field.node.session.field_session_slides_link
     - field.field.node.session.field_session_speakers
     - field.field.node.session.field_session_track
@@ -28,12 +28,6 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
-  field_session_downloads:
-    weight: 107
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
   field_session_expertise_level:
     weight: 106
     label: above
@@ -41,6 +35,12 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_session_slides_file:
+    weight: 109
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
   field_session_slides_link:
     weight: 108
     label: above
@@ -54,7 +54,7 @@ content:
     type: link
   field_session_speakers:
     weight: 102
-    label: above
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
@@ -68,9 +68,9 @@ content:
     type: entity_reference_label
   field_session_type:
     weight: 103
-    label: above
+    label: inline
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_tags:
@@ -82,4 +82,6 @@ content:
     type: entity_reference_label
   links:
     weight: 100
+    settings: {  }
+    third_party_settings: {  }
 hidden: {  }
