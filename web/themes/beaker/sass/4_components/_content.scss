@@ -1,0 +1,8 @@
+.content-wrapper {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  .path-frontpage & {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

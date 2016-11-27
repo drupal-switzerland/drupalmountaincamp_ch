@@ -2,13 +2,3 @@
 // =============================================================================
 
 
-.user-logged-in, .path-user{
-  .toolbar-bar{ position: fixed; }
-  header.header{
-    position: relative;
-    height: auto;
-    @include breakpoint($tablet) {
-      margin-top: 40px;
-    }
-  }
-}

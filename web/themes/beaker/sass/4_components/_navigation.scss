@@ -7,9 +7,6 @@ header.header{
   background-color: $white;
   height: 80px;
   padding: 0 25px;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   z-index: 100;
   .inner{
@@ -116,14 +113,6 @@ header.header{
           }
         }
       }
-    }
-  }
-  &.sticky{
-    position: fixed;
-    top: 0;
-    box-shadow: 0 0 2px 1px $black;
-    @include breakpoint($tablet-up) {
-      top: 0;
     }
   }
 }
