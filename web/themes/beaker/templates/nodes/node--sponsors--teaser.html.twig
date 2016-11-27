@@ -95,7 +95,6 @@
   <div class="sponsors" {{ content_attributes }}>
     <a href="{{ content.field_sponsor_link[0]['#url'] }}" target="_blank">
       <div class="field-image">{{ content.field_sponsor_image }}</div>
-
     </a>
     <div class="hover-fields">
       <a href="{{ content.field_sponsor_link[0]['#url'] }}" target="_blank">
@@ -103,7 +102,7 @@
       {% if content.field_sponsor_link|render is not empty %}
       <div class="field-link"><div>{{ content.field_sponsor_link[0]['#title'] }}</div></div>
       {% endif %}
-      <div class="field-body">{{ content.body }}</div>
+      <div class="field-body">{{ content.sponsor_description }}</div>
       </a>
     </div>
   </div>
