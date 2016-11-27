@@ -101,8 +101,14 @@
         </div>
       </div>
       {% endif %}
-
-      <div class="content-wrapper clearfix">
+      {% if is_front == false %}
+        {%
+          set content_wrapper_classes = [
+            'grid',
+          ]
+        %}
+      {% endif %}
+      <div class="content-wrapper clearfix {{ content_wrapper_classes | join(' ') }}">
 
         <div class="content-top clearfix">
           <div class="inner">
