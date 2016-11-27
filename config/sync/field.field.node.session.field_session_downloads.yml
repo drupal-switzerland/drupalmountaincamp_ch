@@ -1,0 +1,27 @@
+uuid: ffe2fc3d-aab8-43d8-91dc-bc51eff480b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_session_downloads
+    - node.type.session
+  module:
+    - file
+id: node.session.field_session_downloads
+field_name: field_session_downloads
+entity_type: node
+bundle: session
+label: Downloads
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt pdf'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

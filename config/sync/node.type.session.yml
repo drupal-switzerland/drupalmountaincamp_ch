@@ -1,0 +1,17 @@
+uuid: 61353c3c-f210-424e-8730-2d92005a7a19
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Session
+type: session
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

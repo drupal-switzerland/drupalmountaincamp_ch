@@ -1,0 +1,9 @@
+uuid: 97333e34-2b55-4a54-86e3-a1a21eb62fcb
+langcode: en
+status: true
+dependencies: {  }
+name: 'Session type'
+vid: session_type
+description: ''
+hierarchy: 0
+weight: 0
