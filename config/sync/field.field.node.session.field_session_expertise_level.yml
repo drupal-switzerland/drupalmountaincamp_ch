@@ -1,0 +1,28 @@
+uuid: c81a506d-f905-4fc6-b761-ba4200e6411a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_session_expertise_level
+    - node.type.session
+    - taxonomy.vocabulary.expertise_level
+id: node.session.field_session_expertise_level
+field_name: field_session_expertise_level
+entity_type: node
+bundle: session
+label: 'Level of expertise'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      expertise_level: expertise_level
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
