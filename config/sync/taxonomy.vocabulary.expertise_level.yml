@@ -1,0 +1,9 @@
+uuid: f7617cf8-9946-41c3-aefc-68a501c40311
+langcode: en
+status: true
+dependencies: {  }
+name: 'Expertise level'
+vid: expertise_level
+description: ''
+hierarchy: 0
+weight: 0

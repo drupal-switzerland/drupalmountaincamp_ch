@@ -1,0 +1,83 @@
+uuid: 0e996df3-b4b4-4c15-a882-f95da3a5dab3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.session.body
+    - field.field.node.session.field_session_contact_mail
+    - field.field.node.session.field_session_expertise_level
+    - field.field.node.session.field_session_remarks
+    - field.field.node.session.field_session_slides_file
+    - field.field.node.session.field_session_slides_link
+    - field.field.node.session.field_session_speaker
+    - field.field.node.session.field_session_track
+    - field.field.node.session.field_session_type
+    - field.field.node.session.field_tags
+    - node.type.session
+  module:
+    - text
+id: node.session.default
+targetEntityType: node
+bundle: session
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 1
+    settings:
+      rows: 9
+      placeholder: ''
+      summary_rows: 5
+    third_party_settings: {  }
+  field_session_contact_mail:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: example@domain.com
+    third_party_settings: {  }
+    type: email_default
+  field_session_expertise_level:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+  field_session_remarks:
+    weight: 26
+    settings:
+      rows: 2
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_session_speaker:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: 'Your Name'
+    third_party_settings: {  }
+    type: string_textfield
+  field_session_track:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+  field_session_type:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_session_slides_file: true
+  field_session_slides_link: true
+  field_tags: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true
