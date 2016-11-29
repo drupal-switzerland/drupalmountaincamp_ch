@@ -1,0 +1,21 @@
+uuid: 7e1e6d11-a350-4144-a159-7c0345af52f4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_session_speaker
+field_name: field_session_speaker
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

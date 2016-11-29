@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.session.body
+    - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
+    - field.field.node.session.field_session_remarks
     - field.field.node.session.field_session_slides_file
     - field.field.node.session.field_session_slides_link
-    - field.field.node.session.field_session_speakers
+    - field.field.node.session.field_session_speaker
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
     - field.field.node.session.field_tags
@@ -28,13 +30,25 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+  field_session_contact_mail:
+    weight: 111
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
   field_session_expertise_level:
     weight: 106
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
+  field_session_remarks:
+    weight: 112
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
   field_session_slides_file:
     weight: 109
     label: above
@@ -52,18 +66,18 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_session_speakers:
-    weight: 102
-    label: inline
+  field_session_speaker:
+    weight: 110
+    label: above
     settings:
-      link: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: string
   field_session_track:
     weight: 104
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_session_type:
@@ -77,7 +91,7 @@ content:
     weight: 105
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
   links:

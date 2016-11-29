@@ -10,8 +10,8 @@ id: node.session.field_session_track
 field_name: field_session_track
 entity_type: node
 bundle: session
-label: Track
-description: 'Let us know to which tracks your session is relevant to '
+label: Track(s)
+description: ''
 required: false
 translatable: false
 default_value: {  }
