@@ -1,0 +1,28 @@
+uuid: dd788781-d29d-4a99-b2bc-34779767f634
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tags
+    - node.type.session
+    - taxonomy.vocabulary.tags
+id: node.session.field_tags
+field_name: field_tags
+entity_type: node
+bundle: session
+label: Tags
+description: 'Use the free tagging field to specify additional characteristics of the session, such as Drupal version (Drupal 8, Drupal 7), technologies (e.g. Symfony, Sass) or topic areas (Industries for show cases, ...). '
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

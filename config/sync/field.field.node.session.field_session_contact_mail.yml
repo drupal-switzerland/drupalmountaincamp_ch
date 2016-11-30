@@ -1,0 +1,19 @@
+uuid: 6e8ad839-0fd0-4261-8c2b-8a7193436b09
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_session_contact_mail
+    - node.type.session
+id: node.session.field_session_contact_mail
+field_name: field_session_contact_mail
+entity_type: node
+bundle: session
+label: 'Contact mail'
+description: 'Thanks for providing us with an email address, so we can get in touch during the session selection process'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

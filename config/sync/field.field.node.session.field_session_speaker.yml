@@ -1,0 +1,19 @@
+uuid: b281660a-a94e-4ae1-a33b-17e0d5b2c9b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_session_speaker
+    - node.type.session
+id: node.session.field_session_speaker
+field_name: field_session_speaker
+entity_type: node
+bundle: session
+label: 'Speaker name(s)'
+description: 'Please tell us your name - if multiple speakers are planned you can comma separate them, e.g: My Name (nick name), Co-speaker Name (nick name).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
