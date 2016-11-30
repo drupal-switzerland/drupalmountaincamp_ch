@@ -1,0 +1,63 @@
+uuid: 4d844f5a-5f60-4f84-93c7-c382ce143efc
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.home_page
+  content:
+    - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+    - 'block_content:basic:7f667a90-50f9-42dd-8b9a-f69958c873bc'
+    - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
+  module:
+    - block_content
+id: home_page-block_display-0
+label: 'Block page'
+variant: block_display
+variant_settings:
+  blocks:
+    0a8ea117-96e8-4897-b3d6-2294b9e2e900:
+      id: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
+      label: 'See you all in Davos'
+      provider: block_content
+      label_display: visible
+      status: true
+      info: ''
+      view_mode: full
+      region: bottom
+      weight: -8
+      uuid: 0a8ea117-96e8-4897-b3d6-2294b9e2e900
+      context_mapping: {  }
+    6fd8c8f1-3bbb-4fad-9044-d53a12eff3dd:
+      id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
+      label: 'More than just a camp'
+      provider: block_content
+      label_display: visible
+      status: true
+      info: ''
+      view_mode: full
+      region: top
+      weight: -9
+      uuid: 6fd8c8f1-3bbb-4fad-9044-d53a12eff3dd
+      context_mapping: {  }
+    652eceab-a032-4fb0-8571-21903f38cba8:
+      id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+      label: 'Call to Speakers and Sponsors'
+      provider: block_content
+      label_display: visible
+      status: true
+      info: ''
+      view_mode: full
+      region: top
+      weight: -10
+      uuid: 652eceab-a032-4fb0-8571-21903f38cba8
+      context_mapping: {  }
+  id: block_display
+  uuid: af51f016-4fdd-434c-aeaa-16cd2d4e543e
+  label: null
+  weight: 0
+  page_title: ''
+page: home_page
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

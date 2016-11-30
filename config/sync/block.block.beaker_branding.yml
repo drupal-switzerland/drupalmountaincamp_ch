@@ -9,7 +9,7 @@ dependencies:
 id: beaker_branding
 theme: beaker
 region: '-1'
-weight: -6
+weight: -3
 provider: null
 plugin: system_branding_block
 settings:

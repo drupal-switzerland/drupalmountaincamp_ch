@@ -16,3 +16,5 @@ permissions:
   - 'access site-wide contact form'
   - 'access shortcuts'
   - 'access contextual links'
+  - 'create session content'
+  - 'edit own session content'

@@ -13,6 +13,7 @@ module:
   dblog: 0
   editor: 0
   entity_reference: 0
+  entity_reference_revisions: 0
   field: 0
   field_ui: 0
   file: 0
@@ -30,12 +31,15 @@ module:
   node: 0
   options: 0
   page_cache: 0
-  page_layouts: 0
   page_manager: 0
   page_manager_ui: 0
+  panels: 0
+  panels_ipe: 0
+  paragraphs: 0
   path: 0
   quickedit: 0
   rdf: 0
+  responsive_image: 0
   shortcut: 0
   superfish: 0
   system: 0
@@ -47,6 +51,7 @@ module:
   user: 0
   views_ui: 0
   menu_link_content: 1
+  pathauto: 1
   views: 10
   config_installer: 1000
 theme:

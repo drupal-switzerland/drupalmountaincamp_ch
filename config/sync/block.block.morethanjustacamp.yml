@@ -1,31 +1,25 @@
-uuid: e0e54a74-4c3c-40f2-8939-946a61cc9430
+uuid: db5f26f5-32b7-475f-9506-5f407ab25b34
 langcode: en
-status: true
+status: false
 dependencies:
   content:
     - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
   module:
     - block_content
-    - system
   theme:
     - beaker
-id: partywithus
+id: morethanjustacamp
 theme: beaker
-region: content_main
-weight: -8
+region: '-1'
+weight: -6
 provider: null
 plugin: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
 settings:
   id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
-  label: 'Party with us'
+  label: 'More than just a camp'
   provider: block_content
-  label_display: '0'
+  label_display: visible
   status: true
   info: ''
   view_mode: full
-visibility:
-  request_path:
-    id: request_path
-    pages: '<front>'
-    negate: false
-    context_mapping: {  }
+visibility: {  }
