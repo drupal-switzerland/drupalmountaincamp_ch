@@ -23,4 +23,13 @@ content:
     third_party_settings: {  }
   links:
     weight: 100
-hidden: {  }
+hidden:
+  field_session_contact_mail: true
+  field_session_expertise_level: true
+  field_session_remarks: true
+  field_session_slides_file: true
+  field_session_slides_link: true
+  field_session_speaker: true
+  field_session_track: true
+  field_session_type: true
+  field_tags: true

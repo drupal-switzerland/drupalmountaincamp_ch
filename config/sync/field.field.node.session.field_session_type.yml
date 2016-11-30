@@ -7,7 +7,7 @@ dependencies:
     - node.type.session
     - taxonomy.vocabulary.session_type
   content:
-    - 'taxonomy_term:session_type:24129814-bbee-4609-b561-d14369648d75'
+    - 'taxonomy_term:session_type:6431d511-2e8b-4b48-ae85-81805c58123b'
 id: node.session.field_session_type
 field_name: field_session_type
 entity_type: node
@@ -18,7 +18,7 @@ required: true
 translatable: false
 default_value:
   -
-    target_uuid: 24129814-bbee-4609-b561-d14369648d75
+    target_uuid: 6431d511-2e8b-4b48-ae85-81805c58123b
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
