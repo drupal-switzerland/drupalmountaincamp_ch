@@ -1,7 +1,0 @@
-name: Layouts Drupal Camp 2016
-description: 'layout plugin for pages.'
-package: Layout
-type: module
-core: 8.x
-dependencies:
-  - layout_plugin
