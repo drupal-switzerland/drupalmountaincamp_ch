@@ -1,31 +1,25 @@
-uuid: 18db426f-09b7-477b-86f8-34785eeba92d
+uuid: 1e6dff95-70ff-4210-bb50-c16102bbd23f
 langcode: en
-status: true
+status: false
 dependencies:
   content:
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
   module:
     - block_content
-    - system
   theme:
     - beaker
 id: joinus
 theme: beaker
-region: content_main
-weight: -10
+region: '-1'
+weight: -8
 provider: null
 plugin: 'block_content:bbe207d2-d48c-4033-93e2-938858540ee5'
 settings:
   id: 'block_content:bbe207d2-d48c-4033-93e2-938858540ee5'
   label: 'Join us'
   provider: block_content
-  label_display: '0'
+  label_display: visible
   status: true
   info: ''
   view_mode: full
-visibility:
-  request_path:
-    id: request_path
-    pages: '<front>'
-    negate: false
-    context_mapping: {  }
+visibility: {  }

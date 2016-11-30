@@ -1,31 +1,38 @@
-uuid: 2ab9285b-7b4e-4bdd-ac87-72823ad26bff
+uuid: f83ac76f-d416-42f7-b883-99b03b0ec095
 langcode: en
-status: true
+status: false
 dependencies:
   content:
     - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
   module:
     - block_content
+    - ctools
     - system
   theme:
     - beaker
 id: calltospeakersandsponsors
 theme: beaker
-region: content_main
-weight: -9
+region: '-1'
+weight: -12
 provider: null
 plugin: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
 settings:
   id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
   label: 'Call to Speakers and Sponsors'
   provider: block_content
-  label_display: '0'
+  label_display: visible
   status: true
   info: ''
   view_mode: full
 visibility:
   request_path:
     id: request_path
-    pages: '<front>'
-    negate: false
+    pages: ''
+    negate: true
     context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles: {  }
+    negate: true
+    context_mapping:
+      node: '@node.node_route_context:node'

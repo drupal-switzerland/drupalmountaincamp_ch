@@ -1,22 +1,10 @@
-uuid: 7da28867-c3f1-4a49-bdbc-3344a85cc957
+uuid: 12cbf4c7-31fc-4c84-9058-b7f8ca6576e8
 langcode: en
 status: true
-dependencies:
-  config:
-    - views.view.blocks
-  content:
-    - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
-    - 'block_content:basic:7f667a90-50f9-42dd-8b9a-f69958c873bc'
-    - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
-    - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
-    - 'block_content:basic:eaf18576-8f5b-4ff5-9b37-96275fc99b2a'
-    - 'block_content:basic:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
-  module:
-    - block_content
-    - views
+dependencies: {  }
 id: home_page
-label: 'Home Page'
-description: null
+label: 'Home page'
+description: ''
 use_admin_theme: false
 path: /home
 access_logic: and

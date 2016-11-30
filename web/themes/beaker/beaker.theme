@@ -37,3 +37,17 @@ function beaker_preprocess_html(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ *
+ * @return array
+ */
+function beaker_theme() {
+  return [
+    'general_layout' => [
+      'template' => 'layout/layout--general',
+      'render element' => 'content',
+    ],
+  ];
+}

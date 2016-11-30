@@ -1,31 +1,25 @@
-uuid: 4a8b5cea-04b3-45f1-bef5-217427e6f36d
+uuid: f5eb796c-b213-4ab9-bca7-8ff3791df31c
 langcode: en
-status: true
+status: false
 dependencies:
   content:
     - 'block_content:basic:7f667a90-50f9-42dd-8b9a-f69958c873bc'
   module:
     - block_content
-    - system
   theme:
     - beaker
-id: seeyouincapetown
+id: seeyouallindavos
 theme: beaker
-region: content_bottom
-weight: -12
+region: '-1'
+weight: -4
 provider: null
 plugin: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
 settings:
   id: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
-  label: 'See you in Cape Town'
+  label: 'See you all in Davos'
   provider: block_content
-  label_display: '0'
+  label_display: visible
   status: true
   info: ''
   view_mode: full
-visibility:
-  request_path:
-    id: request_path
-    pages: '<front>'
-    negate: false
-    context_mapping: {  }
+visibility: {  }
