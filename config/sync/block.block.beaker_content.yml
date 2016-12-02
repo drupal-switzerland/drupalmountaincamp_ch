@@ -8,7 +8,7 @@ dependencies:
     - beaker
 id: beaker_content
 theme: beaker
-region: content_main
+region: content
 weight: -11
 provider: null
 plugin: system_main_block

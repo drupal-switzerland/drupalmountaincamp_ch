@@ -8,7 +8,7 @@ dependencies:
     - beaker
 id: pagetitle
 theme: beaker
-region: content_main
+region: content
 weight: -12
 provider: null
 plugin: page_title_block
