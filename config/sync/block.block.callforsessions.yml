@@ -1,0 +1,31 @@
+uuid: acd0a4b4-1130-4538-90ae-eac72568ddb6
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:be8ee0c7-d8f0-49c3-a629-902f811c99af'
+  module:
+    - block_content
+    - system
+  theme:
+    - beaker
+id: callforsessions
+theme: beaker
+region: content_main
+weight: -9
+provider: null
+plugin: 'block_content:be8ee0c7-d8f0-49c3-a629-902f811c99af'
+settings:
+  id: 'block_content:be8ee0c7-d8f0-49c3-a629-902f811c99af'
+  label: 'Call for sessions'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
