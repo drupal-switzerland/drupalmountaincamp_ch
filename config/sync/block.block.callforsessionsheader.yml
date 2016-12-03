@@ -1,23 +1,23 @@
-uuid: e0e54a74-4c3c-40f2-8939-946a61cc9430
+uuid: 77272e53-1520-42d0-8734-c68cd3eae5bd
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
+    - 'block_content:basic:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
   module:
     - block_content
     - system
   theme:
     - beaker
-id: partywithus
+id: callforsessionsheader
 theme: beaker
 region: content_main
-weight: -7
+weight: -12
 provider: null
-plugin: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
+plugin: 'block_content:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
 settings:
-  id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
-  label: 'Party with us'
+  id: 'block_content:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
+  label: 'Call for sessions header'
   provider: block_content
   label_display: '0'
   status: true
@@ -26,6 +26,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: '<front>'
+    pages: /node/add/session
     negate: false
     context_mapping: {  }

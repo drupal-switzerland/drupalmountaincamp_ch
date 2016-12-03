@@ -1,23 +1,23 @@
-uuid: e0e54a74-4c3c-40f2-8939-946a61cc9430
+uuid: acd0a4b4-1130-4538-90ae-eac72568ddb6
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
+    - 'block_content:basic:be8ee0c7-d8f0-49c3-a629-902f811c99af'
   module:
     - block_content
     - system
   theme:
     - beaker
-id: partywithus
+id: callforsessions
 theme: beaker
 region: content_main
-weight: -7
+weight: -9
 provider: null
-plugin: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
+plugin: 'block_content:be8ee0c7-d8f0-49c3-a629-902f811c99af'
 settings:
-  id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
-  label: 'Party with us'
+  id: 'block_content:be8ee0c7-d8f0-49c3-a629-902f811c99af'
+  label: 'Call for sessions'
   provider: block_content
   label_display: '0'
   status: true
