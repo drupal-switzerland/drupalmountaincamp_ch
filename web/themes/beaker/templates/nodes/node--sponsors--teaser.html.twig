@@ -71,40 +71,37 @@
  */
 #}
 {%
-  set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  ]
+set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+]
 %}
-{{ attach_library('classy/node') }}
-<article{{ attributes.addClass(classes) }}>
-  {% if display_submitted %}
-    <footer class="node__meta">
-      {{ author_picture }}
-      <div{{ author_attributes.addClass('node__submitted') }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-        {{ metadata }}
-      </div>
-    </footer>
-  {% endif %}
 
+<article{{ attributes.addClass(classes) }}>
   <div class="sponsors" {{ content_attributes }}>
     <a href="{{ content.field_sponsor_link[0]['#url'] }}" target="_blank">
-      <div class="field-image">{{ content.field_sponsor_image }}</div>
+      <div class="field-image">
+        {{ content.field_sponsor_image }}
+      </div>
+      <div class="hover-fields-wrapper">
+        <div class="hover-fields">
+          <div class="field-title">
+            {{ label }}
+          </div>
+          {% if content.field_sponsor_link|render is not empty %}
+            <div class="field-link">
+              {{ content.field_sponsor_link[0]['#title'] }}
+            </div>
+          {% endif %}
+          <div class="field-body">
+            {{ content.field_sponsor_description }}
+          </div>
+        </div>
+      </div>
     </a>
-    <div class="hover-fields">
-      <a href="{{ content.field_sponsor_link[0]['#url'] }}" target="_blank">
-      <div class="field-title">{{ label }}</div>
-      {% if content.field_sponsor_link|render is not empty %}
-      <div class="field-link"><div>{{ content.field_sponsor_link[0]['#title'] }}</div></div>
-      {% endif %}
-      <div class="field-body">{{ content.sponsor_description }}</div>
-      </a>
-    </div>
   </div>
-
 </article>

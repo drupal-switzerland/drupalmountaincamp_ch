@@ -4,14 +4,17 @@ status: true
 dependencies:
   config:
     - page_manager.page.home_page
+    - views.view.sponsors
   content:
     - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
     - 'block_content:basic:7f667a90-50f9-42dd-8b9a-f69958c873bc'
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
     - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
+    - 'block_content:basic:be8ee0c7-d8f0-49c3-a629-902f811c99af'
   module:
     - block_content
     - panels
+    - views
 id: home_page-panels_variant-0
 label: Panels
 variant: panels_variant
@@ -50,7 +53,7 @@ variant_settings:
       info: ''
       view_mode: full
       region: main
-      weight: 0
+      weight: -3
       uuid: 952909e0-ca48-487a-8aa6-d9842bfde274
       context_mapping: {  }
     0c6013d7-5129-4c48-995f-6c5a2f5e7c95:
@@ -64,6 +67,51 @@ variant_settings:
       region: bottom
       weight: 0
       uuid: 0c6013d7-5129-4c48-995f-6c5a2f5e7c95
+      context_mapping: {  }
+    b090ffc8-2e1e-441d-af61-4e16a2bce6c3:
+      id: 'block_content:be8ee0c7-d8f0-49c3-a629-902f811c99af'
+      label: 'Call for sessions'
+      provider: block_content
+      label_display: '0'
+      status: true
+      info: ''
+      view_mode: full
+      region: top
+      weight: 0
+      uuid: b090ffc8-2e1e-441d-af61-4e16a2bce6c3
+      context_mapping: {  }
+    0a53367f-8436-446b-99d6-7a1638ca9181:
+      id: 'views_block:sponsors-block_2'
+      label: ''
+      provider: views
+      label_display: visible
+      views_label: ''
+      items_per_page: '10'
+      region: main
+      weight: -2
+      uuid: 0a53367f-8436-446b-99d6-7a1638ca9181
+      context_mapping: {  }
+    eac4d36e-b580-4425-a51d-7a32236ea184:
+      id: 'views_block:sponsors-block_3'
+      label: ''
+      provider: views
+      label_display: visible
+      views_label: ''
+      items_per_page: '20'
+      region: main
+      weight: -1
+      uuid: eac4d36e-b580-4425-a51d-7a32236ea184
+      context_mapping: {  }
+    91c3a218-5559-4485-8d9b-aa3ef7f5f9e3:
+      id: 'views_block:sponsors-block_4'
+      label: ''
+      provider: views
+      label_display: visible
+      views_label: ''
+      items_per_page: '20'
+      region: main
+      weight: 0
+      uuid: 91c3a218-5559-4485-8d9b-aa3ef7f5f9e3
       context_mapping: {  }
   id: panels_variant
   uuid: 42b6c087-b402-4cf2-afe7-856d6aa06766
