@@ -11,6 +11,6 @@ regions:
   header: Header
   banner: Banner
   content_top: Content Top
-  content_main: Content Main
+  content: Content
   content_bottom: Content Bottom
   footer: Footer

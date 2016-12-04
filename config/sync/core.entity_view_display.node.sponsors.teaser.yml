@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.sponsors.body
     - field.field.node.sponsors.field_sponsor_image
     - field.field.node.sponsors.field_sponsor_link
     - field.field.node.sponsors.field_sponsor_order
@@ -14,20 +13,12 @@ dependencies:
   module:
     - image
     - link
-    - text
     - user
 id: node.sponsors.teaser
 targetEntityType: node
 bundle: sponsors
 mode: teaser
 content:
-  body:
-    type: text_summary_or_trimmed
-    weight: 2
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
   field_sponsor_image:
     type: image
     weight: 0
@@ -56,5 +47,6 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
 hidden:
+  field_sponsor_description: true
   field_sponsorship_type_: true
   links: true
