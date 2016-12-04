@@ -54,7 +54,7 @@
         "drupal/media_entity_twitter": "~8.0",
         "drupal/superfish": "~8.0",
         "drupal/crop": "~8.0",
-        "drupal/panels": "~8.0"
+        "drupal/panels": "dev-8.x-3.x"
     },
     "conflict": {
         "drupal/drupal": "*"

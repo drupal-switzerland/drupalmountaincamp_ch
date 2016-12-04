@@ -186,7 +186,7 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
-      block_hide_empty: true
+      block_hide_empty: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -277,7 +277,8 @@ display:
         groups:
           1: AND
       title: Platinum
-      block_hide_empty: true
+      block_hide_empty: false
+      enabled: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -369,7 +370,8 @@ display:
         groups:
           1: AND
       title: Gold
-      block_hide_empty: true
+      block_hide_empty: false
+      enabled: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -461,7 +463,8 @@ display:
         groups:
           1: AND
       title: Silver
-      block_hide_empty: true
+      block_hide_empty: false
+      enabled: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -553,7 +556,8 @@ display:
         groups:
           1: AND
       title: Venue
-      block_hide_empty: true
+      block_hide_empty: false
+      enabled: true
     cache_metadata:
       max-age: -1
       contexts:
