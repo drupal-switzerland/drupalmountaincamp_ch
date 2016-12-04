@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: home_page
-label: 'Home page'
-description: ''
+label: 'Home Page'
+description: null
 use_admin_theme: false
 path: /home
 access_logic: and
