@@ -1,0 +1,10 @@
+uuid: 79970774-f744-4b94-bb97-b97d4c44a9fd
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.sessions_view
+label: 'Sessions View'
+targetEntityType: node
+cache: true
