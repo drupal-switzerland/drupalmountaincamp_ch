@@ -1,0 +1,35 @@
+.view-sessions {
+  padding-top: 20px;
+
+  .views-row {
+    margin-top:70px;
+  }
+
+  .views-field {
+    line-height: 1.5;
+  }
+
+  h2.views-field {
+    font-weight: normal;
+    line-height:1;
+    margin-bottom:20px;
+  }
+
+  .views-label {
+    clear: both;
+    float: left;
+    font-size:80%;
+    text-decoration: none;
+    margin-right:10px;
+  }
+
+  .field-content {
+    font-size:80%;
+    font-weight:bold;
+  }
+
+  .views-field-body {
+    clear: both;
+    padding-top: 15px;
+  }
+}
