@@ -1,6 +1,6 @@
 uuid: 77272e53-1520-42d0-8734-c68cd3eae5bd
 langcode: en
-status: false
+status: true
 dependencies:
   content:
     - 'block_content:basic:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
@@ -11,7 +11,7 @@ dependencies:
     - beaker
 id: callforsessionsheader
 theme: beaker
-region: '-1'
+region: content
 weight: -12
 provider: null
 plugin: 'block_content:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
