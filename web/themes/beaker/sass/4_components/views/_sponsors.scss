@@ -1,6 +1,13 @@
+#block-thanks-to-our-sponsors,
+#block-views-block-sponsors-block-3,
+#block-views-block-sponsors-block-4 {
+  h2 {
+    text-align: center;
+  }
+}
+
 .view-sponsors {
   .view-content {
-    position: relative;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
