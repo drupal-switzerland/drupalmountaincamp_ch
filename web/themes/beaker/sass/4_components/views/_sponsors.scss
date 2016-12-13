@@ -3,14 +3,13 @@
     position: relative;
     display: flex;
     flex-flow: row wrap;
+    align-items: center;
   }
 
   .views-row {
     text-align: left;
     box-sizing: border-box;
     flex: 1;
-    align-items: center;
-    height: 160px;
     padding: 1%;
     min-width: 30%;
     max-width: 30%;
@@ -21,7 +20,7 @@
 
     &:hover {
       img {
-        transform: translateY(-1em) scale(0.3);
+        transform: translateY(-0.9em) scale(0.4);
       }
       .hover-fields-wrapper {
         display: inline-block;
