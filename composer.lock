@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9cd0963ea7fe1d950a901b25b2145bac",
-    "content-hash": "c4c68ca68342151b98387e5ad134ab97",
+    "hash": "665200ef76803cc5c2ea016aa192e794",
+    "content-hash": "f8863e70de6d6a33b3036cb981ae5a47",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -916,7 +916,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.18.zip",
-                "reference": null,
+                "reference": "06d0fa89dfca5adade537b24e9593b5af6350b4a",
                 "shasum": null
             },
             "require": {
@@ -1327,7 +1327,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "e6fdb5fcf7c7de92e6b0d72425cd627642f227ac",
                 "shasum": null
             },
             "require": {
@@ -1438,7 +1438,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
-                "reference": null,
+                "reference": "acd3aaef1d0c9822b81ce7fdff8a12ef3844b4e1",
                 "shasum": null
             },
             "require": {
@@ -1475,7 +1475,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/focal_point-8.x-1.0-beta4.zip",
-                "reference": null,
+                "reference": "f6d0d8a7db9c365451b631a8cb10a616a9093b2a",
                 "shasum": null
             },
             "require": {
@@ -1550,6 +1550,37 @@
             "time": "2016-10-03 18:36:43"
         },
         {
+            "name": "drupal/link_attributes",
+            "version": "8.1.0-alpha3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/link_attributes.git",
+                "reference": "ca923602beeb62ab3c565de48d9c4195df2d03ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/link_attributes-8.x-1.0-alpha3.zip",
+                "reference": "ca923602beeb62ab3c565de48d9c4195df2d03ac",
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Provides a widget to allow settings of link attributes for menu links.",
+            "homepage": "https://www.drupal.org/project/link_attributes",
+            "time": "2016-11-15 21:22:33"
+        },
+        {
             "name": "drupal/link_css",
             "version": "dev-8.x-1.x",
             "source": {
@@ -1616,7 +1647,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/media_entity-8.x-1.6.zip",
-                "reference": null,
+                "reference": "031b9b39703115d4bcbd0ab43a996622e8ad81b7",
                 "shasum": null
             },
             "require": {
