@@ -1,0 +1,52 @@
+uuid: bd32a452-727c-40af-87cb-c729cc418b57
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.sponsors
+    - views.view.sponsors
+  module:
+    - panels
+    - views
+id: sponsors-panels_variant-0
+label: Panels
+variant: panels_variant
+variant_settings:
+  blocks:
+    7ad9fbf5-02a8-4584-a157-d85603fccab6:
+      id: 'views_block:sponsors-block_3'
+      label: ''
+      provider: views
+      label_display: visible
+      views_label: ''
+      items_per_page: '20'
+      region: main
+      weight: 0
+      uuid: 7ad9fbf5-02a8-4584-a157-d85603fccab6
+      context_mapping: {  }
+    efc920f9-a937-45de-a5b5-a91bcd48704a:
+      id: 'views_block:sponsors-block_4'
+      label: ''
+      provider: views
+      label_display: visible
+      views_label: ''
+      items_per_page: '20'
+      region: main
+      weight: 0
+      uuid: efc920f9-a937-45de-a5b5-a91bcd48704a
+      context_mapping: {  }
+  id: panels_variant
+  uuid: 529823cf-2a93-4e80-93ca-e92c1e4bb775
+  label: null
+  weight: 0
+  layout: page_general
+  layout_settings: {  }
+  page_title: ''
+  storage_type: page_manager
+  storage_id: sponsors-panels_variant-0
+  builder: standard
+page: sponsors
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

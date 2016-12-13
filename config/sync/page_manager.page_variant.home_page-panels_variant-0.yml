@@ -5,7 +5,6 @@ dependencies:
   config:
     - page_manager.page.home_page
   content:
-    - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
     - 'block_content:basic:7f667a90-50f9-42dd-8b9a-f69958c873bc'
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
     - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
@@ -29,18 +28,6 @@ variant_settings:
       region: top
       weight: -1
       uuid: d2392694-72dd-42a1-9c67-df7db161669c
-      context_mapping: {  }
-    2142ec86-7c15-4507-9466-1e76f29a035e:
-      id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
-      label: 'Call to Speakers and Sponsors'
-      provider: block_content
-      label_display: '0'
-      status: true
-      info: ''
-      view_mode: full
-      region: top
-      weight: 0
-      uuid: 2142ec86-7c15-4507-9466-1e76f29a035e
       context_mapping: {  }
     952909e0-ca48-487a-8aa6-d9842bfde274:
       id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
