@@ -24,6 +24,7 @@ module:
   image: 0
   layout_plugin: 0
   link: 0
+  link_attributes: 0
   link_css: 0
   menu_ui: 0
   metatag: 0
