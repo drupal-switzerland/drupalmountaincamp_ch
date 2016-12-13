@@ -4,15 +4,17 @@
     display: flex;
     flex-flow: row wrap;
     align-items: center;
+    align-content: space-between;
   }
 
   .views-row {
-    text-align: left;
+    text-align: center;
     box-sizing: border-box;
     flex: 1;
-    padding: 1%;
-    min-width: 30%;
-    max-width: 30%;
+    padding: 1em;
+    min-width: 33%;
+    max-width: 33%;
+    align-content: space-between;
   }
 
   .sponsors {
