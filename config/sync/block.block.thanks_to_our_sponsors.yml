@@ -1,9 +1,9 @@
-uuid: 21294e4e-240c-488a-b1b1-b8982a445ff4
+uuid: b5c19aa9-4dde-4840-9d9b-94b21cf11f50
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:f4bd243f-c6a9-4756-9b0a-29c6088ec53c'
+    - 'block_content:basic:9ec08b40-07cf-4342-9755-7df0d1db1e17'
   module:
     - block_content
   theme:
@@ -13,9 +13,9 @@ theme: beaker
 region: footer
 weight: -12
 provider: null
-plugin: 'block_content:f4bd243f-c6a9-4756-9b0a-29c6088ec53c'
+plugin: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
 settings:
-  id: 'block_content:f4bd243f-c6a9-4756-9b0a-29c6088ec53c'
+  id: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
   label: 'Thanks to our Sponsors'
   provider: block_content
   label_display: visible
