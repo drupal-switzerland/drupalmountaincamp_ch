@@ -18,17 +18,17 @@
   .sponsors {
     position: relative;
 
-    &:hover {
-      img {
-        transform: translateY(-0.9em) scale(0.4);
-      }
-      .hover-fields-wrapper {
-        display: inline-block;
-      }
-    }
+    //&:hover {
+    //  img {
+    //    transform: translateY(-0.9em) scale(0.4);
+    //  }
+    //  .hover-fields-wrapper {
+    //    display: inline-block;
+    //  }
+    //}
 
     img {
-      max-width: 100%;
+      max-width: 160px;
       z-index: 10;
       display: inline-block;
       transition: transform 0.4s;
