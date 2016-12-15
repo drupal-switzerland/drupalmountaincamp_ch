@@ -49,12 +49,45 @@ h4 {
 
 // TEXT STYLES
 // =============================================================================
-b, em, strong {
+b,
+em,
+strong {
   @include font-semibold;
 }
 
-p{
+@mixin paragraph() {
   @include font-light;
   line-height: 32px;
   @include font-size(18px,true);
+}
+p {
+  @include paragraph;
+}
+.rt {
+  h1 {
+    margin-bottom: 1rem;
+  }
+  h2 {
+    margin-top: 1rem;
+    margin-bottom: .75rem;
+  }
+  h3 {
+    margin-top: 1rem;
+    margin-bottom: .75rem;
+  }
+  h4 {
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+  }
+  p {
+    // use collapsing margins
+    margin: .5rem 0;
+  }
+  ol,
+  ul {
+    margin: .75rem 0 1rem;
+    @include font-light;
+    line-height: 32px;
+    @include font-size(18px,true);
+  }
 }
