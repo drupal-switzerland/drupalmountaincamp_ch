@@ -6,3 +6,11 @@
     margin-bottom: 0;
   }
 }
+
+.session--view-mode-teaser {
+  .field {
+    @include clearfix;
+    @include paragraph;
+    margin: 0;
+  }
+}

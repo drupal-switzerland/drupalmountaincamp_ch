@@ -1,0 +1,26 @@
+{%
+  set classes = [
+    'node--type-' ~ node.bundle|clean_class,
+    view_mode ? node.bundle|clean_class ~ '--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  <div{{ content_attributes.addClass('rt') }}>
+    <div class="rt">
+      <h3>
+        {{ content.field_session_speaker['#items'].getString }}
+      </h3>
+      <h2{{ title_attributes.addClass('title') }}>
+        {{ label['#items'].getString }}
+      </h2>
+    </div>
+    {{ content|without('field_session_speaker', 'body') }}
+    <div class="rt">
+      {{ content.body }}
+    </div>
+  </div>
+</article>
+
