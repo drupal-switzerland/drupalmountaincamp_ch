@@ -3,164 +3,196 @@
 $header: 80px;
 
 header.header {
+  border-bottom: 2px solid $blue;
   background-color: $white;
-  height: 80px;
-  padding: 0 25px;
   width: 100%;
   z-index: 100;
+  height: $header;
+  @include clearfix;
   .inner {
-    max-width: 1920px;
-    .site-name a {
-      @include font-slab-bolder;
-      @include font-size(18px, false);
-      line-height: 80px;
-      text-transform: uppercase;
+    position: relative;
+    max-width: $wide;
+    margin: 0 auto;
+    padding: 0 12px;
+    .site-name {
+      display: flex;
+      align-content: flex-start;
+      align-items: center;
+      height: $header;
       float: left;
-      color: $blue;
-      @include breakpoint($mobile) {
-        font-size: 12px;
+      a {
+        @include font-slab-bolder;
+        @include font-size(18px, false);
+        display: block;
+        line-height: 1;
+        text-transform: uppercase;
+        float: left;
+        color: $blue;
+        span {
+          color: $red;
+        }
       }
-      span {
-        color: $red;
+    }
+  }
+  @include breakpoint($desktop) {
+    &.expanded {
+      height: auto;
+      .menu--main {
+        display: block;
+        width: 100%;
       }
     }
   }
   .menu--main {
+    background-color: $white;
     float: right;
-    height: $header;
-    ul.menu {
-      height: $header;
-      li {
-        margin: 0 15px;
-        padding: 0;
-        height: $header -2px;
-        float: left;
-        background-color: $white;
-        &:last-child {
-          margin-right: 0;
-          a {
-            @include button;
-            color: $blue;
-          }
-        }
-        a {
-          @include font-bold;
-          @include font-size(15px, false);
-          line-height: $header;
-          text-transform: uppercase;
-        }
-        &:hover, &.is-active, &.scrolled {
-          a {
-            color: $red;
-          }
-        }
-      }
-      //li:last-child{ display: none; }
-    }
-  }
-  .menu-toggle {
-    position: absolute;
-    right: 25px;
-    top: 22px;
     display: none;
     a {
-      cursor: pointer;
-      position: relative;
+      @include font-bold;
+      font-size: .75rem;
       display: block;
-      float: right;
-      width: 24px;
-      height: 18px;
-      padding: 20px;
-      @include transition(all 0.25s ease);
-
-      span, span:before, span:after {
-        content: '';
-        position: absolute;
-        display: block;
-        cursor: pointer;
-        height: 3px;
-        width: 24px;
-        background: $blue;
-        @include transition(all 0.1s ease-in-out);
+      line-height: 1;
+      text-transform: uppercase;
+      padding: $header / 4 $header / 6;
+      &:focus,
+      &:hover,
+        //&.is-active,
+      &.scrolled {
+        color: $red;
       }
-
-      span {
-        text-indent: -9999px;
-        top: 17px;
-        right: 7.5px;
-        &:before {
-          top: -7px;
-        }
-        &:after {
-          top: 7px;
-        }
-      }
-
-      &:hover {
-        span {
-          &:before {
-            top: -8px;
-          }
-          &:after {
-            top: 8px;
-          }
-        }
-      }
-
-      &.expanded {
-        span {
-          background-color: transparent;
-          &:before, &:after {
-            top: 0px;
-            background: $blue;
-          }
-          &:before {
-            @include rotate(-45deg);
-          }
-          &:after {
-            @include rotate(45deg);
-          }
+    }
+    ul {
+      margin-left: 0;
+    }
+    li {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      border-bottom: 1px solid $blue;
+      &:last-child {
+        width: 100%;
+        height: $header;
+        display: flex;
+        align-items: center;
+        border-bottom: 0px solid transparent;
+        a {
+          width: auto;
+          @include button;
+          color: $blue;
         }
       }
     }
   }
 }
 
-// RESPONSIVE DESIGN
-// =============================================================================
-@include breakpoint($tablet) {
-  header.header {
-    border-bottom: 2px solid $blue;
-    .menu--main {
-      display: none;
-      &.expanded {
-        display: block;
-        position: absolute;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        height: 240px;
-        background-color: $white;
-        ul {
-          margin-left: 0;
-          li {
-            margin: 0;
-            padding: 0 0 0 22.5px;
-            width: 100%;
-            border-bottom: 1px solid $blue;
-            &:last-child {
-              width: 100%;
-              height: $header;
-              a {
-
-              }
-            }
-          }
+.menu-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  display: block;
+  a {
+    cursor: pointer;
+    position: relative;
+    display: block;
+    float: right;
+    width: 24px;
+    height: 18px;
+    padding: 20px;
+    @include transition(all 0.25s ease);
+    span,
+    span:before,
+    span:after {
+      content: '';
+      position: absolute;
+      display: block;
+      cursor: pointer;
+      height: 3px;
+      width: 24px;
+      background: $blue;
+      @include transition(all 0.1s ease-in-out);
+    }
+    span {
+      text-indent: -9999px;
+      top: 17px;
+      right: 7.5px;
+      &:before {
+        top: -7px;
+      }
+      &:after {
+        top: 7px;
+      }
+    }
+    &:focus,
+    &:hover {
+      span {
+        &:before {
+          top: -8px;
+        }
+        &:after {
+          top: 8px;
         }
       }
     }
-    .menu-toggle {
-      display: block;
+
+    &.expanded {
+      span {
+        background-color: transparent;
+        &:before, &:after {
+          top: 0;
+          background: $blue;
+        }
+        &:before {
+          @include rotate(-45deg);
+        }
+        &:after {
+          @include rotate(45deg);
+        }
+      }
+    }
+  }
+}
+
+@include breakpoint($desktop-up) {
+  header.header .menu--main {
+    display: block;
+    float: right;
+    height: $header - 2px;
+    ul.menu {
+      height: $header - 2px;
+      a {
+        @include font-bold;
+        font-size: .75rem;
+        display: block;
+        line-height: 1;
+        text-transform: uppercase;
+        padding: $header / 4 $header / 8;
+      }
+      li {
+        width: auto;
+        display: flex;
+        align-content: flex-start;
+        align-items: center;
+        //margin: 0 4px;
+        padding: 0;
+        float: left;
+        height: 100%;
+        border-bottom: none;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  .menu-toggle {
+    display: none;
+  }
+}
+
+// hide front page id links
+@media (min-width: #{$desktop-up}) and (max-width: 1170px) {
+  header.header .menu--main .menu {
+    a[href^="/#"] {
+      display: none;
     }
   }
 }
