@@ -11,7 +11,7 @@ dependencies:
 id: footercontact
 theme: beaker
 region: footer
-weight: -12
+weight: -14
 provider: null
 plugin: 'block_content:649d68d1-8f13-45d1-87d4-6ec7ce1d8a4b'
 settings:

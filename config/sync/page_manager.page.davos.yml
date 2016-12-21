@@ -1,0 +1,12 @@
+uuid: c12a588b-fb3d-4db6-a9de-8115bfaa23e6
+langcode: en
+status: true
+dependencies: {  }
+id: davos
+label: Davos
+description: ''
+use_admin_theme: false
+path: /davos
+access_logic: and
+access_conditions: {  }
+parameters: {  }

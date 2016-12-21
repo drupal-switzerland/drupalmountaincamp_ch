@@ -1,0 +1,12 @@
+uuid: 71ddb011-20ea-4bd4-ad70-107ecaabf7af
+langcode: en
+status: true
+dependencies: {  }
+id: sponsors
+label: Sponsors
+description: ''
+use_admin_theme: false
+path: /sponsors
+access_logic: and
+access_conditions: {  }
+parameters: {  }
