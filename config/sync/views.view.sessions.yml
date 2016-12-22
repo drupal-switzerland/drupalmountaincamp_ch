@@ -289,7 +289,7 @@ display:
           group_type: group
           admin_label: ''
           label: 'Level of expertise'
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -352,7 +352,7 @@ display:
           group_type: group
           admin_label: ''
           label: 'Session Type'
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
