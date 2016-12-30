@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.sessions_view
     - field.field.node.session.body
+    - field.field.node.session.field_keynote
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
     - field.field.node.session.field_session_remarks
@@ -28,25 +29,18 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 5
+    weight: 3
     settings:
       trim_length: 600
     third_party_settings: {  }
-  field_session_expertise_level:
-    weight: 3
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
   field_session_slides_file:
-    weight: 7
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_session_slides_link:
-    weight: 6
+    weight: 4
     label: above
     settings:
       trim_length: 80
@@ -64,13 +58,6 @@ content:
     third_party_settings: {  }
     type: string
   field_session_track:
-    weight: 2
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_session_type:
     weight: 1
     label: inline
     settings:
@@ -78,13 +65,16 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_tags:
-    weight: 4
+    weight: 2
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
 hidden:
+  field_keynote: true
   field_session_contact_mail: true
+  field_session_expertise_level: true
   field_session_remarks: true
+  field_session_type: true
   links: true
