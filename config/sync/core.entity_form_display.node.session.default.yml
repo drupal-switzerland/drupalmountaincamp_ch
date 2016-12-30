@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.session.body
+    - field.field.node.session.field_keynote
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
     - field.field.node.session.field_session_remarks
@@ -42,7 +43,7 @@ content:
     third_party_settings: {  }
     type: options_buttons
   field_session_remarks:
-    weight: 26
+    weight: 7
     settings:
       rows: 2
       placeholder: ''
@@ -74,6 +75,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_keynote: true
   field_session_slides_file: true
   field_session_slides_link: true
   field_tags: true
