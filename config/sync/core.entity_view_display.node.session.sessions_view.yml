@@ -1,8 +1,9 @@
-uuid: 85037024-108d-44a1-b06f-2a005de413ee
+uuid: 082f8792-1387-4a21-b23c-878b907185f8
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.sessions_view
     - field.field.node.session.body
     - field.field.node.session.field_keynote
     - field.field.node.session.field_session_contact_mail
@@ -20,32 +21,26 @@ dependencies:
     - link
     - text
     - user
-id: node.session.default
+id: node.session.sessions_view
 targetEntityType: node
 bundle: session
-mode: default
+mode: sessions_view
 content:
   body:
     label: hidden
-    type: text_default
-    weight: 2
-    settings: {  }
-    third_party_settings: {  }
-  field_session_expertise_level:
-    weight: 5
-    label: inline
+    type: text_summary_or_trimmed
+    weight: 3
     settings:
-      link: false
+      trim_length: 600
     third_party_settings: {  }
-    type: entity_reference_label
   field_session_slides_file:
-    weight: 7
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_session_slides_link:
-    weight: 6
+    weight: 4
     label: above
     settings:
       trim_length: 80
@@ -56,32 +51,30 @@ content:
     third_party_settings: {  }
     type: link
   field_session_speaker:
-    weight: 1
-    label: inline
+    weight: 0
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_session_track:
-    weight: 4
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_session_type:
-    weight: 3
+    weight: 1
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
-  links:
-    weight: 0
-    settings: {  }
+  field_tags:
+    weight: 2
+    label: inline
+    settings:
+      link: false
     third_party_settings: {  }
+    type: entity_reference_label
 hidden:
   field_keynote: true
   field_session_contact_mail: true
+  field_session_expertise_level: true
   field_session_remarks: true
-  field_tags: true
+  field_session_type: true
+  links: true

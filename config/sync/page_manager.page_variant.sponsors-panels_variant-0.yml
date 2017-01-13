@@ -1,0 +1,43 @@
+uuid: bd32a452-727c-40af-87cb-c729cc418b57
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.sponsors
+  content:
+    - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+  module:
+    - block_content
+    - panels
+id: sponsors-panels_variant-0
+label: Panels
+variant: panels_variant
+variant_settings:
+  blocks:
+    cb80b683-3d49-4965-8b2c-d6bb28340e7c:
+      id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
+      label: 'Call to Speakers and Sponsors'
+      provider: block_content
+      label_display: '0'
+      status: true
+      info: ''
+      view_mode: full
+      region: main
+      weight: 0
+      uuid: cb80b683-3d49-4965-8b2c-d6bb28340e7c
+      context_mapping: {  }
+  id: panels_variant
+  uuid: 529823cf-2a93-4e80-93ca-e92c1e4bb775
+  label: null
+  weight: 0
+  layout: page_general
+  layout_settings: {  }
+  page_title: ''
+  storage_type: page_manager
+  storage_id: sponsors-panels_variant-0
+  builder: standard
+page: sponsors
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

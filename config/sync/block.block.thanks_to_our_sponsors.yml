@@ -1,0 +1,25 @@
+uuid: b5c19aa9-4dde-4840-9d9b-94b21cf11f50
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:9ec08b40-07cf-4342-9755-7df0d1db1e17'
+  module:
+    - block_content
+  theme:
+    - beaker
+id: thanks_to_our_sponsors
+theme: beaker
+region: footer
+weight: -12
+provider: null
+plugin: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
+settings:
+  id: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
+  label: 'Thanks to our Sponsors'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
