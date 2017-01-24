@@ -11,7 +11,7 @@ dependencies:
 id: footerbottom
 theme: beaker
 region: footer
-weight: -10
+weight: -8
 provider: null
 plugin: 'block_content:36dff034-b1ac-488d-b3de-44356051d869'
 settings:

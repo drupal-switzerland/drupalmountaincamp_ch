@@ -11,7 +11,7 @@ dependencies:
 id: mainnavigation
 theme: beaker
 region: '-1'
-weight: -8
+weight: -9
 provider: null
 plugin: 'superfish:main'
 settings:

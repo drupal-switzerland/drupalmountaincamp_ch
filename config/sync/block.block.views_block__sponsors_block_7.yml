@@ -1,6 +1,6 @@
 uuid: d4bc989c-3239-4c11-9242-318f296e20bd
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - views.view.sponsors
@@ -10,8 +10,8 @@ dependencies:
     - beaker
 id: views_block__sponsors_block_7
 theme: beaker
-region: '-1'
-weight: -15
+region: footer
+weight: -9
 provider: null
 plugin: 'views_block:sponsors-block_7'
 settings:
