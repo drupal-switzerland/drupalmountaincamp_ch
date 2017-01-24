@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.session.body
+    - field.field.node.session.field_accepted
     - field.field.node.session.field_keynote
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
@@ -31,6 +32,15 @@ content:
     weight: 2
     settings: {  }
     third_party_settings: {  }
+  field_accepted:
+    weight: 8
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
   field_session_expertise_level:
     weight: 5
     label: inline
