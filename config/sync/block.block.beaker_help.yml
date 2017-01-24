@@ -9,7 +9,7 @@ dependencies:
 id: beaker_help
 theme: beaker
 region: '-1'
-weight: -9
+weight: -10
 provider: null
 plugin: help_block
 settings:

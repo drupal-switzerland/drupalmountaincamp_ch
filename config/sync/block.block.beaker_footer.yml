@@ -11,7 +11,7 @@ dependencies:
 id: beaker_footer
 theme: beaker
 region: '-1'
-weight: -10
+weight: -11
 provider: null
 plugin: 'system_menu_block:footer'
 settings:

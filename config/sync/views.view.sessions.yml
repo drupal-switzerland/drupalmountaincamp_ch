@@ -729,7 +729,7 @@ display:
           expose:
             label: ''
           granularity: second
-      title: 'Proposed Sessions'
+      title: Sessions
       header: {  }
       footer: {  }
       empty: {  }
@@ -763,11 +763,11 @@ display:
       path: sessions
       menu:
         type: normal
-        title: 'Proposed Sessions'
+        title: Sessions
         description: ''
         expanded: false
         parent: ''
-        weight: -45
+        weight: -46
         context: '0'
         menu_name: main
       filters:
@@ -780,6 +780,7 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          group: 1
         status:
           id: status
           table: node_field_data
@@ -827,6 +828,42 @@ display:
           admin_label: ''
           operator: '='
           value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+        field_accepted_value:
+          id: field_accepted_value
+          table: node__field_accepted
+          field: field_accepted_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
           group: 1
           exposed: false
           expose:
@@ -963,7 +1000,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h2>Keynotes</h2>'
+            value: "<p>The sessions listed below have been chosen for presentation at the Drupal Mountain Camp.<br/>\nThe detailed schedule will follow soon.</p>\n<h2>Keynotes</h2>"
             format: basic_html
           plugin_id: text
         view:

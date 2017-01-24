@@ -7,7 +7,6 @@ dependencies:
   content:
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
     - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
-    - 'block_content:basic:be8ee0c7-d8f0-49c3-a629-902f811c99af'
   module:
     - block_content
     - panels
@@ -39,18 +38,6 @@ variant_settings:
       region: main
       weight: -3
       uuid: 952909e0-ca48-487a-8aa6-d9842bfde274
-      context_mapping: {  }
-    b090ffc8-2e1e-441d-af61-4e16a2bce6c3:
-      id: 'block_content:be8ee0c7-d8f0-49c3-a629-902f811c99af'
-      label: 'Call for sessions'
-      provider: block_content
-      label_display: '0'
-      status: true
-      info: ''
-      view_mode: full
-      region: top
-      weight: 0
-      uuid: b090ffc8-2e1e-441d-af61-4e16a2bce6c3
       context_mapping: {  }
   id: panels_variant
   uuid: 42b6c087-b402-4cf2-afe7-856d6aa06766

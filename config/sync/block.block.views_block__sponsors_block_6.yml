@@ -1,4 +1,4 @@
-uuid: 214dcb21-6a50-411b-8b85-80f7cb74f0d9
+uuid: e176fb7f-871c-4da1-8831-2d392cf623ff
 langcode: en
 status: true
 dependencies:
@@ -8,17 +8,17 @@ dependencies:
     - views
   theme:
     - beaker
-id: views_block__sponsors_block_4
+id: views_block__sponsors_block_6
 theme: beaker
 region: footer
-weight: -12
+weight: -11
 provider: null
-plugin: 'views_block:sponsors-block_4'
+plugin: 'views_block:sponsors-block_6'
 settings:
-  id: 'views_block:sponsors-block_4'
+  id: 'views_block:sponsors-block_6'
   label: ''
   provider: views
   label_display: visible
   views_label: ''
-  items_per_page: '20'
+  items_per_page: none
 visibility: {  }

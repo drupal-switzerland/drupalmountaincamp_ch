@@ -11,7 +11,7 @@ dependencies:
 id: seeyouallindavos
 theme: beaker
 region: '-1'
-weight: -4
+weight: -5
 provider: null
 plugin: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
 settings:
