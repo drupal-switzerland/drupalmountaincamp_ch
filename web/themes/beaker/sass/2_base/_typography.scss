@@ -61,19 +61,21 @@ strong {
   @include font-size(18px,true);
 }
 
-@mixin paragraph-anchor() {
-  @extend a;
+@mixin paragraph-anchor($color: $blue, $active-color: $red, $invert-color: $white) {
+  @include font-semibold;
+  text-decoration: none;
+  color: $color;
   display: inline-block;
   padding: 2px 1px;
-  box-shadow: inset 0 -1px 0 0 $red;
+  box-shadow: inset 0 -1px 0 0 $active-color;
   &:focus,
   &:hover {
-    color: $red;
-    box-shadow: inset 0 -1px 0 0 $red;
+    color: $active-color;
+    box-shadow: inset 0 -1px 0 0 $active-color;
   }
   &:active {
-    color: $white;
-    background-color: $red;
+    color: $invert-color;
+    background-color: $active-color;
   }
 }
 
@@ -99,7 +101,7 @@ p {
   p {
     // use collapsing margins
     margin: .5rem 0;
-    a {
+    a:not(.button) {
       @include paragraph-anchor;
     }
   }
@@ -120,5 +122,19 @@ p {
   small {
     font-size: .75em;
     line-height: 1;
+  }
+}
+
+.rt p a:not(.button) {
+  .path-sponsors &,
+  .path-davos &,
+  .panel--blue & {
+    @include paragraph-anchor($white, $red, $white);
+  }
+  .panel--red & {
+    @include paragraph-anchor($white, $white, $blue);
+  }
+  .panel--white & {
+    @include paragraph-anchor();
   }
 }

@@ -1,41 +1,41 @@
-footer{
+footer {
   background: $white;
-  img{
+  img {
     transition: all .5s ease-out;
     opacity: 1;
-    &:hover{
+    &:hover {
       opacity: 0.5;
     }
   }
-  .footer-contact{
+  .footer-contact {
     background-color: $red;
     text-align: center;
     padding: 90px;
-    @include breakpoint($mobile){
+    @include breakpoint($mobile) {
       padding: 50px;
     }
-    a,h1{
+    a, h1 {
       color: $white;
     }
-    h1{
+    h1 {
       margin-bottom: 30px;
       @include font-thick;
-      @include breakpoint($tablet){
+      @include breakpoint($tablet) {
         font-size: 30px;
         margin-bottom: 20px;
         line-height: 40px;
       }
     }
-    a.email-addr{
+    a.email-addr {
       transition: all .5s ease-out;
-      &:hover{
+      &:hover {
         color: $blue;
       }
     }
   }
 
-  .footer-copyright{
-    .amazeeio{
+  .footer-copyright {
+    .amazeeio {
       display: block;
       height: auto;
       max-width: 750px;
@@ -46,36 +46,36 @@ footer{
       @include breakpoint($mobile) {
         max-width: 80%;
       }
-      p{
+      p {
         text-align: center;
         padding: 40px 0 25px;
         font-weight: bold;
         color: $ioblack;
         font-size: 16px;
       }
-      .logo-item{
+      .logo-item {
         height: 86px;
         width: 66px;
         margin: 0 auto;
       }
     }
-    .copy-logos{
+    .copy-logos {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       margin: 50px 0;
-      .logo-item{
+      .logo-item {
         display: flex;
         justify-content: center;
         @include breakpoint($mobile) {
           flex: 0 0 100%;
         }
-        img{
+        img {
           height: auto;
           max-height: 125px;
           width: auto;
           margin: 0 auto;
-          &.d8-logo{
+          &.d8-logo {
             height: 85px;
             margin-top: 20px;
           }
@@ -84,7 +84,7 @@ footer{
     }
     .copy-text {
       background-color: $blue;
-      p{
+      p {
         width: 100%;
         font-size: 16px;
         text-align: center;
@@ -94,8 +94,6 @@ footer{
     }
   }
 }
-
-
 
 // RESPONSIVE DESIGN
 // =============================================================================

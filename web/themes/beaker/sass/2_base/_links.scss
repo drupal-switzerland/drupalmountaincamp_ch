@@ -6,9 +6,12 @@ a:visited {
   text-decoration: none;
   color: $blue;
 }
-a{
+
+a {
   transition: 0.6s all ease;
 }
+
+a:focus,
 a:hover {
   text-decoration: none;
   cursor: pointer;
