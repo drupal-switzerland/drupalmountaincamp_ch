@@ -166,6 +166,7 @@ header.header {
         line-height: 1;
         text-transform: uppercase;
         padding: $header / 4 $header / 8;
+
       }
       li {
         width: auto;
@@ -179,6 +180,11 @@ header.header {
         border-bottom: none;
         &:last-child {
           margin-right: 0;
+          a {
+            max-width: 5rem;
+            text-align: center;
+            padding: 10px;
+          }
         }
       }
     }
