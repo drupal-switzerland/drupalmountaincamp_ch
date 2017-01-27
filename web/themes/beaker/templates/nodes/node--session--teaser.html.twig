@@ -9,18 +9,14 @@
   {{ title_suffix }}
 
   <div{{ content_attributes.addClass('rt') }}>
-    <div class="rt">
-      <h3>
-        {{ content.field_session_speaker['#items'].getString }}
-      </h3>
       <h2{{ title_attributes.addClass('title') }}>
+        <small>{{ content.field_session_speaker['#items'].getString }}</small>
+        <span class="visually-hidden">:</span>
+        <br>
         {{ label['#items'].getString }}
       </h2>
-    </div>
     {{ content|without('field_session_speaker', 'body') }}
-    <div class="rt">
-      {{ content.body }}
-    </div>
+    {{ content.body }}
   </div>
 </article>
 

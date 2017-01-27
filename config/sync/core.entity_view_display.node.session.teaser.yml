@@ -78,6 +78,8 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_accepted: true
+  field_keynote: true
   field_session_contact_mail: true
   field_session_remarks: true
   field_tags: true
