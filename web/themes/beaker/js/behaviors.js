@@ -22,7 +22,7 @@
     attach: function(context, settings) {
       $('.menu-toggle').on('click',function(){
         $('.menu-toggle a').toggleClass('expanded');
-        $('.menu--main').toggleClass('expanded');
+        $('.menu--main').parents('header').toggleClass('expanded');
       });
 
     }
@@ -79,23 +79,5 @@ Drupal.behaviors.stickyHeader = {
 
   }
 };
-
-/**
-* - On Scroll, remove the opened menu item
-*/
-Drupal.behaviors.scrollCloseElements = {
-  attach: function(context, settings) {
-
-    checkOrientationMenu = function() {
-      $('#block-beaker-main-menu').removeClass('expanded');
-      $('#menu-toggle').removeClass('expanded');
-    };
-
-    $(window).scroll(function() {
-      checkOrientationMenu();
-    });
-  }
-};
-
 
 })(jQuery);

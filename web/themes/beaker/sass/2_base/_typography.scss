@@ -49,12 +49,92 @@ h4 {
 
 // TEXT STYLES
 // =============================================================================
-b, em, strong {
+b,
+em,
+strong {
   @include font-semibold;
 }
 
-p{
+@mixin paragraph() {
   @include font-light;
   line-height: 32px;
   @include font-size(18px,true);
+}
+
+@mixin paragraph-anchor($color: $blue, $active-color: $red, $invert-color: $white) {
+  @include font-semibold;
+  text-decoration: none;
+  color: $color;
+  display: inline-block;
+  padding: 2px 1px;
+  box-shadow: inset 0 -1px 0 0 $active-color;
+  &:focus,
+  &:hover {
+    color: $active-color;
+    box-shadow: inset 0 -1px 0 0 $active-color;
+  }
+  &:active {
+    color: $invert-color;
+    background-color: $active-color;
+  }
+}
+
+p {
+  @include paragraph;
+}
+.rt {
+  h1 {
+    margin-bottom: 1rem;
+  }
+  h2 {
+    margin-top: 1rem;
+    margin-bottom: .75rem;
+  }
+  h3 {
+    margin-top: 1rem;
+    margin-bottom: .75rem;
+  }
+  h4 {
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+  }
+  p {
+    // use collapsing margins
+    margin: .5rem 0;
+    a:not(.button) {
+      @include paragraph-anchor;
+    }
+  }
+  ol,
+  ul {
+    margin: .75rem 0 .75rem 1rem;
+    @include font-light;
+    line-height: 32px;
+    @include font-size(18px,true);
+    p,
+    li {
+      padding: 0;
+      margin: 0 0 .25rem;
+    }
+  }
+}
+.title {
+  small {
+    font-size: .75em;
+    line-height: 1;
+  }
+}
+
+.rt p a:not(.button) {
+  .path-sponsors &,
+  .path-davos &,
+  .panel--blue & {
+    @include paragraph-anchor($white, $red, $white);
+  }
+  .panel--red & {
+    @include paragraph-anchor($white, $white, $blue);
+  }
+  .panel--white & {
+    @include paragraph-anchor();
+  }
 }

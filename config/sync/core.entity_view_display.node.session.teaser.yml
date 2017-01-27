@@ -5,8 +5,19 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.session.body
+    - field.field.node.session.field_session_contact_mail
+    - field.field.node.session.field_session_expertise_level
+    - field.field.node.session.field_session_remarks
+    - field.field.node.session.field_session_slides_file
+    - field.field.node.session.field_session_slides_link
+    - field.field.node.session.field_session_speaker
+    - field.field.node.session.field_session_track
+    - field.field.node.session.field_session_type
+    - field.field.node.session.field_tags
     - node.type.session
   module:
+    - file
+    - link
     - text
     - user
 id: node.session.teaser
@@ -17,19 +28,59 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 4
     settings:
       trim_length: 600
     third_party_settings: {  }
-  links:
-    weight: 100
+  field_session_expertise_level:
+    type: entity_reference_label
+    weight: 3
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_session_slides_file:
+    type: file_default
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_session_slides_link:
+    type: link
+    weight: 5
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_session_speaker:
+    type: string
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_session_track:
+    type: entity_reference_label
+    weight: 2
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_session_type:
+    type: entity_reference_label
+    weight: 1
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
 hidden:
+  field_accepted: true
+  field_keynote: true
   field_session_contact_mail: true
-  field_session_expertise_level: true
   field_session_remarks: true
-  field_session_slides_file: true
-  field_session_slides_link: true
-  field_session_speaker: true
-  field_session_track: true
-  field_session_type: true
   field_tags: true
+  links: true
