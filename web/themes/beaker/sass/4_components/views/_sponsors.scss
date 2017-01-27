@@ -17,30 +17,36 @@
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    align-content: space-between;
+    align-content: center;
+    justify-content: space-around;
+    width: 100%;
+  }
+  .views-row {
+    width: 50%;
   }
 
   .views-row {
-    text-align: center;
-    box-sizing: border-box;
-    flex: 1;
-    padding: 1em;
-    min-width: 33%;
-    max-width: 33%;
-    align-content: space-between;
+    article {
+      padding: 1em;
+    }
+    a {
+      display: block;
+    }
+    .field--name-field-sponsor-image {
+      text-align: center;
+    }
   }
-
+  @include breakpoint($tablet-up) {
+    .view-content {
+      max-width: $wide;
+      margin: 0 auto;
+    }
+    .views-row {
+      width: 33%;
+    }
+  }
   .sponsors {
     position: relative;
-
-    //&:hover {
-    //  img {
-    //    transform: translateY(-0.9em) scale(0.4);
-    //  }
-    //  .hover-fields-wrapper {
-    //    display: inline-block;
-    //  }
-    //}
 
     img {
       max-width: 160px;
