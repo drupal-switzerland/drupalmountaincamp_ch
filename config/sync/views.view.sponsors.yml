@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.minimal
+    - core.entity_view_mode.node.teaser
     - node.type.sponsors
     - taxonomy.vocabulary.sponsorship_type
   content:
@@ -69,7 +70,7 @@ display:
         type: 'entity:node'
         options:
           relationship: none
-          view_mode: minimal
+          view_mode: teaser
       fields:
         title:
           id: title
@@ -820,6 +821,8 @@ display:
         filters: false
         filter_groups: false
         title: false
+        style: false
+        row: false
       filter_groups:
         operator: AND
         groups:
@@ -827,6 +830,14 @@ display:
       title: 'Individual Sponsor'
       block_hide_empty: false
       enabled: true
+      style:
+        type: default
+        options: {  }
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: minimal
     cache_metadata:
       max-age: -1
       contexts:
