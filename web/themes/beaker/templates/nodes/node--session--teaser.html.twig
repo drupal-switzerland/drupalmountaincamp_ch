@@ -9,12 +9,14 @@
   {{ title_suffix }}
 
   <div{{ content_attributes.addClass('rt') }}>
+    <a href="{{ url }}">
       <h2{{ title_attributes.addClass('title') }}>
         <small>{{ content.field_session_speaker['#items'].getString }}</small>
         <span class="visually-hidden">:</span>
         <br>
         {{ label['#items'].getString }}
       </h2>
+    </a>
     {{ content|without('field_session_speaker', 'body') }}
     {{ content.body }}
   </div>
