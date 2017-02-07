@@ -9,7 +9,7 @@ dependencies:
 id: beaker_page_title
 theme: beaker
 region: '-1'
-weight: -7
+weight: -8
 provider: null
 plugin: page_title_block
 settings:

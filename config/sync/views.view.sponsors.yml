@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.minimal
     - node.type.sponsors
     - taxonomy.vocabulary.sponsorship_type
   content:
@@ -12,6 +12,7 @@ dependencies:
     - 'taxonomy_term:sponsorship_type:248e3763-d7b4-46d7-ac2f-22796715e9ab'
     - 'taxonomy_term:sponsorship_type:2f2c3b5c-5eb1-4f02-98da-47cc8e77f967'
     - 'taxonomy_term:sponsorship_type:599d392a-a402-4412-9b8a-616f58f0ecff'
+    - 'taxonomy_term:sponsorship_type:8f126427-98fc-4d22-b9e3-6decf5e61242'
     - 'taxonomy_term:sponsorship_type:a86ed1b1-1a52-436e-86bc-8c69a8ea40ec'
   module:
     - node
@@ -67,7 +68,8 @@ display:
       row:
         type: 'entity:node'
         options:
-          view_mode: teaser
+          relationship: none
+          view_mode: minimal
       fields:
         title:
           id: title
@@ -730,6 +732,99 @@ display:
         groups:
           1: AND
       title: 'Contribution Sponsor'
+      block_hide_empty: false
+      enabled: true
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
+  block_8:
+    display_plugin: block
+    id: block_8
+    display_title: 'Individual Sponsors Block'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            sponsors: sponsors
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        field_sponsorship_type__target_id:
+          id: field_sponsorship_type__target_id
+          table: node__field_sponsorship_type_
+          field: field_sponsorship_type__target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            5: 5
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: sponsorship_type
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+      defaults:
+        filters: false
+        filter_groups: false
+        title: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      title: 'Individual Sponsor'
       block_hide_empty: false
       enabled: true
     cache_metadata:

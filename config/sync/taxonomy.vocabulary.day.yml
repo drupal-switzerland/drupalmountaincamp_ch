@@ -1,0 +1,9 @@
+uuid: ae0efeeb-c67f-46d5-a400-3c7afedd7fe2
+langcode: en
+status: true
+dependencies: {  }
+name: Day
+vid: day
+description: 'The three days of the camp'
+hierarchy: 0
+weight: 0
