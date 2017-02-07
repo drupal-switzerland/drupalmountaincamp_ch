@@ -13,7 +13,7 @@ entity_type: node
 bundle: sponsors
 label: 'Sponsor Image'
 description: 'Upload the sponsor''s logo.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -5,7 +5,9 @@ dependencies:
   config:
     - field.field.node.session.body
     - field.field.node.session.field_accepted
+    - field.field.node.session.field_day
     - field.field.node.session.field_keynote
+    - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
     - field.field.node.session.field_session_remarks
@@ -15,8 +17,10 @@ dependencies:
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
     - field.field.node.session.field_tags
+    - field.field.node.session.field_time_slot
     - node.type.session
   module:
+    - datetime_range
     - text
 id: node.session.default
 targetEntityType: node
@@ -37,6 +41,16 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+  field_day:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+  field_room:
+    weight: 29
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
   field_session_contact_mail:
     weight: 6
     settings:
@@ -73,6 +87,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+  field_time_slot:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: daterange_default
   title:
     type: string_textfield
     weight: 0

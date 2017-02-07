@@ -1,0 +1,8 @@
+uuid: e9148052-0d27-4bc9-bc78-6ea03a34e633
+langcode: en
+status: true
+dependencies: {  }
+id: short_time
+label: 'Short time'
+locked: false
+pattern: 'G:i'

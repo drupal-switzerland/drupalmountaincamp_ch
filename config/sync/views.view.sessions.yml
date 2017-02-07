@@ -713,21 +713,30 @@ display:
           entity_field: status
           plugin_id: boolean
       sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          order: DESC
-          entity_type: node
-          entity_field: created
-          plugin_id: date
+        field_day_target_id:
+          id: field_day_target_id
+          table: node__field_day
+          field: field_day_target_id
           relationship: none
           group_type: group
           admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: Day
+          plugin_id: standard
+        field_time_slot_value:
+          id: field_time_slot_value
+          table: node__field_time_slot
+          field: field_time_slot_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
           exposed: false
           expose:
             label: ''
-          granularity: second
+          plugin_id: standard
       title: Sessions
       header: {  }
       footer: {  }

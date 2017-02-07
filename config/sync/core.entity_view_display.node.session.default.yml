@@ -5,7 +5,9 @@ dependencies:
   config:
     - field.field.node.session.body
     - field.field.node.session.field_accepted
+    - field.field.node.session.field_day
     - field.field.node.session.field_keynote
+    - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
     - field.field.node.session.field_session_remarks
@@ -15,8 +17,10 @@ dependencies:
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
     - field.field.node.session.field_tags
+    - field.field.node.session.field_time_slot
     - node.type.session
   module:
+    - datetime_range
     - file
     - link
     - text
@@ -29,33 +33,38 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 5
     settings: {  }
     third_party_settings: {  }
-  field_accepted:
-    weight: 8
+  field_day:
+    weight: 1
     label: above
     settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
+      link: false
     third_party_settings: {  }
-    type: boolean
+    type: entity_reference_label
+  field_room:
+    weight: 3
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
   field_session_expertise_level:
-    weight: 5
+    weight: 8
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_session_slides_file:
-    weight: 7
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_session_slides_link:
-    weight: 6
+    weight: 9
     label: above
     settings:
       trim_length: 80
@@ -66,31 +75,41 @@ content:
     third_party_settings: {  }
     type: link
   field_session_speaker:
-    weight: 1
+    weight: 4
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_session_track:
-    weight: 4
+    weight: 7
     label: above
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_session_type:
-    weight: 3
+    weight: 6
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+  field_time_slot:
+    weight: 2
+    label: above
+    settings:
+      separator: '-'
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: daterange_default
   links:
     weight: 0
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_accepted: true
   field_keynote: true
   field_session_contact_mail: true
   field_session_remarks: true

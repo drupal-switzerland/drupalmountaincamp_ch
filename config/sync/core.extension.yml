@@ -10,6 +10,7 @@ module:
   crop: 0
   ctools: 0
   datetime: 0
+  datetime_range: 0
   dblog: 0
   editor: 0
   entity_reference: 0

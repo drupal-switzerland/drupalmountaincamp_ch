@@ -1,0 +1,26 @@
+uuid: 98478c88-25c4-4fe0-a8d5-b946873f91a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.minimal
+    - field.field.node.sponsors.field_sponsor_description
+    - field.field.node.sponsors.field_sponsor_image
+    - field.field.node.sponsors.field_sponsor_link
+    - field.field.node.sponsors.field_sponsor_order
+    - field.field.node.sponsors.field_sponsorship_type_
+    - node.type.sponsors
+  module:
+    - user
+id: node.sponsors.minimal
+targetEntityType: node
+bundle: sponsors
+mode: minimal
+content: {  }
+hidden:
+  field_sponsor_description: true
+  field_sponsor_image: true
+  field_sponsor_link: true
+  field_sponsor_order: true
+  field_sponsorship_type_: true
+  links: true
