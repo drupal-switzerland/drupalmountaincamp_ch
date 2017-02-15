@@ -13,6 +13,7 @@ module:
   datetime_range: 0
   dblog: 0
   editor: 0
+  entity: 0
   entity_reference: 0
   entity_reference_revisions: 0
   field: 0
@@ -27,6 +28,7 @@ module:
   link: 0
   link_attributes: 0
   link_css: 0
+  media_entity: 0
   menu_ui: 0
   metatag: 0
   metatag_open_graph: 0
@@ -41,6 +43,7 @@ module:
   path: 0
   quickedit: 0
   rdf: 0
+  redirect: 0
   responsive_image: 0
   shortcut: 0
   superfish: 0
