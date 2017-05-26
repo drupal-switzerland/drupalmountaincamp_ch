@@ -56,7 +56,7 @@ if (getenv('AMAZEEIO_SOLR_HOST') && getenv('AMAZEEIO_SOLR_PORT')) {
 
 ### amazee.io Varnish & Reverse proxy settings
 if (getenv('AMAZEEIO_VARNISH_HOSTS') && getenv('AMAZEEIO_VARNISH_SECRET')) {
-    $varnish_hosts = explode(getenv('AMAZEEIO_VARNISH_HOSTS'), ',');
+    $varnish_hosts = explode(',', getenv('AMAZEEIO_VARNISH_HOSTS'));
     array_walk($varnish_hosts, function (&$value, $key) {
         $value .= ':6082';
     });
