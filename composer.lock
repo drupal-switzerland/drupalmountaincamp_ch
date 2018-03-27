@@ -2068,7 +2068,7 @@
             "version": "dev-amazee",
             "source": {
                 "type": "git",
-                "url": "git@github.com:AmazeeLabs/varnish.git",
+                "url": "https://github.com/AmazeeLabs/varnish.git",
                 "reference": "8.x-1.x-amazee"
             },
             "type": "drupal-module",

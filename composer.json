@@ -11,7 +11,7 @@
                 "type": "drupal-module",
                 "source": {
                     "type": "git",
-                    "url": "git@github.com:AmazeeLabs/varnish.git",
+                    "url": "https://github.com/AmazeeLabs/varnish.git",
                     "reference": "8.x-1.x-amazee"
                 }
             }
@@ -22,7 +22,7 @@
         },
         {
             "type": "composer",
-            "url": "https://packagist.drupal-composer.org"
+            "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
@@ -69,6 +69,12 @@
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+        "pre-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "pre-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
         "post-install-cmd": [
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
         ],
@@ -79,11 +85,17 @@
     "extra": {
         "installer-paths": {
             "web/core": ["type:drupal-core"],
+            "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
-        "composer-exit-on-patch-failure": true
+        "drupal-scaffold": {
+            "excludes": [
+                "sites/development.services.yml",
+                "sites/example.settings.local.php"
+            ]
+        }
     }
 }
