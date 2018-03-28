@@ -33,7 +33,7 @@
     "gulp-sass": ">=2.0.4",
     "gulp-util": ">=3.0.6",
     "stream-browserify": ">=2.0.1",
-    "susy": ">=2.2.12"
+    "susy": "~2.2.5"
   },
   "scripts": {
     "gulp": "gulp"
