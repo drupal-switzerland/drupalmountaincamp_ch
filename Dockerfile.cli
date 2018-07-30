@@ -2,7 +2,7 @@ FROM amazeeio/node:8-builder as nodebuilder
 
 COPY .npmrc gulpfile.js package.json /app/
 RUN npm install --production
-COPY themes/beaker /app/themes/beaker
+COPY web/themes/beaker /app/web/themes/beaker
 RUN npm run gulp -- compile --env=prod
 
 FROM amazeeio/php:7.0-cli-drupal
