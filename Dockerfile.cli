@@ -10,11 +10,10 @@ FROM amazeeio/php:7.0-cli-drupal
 COPY composer.json composer.lock /app/
 COPY scripts /app/scripts
 
-RUN composer install --prefer-dist --no-dev --no-suggest --optimize-autoloader --apcu-autoloader
 
 COPY --from=nodebuilder /app/ /app/
-
 COPY . /app
+RUN composer install --prefer-dist --no-dev --no-suggest --optimize-autoloader --apcu-autoloader
 
 # Define where the Drupal Root is located
 ENV WEBROOT=/web
