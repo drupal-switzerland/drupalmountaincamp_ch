@@ -4,25 +4,28 @@ tasks:
   post-rollout:
 
     - run:
-        name: task0
+        name: drush cim
+        command: cd web && drush -y cim
+        service: cli
+    - run:
+        name: drush updb
         command: cd web && drush -y updb --cache-clear=0
         service: cli
-
     - run:
-        name: task1
+        name: drush cr
         command: cd web && drush -y cr
         service: cli
 
 
-cronjobs:
-  - name: drush cron
-    schedule: "*/15 * * * *"
-    command: drush cron
-    service: cli
-
 environments:
-  prod:
+  master:
+    cronjobs:
+      - name: drush cron
+        schedule: "*/15 * * * *"
+        command: drush cron
+        service: cli
     routes:
       - varnish:
         - "drupalmountaincamp.ch"
         - "www.drupalmountaincamp.ch"
+
