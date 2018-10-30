@@ -30,6 +30,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
   field_image:
     weight: 104
     label: above
@@ -38,12 +39,14 @@ content:
       image_link: ''
     third_party_settings: {  }
     type: image
+    region: content
   field_summary:
     weight: 109
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_talk_topic:
     weight: 107
     label: above
@@ -51,6 +54,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_time:
     weight: 108
     label: above
@@ -59,12 +63,14 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_track:
     weight: 105
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
   field_website_link:
     weight: 103
     label: above
@@ -76,6 +82,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_weight:
     weight: 106
     label: above
@@ -84,6 +91,8 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
+    region: content
   links:
     weight: 100
+    region: content
 hidden: {  }

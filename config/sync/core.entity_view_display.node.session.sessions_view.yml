@@ -5,7 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.node.sessions_view
     - field.field.node.session.body
+    - field.field.node.session.field_accepted
+    - field.field.node.session.field_day
     - field.field.node.session.field_keynote
+    - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
     - field.field.node.session.field_session_remarks
@@ -15,6 +18,7 @@ dependencies:
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
     - field.field.node.session.field_tags
+    - field.field.node.session.field_time_slot
     - node.type.session
   module:
     - file
@@ -33,12 +37,14 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+    region: content
   field_session_slides_file:
     weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
+    region: content
   field_session_slides_link:
     weight: 4
     label: above
@@ -50,6 +56,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_session_speaker:
     weight: 0
     label: hidden
@@ -57,6 +64,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_session_track:
     weight: 1
     label: inline
@@ -64,6 +72,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_tags:
     weight: 2
     label: inline
@@ -71,10 +80,15 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
 hidden:
+  field_accepted: true
+  field_day: true
   field_keynote: true
+  field_room: true
   field_session_contact_mail: true
   field_session_expertise_level: true
   field_session_remarks: true
   field_session_type: true
+  field_time_slot: true
   links: true

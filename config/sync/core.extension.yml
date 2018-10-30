@@ -64,3 +64,4 @@ theme:
   seven: 0
   beaker: 0
   stable: 0
+profile: config_installer

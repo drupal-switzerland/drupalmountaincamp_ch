@@ -12,7 +12,7 @@ dependencies:
     - beaker
 id: calltospeakersandsponsors
 theme: beaker
-region: '-1'
+region: header
 weight: -14
 provider: null
 plugin: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'

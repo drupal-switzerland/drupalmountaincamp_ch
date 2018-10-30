@@ -491,7 +491,18 @@ display:
             label: ''
           plugin_id: standard
       title: Schedule
-      header: {  }
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content: 'Download session plans (pdf): <a href ="https://drupalmountaincamp.ch/thursday" target="_blank">Thursday</a>, <a href ="https://drupalmountaincamp.ch/friday" target="_blank">Friday</a>, <a href ="https://drupalmountaincamp.ch/saturday" target="_blank">Saturday</a>'
+          plugin_id: text_custom
       footer: {  }
       empty: {  }
       relationships: {  }

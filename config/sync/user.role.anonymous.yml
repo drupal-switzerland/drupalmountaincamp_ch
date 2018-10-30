@@ -7,9 +7,10 @@ label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
-  0: 'use text format plain_text'
-  1: 'access content'
-  3: 'access comments'
-  4: 'access site-wide contact form'
-  5: 'create session content'
-  6: 'use text format basic_html'
+  - 'access comments'
+  - 'access content'
+  - 'access site-wide contact form'
+  - 'create session content'
+  - 'create slides content'
+  - 'use text format basic_html'
+  - 'use text format plain_text'

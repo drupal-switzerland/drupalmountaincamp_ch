@@ -21,6 +21,8 @@ dependencies:
     - node.type.session
   module:
     - datetime_range
+    - file
+    - redirect
     - text
 id: node.session.default
 targetEntityType: node
@@ -29,69 +31,93 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 1
+    weight: 3
     settings:
       rows: 9
       placeholder: ''
       summary_rows: 5
     third_party_settings: {  }
+    region: content
   field_accepted:
-    weight: 26
+    weight: 10
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
   field_day:
-    weight: 27
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   field_room:
-    weight: 29
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   field_session_contact_mail:
-    weight: 6
+    weight: 8
     settings:
       size: 60
       placeholder: example@domain.com
     third_party_settings: {  }
     type: email_default
+    region: content
   field_session_expertise_level:
-    weight: 4
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   field_session_remarks:
-    weight: 7
+    weight: 9
     settings:
       rows: 2
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_session_slides_file:
+    type: file_generic
+    weight: 1
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    region: content
+  field_session_slides_link:
+    type: redirect_source
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_session_speaker:
-    weight: 5
+    weight: 7
     settings:
       size: 60
       placeholder: 'Your Name'
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_session_track:
-    weight: 3
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   field_session_type:
-    weight: 2
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   field_time_slot:
-    weight: 28
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     type: daterange_default
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -99,11 +125,10 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
   created: true
   field_keynote: true
-  field_session_slides_file: true
-  field_session_slides_link: true
   field_tags: true
   path: true
   promote: true

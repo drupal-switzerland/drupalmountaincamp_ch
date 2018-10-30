@@ -10,7 +10,7 @@ dependencies:
     - beaker
 id: beaker_account_menu
 theme: beaker
-region: '-1'
+region: header
 weight: -3
 provider: null
 plugin: 'system_menu_block:account'

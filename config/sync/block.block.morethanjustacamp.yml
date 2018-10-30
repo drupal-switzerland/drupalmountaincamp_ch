@@ -10,7 +10,7 @@ dependencies:
     - beaker
 id: morethanjustacamp
 theme: beaker
-region: '-1'
+region: header
 weight: -9
 provider: null
 plugin: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'

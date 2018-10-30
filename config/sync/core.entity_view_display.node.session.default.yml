@@ -36,6 +36,7 @@ content:
     weight: 5
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_day:
     weight: 1
     label: above
@@ -43,6 +44,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_room:
     weight: 3
     label: above
@@ -50,6 +52,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_session_expertise_level:
     weight: 8
     label: inline
@@ -57,12 +60,14 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_session_slides_file:
     weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
+    region: content
   field_session_slides_link:
     weight: 9
     label: above
@@ -74,6 +79,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_session_speaker:
     weight: 4
     label: inline
@@ -81,6 +87,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_session_track:
     weight: 7
     label: above
@@ -88,6 +95,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_session_type:
     weight: 6
     label: inline
@@ -95,6 +103,7 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_time_slot:
     weight: 2
     label: above
@@ -104,10 +113,12 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: daterange_default
+    region: content
   links:
     weight: 0
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_accepted: true
   field_keynote: true

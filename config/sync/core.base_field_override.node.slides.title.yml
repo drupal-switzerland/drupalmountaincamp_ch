@@ -1,0 +1,18 @@
+uuid: d976bbbc-469e-4d30-bb07-b83cd0646601
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.slides
+id: node.slides.title
+field_name: title
+entity_type: node
+bundle: slides
+label: 'Session Name'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

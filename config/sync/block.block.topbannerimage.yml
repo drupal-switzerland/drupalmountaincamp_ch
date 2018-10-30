@@ -10,7 +10,7 @@ dependencies:
     - beaker
 id: topbannerimage
 theme: beaker
-region: '-1'
+region: header
 weight: -4
 provider: null
 plugin: 'block_content:eaf18576-8f5b-4ff5-9b37-96275fc99b2a'

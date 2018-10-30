@@ -8,7 +8,7 @@ dependencies:
     - beaker
 id: beaker_branding
 theme: beaker
-region: '-1'
+region: header
 weight: -6
 provider: null
 plugin: system_branding_block
