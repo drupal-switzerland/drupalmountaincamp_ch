@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.article.body
     - field.field.node.article.field_image
     - field.field.node.article.field_tags
+    - field.field.node.article.field_year
     - image.style.thumbnail
     - node.type.article
   module:
@@ -45,6 +46,15 @@ content:
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_year:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   path:
     type: path

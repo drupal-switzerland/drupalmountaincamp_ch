@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_year
     - node.type.page
   module:
     - path
@@ -27,6 +28,15 @@ content:
     weight: 10
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_year:
+    weight: 32
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   path:
     type: path

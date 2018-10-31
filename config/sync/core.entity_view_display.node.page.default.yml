@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_year
     - node.type.page
   module:
     - text
@@ -16,11 +17,14 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 100
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
   links:
-    weight: 101
+    weight: 1
     region: content
-hidden: {  }
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_year: true

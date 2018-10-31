@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.slides.field_link_to_slides
     - field.field.node.slides.field_slides_pdf_
     - field.field.node.slides.field_speaker
+    - field.field.node.slides.field_year
     - node.type.slides
   module:
     - file
@@ -43,6 +44,15 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_year:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   title:
     type: string_textfield

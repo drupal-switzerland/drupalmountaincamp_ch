@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.sponsors.field_sponsor_link
     - field.field.node.sponsors.field_sponsor_order
     - field.field.node.sponsors.field_sponsorship_type_
+    - field.field.node.sponsors.field_year
     - image.style.large
     - node.type.sponsors
   module:
@@ -20,14 +21,14 @@ bundle: sponsors
 mode: default
 content:
   field_sponsor_description:
-    weight: 106
+    weight: 5
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_sponsor_image:
-    weight: 103
+    weight: 2
     label: hidden
     settings:
       image_style: large
@@ -36,7 +37,7 @@ content:
     type: image
     region: content
   field_sponsor_link:
-    weight: 104
+    weight: 3
     label: hidden
     settings:
       trim_length: 80
@@ -48,14 +49,14 @@ content:
     type: link
     region: content
   field_sponsor_order:
-    weight: 102
+    weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: number_unformatted
     region: content
   field_sponsorship_type_:
-    weight: 105
+    weight: 4
     label: hidden
     settings:
       link: true
@@ -63,8 +64,9 @@ content:
     type: entity_reference_label
     region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-hidden: {  }
+hidden:
+  field_year: true

@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.sponsors.field_sponsor_link
     - field.field.node.sponsors.field_sponsor_order
     - field.field.node.sponsors.field_sponsorship_type_
+    - field.field.node.sponsors.field_year
     - image.style.thumbnail
     - node.type.sponsors
   module:
@@ -61,6 +62,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
+  field_year:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   path:
     type: path

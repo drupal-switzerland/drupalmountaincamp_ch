@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.slides.field_link_to_slides
     - field.field.node.slides.field_slides_pdf_
     - field.field.node.slides.field_speaker
+    - field.field.node.slides.field_year
     - node.type.slides
   module:
     - file
@@ -17,7 +18,7 @@ bundle: slides
 mode: default
 content:
   field_link_to_slides:
-    weight: 104
+    weight: 3
     label: above
     settings:
       trim_length: 80
@@ -29,14 +30,14 @@ content:
     type: link
     region: content
   field_slides_pdf_:
-    weight: 103
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
     region: content
   field_speaker:
-    weight: 101
+    weight: 1
     label: above
     settings:
       link_to_entity: false
@@ -44,6 +45,9 @@ content:
     type: string
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
-hidden: {  }
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_year: true

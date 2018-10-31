@@ -1,16 +1,17 @@
-uuid: 4081953f-8122-43fc-a787-b6a515fa935c
+uuid: 72f0c2d7-9e0b-4512-a924-517f7da9ab77
 langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-id: node.field_website_link
-field_name: field_website_link
+    - taxonomy
+id: node.field_year
+field_name: field_year
 entity_type: node
-type: link
-settings: {  }
-module: link
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
 locked: false
 cardinality: 1
 translatable: true

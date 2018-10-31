@@ -1,0 +1,28 @@
+uuid: 97bd0539-6e76-4252-8b93-ba7f25675715
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_year
+    - node.type.slides
+    - taxonomy.vocabulary.year
+id: node.slides.field_year
+field_name: field_year
+entity_type: node
+bundle: slides
+label: Year
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      year: year
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
