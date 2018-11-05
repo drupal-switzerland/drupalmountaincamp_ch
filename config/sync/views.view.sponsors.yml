@@ -16,7 +16,7 @@ dependencies:
     - 'taxonomy_term:sponsorship_type:599d392a-a402-4412-9b8a-616f58f0ecff'
     - 'taxonomy_term:sponsorship_type:8f126427-98fc-4d22-b9e3-6decf5e61242'
     - 'taxonomy_term:sponsorship_type:a86ed1b1-1a52-436e-86bc-8c69a8ea40ec'
-    - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
+    - 'taxonomy_term:year:55e21dc6-bb97-4915-be50-7eb08a715365'
   module:
     - node
     - taxonomy
@@ -151,7 +151,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -280,7 +280,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -417,7 +417,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -554,7 +554,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -691,7 +691,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -828,7 +828,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -965,7 +965,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
@@ -1112,7 +1112,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 31
           group: 1
           exposed: false
           expose:
