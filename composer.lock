@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "88e2aff6c5ff711e3a23214b12af5582",
+    "content-hash": "37947e9b9d3d8da9d9bef95bc3064bda",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -445,7 +445,7 @@
             "support": {
                 "source": "https://github.com/AmazeeLabs/composer-patches/tree/amazee"
             },
-            "time": "2016-07-06 13:47:11"
+            "time": "2016-07-06T13:47:11+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -987,7 +987,7 @@
             ],
             "description": "Use configuration from another Drupal site to install a Drupal instance. Suitable for advanced users.",
             "homepage": "https://www.drupal.org/project/config_installer",
-            "time": "2016-05-09 12:21:05"
+            "time": "2016-05-09T12:21:05+00:00"
         },
         {
             "name": "drupal/console",
@@ -1626,7 +1626,7 @@
             ],
             "description": "Include CSS files using <link> element instead of @import.",
             "homepage": "https://www.drupal.org/project/link_css",
-            "time": "2016-11-08 03:19:30"
+            "time": "2016-11-08T03:19:30+00:00"
         },
         {
             "name": "drupal/magnific_popup",
@@ -1907,7 +1907,7 @@
             ],
             "description": "Core Panels display functions; provides no external UI, at least one other Panels module should be enabled.",
             "homepage": "https://www.drupal.org/project/panels",
-            "time": "2016-11-13 00:53:07"
+            "time": "2016-11-13T00:53:07+00:00"
         },
         {
             "name": "drupal/paragraphs",
@@ -2087,15 +2087,59 @@
             "time": "2016-09-20T10:19:14+00:00"
         },
         {
-            "name": "drupal/varnish",
-            "version": "dev-amazee",
+            "name": "drupal/varnish_purge",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/AmazeeLabs/varnish.git",
-                "reference": "8.x-1.x-amazee"
+                "url": "https://git.drupal.org/project/varnish_purge",
+                "reference": "8.x-1.11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/varnish_purge-8.x-1.11.zip",
+                "reference": "8.x-1.11",
+                "shasum": "fbfa2eeb52e402775185f9069d0c8c34c7d4f1d8"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/purge": "*",
+                "drupal/purge_tokens": "*",
+                "drupal/varnish_purger": "*"
             },
             "type": "drupal-module",
-            "time": "2016-02-26 12:54:16"
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.11",
+                    "datestamp": "1530614920",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "MiSc",
+                    "homepage": "https://www.drupal.org/user/382892"
+                },
+                {
+                    "name": "deadbeef",
+                    "homepage": "https://www.drupal.org/user/93644"
+                }
+            ],
+            "homepage": "https://www.drupal.org/project/varnish_purge",
+            "support": {
+                "source": "http://cgit.drupalcode.org/varnish_purge"
+            }
         },
         {
             "name": "drush/drush",
@@ -3089,7 +3133,7 @@
             "keywords": [
                 "instagram"
             ],
-            "time": "2013-11-13 23:10:03"
+            "time": "2013-11-13T23:10:03+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -5358,7 +5402,6 @@
     "stability-flags": {
         "cweagans/composer-patches": 20,
         "drupal/config_installer": 20,
-        "drupal/varnish": 20,
         "drupal/panels": 20
     },
     "prefer-stable": true,
