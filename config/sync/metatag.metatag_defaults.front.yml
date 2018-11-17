@@ -9,7 +9,7 @@ label: 'Front page'
 tags:
   canonical_url: '[site:url]'
   description: 'In March 2019 the Drupal community from Switzerland and the world will gather in beautiful Davos for the first Drupal Mountain Camp!'
-  image_src: '[site:url]/themes/beaker/images/logo_infos.jpg'
+  image_src: '[site:url]/themes/beaker/images/twitter_image.jpg'
   referrer: origin-when-cross-origin
   shortlink: '[site:url]'
   title: 'Drupal Mountain Camp Switzerland, 7 - 10 March 2019, Davos Switzerland'

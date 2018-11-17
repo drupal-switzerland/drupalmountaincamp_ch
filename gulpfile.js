@@ -61,7 +61,7 @@ if( dev ) {
   /*Docker setup*/
   if( fs.existsSync('./docker-compose.yml') ) {
     var get_hostname     = yaml.safeLoad(fs.readFileSync('./docker-compose.yml', 'utf8'));
-    var domain           = get_hostname['services']['drupal']['hostname'];
+    var domain           = get_hostname['x-environment']['LAGOON_ROUTE'];
   }
   /*Vagrant locally*/
   else if( fs.existsSync('./domain.json') ) {
