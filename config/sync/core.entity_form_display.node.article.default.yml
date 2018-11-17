@@ -10,7 +10,7 @@ dependencies:
     - image.style.thumbnail
     - node.type.article
   module:
-    - image
+    - focal_point
     - path
     - text
 id: node.article.default
@@ -34,11 +34,13 @@ content:
     third_party_settings: {  }
     region: content
   field_image:
-    type: image_image
+    type: image_focal_point
     weight: 4
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
     region: content
   field_tags:
@@ -69,6 +71,13 @@ content:
     weight: 15
     third_party_settings: {  }
     region: content
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 121
+    third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
@@ -91,6 +100,11 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+    region: content
+  url_redirects:
+    weight: 50
+    settings: {  }
     third_party_settings: {  }
     region: content
 hidden: {  }
