@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "88e2aff6c5ff711e3a23214b12af5582",
@@ -445,7 +445,7 @@
             "support": {
                 "source": "https://github.com/AmazeeLabs/composer-patches/tree/amazee"
             },
-            "time": "2016-07-06 13:47:11"
+            "time": "2016-07-06T13:47:11+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -987,7 +987,7 @@
             ],
             "description": "Use configuration from another Drupal site to install a Drupal instance. Suitable for advanced users.",
             "homepage": "https://www.drupal.org/project/config_installer",
-            "time": "2016-05-09 12:21:05"
+            "time": "2016-05-09T12:21:05+00:00"
         },
         {
             "name": "drupal/console",
@@ -1626,7 +1626,7 @@
             ],
             "description": "Include CSS files using <link> element instead of @import.",
             "homepage": "https://www.drupal.org/project/link_css",
-            "time": "2016-11-08 03:19:30"
+            "time": "2016-11-08T03:19:30+00:00"
         },
         {
             "name": "drupal/magnific_popup",
@@ -1907,7 +1907,7 @@
             ],
             "description": "Core Panels display functions; provides no external UI, at least one other Panels module should be enabled.",
             "homepage": "https://www.drupal.org/project/panels",
-            "time": "2016-11-13 00:53:07"
+            "time": "2016-11-13T00:53:07+00:00"
         },
         {
             "name": "drupal/paragraphs",
@@ -2095,7 +2095,7 @@
                 "reference": "8.x-1.x-amazee"
             },
             "type": "drupal-module",
-            "time": "2016-02-26 12:54:16"
+            "time": "2016-02-26T12:54:16+00:00"
         },
         {
             "name": "drush/drush",
@@ -3089,7 +3089,7 @@
             "keywords": [
                 "instagram"
             ],
-            "time": "2013-11-13 23:10:03"
+            "time": "2013-11-13T23:10:03+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
