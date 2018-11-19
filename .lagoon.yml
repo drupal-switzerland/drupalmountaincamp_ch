@@ -3,7 +3,7 @@ docker-compose-yaml: docker-compose.yml
 tasks:
   post-rollout:
     - run:
-        name: IF no Drupal installed & Pullrequest = Sync database from staging
+        name: IF no Drupal installed, then sync database from prod
         command: |
             if [[ ${LAGOON_GIT_SAFE_BRANCH} != "prod" && $(drush core-status bootstrap --pipe) == "" ]]; then
                 drush -y sql-sync @lagoon.prod default -v -ddd
