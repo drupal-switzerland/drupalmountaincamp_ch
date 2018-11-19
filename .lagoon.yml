@@ -6,7 +6,7 @@ tasks:
         name: IF no Drupal installed & Pullrequest = Sync database from staging
         command: |
             if [[ ${LAGOON_GIT_SAFE_BRANCH} != "prod" && $(drush core-status bootstrap --pipe) == "" ]]; then
-                drush -y sql-sync @prod default -v -ddd
+                drush -y sql-sync @lagoon.prod default -v -ddd
             fi
         service: cli
         shell: bash
