@@ -1,20 +1,18 @@
 .location{
   background: $blue;
-  p, a, a:link{
-    text-align: center;
-    color: $white;
-  }
   p {
+    color: $white;
     margin-bottom: 30px;
+    text-align: center;
+  }
+  a {
+    @include paragraph-anchor($white, $red, $white);
   }
   iframe {
     @include breakpoint($tablet-up){
       width: 50%;
     }
     height: 450px;
-  }
-  a:link {
-    text-decoration: underline;
   }
   h1{
     color: $red;
