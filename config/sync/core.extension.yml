@@ -24,7 +24,7 @@ module:
   focal_point: 0
   help: 0
   image: 0
-  layout_plugin: 0
+  layout_discovery: 0
   link: 0
   link_attributes: 0
   link_css: 0
@@ -39,11 +39,11 @@ module:
   page_manager: 0
   page_manager_ui: 0
   panels: 0
-  paragraphs: 0
   path: 0
   quickedit: 0
   rdf: 0
   redirect: 0
+  redirect_404: 0
   responsive_image: 0
   shortcut: 0
   superfish: 0
@@ -58,6 +58,7 @@ module:
   menu_link_content: 1
   pathauto: 1
   views: 10
+  paragraphs: 11
   config_installer: 1000
 theme:
   classy: 0

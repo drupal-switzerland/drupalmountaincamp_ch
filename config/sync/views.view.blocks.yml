@@ -255,7 +255,7 @@ display:
           plugin_id: field
       filters:
         status:
-          value: true
+          value: '1'
           table: node_field_data
           field: status
           plugin_id: boolean
@@ -312,8 +312,6 @@ display:
         - 'config:core.entity_view_display.node.session.teaser'
         - 'config:core.entity_view_display.node.slides.default'
         - 'config:core.entity_view_display.node.slides.teaser'
-        - 'config:core.entity_view_display.node.speakers.default'
-        - 'config:core.entity_view_display.node.speakers.teaser'
         - 'config:core.entity_view_display.node.sponsors.default'
         - 'config:core.entity_view_display.node.sponsors.minimal'
         - 'config:core.entity_view_display.node.sponsors.teaser'
@@ -343,8 +341,6 @@ display:
         - 'config:core.entity_view_display.node.session.teaser'
         - 'config:core.entity_view_display.node.slides.default'
         - 'config:core.entity_view_display.node.slides.teaser'
-        - 'config:core.entity_view_display.node.speakers.default'
-        - 'config:core.entity_view_display.node.speakers.teaser'
         - 'config:core.entity_view_display.node.sponsors.default'
         - 'config:core.entity_view_display.node.sponsors.minimal'
         - 'config:core.entity_view_display.node.sponsors.teaser'
