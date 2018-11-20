@@ -5,6 +5,7 @@ dependencies:
   config:
     - views.view.sponsors
   module:
+    - system
     - views
   theme:
     - beaker
@@ -21,4 +22,9 @@ settings:
   label_display: '0'
   views_label: ''
   items_per_page: none
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: /sponsors
+    negate: false
+    context_mapping: {  }

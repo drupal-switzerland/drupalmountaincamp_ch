@@ -780,6 +780,7 @@ display:
         weight: -46
         context: '0'
         menu_name: main
+        enabled: false
       filters:
         type:
           id: type

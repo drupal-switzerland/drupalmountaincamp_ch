@@ -1,15 +1,12 @@
 .location{
   background: $blue;
-  padding: 100px 0;
-  @include breakpoint($mobile){
-    padding: 60px 0;
-  }
-  p, a, a:link{
-    text-align: center;
-    color: $white;
-  }
   p {
+    color: $white;
     margin-bottom: 30px;
+    text-align: center;
+  }
+  a {
+    @include paragraph-anchor($white, $red, $white);
   }
   iframe {
     @include breakpoint($tablet-up){
@@ -17,19 +14,9 @@
     }
     height: 450px;
   }
-  a:link {
-    text-decoration: underline;
-  }
   h1{
     color: $red;
     text-align: center;
-    padding-bottom: 25px;
-    line-height: 1em;
-    @include font-thick;
-    @include breakpoint($tablet){
-      font-size: 35px;
-      line-height: 40px;
-    }
   }
   h2 {
     font-size:24px;
