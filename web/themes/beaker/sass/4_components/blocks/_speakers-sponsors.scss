@@ -1,27 +1,15 @@
 .call-speakers-sponsors{
-  padding: 70px 0 70px;
   background-color: $blue;
-  text-align: center;
-  position: relative;
   h1{
+    color: $white;
     text-align: center;
-    color: $red;
-    clear: both;
-    margin-bottom: 15px;
-    @include font-thick;
-    @include breakpoint($tablet){
-      font-size: 35px;
-      line-height: 40px;
-    }
   }
   p{
     color: $white;
     text-align: center;
-    clear: both;
     padding: 25px 0;
   }
   .action-buttons{
-    //margin-top: 50px;
     @include breakpoint($small){
       text-align: center;
     }
@@ -154,10 +142,6 @@
       }
     }
 
-  }
-
-  h1 {
-    color:$white;
   }
   position: relative;
   /* z-index: 100; */

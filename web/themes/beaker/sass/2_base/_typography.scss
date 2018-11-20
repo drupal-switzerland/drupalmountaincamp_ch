@@ -24,9 +24,7 @@ h6 {
 }
 
 h1 {
-  @include h1;
-  @include font-size(48px,true);
-  line-height: 45px;
+ @include h1;
 }
 
 h2 {
@@ -83,9 +81,6 @@ p {
   @include paragraph;
 }
 .rt {
-  h1 {
-    margin-bottom: 1rem;
-  }
   h2 {
     margin-top: 1rem;
     margin-bottom: .75rem;
