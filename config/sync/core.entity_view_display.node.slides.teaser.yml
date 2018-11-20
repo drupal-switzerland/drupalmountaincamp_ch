@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.slides.field_link_to_slides
     - field.field.node.slides.field_slides_pdf_
     - field.field.node.slides.field_speaker
+    - field.field.node.slides.field_year
     - node.type.slides
   module:
     - user
@@ -18,7 +19,10 @@ content:
   links:
     weight: 100
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_link_to_slides: true
   field_slides_pdf_: true
   field_speaker: true
+  field_year: true

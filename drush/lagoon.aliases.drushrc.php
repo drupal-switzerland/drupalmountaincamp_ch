@@ -1,5 +1,6 @@
 <?php
 // Don't change anything here, it's magic!
+
 global $aliases_stub;
 if (empty($aliases_stub)) {
     $ch = curl_init();

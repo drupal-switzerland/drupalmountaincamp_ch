@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.session.field_session_type
     - field.field.node.session.field_tags
     - field.field.node.session.field_time_slot
+    - field.field.node.session.field_year
     - node.type.session
   module:
     - datetime_range
@@ -69,7 +70,8 @@ content:
     type: file_default
     weight: 9
     label: hidden
-    settings: {  }
+    settings:
+      use_description_as_link_text: true
     third_party_settings: {  }
     region: content
   field_session_slides_link:
@@ -124,4 +126,5 @@ hidden:
   field_session_contact_mail: true
   field_session_remarks: true
   field_tags: true
+  field_year: true
   links: true

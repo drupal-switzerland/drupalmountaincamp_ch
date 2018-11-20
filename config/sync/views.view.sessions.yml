@@ -17,6 +17,7 @@ dependencies:
     - taxonomy.vocabulary.expertise_level
     - taxonomy.vocabulary.track
   module:
+    - datetime
     - file
     - link
     - node
@@ -736,7 +737,8 @@ display:
           exposed: false
           expose:
             label: ''
-          plugin_id: standard
+          plugin_id: datetime
+          entity_type: node
       title: Sessions
       header: {  }
       footer: {  }

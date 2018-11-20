@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.session.field_session_type
     - field.field.node.session.field_tags
     - field.field.node.session.field_time_slot
+    - field.field.node.session.field_year
     - node.type.session
   module:
     - file
@@ -41,7 +42,8 @@ content:
   field_session_slides_file:
     weight: 5
     label: above
-    settings: {  }
+    settings:
+      use_description_as_link_text: true
     third_party_settings: {  }
     type: file_default
     region: content
@@ -91,4 +93,5 @@ hidden:
   field_session_remarks: true
   field_session_type: true
   field_time_slot: true
+  field_year: true
   links: true
