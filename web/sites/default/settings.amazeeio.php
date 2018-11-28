@@ -133,12 +133,12 @@ if (getenv('LAGOON')) {
 }
 
 // Settings for all environments
-if (file_exists(__DIR__ . '/all.settings.php')) {
+if (file_exists(__DIR__ . '/amazeeio.all.settings.php')) {
   include __DIR__ . '/amazeeio.all.settings.php';
 }
 
 // Services for all environments
-if (file_exists(__DIR__ . '/all.services.yml')) {
+if (file_exists(__DIR__ . '/amazeeio.all.services.yml')) {
   $settings['container_yamls'][] = __DIR__ . '/amazeeio.all.services.yml';
 }
 
