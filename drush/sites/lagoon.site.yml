@@ -8,16 +8,6 @@ dev:
   user: drupalmountaincamp-ch-dev
   ssh:
     options: '-o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 32222'
-gatsby:
-  host: ssh.lagoon.amazeeio.cloud
-  options:
-    command-specific:
-      sql-sync:
-        no-ordered-dump: true
-  root: /app/web
-  user: drupalmountaincamp-ch-gatsby
-  ssh:
-    options: '-o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 32222'
 prod:
   host: ssh.lagoon.amazeeio.cloud
   options:
@@ -26,15 +16,5 @@ prod:
         no-ordered-dump: true
   root: /app/web
   user: drupalmountaincamp-ch-prod
-  ssh:
-    options: '-o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 32222'
-update-drupal:
-  host: ssh.lagoon.amazeeio.cloud
-  options:
-    command-specific:
-      sql-sync:
-        no-ordered-dump: true
-  root: /app/web
-  user: drupalmountaincamp-ch-update-drupal
   ssh:
     options: '-o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 32222'
