@@ -15,8 +15,8 @@ assert_options(ASSERT_ACTIVE, TRUE);
  * Enable local development services.
  */
 $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
-if (getenv('SB_DEVELOPMENT_MODE') === 'theme') {
-  $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/theme.services.yml';
+if (getenv('DEV_MODE') === 'theme') {
+  $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/theming.services.yml';
 }
 
 /**
@@ -39,7 +39,7 @@ $config['system.logging']['error_level'] = 'verbose';
  *
  * Only use this setting once the site has been installed.
  */
-if (getenv('SB_DEVELOPMENT_MODE') === 'theme') {
+if (getenv('DEV_MODE') === 'theme') {
   $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
   $settings['cache']['bins']['render'] = 'cache.backend.null';
   $settings['cache']['bins']['page'] = 'cache.backend.null';
