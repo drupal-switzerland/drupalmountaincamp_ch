@@ -46,13 +46,15 @@ a.footer__link {
   list-style: none;
   margin-bottom: 0;
   margin-left: 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .footer__link-item {
-  margin-left: 10px;
+  margin-right: 10px;
 
-  + li::before {
+  &:not(:last-child)::after {
     content: '-';
-    margin-right: 10px;
+    margin-left: 10px;
   }
 }
