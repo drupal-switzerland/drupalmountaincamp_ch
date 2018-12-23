@@ -1,9 +1,9 @@
 FROM amazeeio/node:8-builder as nodebuilder
 
-COPY .npmrc gulpfile.js package.json /app/
-RUN npm install --production
+COPY yarn.lock gulpfile.js package.json /app/
+RUN yarn install --pure-lockfile
 COPY web/themes/beaker /app/web/themes/beaker
-RUN npm run gulp -- compile --env=prod
+RUN yarn run gulp compile --env=prod
 
 FROM amazeeio/php:7.2-cli-drupal
 

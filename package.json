@@ -27,10 +27,10 @@
     "breakpoint-sass": ">=2.7.0",
     "css-mqpacker": ">=5.0.1",
     "csswring": ">=5.1.0",
-    "gulp": ">=3.9.1",
+    "gulp": "==3.9.1",
     "gulp-css-globbing": ">=0.1.8",
     "gulp-postcss": ">=6.0.1",
-    "gulp-sass": ">=2.0.4",
+    "gulp-sass": "==2.0.4",
     "gulp-util": ">=3.0.6",
     "stream-browserify": ">=2.0.1",
     "susy": "~2.2.5"
