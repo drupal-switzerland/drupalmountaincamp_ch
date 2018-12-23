@@ -6,7 +6,6 @@ dependencies:
     - 'block_content:basic:9ec08b40-07cf-4342-9755-7df0d1db1e17'
   module:
     - block_content
-    - system
   theme:
     - beaker
 id: thanks_to_our_sponsors
@@ -17,15 +16,10 @@ provider: null
 plugin: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
 settings:
   id: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
-  label: 'Thanks to our 2017 Sponsors'
+  label: 'Thanks to our Sponsors'
   provider: block_content
   label_display: visible
   status: true
   info: ''
   view_mode: full
-visibility:
-  request_path:
-    id: request_path
-    pages: /sponsors
-    negate: false
-    context_mapping: {  }
+visibility: {  }

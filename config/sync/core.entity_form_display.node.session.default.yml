@@ -22,9 +22,25 @@ dependencies:
     - node.type.session
   module:
     - datetime_range
+    - field_group
     - file
     - redirect
     - text
+third_party_settings:
+  field_group:
+    group_extended_info:
+      children:
+        - field_day
+        - field_time_slot
+        - field_room
+      parent_name: ''
+      weight: 11
+      format_type: accordion
+      format_settings:
+        id: ''
+        classes: ''
+        effect: none
+      label: 'Extended Info'
 id: node.session.default
 targetEntityType: node
 bundle: session
@@ -39,13 +55,6 @@ content:
       summary_rows: 5
     third_party_settings: {  }
     region: content
-  field_accepted:
-    weight: 10
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_day:
     weight: 11
     settings: {  }
@@ -53,11 +62,14 @@ content:
     type: options_buttons
     region: content
   field_room:
+    type: entity_reference_autocomplete
     weight: 13
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
     region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_session_contact_mail:
     weight: 8
     settings:
@@ -114,25 +126,16 @@ content:
     type: options_buttons
     region: content
   field_time_slot:
+    type: daterange_default
     weight: 12
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: daterange_default
-    region: content
-  field_year:
-    weight: 26
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 121
+    weight: 10
     third_party_settings: {  }
     region: content
   title:
@@ -143,16 +146,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
-  url_redirects:
-    weight: 50
-    settings: {  }
-    third_party_settings: {  }
-    region: content
 hidden:
   created: true
+  field_accepted: true
   field_keynote: true
   field_tags: true
+  field_year: true
   path: true
   promote: true
   sticky: true
   uid: true
+  url_redirects: true

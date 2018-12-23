@@ -1,6 +1,6 @@
 uuid: e61cd7a4-ca64-4376-aad1-9117ef6f94b3
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - views.view.sponsors
