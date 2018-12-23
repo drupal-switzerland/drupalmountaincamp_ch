@@ -33,6 +33,7 @@
         "drupal/devel": "^1.2",
         "drupal/entity_reference_revisions": "^1.6",
         "drupal/field_group": "^1.0",
+        "drupal/field_permissions": "^1.0@RC",
         "drupal/focal_point": "^1.0",
         "drupal/layout_plugin": "^1.0",
         "drupal/link_attributes": "^1.5",
