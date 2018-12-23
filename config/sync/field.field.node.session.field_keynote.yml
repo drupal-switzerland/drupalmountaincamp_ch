@@ -10,7 +10,7 @@ field_name: field_keynote
 entity_type: node
 bundle: session
 label: Keynote
-description: 'Is this seesion a keynote? It will be seperated out in the presentation'
+description: 'Is this session a keynote? It will be separated out in the presentation'
 required: false
 translatable: false
 default_value:
