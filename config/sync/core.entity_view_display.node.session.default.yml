@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.session.field_accepted
     - field.field.node.session.field_day
     - field.field.node.session.field_keynote
+    - field.field.node.session.field_proposed_track
     - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
@@ -124,6 +125,7 @@ content:
 hidden:
   field_accepted: true
   field_keynote: true
+  field_proposed_track: true
   field_session_contact_mail: true
   field_session_remarks: true
   field_tags: true

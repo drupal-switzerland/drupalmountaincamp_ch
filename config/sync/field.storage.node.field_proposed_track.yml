@@ -1,4 +1,4 @@
-uuid: 7fb9317c-6766-44ff-be70-1f6d2bb8afcb
+uuid: d0df6666-3e1b-4b45-bd05-d595a332220e
 langcode: en
 status: true
 dependencies:
@@ -8,9 +8,9 @@ dependencies:
     - taxonomy
 third_party_settings:
   field_permissions:
-    permission_type: custom
-id: node.field_session_track
-field_name: field_session_track
+    permission_type: public
+id: node.field_proposed_track
+field_name: field_proposed_track
 entity_type: node
 type: entity_reference
 settings:
