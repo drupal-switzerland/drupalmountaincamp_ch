@@ -22,8 +22,6 @@ dependencies:
     - field.field.node.session.field_year
     - node.type.session
   module:
-    - file
-    - redirect
     - text
 id: node.session.default
 targetEntityType: node
@@ -32,7 +30,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 3
+    weight: 1
     settings:
       rows: 9
       placeholder: ''
@@ -40,13 +38,13 @@ content:
     third_party_settings: {  }
     region: content
   field_proposed_track:
-    weight: 5
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_session_contact_mail:
-    weight: 8
+    weight: 6
     settings:
       size: 60
       placeholder: example@domain.com
@@ -54,34 +52,21 @@ content:
     type: email_default
     region: content
   field_session_expertise_level:
-    weight: 6
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_session_remarks:
-    weight: 9
+    weight: 7
     settings:
       rows: 2
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
     region: content
-  field_session_slides_file:
-    type: file_generic
-    weight: 1
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    region: content
-  field_session_slides_link:
-    type: redirect_source
-    weight: 2
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_session_speaker:
-    weight: 7
+    weight: 5
     settings:
       size: 60
       placeholder: 'Your Name'
@@ -89,7 +74,7 @@ content:
     type: string_textfield
     region: content
   field_session_type:
-    weight: 4
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -98,7 +83,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 10
+    weight: 8
     third_party_settings: {  }
     region: content
   title:
@@ -115,6 +100,8 @@ hidden:
   field_day: true
   field_keynote: true
   field_room: true
+  field_session_slides_file: true
+  field_session_slides_link: true
   field_session_track: true
   field_tags: true
   field_time_slot: true
