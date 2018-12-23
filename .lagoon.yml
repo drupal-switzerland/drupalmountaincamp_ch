@@ -31,7 +31,7 @@ tasks:
         service: cli
 
 environments:
-  master:
+  prod:
     cronjobs:
       - name: drush cron
         schedule: "*/15 * * * *"
