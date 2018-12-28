@@ -12,7 +12,7 @@ field_name: field_session_slides_file
 entity_type: node
 bundle: session
 label: Slides
-description: ''
+description: "Slides are currently optional, if you already have your presentation slides available, then feel free to upload or link to them in the field below.\r\n"
 required: false
 translatable: false
 default_value: {  }
