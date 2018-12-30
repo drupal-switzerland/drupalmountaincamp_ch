@@ -1,4 +1,4 @@
-uuid: 46c5c32f-088f-4f63-bda1-d53e1881dca1
+uuid: 609cf50f-5edd-4683-9784-5a30f225f002
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,10 @@ third_party_settings:
 id: node.field_proposed_tracks
 field_name: field_proposed_tracks
 entity_type: node
-type: string_long
+type: string
 settings:
+  max_length: 255
+  is_ascii: false
   case_sensitive: false
 module: core
 locked: false

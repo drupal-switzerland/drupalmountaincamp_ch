@@ -42,10 +42,10 @@ content:
   field_proposed_tracks:
     weight: 5
     settings:
-      rows: 5
+      size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: string_textfield
     region: content
   field_session_contact_mail:
     weight: 8
