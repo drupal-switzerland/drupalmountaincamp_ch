@@ -53,6 +53,7 @@
         "drupal/token": "^1.5",
         "drupal/varnish_purge": "^1.10",
         "drush/drush": "~9.5",
+        "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0"
     },
     "require-dev": {
@@ -74,7 +75,8 @@
     "autoload": {
         "classmap": [
             "scripts/composer/ScriptHandler.php"
-        ]
+        ],
+        "files": ["load.environment.php"]
     },
     "scripts": {
         "pre-install-cmd": [
