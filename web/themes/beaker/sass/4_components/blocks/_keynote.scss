@@ -37,8 +37,16 @@
     @include font-thick;
   }
 
-  h1,h2,p {
-    text-align: center;
+  h1,
+  h2,
+  h3,
+  p {
+    text-align: left;
     color: $white;
+  }
+
+  p a {
+    color: $white;
+    text-decoration: underline;
   }
 }
