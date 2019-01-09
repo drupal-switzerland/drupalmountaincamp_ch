@@ -5,8 +5,10 @@ dependencies:
   config:
     - page_manager.page.home_page
   content:
+    - 'block_content:basic:b2640e8a-e30f-4a03-be13-d0b9ff32b8a3'
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
     - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
+    - 'block_content:basic:cddddacd-c6ef-4d9e-a214-4c4d8f1ca69d'
   module:
     - block_content
     - panels
@@ -38,6 +40,30 @@ variant_settings:
       region: main
       weight: -3
       uuid: 952909e0-ca48-487a-8aa6-d9842bfde274
+      context_mapping: {  }
+    1244f9df-3d82-4800-9013-d62c62474315:
+      id: 'block_content:b2640e8a-e30f-4a03-be13-d0b9ff32b8a3'
+      label: Keynote
+      provider: block_content
+      label_display: '0'
+      status: true
+      info: ''
+      view_mode: full
+      region: main
+      weight: 0
+      uuid: 1244f9df-3d82-4800-9013-d62c62474315
+      context_mapping: {  }
+    8224b835-ff89-46cc-9d23-1e226879f1b1:
+      id: 'block_content:cddddacd-c6ef-4d9e-a214-4c4d8f1ca69d'
+      label: 'Splash Awards'
+      provider: block_content
+      label_display: '0'
+      status: true
+      info: ''
+      view_mode: full
+      region: main
+      weight: 0
+      uuid: 8224b835-ff89-46cc-9d23-1e226879f1b1
       context_mapping: {  }
   id: panels_variant
   uuid: 42b6c087-b402-4cf2-afe7-856d6aa06766

@@ -1,8 +1,21 @@
 .splash-awards {
-  padding: 170px 0;
+  background-color: #020202;
+  padding: 3rem 0;
 
   @include breakpoint($mobile) {
     padding: 50px 0;
+  }
+
+  .inner {
+    display: flex;
+
+    @include breakpoint($mobile) {
+      display: block;
+    }
+  }
+
+  .splash-logo {
+    width: 30%;
   }
 
   h1 {
@@ -12,9 +25,10 @@
       line-height: 40px;
     }
     @include font-thick;
+    color: $white;
   }
 
-  h1,p {
+  h1,h2,p,a {
     text-align: center;
     color: $white;
   }
