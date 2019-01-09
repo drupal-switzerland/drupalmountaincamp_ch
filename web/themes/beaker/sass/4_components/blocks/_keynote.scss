@@ -1,0 +1,44 @@
+.keynote {
+  background: linear-gradient(to right, $red, 50%, $red, 50%, $blue);
+
+  .inner {
+    display: flex;
+
+    @include breakpoint($mobile) {
+      display: block;
+    }
+  }
+
+  @include breakpoint($mobile) {
+    .grid {
+      padding: 0;
+    }
+  }
+
+  .child {
+    flex: 1;
+    padding: 90px 1rem;
+  }
+
+  .left {
+    background-color: $red;
+  }
+
+  .right {
+    background-color: $blue;
+  }
+
+  h1 {
+    margin-bottom: 15px;
+    @include breakpoint($tablet) {
+      font-size: 35px;
+      line-height: 40px;
+    }
+    @include font-thick;
+  }
+
+  h1,h2,p {
+    text-align: center;
+    color: $white;
+  }
+}
