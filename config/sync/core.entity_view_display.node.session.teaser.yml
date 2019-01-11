@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.session.field_accepted
     - field.field.node.session.field_day
     - field.field.node.session.field_keynote
+    - field.field.node.session.field_proposed_tracks
     - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
@@ -22,7 +23,6 @@ dependencies:
     - field.field.node.session.field_year
     - node.type.session
   module:
-    - datetime_range
     - file
     - link
     - text
@@ -35,7 +35,7 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 7
+    weight: 6
     settings:
       trim_length: 600
     third_party_settings: {  }
@@ -51,7 +51,7 @@ content:
     region: content
   field_room:
     type: entity_reference_entity_view
-    weight: 2
+    weight: 1
     label: inline
     settings:
       view_mode: default
@@ -60,7 +60,7 @@ content:
     region: content
   field_session_expertise_level:
     type: entity_reference_label
-    weight: 6
+    weight: 5
     label: inline
     settings:
       link: false
@@ -68,7 +68,7 @@ content:
     region: content
   field_session_slides_file:
     type: file_default
-    weight: 9
+    weight: 8
     label: hidden
     settings:
       use_description_as_link_text: true
@@ -76,7 +76,7 @@ content:
     region: content
   field_session_slides_link:
     type: link
-    weight: 8
+    weight: 7
     label: above
     settings:
       trim_length: 80
@@ -88,7 +88,7 @@ content:
     region: content
   field_session_speaker:
     type: string
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
@@ -96,7 +96,7 @@ content:
     region: content
   field_session_track:
     type: entity_reference_label
-    weight: 5
+    weight: 4
     label: inline
     settings:
       link: false
@@ -104,27 +104,19 @@ content:
     region: content
   field_session_type:
     type: entity_reference_label
-    weight: 4
+    weight: 3
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     region: content
-  field_time_slot:
-    type: daterange_default
-    weight: 1
-    label: hidden
-    settings:
-      timezone_override: ''
-      format_type: short_time
-      separator: '-'
-    third_party_settings: {  }
-    region: content
 hidden:
   field_accepted: true
   field_keynote: true
+  field_proposed_tracks: true
   field_session_contact_mail: true
   field_session_remarks: true
   field_tags: true
+  field_time_slot: true
   field_year: true
   links: true
