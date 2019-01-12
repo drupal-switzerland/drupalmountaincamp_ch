@@ -7,19 +7,14 @@
   }
 }
 
-.session--view-mode-teaser {
-  .field {
-    @include clearfix;
-    @include paragraph;
-    margin: 0;
-  }
-}
 .panel--white {
   background-color: $white;
 }
+
 .panel--red {
   background-color: $red;
 }
+
 .panel--blue {
   background-color: $blue;
 }

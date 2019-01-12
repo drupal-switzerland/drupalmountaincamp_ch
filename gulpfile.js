@@ -63,7 +63,7 @@ if (dev) {
     var get_hostname = yaml.safeLoad(
       fs.readFileSync('./docker-compose.yml', 'utf8')
     );
-    var domain = get_hostname['services']['drupal']['hostname'];
+    var domain = get_hostname['x-lagoon-project'];
   } else if (fs.existsSync('./domain.json')) {
     /*Vagrant locally*/
     var domain = require('./domain.json');
