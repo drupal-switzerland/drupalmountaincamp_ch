@@ -1389,6 +1389,19 @@ display:
         groups:
           1: AND
       header:
+        area_1:
+          id: area_1
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<h1>Proposed sessions</h1>'
+            format: full_html
+          plugin_id: text
         area:
           id: area
           table: views
@@ -1413,19 +1426,6 @@ display:
           view_to_insert: 'sessions:page_2'
           inherit_arguments: false
           plugin_id: view
-        area_1:
-          id: area_1
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<h2 style="margin-bottom: -1rem; margin-top: 1rem;">Proposed sessions</h2>'
-            format: full_html
-          plugin_id: text
       display_description: ''
     cache_metadata:
       max-age: -1
