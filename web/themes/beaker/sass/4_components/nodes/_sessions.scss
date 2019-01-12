@@ -2,6 +2,7 @@
 // =============================================================================
 .session-teaser {
   border: $base-unit solid $blue;
+  border-radius: 5px;
   padding: $base-unit * 2;
 
   &__speaker {
