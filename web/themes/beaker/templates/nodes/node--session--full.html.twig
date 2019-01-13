@@ -82,11 +82,12 @@
 ]
 %}
 <article{{ attributes.addClass(classes) }}>
+    <h2 class="subtitle">Proposed Session</h2>
     <h1{{ title_attributes.addClass('session__title') }}>
         {{ label['#items'].getString }}
     </h1>
     {{ content.field_session_speaker }}
-    <div class="node__meta-fields">
+    <div class="field node__meta-fields">
         {{ content.field_session_expertise_level }}
         {{ content.field_session_type }}
         {{ content.field_session_track }}

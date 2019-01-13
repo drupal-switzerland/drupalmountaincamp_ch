@@ -1,14 +1,17 @@
 // FULL CONTENT
 // =============================================================================
 .session {
+  .subtitle {
+    font-style: italic;
+  }
+
   .field--name-field-session-speaker {
     @include paragraph;
     text-transform: uppercase;
   }
 
-  .field--name-field-session-speaker,
-    .field--name-body:not(:last-child) {
-    margin-bottom: $base-unit * 3;
+  .field + .field {
+    margin-top: $base-unit;
   }
 }
 
