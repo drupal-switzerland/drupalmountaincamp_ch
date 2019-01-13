@@ -8,11 +8,9 @@
  <a class="session-teaser__link" href="{{ url }}">
     <article{{ attributes.addClass(classes) }}>
       <p class="session-teaser__speaker">{{ content.field_session_speaker['#items'].getString }}</p>
-      <a href="{{ url }}">
-        <h2{{ title_attributes.addClass('session-teaser__title') }}>
-          {{ label['#items'].getString }}
-        </h2>
-      </a>
+      <h2{{ title_attributes.addClass('session-teaser__title') }}>
+        {{ label['#items'].getString }}
+      </h2>
       <div class="node__meta-fields">
         {{ content|without('field_session_speaker', 'body') }}
       </div>
