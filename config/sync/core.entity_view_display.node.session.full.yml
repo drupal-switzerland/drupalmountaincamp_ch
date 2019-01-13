@@ -1,9 +1,9 @@
-uuid: 082f8792-1387-4a21-b23c-878b907185f8
+uuid: 03ee2dd0-3d7b-410a-8eb6-17e770d0e0a8
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.sessions_view
+    - core.entity_view_mode.node.full
     - field.field.node.session.body
     - field.field.node.session.field_accepted
     - field.field.node.session.field_day
@@ -23,39 +23,76 @@ dependencies:
     - field.field.node.session.field_year
     - node.type.session
   module:
+    - file
+    - link
     - text
     - user
-id: node.session.sessions_view
+id: node.session.full
 targetEntityType: node
 bundle: session
-mode: sessions_view
+mode: full
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
-    weight: 4
-    settings:
-      trim_length: 600
+    type: text_default
+    weight: 7
+    settings: {  }
     third_party_settings: {  }
     region: content
-  field_session_expertise_level:
-    type: entity_reference_label
+  field_day:
     weight: 2
-    region: content
     label: inline
     settings:
       link: false
     third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_room:
+    weight: 3
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_session_expertise_level:
+    weight: 5
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_session_slides_file:
+    weight: 9
+    label: inline
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  field_session_slides_link:
+    weight: 8
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
   field_session_speaker:
-    weight: 0
-    label: hidden
+    weight: 1
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_session_track:
-    weight: 1
+    weight: 4
     label: inline
     settings:
       link: false
@@ -63,24 +100,24 @@ content:
     type: entity_reference_label
     region: content
   field_session_type:
-    type: entity_reference_label
-    weight: 3
-    region: content
+    weight: 6
     label: inline
     settings:
-      link: true
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   field_accepted: true
-  field_day: true
   field_keynote: true
   field_proposed_tracks: true
-  field_room: true
   field_session_contact_mail: true
   field_session_remarks: true
-  field_session_slides_file: true
-  field_session_slides_link: true
   field_tags: true
   field_time_slot: true
   field_year: true
-  links: true

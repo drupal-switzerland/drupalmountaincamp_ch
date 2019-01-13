@@ -1,0 +1,21 @@
+// ALL
+// =============================================================================
+.node {
+  .field__label {
+    color: $blue;
+  }
+
+  &__meta-fields {
+    @include paragraph;
+    margin-bottom: $base-unit * 3;
+
+  }
+}
+
+// FULL CONTENT
+// =============================================================================
+.node--view-mode-full {
+  a {
+    @include paragraph-anchor
+  }
+}
