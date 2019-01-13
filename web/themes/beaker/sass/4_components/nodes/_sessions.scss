@@ -1,9 +1,33 @@
+// FULL CONTENT
+// =============================================================================
+.session {
+  .field--name-field-session-speaker {
+    @include paragraph;
+    text-transform: uppercase;
+  }
+
+  .field--name-field-session-speaker,
+    .field--name-body:not(:last-child) {
+    margin-bottom: $base-unit * 3;
+  }
+}
+
 // TEASER
 // =============================================================================
 .session-teaser {
   border: 4px solid $blue;
   border-radius: 3px;
   padding: $base-unit * 2;
+  transition: border-color $transition;
+
+  &__link {
+    &:hover,
+    &:focus {
+      .session-teaser {
+        border-color: $red;
+      }
+    }
+  }
 
   &__speaker {
     color: $blue;
@@ -15,14 +39,5 @@
     font-weight: bold;
     line-height: 1.3;
     margin-bottom: $base-unit * 3;
-  }
-
-  &__meta-fields {
-    @include paragraph;
-    margin-bottom: $base-unit * 3;
-
-    .field__label {
-      color: $blue;
-    }
   }
 }
