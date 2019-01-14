@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.sponsors.field_metatags
     - field.field.node.sponsors.field_sponsor_description
     - field.field.node.sponsors.field_sponsor_image
     - field.field.node.sponsors.field_sponsor_link
@@ -14,6 +15,7 @@ dependencies:
   module:
     - focal_point
     - link
+    - metatag
     - path
 id: node.sponsors.default
 targetEntityType: node
@@ -25,6 +27,12 @@ content:
     weight: 2
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_metatags:
+    weight: 122
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   field_sponsor_description:
     weight: 9

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.sponsors.field_metatags
     - field.field.node.sponsors.field_sponsor_description
     - field.field.node.sponsors.field_sponsor_image
     - field.field.node.sponsors.field_sponsor_link
@@ -14,12 +15,20 @@ dependencies:
   module:
     - image
     - link
+    - metatag
     - user
 id: node.sponsors.default
 targetEntityType: node
 bundle: sponsors
 mode: default
 content:
+  field_metatags:
+    weight: 6
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   field_sponsor_description:
     weight: 5
     label: hidden

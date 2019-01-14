@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.slides.field_link_to_slides
+    - field.field.node.slides.field_metatags
     - field.field.node.slides.field_slides_pdf_
     - field.field.node.slides.field_speaker
     - field.field.node.slides.field_year
@@ -11,6 +12,7 @@ dependencies:
   module:
     - file
     - link
+    - metatag
 id: node.slides.default
 targetEntityType: node
 bundle: slides
@@ -29,6 +31,12 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_metatags:
+    weight: 122
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   field_slides_pdf_:
     weight: 3

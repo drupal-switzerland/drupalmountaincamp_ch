@@ -5,12 +5,14 @@ dependencies:
   config:
     - field.field.node.article.body
     - field.field.node.article.field_image
+    - field.field.node.article.field_metatags
     - field.field.node.article.field_tags
     - field.field.node.article.field_year
     - image.style.thumbnail
     - node.type.article
   module:
     - focal_point
+    - metatag
     - path
     - text
 id: node.article.default
@@ -42,6 +44,12 @@ content:
       preview_link: true
       offsets: '50,50'
     third_party_settings: {  }
+    region: content
+  field_metatags:
+    weight: 122
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   field_tags:
     type: entity_reference_autocomplete_tags

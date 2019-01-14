@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_metatags
     - field.field.node.page.field_year
     - node.type.page
   module:
+    - metatag
     - path
     - text
 id: node.page.default
@@ -28,6 +30,12 @@ content:
     weight: 10
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_metatags:
+    weight: 122
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   field_year:
     weight: 32

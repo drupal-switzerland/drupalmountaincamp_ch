@@ -5,12 +5,14 @@ dependencies:
   config:
     - field.field.node.article.body
     - field.field.node.article.field_image
+    - field.field.node.article.field_metatags
     - field.field.node.article.field_tags
     - field.field.node.article.field_year
     - image.style.large
     - node.type.article
   module:
     - image
+    - metatag
     - text
     - user
 id: node.article.default
@@ -33,6 +35,13 @@ content:
       image_link: ''
     third_party_settings: {  }
     label: hidden
+    region: content
+  field_metatags:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 2
