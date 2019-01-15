@@ -37,12 +37,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 8
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     region: content
   field_day:
-    weight: 2
+    weight: 3
     label: inline
     settings:
       link: false
@@ -50,14 +50,22 @@ content:
     type: entity_reference_label
     region: content
   field_metatags:
-    weight: 11
+    weight: 12
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: metatag_empty_formatter
     region: content
+  field_proposed_tracks:
+    type: string
+    weight: 2
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_room:
-    weight: 4
+    weight: 5
     label: inline
     settings:
       link: false
@@ -65,7 +73,7 @@ content:
     type: entity_reference_label
     region: content
   field_session_expertise_level:
-    weight: 6
+    weight: 7
     label: inline
     settings:
       link: false
@@ -73,7 +81,7 @@ content:
     type: entity_reference_label
     region: content
   field_session_slides_file:
-    weight: 10
+    weight: 11
     label: inline
     settings:
       use_description_as_link_text: true
@@ -81,7 +89,7 @@ content:
     type: file_default
     region: content
   field_session_slides_link:
-    weight: 9
+    weight: 10
     label: inline
     settings:
       trim_length: 80
@@ -101,7 +109,7 @@ content:
     type: string
     region: content
   field_session_track:
-    weight: 5
+    weight: 6
     label: inline
     settings:
       link: false
@@ -109,7 +117,7 @@ content:
     type: entity_reference_label
     region: content
   field_session_type:
-    weight: 7
+    weight: 8
     label: inline
     settings:
       link: false
@@ -117,7 +125,7 @@ content:
     type: entity_reference_label
     region: content
   field_time_slot:
-    weight: 3
+    weight: 4
     label: inline
     settings:
       separator: '-'
@@ -134,7 +142,6 @@ content:
 hidden:
   field_accepted: true
   field_keynote: true
-  field_proposed_tracks: true
   field_session_contact_mail: true
   field_session_remarks: true
   field_tags: true

@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.session.field_accepted
     - field.field.node.session.field_day
     - field.field.node.session.field_keynote
+    - field.field.node.session.field_metatags
     - field.field.node.session.field_proposed_tracks
     - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
@@ -33,14 +34,22 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 4
+    weight: 5
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  field_proposed_tracks:
+    type: string
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_session_expertise_level:
     type: entity_reference_label
-    weight: 2
+    weight: 3
     label: inline
     settings:
       link: false
@@ -56,7 +65,7 @@ content:
     region: content
   field_session_track:
     type: entity_reference_label
-    weight: 1
+    weight: 2
     label: inline
     settings:
       link: false
@@ -64,7 +73,7 @@ content:
     region: content
   field_session_type:
     type: entity_reference_label
-    weight: 3
+    weight: 4
     label: inline
     settings:
       link: false
@@ -74,7 +83,7 @@ hidden:
   field_accepted: true
   field_day: true
   field_keynote: true
-  field_proposed_tracks: true
+  field_metatags: true
   field_room: true
   field_session_contact_mail: true
   field_session_remarks: true
