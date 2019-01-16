@@ -41,6 +41,8 @@ module:
   page_manager_ui: 0
   panels: 0
   path: 0
+  purge: 0
+  purge_tokens: 0
   quickedit: 0
   rdf: 0
   redirect: 0
@@ -55,6 +57,9 @@ module:
   toolbar: 0
   tour: 0
   user: 0
+  varnish_image_purge: 0
+  varnish_purge_tags: 0
+  varnish_purger: 0
   views_ui: 0
   menu_link_content: 1
   pathauto: 1
