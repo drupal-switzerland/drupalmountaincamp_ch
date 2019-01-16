@@ -71,7 +71,7 @@
  */
 #}
 {%
-    set classes = [
+  set classes = [
     'session',
     'node',
     'node--type-' ~ node.bundle|clean_class,
@@ -79,27 +79,27 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-]
+  ]
 %}
 <article{{ attributes.addClass(classes) }}>
-    <h2 class="subtitle">Proposed Session</h2>
-    <h1{{ title_attributes.addClass('session__title') }}>
-        {{ label['#items'].getString }}
-    </h1>
+  <p class="session__subtitle">Proposed Session</p>
+  <h1{{ title_attributes.addClass('session__title') }}>
+    {{ label['#items'].getString }}
+  </h1>
+  <div class="node__meta-fields">
     {{ content.field_session_speaker }}
-    <div class="field node__meta-fields">
-        {{ content.field_proposed_tracks }}
-        {{ content.field_session_expertise_level }}
-        {{ content.field_session_type }}
-        {{ content.field_session_track }}
+    {{ content.field_proposed_tracks }}
+    {{ content.field_session_expertise_level }}
+    {{ content.field_session_type }}
+    {{ content.field_session_track }}
+  </div>
+  {{ content.body }}
+  {% if content.field_session_slides_link[0]
+    or content.field_session_slides_file[0]
+  %}
+    <div class="node__meta-fields">
+        {{ content.field_session_slides_link }}
+        {{ content.field_session_slides_file }}
     </div>
-    {{ content.body }}
-    {% if content.field_session_slides_link[0]
-        or content.field_session_slides_file[0]
-    %}
-        <div class="node__meta-fields">
-            {{ content.field_session_slides_link }}
-            {{ content.field_session_slides_file }}
-        </div>
-    {% endif %}
+  {% endif %}
 </article>

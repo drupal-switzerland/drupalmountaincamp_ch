@@ -8,7 +8,6 @@
   &__meta-fields {
     @include paragraph;
     margin-bottom: $base-unit * 3;
-
   }
 }
 
@@ -16,6 +15,31 @@
 // =============================================================================
 .node--view-mode-full {
   a {
-    @include paragraph-anchor
+    @include paragraph-anchor;
+  }
+}
+
+// TEASER
+// =============================================================================
+.teaser {
+  border: 4px solid $blue;
+  border-radius: 3px;
+  padding: $base-unit * 2;
+  transition: border-color $transition;
+
+  &__title {
+    color: $blue;
+    font-weight: bold;
+    line-height: 1.3;
+    margin-bottom: $base-unit * 3;
+  }
+
+  &__link {
+    &:hover,
+    &:focus {
+      .teaser {
+        border-color: $red;
+      }
+    }
   }
 }
