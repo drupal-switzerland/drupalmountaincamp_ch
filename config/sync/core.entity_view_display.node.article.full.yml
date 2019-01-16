@@ -1,51 +1,40 @@
-uuid: 6a8590d6-0290-4410-a649-73ed9ceea87a
+uuid: 48b1107b-0d16-46a9-aa44-c1953e8eebde
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.full
     - field.field.node.article.body
     - field.field.node.article.field_image
     - field.field.node.article.field_metatags
     - field.field.node.article.field_tags
     - field.field.node.article.field_year
-    - image.style.large
     - node.type.article
   module:
-    - image
     - text
     - user
-id: node.article.teaser
+id: node.article.full
 targetEntityType: node
 bundle: article
-mode: teaser
+mode: full
 content:
   body:
-    type: text_summary_or_trimmed
-    weight: 1
-    settings:
-      trim_length: 350
-    third_party_settings: {  }
-    label: hidden
-    region: content
-  field_image:
-    type: image
+    type: text_default
     weight: 0
-    settings:
-      image_style: large
-      image_link: ''
+    settings: {  }
     third_party_settings: {  }
     label: hidden
     region: content
   field_tags:
     type: entity_reference_label
-    weight: 2
+    weight: 1
+    region: content
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
-    label: hidden
-    region: content
 hidden:
+  field_image: true
   field_metatags: true
   field_year: true
   links: true

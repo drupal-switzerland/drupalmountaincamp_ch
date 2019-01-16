@@ -1,46 +1,29 @@
 // FULL CONTENT
 // =============================================================================
 .session {
-  .subtitle {
-    font-style: italic;
+  &__subtitle {
+    color: $blue;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .node__meta-fields {
+    .field {
+      margin-bottom: $base-unit;
+    }
   }
 
   .field--name-field-session-speaker {
     @include paragraph;
     text-transform: uppercase;
   }
-
-  .field + .field {
-    margin-top: $base-unit;
-  }
 }
 
 // TEASER
 // =============================================================================
 .session-teaser {
-  border: 4px solid $blue;
-  border-radius: 3px;
-  padding: $base-unit * 2;
-  transition: border-color $transition;
-
-  &__link {
-    &:hover,
-    &:focus {
-      .session-teaser {
-        border-color: $red;
-      }
-    }
-  }
-
   &__speaker {
     color: $blue;
     font-weight: bold;
-  }
-
-  &__title {
-    color: $blue;
-    font-weight: bold;
-    line-height: 1.3;
-    margin-bottom: $base-unit * 3;
   }
 }

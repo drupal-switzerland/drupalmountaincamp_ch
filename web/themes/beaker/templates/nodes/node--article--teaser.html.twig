@@ -1,0 +1,16 @@
+{%
+  set classes = [
+    'teaser',
+    'article-teaser',
+  ]
+%}
+<a class="teaser__link" href="{{ url }}">
+  <article{{ attributes.addClass(classes) }}>
+    <h2{{ title_attributes.addClass('teaser__title') }}>
+      {{ label['#items'].getString }}
+    </h2>
+    {{ content.field_image }}
+    {{ content.body }}
+    {{ content.field_tags }}
+  </article>
+</a>
