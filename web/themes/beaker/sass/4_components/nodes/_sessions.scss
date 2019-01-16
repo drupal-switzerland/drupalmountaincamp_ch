@@ -17,10 +17,6 @@
     @include paragraph;
     text-transform: uppercase;
   }
-
-  .field--name-body:not(:last-child) {
-    margin-bottom: 3 * $base-unit;
-  }
 }
 
 // TEASER

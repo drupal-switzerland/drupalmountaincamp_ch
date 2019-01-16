@@ -17,6 +17,10 @@
   a {
     @include paragraph-anchor;
   }
+
+  .field--name-body:not(:last-child) {
+    margin-bottom: 3 * $base-unit;
+  }
 }
 
 // TEASER
