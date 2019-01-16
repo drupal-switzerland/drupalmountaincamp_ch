@@ -1451,7 +1451,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: "<p>Find a list of proposed sessions below.<br />Session submission is open until Monday, <strong>21st January 2019</strong> at 23:59.<br />The selected sessions and the full program will be announced on Monday, <strong>28th January 2019</strong>.</p>\r\n<h2 style=\"margin-top: 2rem; margin-bottom: 0.5rem;\">Free tickets for speakers</h2>\r\n<p>If your talk(s) got accepted to the Drupal Mountain Camp, you'll get a free personal ticket for the camp!<br />\r\nIn case that you already purchased a ticket, you'll get a <strong>full refund</strong>!</p>\r\n<p style=\"margin-top: 2rem;\"><a class=\"button\" href=\"/session/create\">Submit a session</a></p>"
+            value: "<p>Find a list of proposed sessions below.<br />Session submission is open until Monday, <strong>21st January 2019</strong> at 23:59.<br />The selected sessions and the full program will be announced on Monday, <strong>28th January 2019</strong>.</p>\r\n<h2 style=\"margin-top: 2rem; margin-bottom: 0.5rem;\">Free tickets for speakers</h2>\r\n\r\n<p>Every accepted session will receive maximum one free ticket to the Drupal Mountain Camp!<br />\r\nThere is however, a limit of one ticket per person (in case of multiple sessions).</p>\r\n<p>In case that you already purchased a ticket and are eligible for a free ticket, you'll get a <strong>full refund</strong>!</p>\r\n\r\n<p style=\"margin-top: 2rem;\"><a class=\"button\" href=\"/session/create\">Submit a session</a></p>"
             format: full_html
           plugin_id: text
         view:
