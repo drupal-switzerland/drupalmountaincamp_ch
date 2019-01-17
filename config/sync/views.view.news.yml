@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.body
     - node.type.article
+    - system.menu.main
     - taxonomy.vocabulary.tags
     - taxonomy.vocabulary.year
     - user.role.administrator
@@ -963,8 +964,14 @@ display:
       display_extenders: {  }
       path: news
       menu:
-        enabled: true
+        type: normal
+        title: News
+        description: ''
         expanded: false
+        parent: ''
+        weight: -48
+        context: '0'
+        menu_name: main
       header:
         area:
           id: area
