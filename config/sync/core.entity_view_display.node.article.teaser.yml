@@ -37,15 +37,8 @@ content:
     third_party_settings: {  }
     label: hidden
     region: content
-  field_tags:
-    type: entity_reference_label
-    weight: 2
-    settings:
-      link: false
-    third_party_settings: {  }
-    label: hidden
-    region: content
 hidden:
   field_metatags: true
+  field_tags: true
   field_year: true
   links: true

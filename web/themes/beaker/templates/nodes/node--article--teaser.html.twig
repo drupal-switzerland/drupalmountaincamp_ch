@@ -11,6 +11,8 @@
     </h2>
     {{ content.field_image }}
     {{ content.body }}
-    {{ content.field_tags }}
+    {% if content.field_image[0] %}
+      <div class="clear"></div>
+    {% endif %}
   </article>
 </a>

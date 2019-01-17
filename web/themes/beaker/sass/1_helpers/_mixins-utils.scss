@@ -43,7 +43,7 @@
 
 }
 
-// CLEARFIX MIXINS
+// CLEARFIX
 // =============================================================================
 
 @mixin clearfix {
@@ -56,6 +56,10 @@
 
 @mixin after {
   @include clearfix;
+}
+
+.clear {
+  clear: both;
 }
 
 // DISABLE DRAG & DROP (E.G. OF IMAGES)
