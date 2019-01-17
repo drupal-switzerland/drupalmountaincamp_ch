@@ -72,7 +72,7 @@
 #}
 {%
   set classes = [
-    'session',
+    'article',
     'node',
     'node--type-' ~ node.bundle|clean_class,
     node.isPromoted() ? 'node--promoted',
@@ -82,24 +82,9 @@
   ]
 %}
 <article{{ attributes.addClass(classes) }}>
-  <p class="node__subtitle">Proposed Session</p>
-  <h1{{ title_attributes.addClass('session__title') }}>
+  <p class="node__subtitle">{{ node.getCreatedTime()|date("jS F Y") }}</p>
+  <h1{{ title_attributes.addClass('article__title') }}>
     {{ label['#items'].getString }}
   </h1>
-  <div class="node__meta-fields">
-    {{ content.field_session_speaker }}
-    {{ content.field_proposed_tracks }}
-    {{ content.field_session_expertise_level }}
-    {{ content.field_session_type }}
-    {{ content.field_session_track }}
-  </div>
-  {{ content.body }}
-  {% if content.field_session_slides_link[0]
-    or content.field_session_slides_file[0]
-  %}
-    <div class="node__meta-fields">
-        {{ content.field_session_slides_link }}
-        {{ content.field_session_slides_file }}
-    </div>
-  {% endif %}
+  {{ content }}
 </article>

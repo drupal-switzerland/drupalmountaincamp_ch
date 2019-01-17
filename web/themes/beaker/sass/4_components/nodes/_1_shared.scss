@@ -5,6 +5,11 @@
     color: $blue;
   }
 
+  &__subtitle {
+    color: $blue;
+    font-weight: bold;
+  }
+
   &__meta-fields {
     @include paragraph;
     margin-bottom: $base-unit * 3;
@@ -16,6 +21,11 @@
 .node--view-mode-full {
   a {
     @include paragraph-anchor;
+  }
+  .field--name-body {
+    p {
+      margin-bottom: 2 * $base-unit;
+    }
   }
 
   .field--name-body:not(:last-child) {

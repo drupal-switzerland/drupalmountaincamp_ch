@@ -6,6 +6,7 @@
 %}
 <a class="teaser__link" href="{{ url }}">
   <article{{ attributes.addClass(classes) }}>
+    <p class="node__subtitle">{{ node.getCreatedTime()|date("jS F Y") }}</p>
     <h2{{ title_attributes.addClass('teaser__title') }}>
       {{ label['#items'].getString }}
     </h2>
