@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.body
     - node.type.article
+    - system.menu.main
     - taxonomy.vocabulary.tags
     - taxonomy.vocabulary.year
     - user.role.administrator
@@ -963,8 +964,14 @@ display:
       display_extenders: {  }
       path: news
       menu:
-        enabled: true
+        type: normal
+        title: News
+        description: ''
         expanded: false
+        parent: ''
+        weight: -48
+        context: '0'
+        menu_name: main
       header:
         area:
           id: area
@@ -983,6 +990,7 @@ display:
         header: false
         filters: false
         filter_groups: false
+        access: false
       filters:
         status:
           value: '1'
@@ -1052,6 +1060,10 @@ display:
         operator: AND
         groups:
           1: AND
+      access:
+        type: perm
+        options:
+          perm: 'access content'
     cache_metadata:
       max-age: -1
       contexts:
@@ -1060,6 +1072,6 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-        - user.roles
+        - user.permissions
       tags:
         - 'config:field.storage.node.body'

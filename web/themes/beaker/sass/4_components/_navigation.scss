@@ -157,7 +157,7 @@ header.header {
   }
 }
 
-@include breakpoint($desktop-up) {
+@include breakpoint($almost-wide) {
   header.header .menu--main {
     display: block;
     float: right;
