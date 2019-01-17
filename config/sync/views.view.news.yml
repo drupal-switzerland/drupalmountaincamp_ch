@@ -983,6 +983,7 @@ display:
         header: false
         filters: false
         filter_groups: false
+        access: false
       filters:
         status:
           value: '1'
@@ -1052,6 +1053,10 @@ display:
         operator: AND
         groups:
           1: AND
+      access:
+        type: perm
+        options:
+          perm: 'access content'
     cache_metadata:
       max-age: -1
       contexts:
@@ -1060,6 +1065,6 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-        - user.roles
+        - user.permissions
       tags:
         - 'config:field.storage.node.body'
