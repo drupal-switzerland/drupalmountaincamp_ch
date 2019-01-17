@@ -27,6 +27,7 @@ visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
     bundles:
+      article: article
       session: session
     negate: true
     context_mapping:
