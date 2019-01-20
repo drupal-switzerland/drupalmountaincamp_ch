@@ -72,6 +72,7 @@
 #}
 {%
 set classes = [
+  'sponsor-teaser',
   'node',
   'node--type-' ~ node.bundle|clean_class,
   node.isPromoted() ? 'node--promoted',
@@ -82,26 +83,7 @@ set classes = [
 %}
 
 <article{{ attributes.addClass(classes) }}>
-  <div class="sponsors" {{ content_attributes }}>
-    <a href="{{ content.field_sponsor_link[0]['#url'] }}" target="_blank">
-      <div class="field-image">
-        {{ content.field_sponsor_image }}
-      </div>
-      <div class="hover-fields-wrapper">
-        <div class="hover-fields">
-          <div class="field-title">
-            {{ label }}
-          </div>
-          {% if content.field_sponsor_link|render is not empty %}
-            <div class="field-link">
-              {{ content.field_sponsor_link[0]['#title'] }}
-            </div>
-          {% endif %}
-          <div class="field-body">
-            {{ content.field_sponsor_description }}
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
+  <a href="{{ content.field_sponsor_link[0]['#url'] }}" target="_blank">
+    {{ content.field_sponsor_image }}
+  </a>
 </article>
