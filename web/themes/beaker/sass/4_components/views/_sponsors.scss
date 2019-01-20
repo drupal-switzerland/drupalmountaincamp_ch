@@ -1,8 +1,12 @@
 // Content bottom region is used for sponsors' blocks.
-.region-content-bottom {
+.content-bottom {
+  background: $white;
   padding: $base-unit * 5 $base-unit * 5 0;
-  margin: 0 auto;
-  max-width: 1400px;
+
+  .region-content-bottom {
+    margin: 0 auto;
+    max-width: 960px;
+  }
 
   .block {
     border-top: 4px solid $grey;
