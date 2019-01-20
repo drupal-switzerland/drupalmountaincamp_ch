@@ -1,0 +1,20 @@
+// TEASER
+// =============================================================================
+.sponsor-teaser {
+  .field--name-field-sponsor-image {
+    transition: opacity $transition;
+
+    &:hover,
+    &focus {
+      opacity: 0.5;
+    }
+
+    img {
+      max-width: 100px;
+
+      @include breakpoint($tablet-up) {
+        max-width: $base-unit * 20;
+      }
+    }
+  }
+}

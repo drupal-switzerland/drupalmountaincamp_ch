@@ -1,77 +1,52 @@
-#block-thanks-to-our-sponsors,
-#block-views-block-sponsors-diamond,
-#block-views-block-sponsors-block-2,
-#block-views-block-sponsors-block-3,
-#block-views-block-sponsors-block-4,
-#block-views-block-sponsors-block-5,
-#block-views-block-sponsors-block-6,
-#block-views-block-sponsors-block-7,
-#block-views-block-sponsors-block-8,
-#block-views-block-sponsors-block-9 {
-  margin-top: 1em;
+// Content bottom region is used for sponsors' blocks.
+.region-content-bottom {
+  padding: $base-unit * 5 $base-unit * 5 0;
+  margin: 0 auto;
+  max-width: 1400px;
+
+  .block {
+    border-top: 4px solid $grey;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: $base-unit * 5;
+    text-align: center;
+  }
 
   h2 {
+    @include paragraph;
+    background-color: $white;
+    bottom: 1em;
+    color: $blue;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0 $base-unit;
+    position: relative;
     text-align: center;
+    text-transform: none;
+  }
+}
+
+#block-thanks-to-our-sponsors {
+  border-top: none;
+  
+  h2 {
+    @include font-slab-thick;
+    @include font-size(24px);
+    bottom: 0;
+    text-transform: uppercase;
   }
 }
 
 .view-sponsors {
   .view-content {
+    align-items: center;
     display: flex;
     flex-flow: row wrap;
-    align-items: center;
-    align-content: center;
-    justify-content: space-around;
-    width: 100%;
-  }
-  .views-row {
-    width: 50%;
+    justify-content: center;
   }
 
   .views-row {
-    article {
-      padding: 1em;
-    }
-    a {
-      display: block;
-    }
-    .field--name-field-sponsor-image {
-      text-align: center;
-    }
-  }
-  @include breakpoint($tablet-up) {
-    .view-content {
-      max-width: $wide;
-      margin: 0 auto;
-    }
-    .views-row {
-      width: 33%;
-    }
-  }
-  .sponsors {
-    position: relative;
-
-    img {
-      max-width: 160px;
-      z-index: 10;
-      display: inline-block;
-      transition: transform 0.4s;
-    }
-
-    .hover-fields-wrapper {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      padding: 20px;
-      background: rgba(220,220,220,0.1);
-      height: 100%;
-      width: 100%;
-    }
-
-    .hover-fields {
-      font-size: 0.9em;
-    }
+    padding: $base-unit;
+    margin: $base-unit;
   }
 }
-

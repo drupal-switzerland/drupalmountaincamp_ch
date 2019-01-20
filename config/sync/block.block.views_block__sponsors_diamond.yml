@@ -10,7 +10,7 @@ dependencies:
     - beaker
 id: views_block__sponsors_diamond
 theme: beaker
-region: footer
+region: content_bottom
 weight: -16
 provider: null
 plugin: 'views_block:sponsors-block_2'

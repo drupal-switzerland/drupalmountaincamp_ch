@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.sponsors.field_metatags
     - field.field.node.sponsors.field_sponsor_description
     - field.field.node.sponsors.field_sponsor_image
     - field.field.node.sponsors.field_sponsor_link
     - field.field.node.sponsors.field_sponsor_order
     - field.field.node.sponsors.field_sponsorship_type_
+    - field.field.node.sponsors.field_year
     - image.style.large
     - node.type.sponsors
   module:
@@ -20,13 +22,6 @@ targetEntityType: node
 bundle: sponsors
 mode: teaser
 content:
-  field_sponsor_description:
-    type: basic_string
-    weight: 2
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_sponsor_image:
     type: image
     weight: 0
@@ -49,6 +44,9 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_metatags: true
+  field_sponsor_description: true
   field_sponsor_order: true
   field_sponsorship_type_: true
+  field_year: true
   links: true
