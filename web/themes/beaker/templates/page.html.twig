@@ -130,29 +130,25 @@
             {{ page.content }}
           </div>
         </main>
-
-        <div class="content-bottom clearfix">
-          <div class="inner">
-            {% if page.content_bottom %}
-              <div class="layout-container clearfix">
-                {{ page.content_bottom }}
-              </div>
-            {% endif %}
-          </div>
-        </div>
-
       </div>
 
     {% endblock %}
 
     <footer class="site-footer">
       <div class="inner">
+        {% if page.content_bottom %}
+          <div class="content-bottom clearfix">
+            {{ page.content_bottom }}
+          </div>
+        {% endif %}
+
         {% if page.footer %}
           <div class="site-footer__top layout-container clearfix">
             {{ page.footer }}
           </div>
         {% endif %}
-      </footer>
-    </div>
+      </div>
+    </footer>
+
   </div>
 </div>
