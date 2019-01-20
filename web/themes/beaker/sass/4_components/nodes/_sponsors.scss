@@ -13,7 +13,7 @@
       max-width: 100px;
 
       @include breakpoint($tablet-up) {
-        max-width: $base-unit * 20;
+        max-width: 126px;
       }
     }
   }
