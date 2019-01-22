@@ -10,7 +10,5 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access site-wide contact form'
-  - 'create session content'
-  - 'create slides content'
   - 'use text format basic_html'
   - 'use text format plain_text'
