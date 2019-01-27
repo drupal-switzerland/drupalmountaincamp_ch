@@ -9,6 +9,7 @@ dependencies:
     - field.storage.node.field_time_slot
     - node.type.session
     - taxonomy.vocabulary.year
+    - user.role.administrator
   content:
     - 'taxonomy_term:year:55e21dc6-bb97-4915-be50-7eb08a715365'
     - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
@@ -580,6 +581,13 @@ display:
     display_options:
       display_extenders: {  }
       path: schedule
+      access:
+        type: role
+        options:
+          role:
+            administrator: administrator
+      defaults:
+        access: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -587,7 +595,7 @@ display:
         - 'languages:language_interface'
         - user
         - 'user.node_grants:view'
-        - user.permissions
+        - user.roles
       tags:
         - 'config:field.storage.node.field_day'
         - 'config:field.storage.node.field_room'
@@ -732,10 +740,23 @@ display:
       defaults:
         filters: false
         filter_groups: false
+        header: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content: 'Download session plans (pdf): <a href ="https://drupalmountaincamp.ch/thursday-2017" target="_blank">Thursday</a>, <a href ="https://drupalmountaincamp.ch/friday-2017" target="_blank">Friday</a>, <a href ="https://drupalmountaincamp.ch/saturday-2017" target="_blank">Saturday</a>'
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:
