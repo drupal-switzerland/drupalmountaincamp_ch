@@ -22,6 +22,15 @@
 
   .left {
     background-color: $red;
+
+    .button {
+      background-color: $blue;
+
+      &:focus,
+      &:hover {
+        background-color: $ioblack;
+      }
+    }
   }
 
   .right {
