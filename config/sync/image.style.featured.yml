@@ -1,0 +1,15 @@
+uuid: 053f459f-01f2-4138-8352-ec5e600d4504
+langcode: en
+status: true
+dependencies: {  }
+name: featured
+label: Featured
+effects:
+  1763071a-1c01-4020-a5f5-9833a6766a5b:
+    uuid: 1763071a-1c01-4020-a5f5-9833a6766a5b
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 200
+      height: 200
+      anchor: center-center

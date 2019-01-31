@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - page_manager.page.home_page
+    - views.view.featured_sessions
   content:
     - 'block_content:basic:b2640e8a-e30f-4a03-be13-d0b9ff32b8a3'
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
@@ -12,6 +13,7 @@ dependencies:
   module:
     - block_content
     - panels
+    - views
 id: home_page-panels_variant-0
 label: Panels
 variant: panels_variant
@@ -38,7 +40,7 @@ variant_settings:
       info: ''
       view_mode: full
       region: main
-      weight: -3
+      weight: -2
       uuid: 952909e0-ca48-487a-8aa6-d9842bfde274
       context_mapping: {  }
     1244f9df-3d82-4800-9013-d62c62474315:
@@ -50,7 +52,7 @@ variant_settings:
       info: ''
       view_mode: full
       region: main
-      weight: 0
+      weight: -1
       uuid: 1244f9df-3d82-4800-9013-d62c62474315
       context_mapping: {  }
     8224b835-ff89-46cc-9d23-1e226879f1b1:
@@ -62,8 +64,19 @@ variant_settings:
       info: ''
       view_mode: full
       region: main
-      weight: 0
+      weight: 1
       uuid: 8224b835-ff89-46cc-9d23-1e226879f1b1
+      context_mapping: {  }
+    24a5613d-8ada-45fe-bd81-e45489ca6433:
+      id: 'views_block:featured_sessions-block_1'
+      label: ''
+      provider: views
+      label_display: '0'
+      views_label: ''
+      items_per_page: none
+      region: main
+      weight: 0
+      uuid: 24a5613d-8ada-45fe-bd81-e45489ca6433
       context_mapping: {  }
   id: panels_variant
   uuid: 42b6c087-b402-4cf2-afe7-856d6aa06766

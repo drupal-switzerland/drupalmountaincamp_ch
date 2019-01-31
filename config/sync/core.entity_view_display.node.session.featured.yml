@@ -1,0 +1,75 @@
+uuid: 18a74103-e273-422a-bf88-a1e6e3fa3e80
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.featured
+    - field.field.node.session.body
+    - field.field.node.session.field_accepted
+    - field.field.node.session.field_closing_session
+    - field.field.node.session.field_day
+    - field.field.node.session.field_featured
+    - field.field.node.session.field_keynote
+    - field.field.node.session.field_metatags
+    - field.field.node.session.field_proposed_tracks
+    - field.field.node.session.field_room
+    - field.field.node.session.field_session_contact_mail
+    - field.field.node.session.field_session_expertise_level
+    - field.field.node.session.field_session_remarks
+    - field.field.node.session.field_session_slides_file
+    - field.field.node.session.field_session_slides_link
+    - field.field.node.session.field_session_speaker
+    - field.field.node.session.field_session_track
+    - field.field.node.session.field_session_type
+    - field.field.node.session.field_speaker_images
+    - field.field.node.session.field_tags
+    - field.field.node.session.field_time_slot
+    - field.field.node.session.field_year
+    - image.style.featured
+    - node.type.session
+  module:
+    - image
+    - user
+id: node.session.featured
+targetEntityType: node
+bundle: session
+mode: featured
+content:
+  field_session_speaker:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_speaker_images:
+    type: image
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      image_style: featured
+      image_link: ''
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_accepted: true
+  field_closing_session: true
+  field_day: true
+  field_featured: true
+  field_keynote: true
+  field_metatags: true
+  field_proposed_tracks: true
+  field_room: true
+  field_session_contact_mail: true
+  field_session_expertise_level: true
+  field_session_remarks: true
+  field_session_slides_file: true
+  field_session_slides_link: true
+  field_session_track: true
+  field_session_type: true
+  field_tags: true
+  field_time_slot: true
+  field_year: true
+  links: true

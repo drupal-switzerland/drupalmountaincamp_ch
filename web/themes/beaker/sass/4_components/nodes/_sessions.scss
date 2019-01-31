@@ -27,3 +27,32 @@
     font-weight: bold;
   }
 }
+
+// FEATURED
+// =============================================================================
+.session-featured {
+
+  h4 {
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .field--name-field-speaker-images {
+    .field__item {
+      display: inline-block;
+
+      img {
+        border-radius: 50%;
+        height: auto;
+        width: 128px;
+      }
+
+      & + .field__item {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .button-wrap {
+    margin-top: 1rem;
+  }
+}

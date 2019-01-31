@@ -1,0 +1,11 @@
+{%
+  set classes = [
+    'session-featured',
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+  <h3>{{ content.field_session_speaker }}</h3>
+  <h4>{{ label }}</h4>
+  {{ content.field_speaker_images }}
+  <div class="button-wrap"><a class="button" href="{{ url }}">Learn more</a></div>
+</article>
