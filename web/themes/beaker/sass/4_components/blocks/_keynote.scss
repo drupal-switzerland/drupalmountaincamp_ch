@@ -62,4 +62,20 @@
       text-decoration: none;
     }
   }
+
+  .keynote-speakers {
+    .keynote-speakers--item {
+      display: inline-block;
+
+      img {
+        border-radius: 50%;
+        height: auto;
+        width: 96px;
+      }
+
+      & + .keynote-speakers--item {
+        margin-left: 0.5rem;
+      }
+    }
+  }
 }
