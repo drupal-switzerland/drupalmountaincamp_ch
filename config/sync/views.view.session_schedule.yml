@@ -9,6 +9,7 @@ dependencies:
     - field.storage.node.field_time_slot
     - node.type.session
     - taxonomy.vocabulary.year
+    - views.view.featured_sessions
   content:
     - 'taxonomy_term:year:55e21dc6-bb97-4915-be50-7eb08a715365'
     - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
@@ -581,6 +582,17 @@ display:
         access: true
         header: false
       header:
+        view:
+          id: view
+          table: views
+          field: view
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          view_to_insert: 'featured_sessions:block_1'
+          inherit_arguments: false
+          plugin_id: view
         area:
           id: area
           table: views
