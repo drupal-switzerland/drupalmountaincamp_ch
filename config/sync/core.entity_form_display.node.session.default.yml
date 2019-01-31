@@ -5,7 +5,9 @@ dependencies:
   config:
     - field.field.node.session.body
     - field.field.node.session.field_accepted
+    - field.field.node.session.field_closing_session
     - field.field.node.session.field_day
+    - field.field.node.session.field_featured
     - field.field.node.session.field_keynote
     - field.field.node.session.field_metatags
     - field.field.node.session.field_proposed_tracks
@@ -18,14 +20,17 @@ dependencies:
     - field.field.node.session.field_session_speaker
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
+    - field.field.node.session.field_speaker_images
     - field.field.node.session.field_tags
     - field.field.node.session.field_time_slot
     - field.field.node.session.field_year
+    - image.style.thumbnail
     - node.type.session
   module:
     - datetime_range
     - field_group
     - file
+    - image
     - link
     - text
 third_party_settings:
@@ -67,13 +72,16 @@ third_party_settings:
     group_selection:
       children:
         - field_accepted
+        - field_featured
         - field_keynote
+        - field_closing_session
         - field_day
         - field_time_slot
         - field_room
         - field_proposed_tracks
         - field_session_track
         - field_tags
+        - field_speaker_images
       parent_name: group_tabs_container
       weight: 21
       format_type: tab
@@ -105,24 +113,38 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  field_closing_session:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_day:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 5
     region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_featured:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_keynote:
     type: boolean_checkbox
-    weight: 2
+    weight: 3
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_proposed_tracks:
-    weight: 6
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -131,7 +153,7 @@ content:
     region: content
   field_room:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
@@ -185,7 +207,7 @@ content:
     region: content
   field_session_track:
     type: entity_reference_autocomplete
-    weight: 7
+    weight: 9
     region: content
     settings:
       match_operator: CONTAINS
@@ -198,9 +220,17 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
+  field_speaker_images:
+    weight: 11
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_tags:
     type: entity_reference_autocomplete
-    weight: 8
+    weight: 10
     region: content
     settings:
       match_operator: CONTAINS
@@ -209,7 +239,7 @@ content:
     third_party_settings: {  }
   field_time_slot:
     type: daterange_default
-    weight: 4
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
