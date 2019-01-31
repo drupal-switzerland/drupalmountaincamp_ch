@@ -218,7 +218,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ title }} - {{ field_session_speaker }} (Room: {{ field_room }})'
+            text: '<p>{{ title }} - {{ field_session_speaker }} {% if field_room|render %}<span class="session-schedule__room">(Room: {{ field_room }})</span>{% endif %}</p>'
             make_link: false
             path: ''
             absolute: false
@@ -581,17 +581,19 @@ display:
         access: true
         header: false
       header:
-        area_text_custom:
-          id: area_text_custom
+        area:
+          id: area
           table: views
-          field: area_text_custom
+          field: area
           relationship: none
           group_type: group
           admin_label: ''
           empty: false
           tokenize: false
-          content: ''
-          plugin_id: text_custom
+          content:
+            value: '<h1>Schedule</h1>'
+            format: full_html
+          plugin_id: text
     cache_metadata:
       max-age: -1
       contexts:
