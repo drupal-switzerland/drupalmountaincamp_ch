@@ -82,7 +82,13 @@
   ]
 %}
 <article{{ attributes.addClass(classes) }}>
-  <p class="node__subtitle">Proposed Session</p>
+  <p class="node__subtitle">
+  {% if node.field_accepted.value == '1' %}
+    Selected Session
+  {% else %}
+    Proposed Session
+  {% endif %}
+  </p>
   <h1{{ title_attributes.addClass('session__title') }}>
     {{ label['#items'].getString }}
   </h1>
