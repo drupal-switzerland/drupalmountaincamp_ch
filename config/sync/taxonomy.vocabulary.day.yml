@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 name: Day
 vid: day
-description: 'The three days of the camp'
+description: 'The days of the camp'
 hierarchy: 0
 weight: 0

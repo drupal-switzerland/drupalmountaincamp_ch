@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.session.body
     - field.field.node.session.field_accepted
+    - field.field.node.session.field_break
     - field.field.node.session.field_closing_session
     - field.field.node.session.field_day
     - field.field.node.session.field_featured
@@ -20,6 +21,7 @@ dependencies:
     - field.field.node.session.field_session_speaker
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
+    - field.field.node.session.field_social_activity
     - field.field.node.session.field_speaker_images
     - field.field.node.session.field_tags
     - field.field.node.session.field_time_slot
@@ -43,6 +45,16 @@ content:
     weight: 9
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_break:
+    weight: 14
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_day:
     weight: 3
@@ -126,6 +138,16 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_social_activity:
+    weight: 13
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_time_slot:
     weight: 4

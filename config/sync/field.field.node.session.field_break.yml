@@ -1,0 +1,23 @@
+uuid: 2f57800d-7be5-495b-af7b-f81ae113115f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_break
+    - node.type.session
+id: node.session.field_break
+field_name: field_break
+entity_type: node
+bundle: session
+label: Break
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
