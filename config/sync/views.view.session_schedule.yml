@@ -582,17 +582,6 @@ display:
         access: true
         header: false
       header:
-        view:
-          id: view
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          view_to_insert: 'featured_sessions:block_1'
-          inherit_arguments: false
-          plugin_id: view
         area:
           id: area
           table: views
@@ -606,6 +595,17 @@ display:
             value: '<h1>Schedule</h1>'
             format: full_html
           plugin_id: text
+        view:
+          id: view
+          table: views
+          field: view
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          view_to_insert: 'featured_sessions:block_1'
+          inherit_arguments: false
+          plugin_id: view
     cache_metadata:
       max-age: -1
       contexts:
