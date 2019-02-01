@@ -1288,7 +1288,7 @@ display:
         weight: -43
         context: '0'
         menu_name: main
-        enabled: true
+        enabled: false
       filters:
         type:
           id: type
