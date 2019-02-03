@@ -22,3 +22,18 @@
     padding: 10px 32px;
   }
 }
+
+@mixin reset-button {
+  border: none;
+  background: none;
+  border-radius: 0;
+}
+
+@mixin toggle-line {
+  position: absolute;
+  display: block;
+  height: 3px;
+  width: 24px;
+  background: $blue;
+  cursor: pointer;
+}

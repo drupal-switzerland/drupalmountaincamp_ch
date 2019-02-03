@@ -30,6 +30,13 @@
   flex-wrap: $val;
 }
 
+@mixin center {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  height: $header;
+}
+
 // PX TO REM MIXIN
 // =============================================================================
 

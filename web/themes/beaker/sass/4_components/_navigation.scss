@@ -1,208 +1,186 @@
 // NAVIGATION STYLES
 // =============================================================================
-$header: 80px;
+$inner-padding: 12px;
 
-header.header {
+.header {
+  @include clearfix;
   border-bottom: 2px solid $blue;
   background-color: $white;
   width: 100%;
   z-index: 100;
   height: $header;
-  @include clearfix;
-  .inner {
-    position: relative;
+
+  &.expanded {
+    height: auto;
+  }
+
+  &__inner {
+    @include center;
     max-width: $wide;
     margin: 0 auto;
-    padding: 0 12px;
-    .site-name {
-      display: flex;
-      align-content: flex-start;
-      align-items: center;
-      height: $header;
-      float: left;
-      a {
-        @include font-slab-bolder;
-        @include font-size(18px, false);
-        display: block;
-        line-height: 1;
-        text-transform: uppercase;
-        float: left;
-        color: $blue;
-        span {
-          color: $red;
-        }
-      }
+    padding: 0 $inner-padding;
+    justify-content: space-between;
 
-      &__logo {
-        width: 40px;
-        margin: -10px 10px 0 0;
-      }
-    }
-  }
-  @include breakpoint($desktop) {
-    &.expanded {
+    .expanded & {
       height: auto;
-      .menu--main {
-        display: block;
+      flex-direction: column;
+
+      > *:not(.menu-toggle) {
         width: 100%;
       }
     }
   }
-  .menu--main {
-    background-color: $white;
-    float: right;
-    display: none;
-    a {
-      @include font-bold;
-      font-size: .75rem;
+}
+
+.site-name {
+  &__wrapper {
+    @include center;
+    height: $header;
+  }
+
+  &__title {
+    @at-root a#{&} {
+      @include font-slab-bolder;
+      @include font-size(18px, false);
+      font-weight: 700;
       display: block;
       line-height: 1;
       text-transform: uppercase;
-      padding: $header / 4 $header / 6;
-      &:focus,
-      &:hover,
-        //&.is-active,
-      &.scrolled {
+      color: $blue;
+
+      span {
         color: $red;
       }
     }
-    ul {
-      margin: 0;
-    }
-    li {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      border-bottom: 1px solid $blue;
-      &:last-child {
-        width: 100%;
-        height: $header;
-        display: flex;
-        align-items: center;
-        border-bottom: 0px solid transparent;
-        a.button-cta {
-          width: auto;
-          @include button;
-          color: $blue;
-        }
-      }
-    }
+  }
+
+  &__logo {
+    width: 40px;
+    margin: -10px 10px 0 0;
   }
 }
 
 .menu-toggle {
+  @include center;
   position: absolute;
-  right: 1rem;
-  top: 1rem;
-  display: block;
-  a {
+  right: $inner-padding;
+  top: 0;
+
+  @include breakpoint($almost-wide) {
+    display: none;
+  }
+
+  &__button {
+    @include reset-button;
+    @include transition(all 0.25s ease);
     cursor: pointer;
     position: relative;
     display: block;
-    float: right;
     width: 24px;
     height: 18px;
     padding: 20px;
-    @include transition(all 0.25s ease);
-    span,
-    span:before,
-    span:after {
-      content: '';
-      position: absolute;
-      display: block;
-      cursor: pointer;
-      height: 3px;
-      width: 24px;
-      background: $blue;
-      @include transition(all 0.1s ease-in-out);
-    }
-    span {
-      text-indent: -9999px;
-      top: 17px;
-      right: 7.5px;
-      &:before {
-        top: -7px;
-      }
-      &:after {
-        top: 7px;
-      }
-    }
+
     &:focus,
     &:hover {
-      span {
-        &:before {
-          top: -8px;
-        }
-        &:after {
-          top: 8px;
-        }
+      .menu-toggle__icon:not(.expanded)::before {
+        top: -8px;
       }
+
+      .menu-toggle__icon:not(.expanded)::after {
+        top: 8px;
+      }
+    }
+  }
+
+  &__icon {
+    @include toggle-line;
+    @include transition(all 0.1s ease-in-out);
+    top: 17px;
+    right: 7.5px;
+
+    &::before,
+    &::after {
+      @include toggle-line;
+      content: '';
+    }
+
+    &:before {
+      top: -7px;
+    }
+
+    &:after {
+      top: 7px;
     }
 
     &.expanded {
-      span {
-        background-color: transparent;
-        &:before, &:after {
-          top: 0;
-          background: $blue;
-        }
-        &:before {
-          @include rotate(-45deg);
-        }
-        &:after {
-          @include rotate(45deg);
-        }
+      background-color: transparent;
+
+      &:before,
+      &:after {
+        top: 0;
+        background: $blue;
+      }
+
+      &:before {
+        @include rotate(-45deg);
+      }
+
+      &:after {
+        @include rotate(45deg);
       }
     }
   }
 }
 
-@include breakpoint($almost-wide) {
-  header.header .menu--main {
-    display: block;
-    float: right;
-    height: $header - 2px;
-    ul.menu {
-      height: $header - 2px;
-      a {
-        @include font-bold;
-        font-size: .75rem;
-        display: block;
-        line-height: 1;
-        text-transform: uppercase;
-        padding: $header / 4 $header / 8;
+.navigation-wrapper {
+  display: none;
 
-      }
-      li {
+  @include breakpoint($almost-wide) {
+    @include center;
+  }
+
+  .expanded & {
+    display: block;
+  }
+
+  .menu {
+    margin: 0;
+
+    @include breakpoint($almost-wide) {
+      @include center;
+    }
+  }
+
+  .menu-item {
+    padding: 0;
+    border-bottom: 1px solid #0e2d40;
+
+    @include breakpoint($almost-wide) {
+      border: none;
+    }
+
+    a {
+      @include menu-link;
+
+      &.button-cta {
+        @include button;
+        display: inline-block;
         width: auto;
-        display: flex;
-        align-content: flex-start;
-        align-items: center;
-        //margin: 0 4px;
-        padding: 0;
-        float: left;
-        height: 100%;
-        border-bottom: none;
-        &:last-child {
-          margin-right: 0;
-          a.button-cta {
-            max-width: 5rem;
-            text-align: center;
-            padding: 10px;
-          }
+        color: $blue;
+        margin: Calc($header / 4 - 10px) 0;
+
+        @include breakpoint($almost-wide) {
+          padding: 10px;
         }
       }
     }
-  }
-  .menu-toggle {
-    display: none;
   }
 }
 
 // hide front page id links
 @media (min-width: #{$desktop-up}) and (max-width: 1170px) {
   header.header .menu--main .menu {
-    a[href^="/#"] {
+    a[href^='/#'] {
       display: none;
     }
   }
