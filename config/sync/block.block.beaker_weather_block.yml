@@ -1,0 +1,20 @@
+uuid: e44431ed-c1cf-490b-b70d-f0aa7e88443e
+langcode: en
+status: true
+dependencies:
+  module:
+    - weather
+  theme:
+    - beaker
+id: beaker_weather_block
+theme: beaker
+region: header
+weight: 0
+provider: null
+plugin: weather_block
+settings:
+  id: weather_block
+  label: 'Weather Block'
+  provider: weather
+  label_display: '0'
+visibility: {  }
