@@ -1,0 +1,35 @@
+{% if weather_data %}
+  <ul class="weather-wrapper">
+    <li>
+      <p class="current-temperature">
+        <span class="visually-hidden">{{ 'Today\'s current temperature is'|t }} </span>
+        {{ weather_data.0.temperature|round }}&deg;C
+      </p>
+      <div class="daily-forecast-wrapper">
+        <ul class="daily-forecast">
+          {% for day in weather_data %}
+            <li class="daily-forecast-day">
+              <h3 class="day">{{ day.time|date('l') }}</h3>
+              <div class="icon icon-{{ day.icon }}"></div>
+              <p class="temperature">
+                <span class="visually-hidden">{{ 'The maximum temperature is'|t }} </span>
+                <span class="temperature-high">{{ day.temperatureHigh|round}}&deg;C</span>
+                <span class="visually-hidden">{{ 'The minimum temperature is'|t }} </span>
+                <span class="temperature-low">{{ day.temperatureLow|round}}&deg;C</span>
+              </p>
+              <div class="wind-wrapper">
+                <div class="icon icon-direction" style="transform: rotate({{ day.windBearing }}deg);"></div>
+                <p class="wind">
+                  <span class="visually-hidden">{{ 'The wind speed is approx'|t }} </span>
+                  {{ day.windSpeed|round }}km/h
+                </p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </li>
+  </ul>
+{% endif %}
+
+
