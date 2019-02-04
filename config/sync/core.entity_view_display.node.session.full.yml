@@ -6,7 +6,10 @@ dependencies:
     - core.entity_view_mode.node.full
     - field.field.node.session.body
     - field.field.node.session.field_accepted
+    - field.field.node.session.field_break
+    - field.field.node.session.field_closing_session
     - field.field.node.session.field_day
+    - field.field.node.session.field_featured
     - field.field.node.session.field_keynote
     - field.field.node.session.field_metatags
     - field.field.node.session.field_proposed_tracks
@@ -19,6 +22,8 @@ dependencies:
     - field.field.node.session.field_session_speaker
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
+    - field.field.node.session.field_social_activity
+    - field.field.node.session.field_speaker_images
     - field.field.node.session.field_tags
     - field.field.node.session.field_time_slot
     - field.field.node.session.field_year
@@ -26,6 +31,7 @@ dependencies:
   module:
     - file
     - link
+    - metatag
     - text
     - user
 id: node.session.full
@@ -48,6 +54,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_metatags:
+    type: metatag_empty_formatter
+    weight: 11
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_proposed_tracks:
     type: string
     weight: 2
@@ -123,10 +136,14 @@ content:
     third_party_settings: {  }
 hidden:
   field_accepted: true
+  field_break: true
+  field_closing_session: true
+  field_featured: true
   field_keynote: true
-  field_metatags: true
   field_session_contact_mail: true
   field_session_remarks: true
+  field_social_activity: true
+  field_speaker_images: true
   field_tags: true
   field_time_slot: true
   field_year: true
