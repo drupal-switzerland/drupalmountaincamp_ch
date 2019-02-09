@@ -10,3 +10,8 @@ entity_type_groups:
       advanced: advanced
       open_graph: open_graph
       twitter_cards: twitter_cards
+    session:
+      basic: basic
+      advanced: advanced
+      open_graph: open_graph
+      twitter_cards: twitter_cards
