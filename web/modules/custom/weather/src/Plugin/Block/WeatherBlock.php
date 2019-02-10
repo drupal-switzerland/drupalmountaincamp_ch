@@ -21,7 +21,7 @@ class WeatherBlock extends BlockBase {
   public function build() {
     return [
       '#theme' => 'weather_block',
-      '#weather_data' => get_weather_data()
+      '#weather_data' =>  \Drupal::service('weather.weather_services')->get_weather_data()
     ];
   }
 
