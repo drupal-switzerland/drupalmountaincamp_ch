@@ -98,6 +98,12 @@
     {{ content.field_session_expertise_level }}
     {{ content.field_session_type }}
     {{ content.field_session_track }}
+
+    {% if node.field_accepted.value == '1' %}
+      {{ content.field_day }}
+      {{ content.field_time_slot }}
+      {{ content.field_room }}
+    {% endif %}
   </div>
   {{ content.body }}
   {% if content.field_session_slides_link[0]

@@ -52,6 +52,7 @@
         "drupal/superfish": "^1.2",
         "drupal/token": "^1.5",
         "drupal/varnish_purge": "^1.10",
+        "drupal/views_conditional": "1.*",
         "drush/drush": "~9.5",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0"

@@ -53,4 +53,12 @@
       }
     },
   };
+
+  Drupal.behaviors.keynote = {
+    attach: function(context, settings) {
+      var $context = $(context);
+
+      $context.find('.session--keynote').removeClass('session--keynote').parent().parent().parent().parent().parent().addClass('session--keynote');
+    },
+  };
 })(jQuery);

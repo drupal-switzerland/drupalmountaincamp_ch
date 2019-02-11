@@ -1,0 +1,10 @@
+uuid: 78dd3f14-ddde-4d7a-82a3-d4beb6ccf143
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.social_activity
+label: 'Social activity'
+targetEntityType: node
+cache: true
