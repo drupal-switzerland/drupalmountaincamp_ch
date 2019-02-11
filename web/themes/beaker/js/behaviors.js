@@ -54,11 +54,14 @@
     },
   };
 
-  Drupal.behaviors.keynote = {
+  Drupal.behaviors.campSessions = {
     attach: function(context, settings) {
       var $context = $(context);
 
       $context.find('.session--keynote').removeClass('session--keynote').parent().parent().parent().parent().parent().addClass('session--keynote');
+      $context.find('.session--break').removeClass('session--break').parent().parent().parent().parent().parent().addClass('session--break');
+      $context.find('.session--closing-session').removeClass('session--closing-session').parent().parent().parent().parent().parent().addClass('session--closing-session');
+      $context.find('.session--social-activity').removeClass('session--social-activity').parent().parent().parent().parent().parent().addClass('session--social-activity');
     },
   };
 })(jQuery);

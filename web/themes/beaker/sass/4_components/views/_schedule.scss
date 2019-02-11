@@ -26,16 +26,28 @@
     padding: $base-unit 2 * $base-unit;
   }
 
-  .session--keynote {
+  .session--keynote,
+  .session--break,
+  .session--closing-session,
+  .session--social-activity {
     background-color: $system__blue;
 
-    h3,
-    time {
-      font-weight: 500;
+    &.session--break {
+      background-color: $light-grey;
     }
 
+    &.session--closing-session {
+      background-color: $system__pink;
+    }
+
+    &.session--social-activity {
+      background-color: $green;
+    }
+
+    h3,
+    time,
     a {
-      font-weight: 700;
+      font-weight: 500;
     }
   }
 }
