@@ -1,0 +1,143 @@
+.weather-wrapper,
+.weather-wrapper ul,
+.weather-wrapper li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.weather-wrapper p {
+  margin: 0;
+}
+
+.weather-wrapper > li,
+.weather-wrapper .wind-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.weather-wrapper .current-temperature {
+  cursor: pointer;
+}
+
+.weather-wrapper .daily-forecast-wrapper {
+  width: 100%;
+  background-color: white;
+  position: absolute;
+  top: 80px;
+  right: 0;
+  left: 0;
+  display: none;
+}
+
+.weather-wrapper > li:hover .daily-forecast-wrapper,
+.weather-wrapper > li:focus .daily-forecast-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.weather-wrapper ul.daily-forecast {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.weather-wrapper li.daily-forecast-day {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.weather-wrapper .daily-forecast-day h3.day {
+  text-transform: none;
+}
+
+.weather-wrapper .icon {
+  background-repeat: no-repeat;
+  width: 50px;
+  background-size: 100%;
+  height: 50px;
+  display: block;
+}
+
+.weather-wrapper .icon.icon-direction {
+  background-image: url(../images/icons/wi-direction-down.svg);
+}
+
+.weather-wrapper .icon.icon-clear-day {
+  background-image: url(../images/icons/wi-day-sunny.svg);
+}
+
+.weather-wrapper .icon.icon-clear-night {
+  background-image: url(../images/icons/wi-night-clear.svg);
+}
+
+.weather-wrapper .icon.icon-rain {
+  background-image: url(../images/icons/wi-rain.svg);
+}
+
+.weather-wrapper .icon.icon-snow {
+  background-image: url(../images/icons/wi-snow.svg);
+}
+
+.weather-wrapper .icon.icon-sleet {
+  background-image: url(../images/icons/wi-sleet.svg);
+}
+
+.weather-wrapper .icon.icon-wind {
+  background-image: url(../images/icons/wi-windy.svg);
+}
+
+.weather-wrapper .icon.icon-fog {
+  background-image: url(../images/icons/wi-fog.svg);
+}
+
+.weather-wrapper .icon.icon-cloudy {
+  background-image: url(../images/icons/wi-cloudy.svg);
+}
+
+.weather-wrapper .icon.icon-partly-cloudy-day {
+  background-image: url(../images/icons/wi-day-cloudy.svg);
+}
+
+.weather-wrapper .icon.icon-partly-cloudy-night {
+  background-image: url(../images/icons/wi-night-alt-partly-cloudy.svg);
+}
+
+.weather-wrapper .temperature-high {
+  margin-right: 10px;
+}
+
+.weather-wrapper .temperature-low {
+  color: #bababa;
+}

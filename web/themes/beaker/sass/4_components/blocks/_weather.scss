@@ -1,0 +1,23 @@
+// CUSTOM WEATHER STYLES
+// =============================================================================
+.weather-wrapper {
+  @include breakpoint($almost-wide) {
+    @include center;
+  }
+
+  .block-weather-block {
+    @include breakpoint($almost-wide) {
+      height: 100%;
+    }
+  }
+
+  .current-temperature {
+    @include menu-link;
+  }
+
+  li:hover .daily-forecast-wrapper {
+    @include breakpoint($desktop) {
+      display: none;
+    }
+  }
+}

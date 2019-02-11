@@ -100,3 +100,18 @@ p {
     line-height: 1;
   }
 }
+
+@mixin menu-link {
+  @include font-bold;
+  font-size: 0.75rem;
+  display: block;
+  line-height: 1;
+  text-transform: uppercase;
+  padding: $header / 4 $header / 6;
+
+  &:focus,
+  &:hover,
+  &.scrolled {
+    color: $red;
+  }
+}

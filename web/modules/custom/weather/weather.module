@@ -1,0 +1,23 @@
+<?php
+
+use Drupal\Component\Utility\UrlHelper;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function weather_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'weather/weather';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function weather_theme($existing, $type, $theme, $path) {
+  return [
+    'weather_block' => [
+      'variables' => [
+        'weather_data' => null
+      ],
+    ]
+  ];
+}
