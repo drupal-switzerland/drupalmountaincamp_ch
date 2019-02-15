@@ -54,6 +54,31 @@
     },
   };
 
+  Drupal.behaviors.weatherToggle = {
+    attach: function(context, settings) {
+      var listClass = '.weather-wrapper > li';
+      var openText = Drupal.t('Open weather tab');
+      var closeText = Drupal.t('Close weather tab');
+
+      function openWeather(event) {
+        event.stopPropagation();
+        $toggle = $('toggle');
+        $(listClass).toggleClass('active');
+        $toggle.text($toggle.text() === openText ? closeText : openText);
+      }
+
+      $button = $('<button />')
+        .attr('type', 'button')
+        .text(openText)
+        .addClass('toggle')
+        .on('click', openWeather);
+
+      $(listClass)
+        .prepend($button)
+        .on('click', openWeather);
+    },
+  };
+
   Drupal.behaviors.campSessions = {
     attach: function(context, settings) {
       var $context = $(context);
