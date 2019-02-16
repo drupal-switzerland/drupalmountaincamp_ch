@@ -62,7 +62,7 @@
 
       function openWeather(event) {
         event.stopPropagation();
-        $toggle = $('toggle');
+        $toggle = $('.toggle');
         $(listClass).toggleClass('active');
         $toggle.text($toggle.text() === openText ? closeText : openText);
       }
