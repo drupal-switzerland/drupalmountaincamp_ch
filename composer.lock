@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1af9baff1e13ef666e5b9b42013628ad",
+    "content-hash": "240544d7e41437f2c52efda6a7237f9b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2602,6 +2602,9 @@
                     "recurse": false,
                     "replace": false,
                     "merge-extra": false
+                },
+                "patches_applied": {
+                    "#2718657 - Drupal\\language\\LanguageNegotiator::updateConfiguration() is passed a NULL": "https://www.drupal.org/files/issues/2019-02-28/language-2718657-17.patch"
                 }
             },
             "autoload": {
