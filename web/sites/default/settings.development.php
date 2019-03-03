@@ -1,15 +1,24 @@
 <?php
 
-// Default development database.
-$databases['default']['default'] = array (
+/**
+ * @file
+ */
+
+use Drupal\Component\Assertion\Handle;
+
+/**
+ * @file
+ * Default development database.
+ */
+$databases['default']['default'] = [
   'database' => 'sites/default/files/.sqlite',
   'prefix' => '',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\sqlite',
   'driver' => 'sqlite',
-);
+];
 
 assert_options(ASSERT_ACTIVE, TRUE);
-\Drupal\Component\Assertion\Handle::register();
+Handle::register();
 
 /**
  * Enable local development services.

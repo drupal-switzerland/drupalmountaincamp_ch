@@ -35,6 +35,7 @@
         "drupal/field_group": "^1.0",
         "drupal/field_permissions": "^1.0@RC",
         "drupal/focal_point": "^1.0",
+        "drupal/graphql_twig": "^1.0@beta",
         "drupal/layout_plugin": "^1.0",
         "drupal/link_attributes": "^1.5",
         "drupal/link_css": "1.x-dev",
@@ -55,7 +56,7 @@
         "drupal/views_conditional": "1.*",
         "drush/drush": "~9.5",
         "vlucas/phpdotenv": "^2.4",
-        "webflo/drupal-finder": "^1.0.0"
+        "webflo/drupal-finder": "^1.1"
     },
     "require-dev": {
         "behat/behat": "3.3.1",
@@ -94,6 +95,11 @@
         ]
     },
     "extra": {
+        "patches": {
+            "drupal/core": {
+                "#2718657 - Drupal\\language\\LanguageNegotiator::updateConfiguration() is passed a NULL": "https://www.drupal.org/files/issues/2019-02-28/language-2718657-17.patch"
+            }
+        },
         "patchLevel": {
             "drupal/core": "-p2"
         },
