@@ -784,7 +784,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h1>Schedule</h1>'
+            value: "<h1>Schedule</h1>\r\n<p>Jump to <a href=\"#thursday\">Thursday</a>, <a href=\"#friday\">Friday</a>, <a href=\"#saturday\">Saturday</a>, or <a href=\"#sunday\">Sunday</a></p>"
             format: full_html
           plugin_id: text
         view:
@@ -1326,7 +1326,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<h2>{{ field_day }}</h2>'
+            text: '<h2 id="{{ field_day | lower }}">{{ field_day }}</h2>'
             make_link: false
             path: ''
             absolute: false
