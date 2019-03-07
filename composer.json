@@ -97,7 +97,8 @@
     "extra": {
         "patches": {
             "drupal/core": {
-                "#2718657 - Drupal\\language\\LanguageNegotiator::updateConfiguration() is passed a NULL": "https://www.drupal.org/files/issues/2019-02-28/language-2718657-17.patch"
+                "#2718657 - Drupal\\language\\LanguageNegotiator::updateConfiguration() is passed a NULL": "https://www.drupal.org/files/issues/2019-02-28/language-2718657-17.patch",
+                "#3025014 - PHP 7.3 and deprecated continue in switch statement": "https://www.drupal.org/files/issues/2019-03-07/3025014-5.patch"
             }
         },
         "patchLevel": {
