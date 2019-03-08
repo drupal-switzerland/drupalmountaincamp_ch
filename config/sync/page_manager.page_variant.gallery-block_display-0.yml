@@ -1,0 +1,35 @@
+uuid: 3850421e-d1aa-4612-9193-e63ab87e3099
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.gallery
+    - views.view.gallery
+  module:
+    - views
+id: gallery-block_display-0
+label: 'Block page'
+variant: block_display
+variant_settings:
+  blocks:
+    4d849efc-9d1c-4e92-8314-feb6c2701bb0:
+      id: 'views_block:gallery-block_1'
+      label: ''
+      provider: views
+      label_display: visible
+      views_label: ''
+      items_per_page: none
+      region: top
+      weight: 0
+      uuid: 4d849efc-9d1c-4e92-8314-feb6c2701bb0
+      context_mapping: {  }
+  id: block_display
+  uuid: 7fcf68ed-ec2e-4f58-841e-b9ac4310d112
+  label: null
+  weight: 0
+  page_title: ''
+page: gallery
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

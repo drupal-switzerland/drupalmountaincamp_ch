@@ -1,0 +1,12 @@
+uuid: 2a514116-a73c-41a7-a5f9-bd88ba8d9ee8
+langcode: en
+status: true
+dependencies: {  }
+id: gallery
+label: Gallery
+description: ''
+use_admin_theme: false
+path: /gallery
+access_logic: and
+access_conditions: {  }
+parameters: {  }
