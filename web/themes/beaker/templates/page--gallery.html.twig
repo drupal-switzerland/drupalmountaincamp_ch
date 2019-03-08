@@ -1,0 +1,88 @@
+<div id="page-wrapper">
+  <div id="page" class="gallery-page">
+    <header id="header" class="header sticky" role="banner" aria-label="{{ 'Site header'|t}}">
+      <div class="header__inner">
+        <div class="site-name__wrapper">
+          <img src="/themes/beaker/images/icon_big.png" class="site-name__logo" alt="" />
+          <a href="/" title="Home" rel="home" class="site-name__title">Drupal Mountain Camp<br/>2019 Switzerland</a>
+        </div>
+        <div class="navigation-wrapper">
+          <div class="main-menu-wrapper">
+            {{ page.header.beaker_main_menu }}
+          </div>
+          <div class="weather-wrapper">
+            {{ page.header.beaker_weather_block }}
+          </div>
+        </div>
+        <div class="menu-toggle">
+          <button class="menu-toggle__button" id="menu-toggle" aria-label="{{ 'Open menu'|t }}">
+            <span class="visually-hidden">{{ 'Open menu'|t}}</span>
+            <span class="menu-toggle__icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    {% block fullpage %}
+
+      {{ page.messages }}
+
+      {% if page.banner %}
+      <div class="banner-wrapper clearfix">
+        <div class="inner">
+            <div class="layout-container clearfix">
+              {{ page.banner }}
+            </div>
+        </div>
+      </div>
+      {% endif %}
+      {% if is_front == false %}
+        {%
+          set content_wrapper_classes = [
+            'grid',
+          ]
+        %}
+      {% endif %}
+      <div class="content-wrapper clearfix {{ content_wrapper_classes | join(' ') }}">
+
+        <div class="content-top clearfix">
+          <div class="inner">
+            {% if page.content_top %}
+              <div class="layout-container clearfix">
+                {{ page.content_top }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <main id="main" class="layout-main clearfix">
+          <div class="inner">
+            {% if is_front == false %}
+              {{ title }}
+            {% endif %}
+
+            {{ page.content }}
+          </div>
+        </main>
+      </div>
+
+    {% endblock %}
+
+    <footer class="site-footer">
+      <div class="inner">
+        {% if page.content_bottom %}
+          <div class="content-bottom clearfix">
+            {{ page.content_bottom }}
+          </div>
+        {% endif %}
+
+        {% if page.footer %}
+          <div class="site-footer__top layout-container clearfix">
+            {{ page.footer }}
+          </div>
+        {% endif %}
+      </div>
+    </footer>
+
+  </div>
+</div>
