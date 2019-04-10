@@ -1,6 +1,6 @@
 uuid: e44431ed-c1cf-490b-b70d-f0aa7e88443e
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - weather
