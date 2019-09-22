@@ -1,5 +1,5 @@
 {
-    "name": "AmazeeLabs/drupalmountaincamp_ch",
+    "name": "drupal-switzerland/drupalmountaincamp_ch",
     "description": "A Drupal 8 starter project built with Composer",
     "type": "project",
     "repositories": [
@@ -54,6 +54,7 @@
         "drupal/token": "^1.5",
         "drupal/varnish_purge": "^1.10",
         "drupal/views_conditional": "1.*",
+        "drupal/webform": "^5.4",
         "drush/drush": "~9.5",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.1"
