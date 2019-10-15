@@ -1,0 +1,176 @@
+uuid: 4c16c2fe-c2cb-4bec-8da5-2c2168a1b2a0
+langcode: en
+status: open
+dependencies: {  }
+open: null
+close: null
+weight: 0
+uid: 1
+template: false
+archive: false
+id: packages
+title: Packages
+description: ''
+category: ''
+elements: "processed_text:\n  '#type': processed_text\n  '#text': |\n    <h2>Enjoy the MountainCamp</h2>\n    \n    <p dir=\"ltr\">Here you find a overview of our possible packages for the upcoming Drupal Mountain Camp.</p>\n    \n    <p dir=\"ltr\">The prices for these packages (and the exactly content) are unclear and depend on the number of participants and registrations. If you are interested, please contact us using this form.</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p>&nbsp;</p>\n    \n    <p><strong>Package:&nbsp;Winter Single Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>\n    \t<li>Hotel-Zimmer</li>\n    \t<li>Skipass</li>\n    \t<li>MountainCamp Ticket</li>\n    </ul>\n    \n    <p dir=\"ltr\">In the Winter Single Week offer we will make sure that you are going to have a good time in these years Mountain Camp in Davos. The journey from Zürich Airport to Davos (both ways) by public transport as well as the overnight stay in Hotel XY are included. To make sure, that you can spend some time on the ski slope a 1 - 2 day ski ticker is guaranteed.</p>\n    \n    <p>&nbsp;</p>\n    \n    <p>&nbsp;</p>\n    \n    <p><strong>Package: Winter Partner Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>\n    \t<li>Hotel-Zimmer</li>\n    \t<li>Skipass</li>\n    \t<li>MountainCamp Ticket</li>\n    </ul>\n    \n    <p dir=\"ltr\"><br />\n    The Winter Partner Week is the ideal offer for our MountainCamp Partners. The transport from Zürich Airport to Davos by public transport (both ways) are included as well as the overnight stay in Hotel XY. To make sure, that you can spend some time on the ski slope, a 1 - 2 day ski ticket is with in.</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\"><strong>Package:&nbsp;Working Snow Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>\n    \t<li>Hotel-Zimmer</li>\n    \t<li>Skipass</li>\n    \t<li>MountainCamp Ticket</li>\n    \t<li>Shared Office</li>\n    </ul>\n    \n    <p dir=\"ltr\"><br />\n    The Winter Working Snow Week is the ideal offer for our MountainCamp Workers. The transport from Zürich Airport to Davos by public transport (both ways) are included as well as the overnight stay in Hotel XY. To spend some time on your ski’s&nbsp; a 1 - 2 day ski ticket is with in and to make sure, that you work efficiently and that you can share innovations and ideas together a Shared Office room is available.</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\"><strong>Package:&nbsp;Family Winter Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)Wohnung max 4</li>\n    \t<li>Personen</li>\n    \t<li>Skipass</li>\n    \t<li>1x MountainCamp Ticket</li>\n    </ul>\n    \n    <p dir=\"ltr\"><br />\n    The Family Winter Snow Week is a ideal offer for our MountainCamp Family Guests. The transport from Zürich Airport to Davos by public transport (both ways) are included, as well as the overnight stay in a apartment, that has the capacity for max. 4 persons. and for each of the Family Winter Snow Members a 1 - 2 day ski ticket is included.<br />\n    &nbsp;</p>\n    \n  '#format': basic_html\nfirstname:\n  '#type': textfield\n  '#title': Firstname\nlastname:\n  '#type': textfield\n  '#title': Lastname\nmail:\n  '#type': email\n  '#title': Mail\nmessage:\n  '#type': textarea\n  '#title': Message"
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_admin_theme: false
+  form_title: both
+  form_submit_once: false
+  form_exception_message: ''
+  form_open_message: ''
+  form_close_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_remote_addr: true
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_reset: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  submission_label: ''
+  submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: page
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_url: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  token_update: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers: {  }

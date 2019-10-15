@@ -21,6 +21,7 @@ dependencies:
     - 'taxonomy_term:room:fde4d0a3-12aa-4827-b595-91efde948327'
     - 'taxonomy_term:year:55e21dc6-bb97-4915-be50-7eb08a715365'
     - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
+    - 'taxonomy_term:year:cccc57b4-0c5b-4f58-9717-f1ebd9b28e4b'
   module:
     - datetime
     - datetime_range
@@ -661,7 +662,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -1521,7 +1522,7 @@ display:
   page_2:
     display_plugin: page
     id: page_2
-    display_title: Page
+    display_title: 'Page 2017'
     position: 1
     display_options:
       display_extenders: {  }
@@ -1674,6 +1675,7 @@ display:
           tokenize: false
           content: 'Download session plans (pdf): <a href ="https://drupalmountaincamp.ch/thursday-2017" target="_blank">Thursday</a>, <a href ="https://drupalmountaincamp.ch/friday-2017" target="_blank">Friday</a>, <a href ="https://drupalmountaincamp.ch/saturday-2017" target="_blank">Saturday</a>'
           plugin_id: text_custom
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
@@ -2419,7 +2421,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -3251,7 +3253,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -4083,7 +4085,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -4186,7 +4188,7 @@ display:
   page_6:
     display_plugin: page
     id: page_6
-    display_title: Page
+    display_title: 'Page 2019'
     position: 1
     display_options:
       display_extenders: {  }
@@ -5027,6 +5029,7 @@ display:
         operator: AND
         groups:
           1: AND
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
