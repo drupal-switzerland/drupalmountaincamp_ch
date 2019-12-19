@@ -27,7 +27,7 @@
         "drupal/admin_toolbar": "^1.24",
         "drupal/config_installer": "^1.8",
         "drupal/console": "^1.0.2",
-        "drupal/core": "^8.7",
+        "drupal/core": "~8.7.0",
         "drupal/crop": "^1.5",
         "drupal/ctools": "^3.0",
         "drupal/devel": "^2.1",
@@ -64,7 +64,6 @@
         "behat/gherkin": "4.4.5",
         "behat/mink-extension": "^2.1@dev",
         "dmore/behat-chrome-extension": "^1.2",
-        "webflo/drupal-core-require-dev": "^8.7.0",
         "drupal/drupal-extension": "^4.0@dev"
     },
     "conflict": {
