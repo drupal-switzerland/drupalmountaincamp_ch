@@ -10,4 +10,4 @@
 
 // Defines where the sync folder of your configuration lives. In this case it's outside
 // the web folder for an advanced security measure: '../config/sync'.
-$config_directories[CONFIG_SYNC_DIRECTORY] = '../config/sync';
+$settings['config_sync_directory'] = '../config/sync';

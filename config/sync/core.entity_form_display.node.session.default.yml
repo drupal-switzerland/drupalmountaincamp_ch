@@ -108,6 +108,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 5
+      show_summary: false
     third_party_settings: {  }
     region: content
   field_accepted:
@@ -139,6 +140,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_featured:
     weight: 2
@@ -170,6 +172,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_session_contact_mail:
     weight: 9
@@ -224,6 +227,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_session_type:
     weight: 5
@@ -254,6 +258,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_time_slot:
     type: daterange_default
