@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Session type'
 vid: session_type
 description: ''
-hierarchy: 0
 weight: 0

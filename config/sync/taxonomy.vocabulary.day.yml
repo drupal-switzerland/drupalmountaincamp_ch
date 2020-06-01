@@ -5,5 +5,4 @@ dependencies: {  }
 name: Day
 vid: day
 description: 'The days of the camp'
-hierarchy: 0
 weight: 0

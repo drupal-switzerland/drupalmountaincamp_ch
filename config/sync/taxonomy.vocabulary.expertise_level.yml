@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Expertise level'
 vid: expertise_level
 description: ''
-hierarchy: 0
 weight: 0

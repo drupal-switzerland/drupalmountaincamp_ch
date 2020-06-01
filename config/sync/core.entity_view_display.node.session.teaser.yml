@@ -81,7 +81,10 @@ content:
     region: content
 hidden:
   field_accepted: true
+  field_break: true
+  field_closing_session: true
   field_day: true
+  field_featured: true
   field_keynote: true
   field_metatags: true
   field_room: true
@@ -89,6 +92,8 @@ hidden:
   field_session_remarks: true
   field_session_slides_file: true
   field_session_slides_link: true
+  field_social_activity: true
+  field_speaker_images: true
   field_tags: true
   field_time_slot: true
   field_year: true
