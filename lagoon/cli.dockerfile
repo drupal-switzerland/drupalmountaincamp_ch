@@ -5,7 +5,7 @@ RUN yarn install --pure-lockfile
 COPY web/themes/beaker /app/web/themes/beaker
 RUN yarn run gulp compile --env=prod
 
-FROM amazeeio/php:7.2-cli-drupal
+FROM amazeeio/php:7.4-cli-drupal
 
 COPY composer.json composer.lock load.environment.php /app/
 COPY scripts /app/scripts
