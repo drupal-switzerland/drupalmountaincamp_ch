@@ -12,6 +12,7 @@ COPY scripts /app/scripts
 
 COPY --from=nodebuilder /app/ /app/
 COPY . /app
+RUN composer self-update --1
 RUN composer install --prefer-dist --no-dev --no-suggest --optimize-autoloader --apcu-autoloader
 
 # Define where the Drupal Root is located
