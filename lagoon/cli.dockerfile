@@ -1,4 +1,4 @@
-FROM uselagoon/node-16-builder as nodebuilder
+FROM amazeeio/node:8-builder as nodebuilder
 
 COPY yarn.lock gulpfile.js package.json /app/
 RUN yarn install --pure-lockfile
