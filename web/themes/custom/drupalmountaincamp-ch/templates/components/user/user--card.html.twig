@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+<article{{ attributes.addClass('profile') }}>
+  <div class="font-semibold mt-2">
+  {% if content.field_name and content.field_name|render|trim is not empty %}
+    {{ content.field_name }}
+  {% else %}
+    {{ user.label }}
+  {% endif %}
+  </div>
+  <div class="flex flex-auto">
+    <div class="w-3/4">
+      {% if content.field_country %}
+        {{ content.field_country }}
+      {% endif %}
+    </div>
+    <div class="w-1/4 flex items-center justify-end">
+      {% if content.field_drupal_org_username %}
+        <div class="ml-2 flex-none">
+          {{ content.field_drupal_org_username }}
+        </div>
+      {% endif %}
+      {% if content.field_twitter_username %}
+        <div class="ml-2 flex-none">
+        {{ content.field_twitter_username }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% if content %}
+    {{- content | without('field_name', 'field_country', 'field_drupal_org_username', 'field_twitter_username') -}}
+  {% endif %}
+</article>

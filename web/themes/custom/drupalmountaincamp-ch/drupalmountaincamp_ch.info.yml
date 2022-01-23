@@ -1,0 +1,18 @@
+name: "DrupalMountainCamp.ch"
+type: theme
+base theme: stable9
+description: "A theme for Drupal Mountain Camp."
+package: Custom
+version: VERSION
+core_version_requirement: "^9"
+
+regions:
+  page_top: "Page top"
+  header_logo: Header Logo
+  header: Header
+  content: Content
+  footer: Footer
+  page_bottom: "Page bottom"
+
+libraries:
+  - drupalmountaincamp_ch/drupalmountaincamp_ch

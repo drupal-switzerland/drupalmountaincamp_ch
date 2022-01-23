@@ -1,7 +1,3 @@
-# Drupal MountainCamp
+# Drupal Mountain Camp
 
-Local setup requires you to copy the `.env.local` to `.env`. To do this you can
-run this command in a terminal:
-
-`cp .env.local .env`
-
+Visit https://drupalmountaincamp.ch to find out more about the conference.

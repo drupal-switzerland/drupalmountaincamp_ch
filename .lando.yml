@@ -1,0 +1,8 @@
+name: drupalmountaincamp-ch
+recipe: lagoon
+config:
+  flavor: drupal
+  build:
+    - composer install
+env_file:
+  - .lando.env

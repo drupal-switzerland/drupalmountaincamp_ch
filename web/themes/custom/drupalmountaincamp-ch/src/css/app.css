@@ -1,0 +1,80 @@
+@import "./fonts.css";
+@import "./tailwind.css";
+
+html {
+  @apply font-serif;
+}
+
+.debug * {
+  outline: 1px dashed grey;
+}
+
+.p-page-gutter {
+  @apply px-4;
+}
+
+@screen sm {
+  .p-page-gutter {
+    @apply px-6;
+  }
+}
+
+.site-logo {
+  @apply w-12 mr-4;
+}
+
+.site-name,
+.menu,
+.block-system-powered-by-block,
+.block-hosting-platform-sh,
+.field--name-field-image-category,
+.field--name-field-video-category,
+.form-item,
+input,
+select,
+.user-pass p,
+form summary {
+  @apply font-sans;
+}
+
+.paragraph ul {
+  @apply list-disc list-inside;
+}
+
+.paragraph ol {
+  @apply list-decimal list-inside;
+}
+
+p {
+  @apply mb-4;
+}
+
+a:hover {
+  @apply underline;
+}
+
+.field--type-text-long a {
+  @apply text-blue-600;
+}
+
+.prefix-item {
+  @apply bg-gray-200 text-gray-600;
+  font: inherit;
+}
+
+.contact-message-contact-form {
+  @apply my-8;
+}
+
+.node--view-mode-teaser h2,
+.node--view-mode-card h2 {
+  @apply text-lg;
+}
+
+.facets-views-plugin {
+  @apply flex;
+
+  .block-facets {
+    @apply mr-8;
+  }
+}

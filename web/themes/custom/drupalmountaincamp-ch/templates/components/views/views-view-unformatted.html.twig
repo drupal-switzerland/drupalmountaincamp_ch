@@ -1,0 +1,78 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+
+{%
+  set classes = [
+    view_id in ['taxonomy_term'] ? 'mx-auto container p-page-gutter my-6',
+    view_id in ['celebrations'] and view_display_id in ['videos_page', 'events_page'] ? 'mx-auto container p-page-gutter my-6',
+    view_id in ['celebrations', 'taxonomy_term'] ? 'md:grid-cols-2 lg:grid-cols-3',
+    view_id in ['volunteers'] ? 'md:grid-cols-3 lg:grid-cols-4',
+    view_id in ['celebrations', 'volunteers', 'taxonomy_term'] and view_display_id not in ['images_page', 'dconeu2020_photos_page'] ? 'grid grid-gap grid-flow-row gap-6',
+    view_id in ['celebrations'] and view_display_id in ['images_page', 'dconeu2020_photos_page'] ? 'grid grid-gap grid-flow-row gap-4 p-page-gutter my-6',
+    view_id in ['celebrations'] and view_display_id in ['images_page'] ? 'views-drupal-logo-grid',
+    view_id in ['celebrations'] and view_display_id in ['dconeu2020_photos_page'] ? 'views-european-architecture',
+  ]
+%}
+
+{% if view_id in ['celebrations'] and view_display_id in ['dconeu2020_photos_page'] %}
+<script>
+  const mediaBackgroundColours = [
+    'bg-blue-400',
+    'bg-gray-400',
+    'bg-green-400',
+    'bg-indigo-400',
+    'bg-orange-400',
+    'bg-pink-400',
+    'bg-purple-400',
+    'bg-red-400',
+    'bg-teal-400',
+    'bg-yellow-400',
+  ];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    for (const mediaImg of document.querySelectorAll('article.node--type-image .field--name-field-media-image')) {
+      const imgUrl = mediaImg.querySelector('.field--name-field-media-image img').src;
+      mediaImg.style.backgroundImage = `url(${imgUrl})`;
+
+      let mediaColour = mediaBackgroundColours[Math.floor(Math.random() * mediaBackgroundColours.length)];
+
+      mediaImg.addEventListener("mouseover", function( event ) {
+        if (event.target) {
+          mediaImg.classList.add(mediaColour);
+          mediaImg.style.backgroundBlendMode = 'overlay';
+        }
+      }, false);
+      mediaImg.addEventListener("mouseleave", function( event ) {
+        if (event.target) {
+          mediaImg.classList.remove(mediaColour);
+          mediaImg.style.backgroundBlendMode = 'unset';
+        }
+      }, false);
+    }
+  });
+</script>
+{% endif %}
+
+<div{{ attributes.addClass(classes) }}>
+  {% if title %}
+    <h3>{{ title }}</h3>
+  {% endif %}
+  {% for row in rows %}
+    {{- row.content -}}
+  {% endfor %}
+</div>

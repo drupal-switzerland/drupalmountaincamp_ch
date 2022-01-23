@@ -1,51 +1,13 @@
 {
-  "name": "beaker-theme",
-  "version": "1.1.0",
-  "description": "Amazee Labs Standard Theme",
-  "main": "gulpfile.js",
-  "devDependencies": {
-    "browser-sync": ">=2.13.0",
-    "colors": ">=1.1.2",
-    "gulp-duration": ">=0.0.0",
-    "gulp-filter": ">=4.0.0",
-    "gulp-iconfont": ">=8.0.1",
-    "gulp-imagemin": ">=2.4.0",
-    "gulp-jshint": ">=1.11.2",
-    "gulp-sourcemaps": ">=1.6.0",
-    "imagemin-gifsicle": "^5.1.0",
-    "imagemin-jpegtran": "^5.0.2",
-    "imagemin-optipng": "^5.2.1",
-    "imagemin-pngquant": ">=4.2.0",
-    "imagemin-svgo": ">=4.1.2",
-    "js-yaml": ">=3.13.1",
-    "jshint": ">=2.8.0",
-    "jshint-stylish": ">=2.0.1",
-    "pngquant-bin": ">=3.0.0"
-  },
-  "dependencies": {
-    "autoprefixer": ">=6.0.0",
-    "breakpoint-sass": ">=2.7.0",
-    "css-mqpacker": ">=5.0.1",
-    "csswring": ">=5.1.0",
-    "gulp": "==3.9.1",
-    "gulp-css-globbing": ">=0.1.8",
-    "gulp-postcss": ">=6.0.1",
-    "gulp-sass": "==2.0.4",
-    "gulp-util": ">=3.0.6",
-    "stream-browserify": ">=2.0.1",
-    "susy": "~2.2.5"
-  },
+  "name": "drupalmountaincamp-ch",
+  "private": true,
   "scripts": {
-    "gulp": "gulp"
+    "build": "yarn workspaces run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AmazeeLabs/d8-starter.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AmazeeLabs/d8-starter/issues"
-  },
-  "homepage": "https://github.com/AmazeeLabs/d8-starter"
+  "workspaces": [
+    "web/modules/custom/*",
+    "web/themes/custom/*"
+  ],
+  "dependencies": {
+  }
 }
