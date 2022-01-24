@@ -1,6 +1,6 @@
 FROM uselagoon/node-16-builder as nodebuilder
 COPY package.json /app/
-RUN yarn install --pure-lockfile
+# RUN yarn install --pure-lockfile
 # RUN yarn run build
 
 FROM uselagoon/php-7.4-cli-drupal as builder
