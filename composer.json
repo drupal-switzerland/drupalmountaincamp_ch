@@ -6,7 +6,7 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },    
+        },
         {
             "type": "package",
             "package": {
@@ -21,13 +21,13 @@
         }
     ],
     "require": {
+        "amazeeio/drupal_integrations": "^0.3.6",
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
-        "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/admin_toolbar": "^1.24",
         "drupal/config_installer": "^1.8",
-        "drupal/console": "^1.0.2",
         "drupal/core": "^8.8",
+        "drupal/core-composer-scaffold": "^9.3",
         "drupal/crop": "^1.5",
         "drupal/ctools": "^3.0",
         "drupal/devel": "^2.1",
@@ -62,11 +62,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "cweagans/composer-patches": false,
-            "drupal/core-composer-scaffold": false
-        }
+        "sort-packages": true
     },
     "autoload": {
         "classmap": [
@@ -103,13 +99,31 @@
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/Commands/{$name}": ["type:drupal-drush"]
+            "drush/Commands/contrib/{$name}": ["type:drupal-drush"]
         },
         "drupal-scaffold": {
+            "allowed-packages": [
+                "amazeeio/drupal_integrations"
+            ],
             "excludes": [
                 "sites/development.services.yml",
                 "sites/example.settings.local.php"
-            ]
+            ],
+            "file-mapping": {
+                "[web-root]/robots.txt": false,
+                "[web-root]/sites/default/default.services.yml": false,
+                "[web-root]/sites/default/default.settings.php": false,
+                "[web-root]/.ht.router.php": false,
+                "[web-root]/example.gitignore": false,
+                "[web-root]/.htaccess": false,
+                "[web-root]/INSTALL.txt": false,
+                "[web-root]/LICENSE.txt": false,
+                "[web-root]/README.txt": false,
+                "[web-root]/web.config": false
+            },
+            "locations": {
+                "web-root": "web/"
+            }
         }
     }
 }
