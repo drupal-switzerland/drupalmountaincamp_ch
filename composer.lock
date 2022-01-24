@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e6d057947a033081e4799becab70557",
+    "content-hash": "542a902b1a6a2532402e75ab67d04286",
     "packages": [
         {
             "name": "amazeeio/drupal_integrations",
@@ -3155,34 +3155,38 @@
         },
         {
             "name": "drupal/media_entity",
-            "version": "1.8.0",
+            "version": "2.0.0-beta7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_entity.git",
-                "reference": "8.x-1.8"
+                "reference": "8.x-2.0-beta7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_entity-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "c0ab77156c0e431f958d615f043e0255486db155"
+                "url": "https://ftp.drupal.org/files/projects/media_entity-8.x-2.0-beta7.zip",
+                "reference": "8.x-2.0-beta7",
+                "shasum": "953bc6a54217bbb971746990fb9ba22f0b1d00c3"
             },
             "require": {
-                "drupal/core": "*",
+                "drupal/core": "^8",
                 "drupal/entity": "*"
             },
             "require-dev": {
-                "drupal/entity": "*",
-                "drupal/inline_entity_form": "*"
+                "drupal/media_entity_document": "*",
+                "drupal/media_entity_embeddable_video": "*",
+                "drupal/media_entity_generic": "*",
+                "drupal/media_entity_image": "*",
+                "drupal/media_entity_image_exif": "*",
+                "drupal/media_entity_pinterest": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1532693881",
+                    "version": "8.x-2.0-beta7",
+                    "datestamp": "1588087016",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3248,6 +3252,66 @@
             "homepage": "https://www.drupal.org/project/media_entity",
             "support": {
                 "source": "https://git.drupalcode.org/project/media_entity"
+            }
+        },
+        {
+            "name": "drupal/media_entity_generic",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/media_entity_generic.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/media_entity_generic-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "c19ce478b467a5388a193582c976e037d6890ff1"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1594980771",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "chr.fritsch",
+                    "homepage": "https://www.drupal.org/user/2103716"
+                },
+                {
+                    "name": "marcoscano",
+                    "homepage": "https://www.drupal.org/user/1288796"
+                },
+                {
+                    "name": "phenaproxima",
+                    "homepage": "https://www.drupal.org/user/205645"
+                },
+                {
+                    "name": "seanB",
+                    "homepage": "https://www.drupal.org/user/545912"
+                },
+                {
+                    "name": "slashrsm",
+                    "homepage": "https://www.drupal.org/user/744628"
+                }
+            ],
+            "description": "Provides a generic Media source plugin.",
+            "homepage": "https://www.drupal.org/project/media_entity_generic",
+            "support": {
+                "source": "https://git.drupalcode.org/project/media_entity_generic"
             }
         },
         {
