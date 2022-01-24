@@ -17,8 +17,7 @@ dependencies:
     - 'taxonomy_term:sponsorship_type:66227cc4-6a7b-41f1-aa3e-4bc6b04eb55b'
     - 'taxonomy_term:sponsorship_type:8f126427-98fc-4d22-b9e3-6decf5e61242'
     - 'taxonomy_term:sponsorship_type:a86ed1b1-1a52-436e-86bc-8c69a8ea40ec'
-    - 'taxonomy_term:year:55e21dc6-bb97-4915-be50-7eb08a715365'
-    - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
+    - 'taxonomy_term:year:cccc57b4-0c5b-4f58-9717-f1ebd9b28e4b'
   module:
     - node
     - taxonomy
@@ -157,7 +156,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 31
+            - 42
           group: 1
           exposed: false
           expose:
@@ -166,6 +165,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -173,8 +174,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -293,7 +292,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -302,6 +301,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -309,8 +310,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -439,7 +438,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -448,6 +447,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -455,8 +456,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -585,7 +584,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -594,6 +593,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -601,8 +602,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -731,7 +730,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 31
+            - 42
           group: 1
           exposed: false
           expose:
@@ -740,6 +739,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -747,8 +748,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -877,7 +876,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 31
+            - 42
           group: 1
           exposed: false
           expose:
@@ -886,6 +885,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -893,8 +894,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1023,7 +1022,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 31
+            - 42
           group: 1
           exposed: false
           expose:
@@ -1032,6 +1031,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -1039,8 +1040,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1179,7 +1178,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 31
+            - 42
           group: 1
           exposed: false
           expose:
@@ -1188,6 +1187,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -1195,8 +1196,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1325,7 +1324,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            - 32
+            - 42
           group: 1
           exposed: false
           expose:
@@ -1334,6 +1333,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -1341,8 +1342,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

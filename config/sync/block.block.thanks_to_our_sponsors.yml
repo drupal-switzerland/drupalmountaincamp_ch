@@ -6,6 +6,7 @@ dependencies:
     - 'block_content:basic:9ec08b40-07cf-4342-9755-7df0d1db1e17'
   module:
     - block_content
+    - user
   theme:
     - beaker
 id: thanks_to_our_sponsors
@@ -22,4 +23,11 @@ settings:
   status: true
   info: ''
   view_mode: full
-visibility: {  }
+visibility:
+  user_role:
+    id: user_role
+    roles:
+      administrator: administrator
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
