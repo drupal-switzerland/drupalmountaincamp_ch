@@ -589,7 +589,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           if: field_break
-          condition: '1'
+          condition: eq
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
@@ -1505,7 +1505,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           if: field_break
-          condition: '1'
+          condition: eq
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
@@ -2366,7 +2366,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           if: field_break
-          condition: '1'
+          condition: eq
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
@@ -3209,7 +3209,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           if: field_break
-          condition: '1'
+          condition: eq
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
@@ -4052,7 +4052,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           if: field_break
-          condition: '1'
+          condition: eq
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
@@ -4968,7 +4968,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           if: field_break
-          condition: '1'
+          condition: eq
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
