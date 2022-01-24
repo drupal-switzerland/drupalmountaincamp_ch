@@ -49,6 +49,7 @@ third_party_settings:
         classes: ''
         direction: horizontal
       label: 'Tabs Container'
+      region: content
     group_session:
       children:
         - title
@@ -71,6 +72,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Session
+      region: content
     group_selection:
       children:
         - field_accepted
@@ -96,6 +98,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Selection
+      region: content
 id: node.session.default
 targetEntityType: node
 bundle: session
