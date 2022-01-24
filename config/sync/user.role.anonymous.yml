@@ -24,3 +24,4 @@ permissions:
   - 'view field_speaker_images'
   - 'view field_time_slot'
   - 'view field_year'
+  - 'view media'

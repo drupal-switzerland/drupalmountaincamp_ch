@@ -4,7 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.media.document.field_file
-    - media_entity.bundle.document
+    - field.field.media.document.field_media_generic
+    - media.type.document
   module:
     - file
 id: media.document.default
@@ -22,6 +23,7 @@ content:
     region: content
 hidden:
   created: true
+  field_media_generic: true
   name: true
   thumbnail: true
   uid: true

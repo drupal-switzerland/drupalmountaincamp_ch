@@ -88,6 +88,9 @@
         "patches": {
             "drupal/core": {
                 "#2718657 - Drupal\\language\\LanguageNegotiator::updateConfiguration() is passed a NULL": "https://www.drupal.org/files/issues/2019-02-28/language-2718657-17.patch"
+            },
+            "drupal/media_entity": {
+                "#2918172 - Media Entity upgrade -> core fails on absent column revision_uid": "https://www.drupal.org/files/issues/2020-04-24/2918172-47.patch"
             }
         },
         "patchLevel": {

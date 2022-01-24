@@ -1,12 +1,12 @@
 uuid: c482a041-0f37-4752-8622-7cbdeab73225
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - image.style.thumbnail
   module:
     - image
-    - media_entity
+    - media
     - user
 _core:
   default_config_hash: '-fJpPBLfGRPa6VPFiBweHcjlSOTqltsw5cbz8VVqXAI'

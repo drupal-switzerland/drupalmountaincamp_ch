@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "542a902b1a6a2532402e75ab67d04286",
+    "content-hash": "42e64f13d679ab300658e55906e726b0",
     "packages": [
         {
             "name": "amazeeio/drupal_integrations",
@@ -3188,6 +3188,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "#2918172 - Media Entity upgrade -> core fails on absent column revision_uid": "https://www.drupal.org/files/issues/2020-04-24/2918172-47.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
