@@ -26,7 +26,11 @@ a.footer__link {
     color: $ioblack;
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  img {
+    max-height: 40px;
   }
 
   &-logo {
