@@ -39,6 +39,8 @@
     <head-placeholder token="{{ placeholder_token|raw }}">
     <title>{{ head_title|safe_join(' | ') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="msapplication-config" content="/themes/beaker/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#184759">
     <css-placeholder token="{{ placeholder_token|raw }}">
     <js-placeholder token="{{ placeholder_token|raw }}">
     <link rel="apple-touch-icon" sizes="180x180" href="/themes/beaker/images/favicons/apple-touch-icon.png">
@@ -47,8 +49,8 @@
     <link rel="manifest" href="/themes/beaker/images/favicons/manifest.json">
     <link rel="mask-icon" href="/themes/beaker/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="shortcut icon" href="/themes/beaker/images/favicons/favicon.ico">
-    <meta name="msapplication-config" content="/themes/beaker/images/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#184759">
+    <link rel="stylesheet" type="text/css" href="https://pretix.eu/moutaincamp/info/widget/v1.css">
+    <script type="text/javascript" src="https://pretix.eu/widget/v1.en.js" async></script>
     <script src="https://use.typekit.net/mto4epr.js"></script>
     <script>try{Typekit.load({ async: false });}catch(e){}</script>
   </head>
