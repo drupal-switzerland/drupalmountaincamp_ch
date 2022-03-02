@@ -10,6 +10,7 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access site-wide contact form'
+  - 'create session content'
   - 'use text format basic_html'
   - 'use text format plain_text'
   - 'view field_accepted'
