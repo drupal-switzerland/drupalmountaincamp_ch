@@ -7,13 +7,13 @@ _core:
 id: front
 label: 'Front page'
 tags:
-  shortlink: '[site:url]'
-  referrer: origin-when-cross-origin
-  title: 'Drupal Mountain Camp Switzerland, 2022, Davos Switzerland'
   canonical_url: '[site:url]'
-  description: 'In 2022 the Drupal community from Switzerland and the world will gather in beautiful Davos for the third Drupal Mountain Camp!'
   image_src: '[site:url]/themes/beaker/images/twitter_image.jpg'
-  og_url: '[site:url]'
-  og_description: 'In 2022 the Drupal community from Switzerland and the world will gather in beautiful Davos for the third Drupal Mountain Camp!'
+  referrer: origin-when-cross-origin
+  description: '23-26 June 2022 the Drupal community from Switzerland and the world will gather in beautiful Davos for the third Drupal Mountain Camp!'
+  shortlink: '[site:url]'
+  title: 'Drupal Mountain Camp, 23-26 June 2022, Davos Switzerland'
+  og_title: 'Drupal Mountain Camp, 23-26 June 2022, Davos Switzerland'
   og_site_name: 'Drupal Mountain Camp Switzerland 2022'
-  og_title: 'Drupal Mountain Camp Switzerland, 2022, Davos Switzerland'
+  og_url: '[site:url]'
+  og_description: '23-26 June 2022 the Drupal community from Switzerland and the world will gather in beautiful Davos for the third Drupal Mountain Camp!'
