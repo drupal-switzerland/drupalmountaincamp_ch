@@ -11,7 +11,7 @@ field_name: field_tags
 entity_type: node
 bundle: session
 label: Tags
-description: 'Use the free tagging field to specify additional characteristics of the session, such as Drupal version (Drupal 8, Drupal 7), technologies (e.g. Symfony, Sass) or topic areas (Industries for show cases, ...). '
+description: 'Use the free tagging field to specify additional characteristics of the session, such as Drupal version (Drupal 10, Drupal 9), technologies (e.g. Gatsby, React, Symfony) or topic areas (Industries for showcases, ...).'
 required: false
 translatable: true
 default_value: {  }
