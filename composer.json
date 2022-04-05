@@ -1,6 +1,6 @@
 {
     "name": "drupal-switzerland/drupalmountaincamp_ch",
-    "description": "A Drupal 8 starter project built with Composer",
+    "description": "Drupal Mountain Camp",
     "type": "project",
     "repositories": [
         {
