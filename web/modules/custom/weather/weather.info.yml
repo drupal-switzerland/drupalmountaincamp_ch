@@ -1,5 +1,5 @@
 name: Weather
 type: module
+core_version_requirement: ^8.8.0 || ^9 || ^10
 description: 'Gets the weather for next 5 days using the Darksky API.'
 package: Custom
-core: 8.x

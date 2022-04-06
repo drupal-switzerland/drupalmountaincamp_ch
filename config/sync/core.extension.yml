@@ -30,7 +30,6 @@ module:
   layout_discovery: 0
   link: 0
   link_attributes: 0
-  link_css: 0
   media: 0
   media_entity_generic: 0
   menu_ui: 0
