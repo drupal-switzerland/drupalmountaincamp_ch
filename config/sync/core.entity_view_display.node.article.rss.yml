@@ -21,25 +21,25 @@ mode: rss
 content:
   body:
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 1
     region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_image:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: large
       image_link: ''
+      image_style: large
     third_party_settings: {  }
-  links:
-    weight: 2
+    weight: 0
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   field_metatags: true
   field_tags: true

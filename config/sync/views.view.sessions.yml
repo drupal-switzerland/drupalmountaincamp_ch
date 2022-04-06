@@ -36,64 +36,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access administration pages'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: true
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: full
-        options:
-          items_per_page: 0
-          offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: ‹‹
-            next: ››
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
-      style:
-        type: default
-      row:
-        type: 'entity:node'
-        options:
-          relationship: none
-          view_mode: teaser
+      title: Sessions
       fields:
         field_session_speaker:
           id: field_session_speaker
@@ -102,6 +50,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -157,7 +106,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -165,6 +113,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -220,9 +171,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         field_session_track:
           id: field_session_track
           table: node__field_session_track
@@ -230,6 +178,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Track(s)
           exclude: false
           alter:
@@ -285,7 +234,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_session_expertise_level:
           id: field_session_expertise_level
           table: node__field_session_expertise_level
@@ -293,6 +241,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Level of expertise'
           exclude: true
           alter:
@@ -348,7 +297,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_session_type:
           id: field_session_type
           table: node__field_session_type
@@ -356,6 +304,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Session Type'
           exclude: true
           alter:
@@ -411,7 +360,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_tags:
           id: field_tags
           table: node__field_tags
@@ -419,6 +367,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Tags
           exclude: false
           alter:
@@ -474,7 +423,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         body:
           id: body
           table: node__body
@@ -482,6 +430,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -537,7 +486,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_session_slides_link:
           id: field_session_slides_link
           table: node__field_session_slides_link
@@ -545,6 +493,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Slides LInk'
           exclude: false
           alter:
@@ -604,7 +553,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_session_slides_file:
           id: field_session_slides_file
           table: node__field_session_slides_file
@@ -612,6 +560,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Slides
           exclude: false
           alter:
@@ -666,17 +615,84 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 0
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access administration pages'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        field_day_target_id:
+          id: field_day_target_id
+          table: node__field_day
+          field: field_day_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: Day
+            field_identifier: field_day_target_id
+          exposed: false
+        field_time_slot_value:
+          id: field_time_slot_value
+          table: node__field_time_slot
+          field: field_time_slot_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          plugin_id: datetime
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: field_time_slot_value
+          exposed: false
+      arguments: {  }
       filters:
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            session: session
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            session: session
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -687,6 +703,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -697,14 +716,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -717,41 +736,24 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
-      sorts:
-        field_day_target_id:
-          id: field_day_target_id
-          table: node__field_day
-          field: field_day_target_id
+      style:
+        type: default
+      row:
+        type: 'entity:node'
+        options:
           relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: Day
-          plugin_id: standard
-        field_time_slot_value:
-          id: field_time_slot_value
-          table: node__field_time_slot
-          field: field_time_slot_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: datetime
-          entity_type: node
-      title: Sessions
+          view_mode: teaser
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -771,33 +773,21 @@ display:
         - 'config:field.storage.node.field_session_type'
         - 'config:field.storage.node.field_tags'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Sessions
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: sessions
-      menu:
-        type: normal
-        title: Sessions
-        description: ''
-        expanded: false
-        parent: ''
-        weight: -45
-        context: '0'
-        menu_name: main
-        enabled: false
       filters:
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            session: session
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            session: session
           group: 1
           expose:
             operator_limit_selection: false
@@ -809,6 +799,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -819,14 +812,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -839,9 +832,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
         field_keynote_value:
           id: field_keynote_value
           table: node__field_keynote
@@ -849,6 +839,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: boolean
           operator: '='
           value: '0'
           group: 1
@@ -859,14 +850,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -879,7 +870,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: boolean
         field_accepted_value:
           id: field_accepted_value
           table: node__field_accepted
@@ -887,6 +877,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -897,14 +888,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -917,7 +908,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: boolean
         field_session_track_target_id_1:
           id: field_session_track_target_id_1
           table: node__field_session_track
@@ -925,6 +915,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -935,6 +926,8 @@ display:
             description: ''
             use_operator: false
             operator: field_session_track_target_id_1_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_session_track_target_id_1
             required: false
             remember: false
@@ -944,8 +937,6 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -959,12 +950,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: select
-          limit: true
           vid: track
+          type: select
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
         field_session_expertise_level_target_id:
           id: field_session_expertise_level_target_id
           table: node__field_session_expertise_level
@@ -972,6 +962,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -982,6 +973,8 @@ display:
             description: ''
             use_operator: false
             operator: field_session_expertise_level_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_session_expertise_level_target_id
             required: false
             remember: false
@@ -991,8 +984,6 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1006,12 +997,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: select
-          limit: true
           vid: expertise_level
+          type: select
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
         field_year_target_id:
           id: field_year_target_id
           table: node__field_year
@@ -1019,6 +1009,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value:
             - 42
@@ -1052,20 +1043,20 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: textfield
-          limit: true
           vid: year
+          type: textfield
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
-      defaults:
-        filters: false
-        filter_groups: false
-        header: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        filters: false
+        filter_groups: false
+        header: false
+      display_description: ''
       header:
         area:
           id: area
@@ -1074,12 +1065,15 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: "<p>The sessions listed below have been chosen for presentation at the Drupal Mountain Camp.<br/>\nThe detailed schedule will follow soon.</p>\n<h2>Keynotes</h2>"
-            format: basic_html
           plugin_id: text
+          empty: false
+          content:
+            value: |-
+              <p>The sessions listed below have been chosen for presentation at the Drupal Mountain Camp.<br/>
+              The detailed schedule will follow soon.</p>
+              <h2>Keynotes</h2>
+            format: basic_html
+          tokenize: false
         view:
           id: view
           table: views
@@ -1087,10 +1081,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: view
           empty: false
           view_to_insert: 'sessions:page_2'
           inherit_arguments: false
-          plugin_id: view
         area_1:
           id: area_1
           table: views
@@ -1098,13 +1092,24 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h2>Sessions</h2>'
             format: basic_html
-          plugin_id: text
-      display_description: ''
+          tokenize: false
+      display_extenders: {  }
+      path: sessions
+      menu:
+        type: normal
+        title: Sessions
+        description: ''
+        weight: -45
+        enabled: false
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
@@ -1125,30 +1130,22 @@ display:
         - 'config:field.storage.node.field_session_type'
         - 'config:field.storage.node.field_tags'
   page_2:
-    display_plugin: page
     id: page_2
     display_title: Keynotes
+    display_plugin: page
     position: 2
     display_options:
-      display_extenders: {  }
-      display_description: 'Seperated List for keynote sessions only'
-      path: keynotes
-      header: {  }
-      defaults:
-        header: false
-        filters: false
-        filter_groups: false
-        title: false
+      title: Keynotes
       filters:
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            session: session
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            session: session
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -1159,6 +1156,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -1169,14 +1169,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1189,9 +1189,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
         field_keynote_value:
           id: field_keynote_value
           table: node__field_keynote
@@ -1199,6 +1196,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -1209,14 +1207,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1229,7 +1227,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: boolean
         field_year_target_id:
           id: field_year_target_id
           table: node__field_year
@@ -1237,6 +1234,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value:
             - 42
@@ -1270,17 +1268,24 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: textfield
-          limit: true
           vid: year
+          type: textfield
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
           1: AND
-      title: Keynotes
+      defaults:
+        title: false
+        filters: false
+        filter_groups: false
+        header: false
+      display_description: 'Seperated List for keynote sessions only'
+      header: {  }
+      display_extenders: {  }
+      path: keynotes
     cache_metadata:
       max-age: -1
       contexts:
@@ -1300,33 +1305,38 @@ display:
         - 'config:field.storage.node.field_session_type'
         - 'config:field.storage.node.field_tags'
   page_3:
-    display_plugin: page
     id: page_3
     display_title: 'Proposed sessions'
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: proposed-sessions
-      menu:
-        type: normal
-        title: 'Proposed sessions'
-        description: ''
-        expanded: false
-        parent: ''
-        weight: -41
-        context: '0'
-        menu_name: main
-        enabled: false
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: created
+          exposed: false
+          granularity: second
       filters:
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            session: session
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            session: session
           group: 1
           expose:
             operator_limit_selection: false
@@ -1338,6 +1348,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: boolean
           operator: '='
           value: '0'
           group: 1
@@ -1348,14 +1359,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1368,7 +1379,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: boolean
         field_year_target_id:
           id: field_year_target_id
           table: node__field_year
@@ -1376,6 +1386,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value:
             - 42
@@ -1409,12 +1420,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: textfield
-          limit: true
           vid: year
+          type: textfield
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
         status:
           id: status
           table: node_field_data
@@ -1422,6 +1432,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -1432,14 +1445,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1452,18 +1465,16 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
-      defaults:
-        filters: false
-        filter_groups: false
-        header: false
-        sorts: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        sorts: false
+        filters: false
+        filter_groups: false
+        header: false
+      display_description: ''
       header:
         area_1:
           id: area_1
@@ -1472,12 +1483,12 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h1>Proposed sessions</h1>'
             format: full_html
-          plugin_id: text
+          tokenize: false
         area:
           id: area
           table: views
@@ -1485,12 +1496,12 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: "<p>Find a list of proposed sessions below.<br />Session submission is open until Monday, <strong>18th April 2022</strong> at 23:59.<br />The selected sessions and the full program will be announced on Thursday, <strong>5th May 2022</strong>.</p>\r\n<h2 style=\"margin-top: 2rem; margin-bottom: 0.5rem;\">Free tickets for speakers</h2>\r\n\r\n<p>Every accepted session will receive maximum one free ticket to the Drupal Mountain Camp!<br />\r\nThere is however, a limit of one ticket per person (in case of multiple sessions).</p>\r\n<p>In case that you already purchased a ticket and are eligible for a free ticket, you'll get a <strong>full refund</strong>!</p>"
             format: full_html
-          plugin_id: text
+          tokenize: false
         view:
           id: view
           table: views
@@ -1498,27 +1509,22 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: view
           empty: false
           view_to_insert: 'sessions:page_2'
           inherit_arguments: false
-          plugin_id: view
-      display_description: ''
-      sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          entity_type: node
-          entity_field: created
-          plugin_id: date
+      display_extenders: {  }
+      path: proposed-sessions
+      menu:
+        type: normal
+        title: 'Proposed sessions'
+        description: ''
+        weight: -41
+        enabled: false
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
@@ -1538,32 +1544,50 @@ display:
         - 'config:field.storage.node.field_session_type'
         - 'config:field.storage.node.field_tags'
   page_4:
-    display_plugin: page
     id: page_4
     display_title: 'Unpublished sessions'
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: admin/unpublished-sessions
-      menu:
-        type: none
-        title: 'Proposed sessions'
-        description: ''
-        expanded: false
-        parent: ''
-        weight: -45
-        context: '0'
-        menu_name: main
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'Currently no unpublished sessions.'
+          tokenize: false
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: created
+          exposed: false
+          granularity: second
       filters:
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            session: session
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            session: session
           group: 1
           expose:
             operator_limit_selection: false
@@ -1575,6 +1599,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: boolean
           operator: '='
           value: '0'
           group: 1
@@ -1585,14 +1610,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1605,7 +1630,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: boolean
         field_year_target_id:
           id: field_year_target_id
           table: node__field_year
@@ -1613,6 +1637,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value:
             - 42
@@ -1646,12 +1671,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: textfield
-          limit: true
           vid: year
+          type: textfield
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
         status:
           id: status
           table: node_field_data
@@ -1659,6 +1683,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '0'
           group: 1
@@ -1669,14 +1696,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1689,19 +1716,17 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
-      defaults:
-        filters: false
-        filter_groups: false
-        header: false
-        sorts: false
-        empty: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        empty: false
+        sorts: false
+        filters: false
+        filter_groups: false
+        header: false
+      display_description: ''
       header:
         area_1:
           id: area_1
@@ -1710,12 +1735,12 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h1>Unpublished sessions</h1>'
             format: full_html
-          plugin_id: text
+          tokenize: false
         view:
           id: view
           table: views
@@ -1723,39 +1748,21 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: view
           empty: false
           view_to_insert: 'sessions:page_2'
           inherit_arguments: false
-          plugin_id: view
-      display_description: ''
-      sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: 'Currently no unpublished sessions.'
-          plugin_id: text_custom
+      display_extenders: {  }
+      path: admin/unpublished-sessions
+      menu:
+        type: none
+        title: 'Proposed sessions'
+        description: ''
+        weight: -45
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:

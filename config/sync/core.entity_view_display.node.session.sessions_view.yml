@@ -31,45 +31,45 @@ bundle: session
 mode: sessions_view
 content:
   body:
-    label: hidden
     type: text_summary_or_trimmed
-    weight: 4
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+    weight: 4
     region: content
   field_session_expertise_level:
     type: entity_reference_label
-    weight: 2
-    region: content
     label: inline
     settings:
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_session_speaker:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_session_track:
-    weight: 1
+    type: entity_reference_label
     label: inline
     settings:
       link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 1
     region: content
   field_session_type:
     type: entity_reference_label
-    weight: 3
-    region: content
     label: inline
     settings:
       link: true
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   field_accepted: true
   field_break: true

@@ -36,22 +36,22 @@ bundle: session
 mode: featured
 content:
   field_session_speaker:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_speaker_images:
     type: image
-    weight: 1
-    region: content
     label: hidden
     settings:
-      image_style: featured
       image_link: ''
+      image_style: featured
     third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   body: true
   field_accepted: true

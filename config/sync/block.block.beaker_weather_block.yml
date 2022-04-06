@@ -15,6 +15,6 @@ plugin: weather_block
 settings:
   id: weather_block
   label: 'Weather Block'
-  provider: weather
   label_display: '0'
+  provider: weather
 visibility: {  }

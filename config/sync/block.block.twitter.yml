@@ -17,8 +17,8 @@ plugin: 'block_content:068f5eee-b7f8-432f-abfe-cea5695825e3'
 settings:
   id: 'block_content:068f5eee-b7f8-432f-abfe-cea5695825e3'
   label: Twitter
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full

@@ -17,8 +17,8 @@ plugin: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
 settings:
   id: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
   label: 'See you all in Davos'
-  provider: block_content
   label_display: visible
+  provider: block_content
   status: true
   info: ''
   view_mode: full

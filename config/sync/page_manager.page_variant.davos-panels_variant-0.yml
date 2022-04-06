@@ -11,33 +11,33 @@ dependencies:
     - panels
 id: davos-panels_variant-0
 label: Panels
+weight: 0
 variant: panels_variant
 variant_settings:
+  id: panels_variant
+  label: null
+  weight: 0
+  uuid: 6513dee3-61ff-473b-bc50-72268049af0e
   blocks:
     30a8f560-5f19-4ff6-93aa-40c896329d0c:
       id: 'block_content:7f667a90-50f9-42dd-8b9a-f69958c873bc'
       label: 'See you all in Davos'
-      provider: block_content
       label_display: '0'
+      provider: block_content
       status: true
       info: ''
       view_mode: full
+      context_mapping: {  }
       region: main
       weight: 0
       uuid: 30a8f560-5f19-4ff6-93aa-40c896329d0c
-      context_mapping: {  }
-  id: panels_variant
-  uuid: 6513dee3-61ff-473b-bc50-72268049af0e
-  label: null
-  weight: 0
+  page_title: ''
   layout: page_general
   layout_settings: {  }
-  page_title: ''
+  builder: standard
   storage_type: page_manager
   storage_id: davos-panels_variant-0
-  builder: standard
 page: davos
-weight: 0
 selection_criteria: {  }
 selection_logic: and
 static_context: {  }

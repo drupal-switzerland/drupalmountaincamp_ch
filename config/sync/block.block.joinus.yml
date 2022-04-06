@@ -17,8 +17,8 @@ plugin: 'block_content:bbe207d2-d48c-4033-93e2-938858540ee5'
 settings:
   id: 'block_content:bbe207d2-d48c-4033-93e2-938858540ee5'
   label: 'Join us'
-  provider: block_content
   label_display: visible
+  provider: block_content
   status: true
   info: ''
   view_mode: full

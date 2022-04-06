@@ -17,8 +17,8 @@ plugin: 'block_content:36dff034-b1ac-488d-b3de-44356051d869'
 settings:
   id: 'block_content:36dff034-b1ac-488d-b3de-44356051d869'
   label: 'Footer Bottom'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full

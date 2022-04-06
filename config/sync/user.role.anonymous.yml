@@ -1,18 +1,24 @@
 uuid: 33c52e5b-24e6-4568-870f-15b77533483c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
+    - node.type.session
+  module:
+    - field_permissions
+    - filter
+    - media
+    - node
+    - system
 id: anonymous
 label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
-  - 'access comments'
   - 'access content'
-  - 'access site-wide contact form'
   - 'create session content'
   - 'use text format basic_html'
-  - 'use text format plain_text'
   - 'view field_accepted'
   - 'view field_break'
   - 'view field_closing_session'

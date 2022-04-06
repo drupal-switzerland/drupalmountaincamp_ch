@@ -18,13 +18,13 @@ plugin: 'views_block:sponsors-block_7'
 settings:
   id: 'views_block:sponsors-block_7'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
   views_label: ''
   items_per_page: none
 visibility:
   request_path:
     id: request_path
-    pages: /sponsors
     negate: false
     context_mapping: {  }
+    pages: /sponsors

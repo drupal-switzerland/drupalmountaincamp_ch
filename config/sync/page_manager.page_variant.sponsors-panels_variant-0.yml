@@ -11,33 +11,33 @@ dependencies:
     - panels
 id: sponsors-panels_variant-0
 label: Panels
+weight: 0
 variant: panels_variant
 variant_settings:
+  id: panels_variant
+  label: null
+  weight: 0
+  uuid: 529823cf-2a93-4e80-93ca-e92c1e4bb775
   blocks:
     cb80b683-3d49-4965-8b2c-d6bb28340e7c:
       id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
       label: 'Call to Speakers and Sponsors'
-      provider: block_content
       label_display: '0'
+      provider: block_content
       status: true
       info: ''
       view_mode: full
+      context_mapping: {  }
       region: main
       weight: 0
       uuid: cb80b683-3d49-4965-8b2c-d6bb28340e7c
-      context_mapping: {  }
-  id: panels_variant
-  uuid: 529823cf-2a93-4e80-93ca-e92c1e4bb775
-  label: null
-  weight: 0
+  page_title: ''
   layout: page_general
   layout_settings: {  }
-  page_title: ''
+  builder: standard
   storage_type: page_manager
   storage_id: sponsors-panels_variant-0
-  builder: standard
 page: sponsors
-weight: 0
 selection_criteria: {  }
 selection_logic: and
 static_context: {  }

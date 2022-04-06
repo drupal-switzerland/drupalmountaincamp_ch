@@ -2,9 +2,9 @@ uuid: 4c16c2fe-c2cb-4bec-8da5-2c2168a1b2a0
 langcode: en
 status: open
 dependencies: {  }
+weight: 0
 open: null
 close: null
-weight: 0
 uid: 1
 template: false
 archive: false
@@ -12,7 +12,94 @@ id: packages
 title: Packages
 description: ''
 category: ''
-elements: "processed_text:\n  '#type': processed_text\n  '#text': |\n    <h2>Enjoy the MountainCamp</h2>\n    \n    <p dir=\"ltr\">Here you find a overview of our possible packages for the upcoming Drupal Mountain Camp.</p>\n    \n    <p dir=\"ltr\">The prices for these packages (and the exactly content) are unclear and depend on the number of participants and registrations. If you are interested, please contact us using this form.</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p>&nbsp;</p>\n    \n    <p><strong>Package:&nbsp;Winter Single Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>\n    \t<li>Hotel-Zimmer</li>\n    \t<li>Skipass</li>\n    \t<li>MountainCamp Ticket</li>\n    </ul>\n    \n    <p dir=\"ltr\">In the Winter Single Week offer we will make sure that you are going to have a good time in these years Mountain Camp in Davos. The journey from Zürich Airport to Davos (both ways) by public transport as well as the overnight stay in Hotel XY are included. To make sure, that you can spend some time on the ski slope a 1 - 2 day ski ticker is guaranteed.</p>\n    \n    <p>&nbsp;</p>\n    \n    <p>&nbsp;</p>\n    \n    <p><strong>Package: Winter Partner Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>\n    \t<li>Hotel-Zimmer</li>\n    \t<li>Skipass</li>\n    \t<li>MountainCamp Ticket</li>\n    </ul>\n    \n    <p dir=\"ltr\"><br />\n    The Winter Partner Week is the ideal offer for our MountainCamp Partners. The transport from Zürich Airport to Davos by public transport (both ways) are included as well as the overnight stay in Hotel XY. To make sure, that you can spend some time on the ski slope, a 1 - 2 day ski ticket is with in.</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\"><strong>Package:&nbsp;Working Snow Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>\n    \t<li>Hotel-Zimmer</li>\n    \t<li>Skipass</li>\n    \t<li>MountainCamp Ticket</li>\n    \t<li>Shared Office</li>\n    </ul>\n    \n    <p dir=\"ltr\"><br />\n    The Winter Working Snow Week is the ideal offer for our MountainCamp Workers. The transport from Zürich Airport to Davos by public transport (both ways) are included as well as the overnight stay in Hotel XY. To spend some time on your ski’s&nbsp; a 1 - 2 day ski ticket is with in and to make sure, that you work efficiently and that you can share innovations and ideas together a Shared Office room is available.</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\">&nbsp;</p>\n    \n    <p dir=\"ltr\"><strong>Package:&nbsp;Family Winter Week SO 07.03. until 14.03.</strong></p>\n    \n    <ul dir=\"ltr\">\n    \t<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)Wohnung max 4</li>\n    \t<li>Personen</li>\n    \t<li>Skipass</li>\n    \t<li>1x MountainCamp Ticket</li>\n    </ul>\n    \n    <p dir=\"ltr\"><br />\n    The Family Winter Snow Week is a ideal offer for our MountainCamp Family Guests. The transport from Zürich Airport to Davos by public transport (both ways) are included, as well as the overnight stay in a apartment, that has the capacity for max. 4 persons. and for each of the Family Winter Snow Members a 1 - 2 day ski ticket is included.<br />\n    &nbsp;</p>\n    \n  '#format': basic_html\nfirstname:\n  '#type': textfield\n  '#title': Firstname\nlastname:\n  '#type': textfield\n  '#title': Lastname\nmail:\n  '#type': email\n  '#title': Mail\nmessage:\n  '#type': textarea\n  '#title': Message"
+elements: |-
+  processed_text:
+    '#type': processed_text
+    '#text': |
+      <h2>Enjoy the MountainCamp</h2>
+      
+      <p dir="ltr">Here you find a overview of our possible packages for the upcoming Drupal Mountain Camp.</p>
+      
+      <p dir="ltr">The prices for these packages (and the exactly content) are unclear and depend on the number of participants and registrations. If you are interested, please contact us using this form.</p>
+      
+      <p dir="ltr">&nbsp;</p>
+      
+      <p>&nbsp;</p>
+      
+      <p><strong>Package:&nbsp;Winter Single Week SO 07.03. until 14.03.</strong></p>
+      
+      <ul dir="ltr">
+      	<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>
+      	<li>Hotel-Zimmer</li>
+      	<li>Skipass</li>
+      	<li>MountainCamp Ticket</li>
+      </ul>
+      
+      <p dir="ltr">In the Winter Single Week offer we will make sure that you are going to have a good time in these years Mountain Camp in Davos. The journey from Zürich Airport to Davos (both ways) by public transport as well as the overnight stay in Hotel XY are included. To make sure, that you can spend some time on the ski slope a 1 - 2 day ski ticker is guaranteed.</p>
+      
+      <p>&nbsp;</p>
+      
+      <p>&nbsp;</p>
+      
+      <p><strong>Package: Winter Partner Week SO 07.03. until 14.03.</strong></p>
+      
+      <ul dir="ltr">
+      	<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>
+      	<li>Hotel-Zimmer</li>
+      	<li>Skipass</li>
+      	<li>MountainCamp Ticket</li>
+      </ul>
+      
+      <p dir="ltr"><br />
+      The Winter Partner Week is the ideal offer for our MountainCamp Partners. The transport from Zürich Airport to Davos by public transport (both ways) are included as well as the overnight stay in Hotel XY. To make sure, that you can spend some time on the ski slope, a 1 - 2 day ski ticket is with in.</p>
+      
+      <p dir="ltr">&nbsp;</p>
+      
+      <p dir="ltr">&nbsp;</p>
+      
+      <p dir="ltr"><strong>Package:&nbsp;Working Snow Week SO 07.03. until 14.03.</strong></p>
+      
+      <ul dir="ltr">
+      	<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)</li>
+      	<li>Hotel-Zimmer</li>
+      	<li>Skipass</li>
+      	<li>MountainCamp Ticket</li>
+      	<li>Shared Office</li>
+      </ul>
+      
+      <p dir="ltr"><br />
+      The Winter Working Snow Week is the ideal offer for our MountainCamp Workers. The transport from Zürich Airport to Davos by public transport (both ways) are included as well as the overnight stay in Hotel XY. To spend some time on your ski’s&nbsp; a 1 - 2 day ski ticket is with in and to make sure, that you work efficiently and that you can share innovations and ideas together a Shared Office room is available.</p>
+      
+      <p dir="ltr">&nbsp;</p>
+      
+      <p dir="ltr">&nbsp;</p>
+      
+      <p dir="ltr"><strong>Package:&nbsp;Family Winter Week SO 07.03. until 14.03.</strong></p>
+      
+      <ul dir="ltr">
+      	<li>Transfer Zürich Flughafen &lt;&gt; Davos (SBB/RhB)Wohnung max 4</li>
+      	<li>Personen</li>
+      	<li>Skipass</li>
+      	<li>1x MountainCamp Ticket</li>
+      </ul>
+      
+      <p dir="ltr"><br />
+      The Family Winter Snow Week is a ideal offer for our MountainCamp Family Guests. The transport from Zürich Airport to Davos by public transport (both ways) are included, as well as the overnight stay in a apartment, that has the capacity for max. 4 persons. and for each of the Family Winter Snow Members a 1 - 2 day ski ticket is included.<br />
+      &nbsp;</p>
+      
+    '#format': basic_html
+  firstname:
+    '#type': textfield
+    '#title': Firstname
+  lastname:
+    '#type': textfield
+    '#title': Lastname
+  mail:
+    '#type': email
+    '#title': Mail
+  message:
+    '#type': textarea
+    '#title': Message
 css: ''
 javascript: ''
 settings:
@@ -27,9 +114,9 @@ settings:
   page_theme_name: ''
   form_title: both
   form_submit_once: false
-  form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
+  form_exception_message: ''
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
@@ -39,31 +126,36 @@ settings:
   form_prepopulate_source_entity: false
   form_prepopulate_source_entity_required: false
   form_prepopulate_source_entity_type: ''
-  form_reset: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
   form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
   form_required: false
-  form_unsaved: false
-  form_disable_back: false
-  form_submit_back: false
   form_autofocus: false
   form_details_toggle: false
+  form_reset: false
   form_access_denied: default
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
   form_method: ''
   form_action: ''
-  form_attributes: {  }
   share: false
   share_node: false
   share_theme_name: ''
   share_title: true
   share_page_body_attributes: {  }
   submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
   submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   submission_views: {  }
   submission_views_replace: {  }
   submission_user_columns: {  }
@@ -72,11 +164,6 @@ settings:
   submission_access_denied_title: ''
   submission_access_denied_message: ''
   submission_access_denied_attributes: {  }
-  submission_exception_message: ''
-  submission_locked_message: ''
-  submission_excluded_elements: {  }
-  submission_exclude_empty: false
-  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -87,13 +174,13 @@ settings:
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
   wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
   wizard_track: ''
   wizard_prev_button_label: ''
   wizard_next_button_label: ''
@@ -116,9 +203,9 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: page
+  confirmation_url: ''
   confirmation_title: ''
   confirmation_message: ''
-  confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''

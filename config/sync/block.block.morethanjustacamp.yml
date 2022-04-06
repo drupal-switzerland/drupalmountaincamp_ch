@@ -17,8 +17,8 @@ plugin: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
 settings:
   id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
   label: 'More than just a camp'
-  provider: block_content
   label_display: visible
+  provider: block_content
   status: true
   info: ''
   view_mode: full

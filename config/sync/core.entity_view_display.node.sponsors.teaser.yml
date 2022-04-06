@@ -24,24 +24,24 @@ mode: teaser
 content:
   field_sponsor_image:
     type: image
-    weight: 0
     label: hidden
     settings:
-      image_style: large
       image_link: ''
+      image_style: large
     third_party_settings: {  }
+    weight: 0
     region: content
   field_sponsor_link:
     type: link
-    weight: 1
     label: hidden
     settings:
       trim_length: null
-      rel: nofollow
-      target: _blank
       url_only: false
       url_plain: false
+      rel: nofollow
+      target: _blank
     third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   field_metatags: true

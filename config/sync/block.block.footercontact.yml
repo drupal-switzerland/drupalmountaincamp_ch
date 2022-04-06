@@ -17,8 +17,8 @@ plugin: 'block_content:649d68d1-8f13-45d1-87d4-6ec7ce1d8a4b'
 settings:
   id: 'block_content:649d68d1-8f13-45d1-87d4-6ec7ce1d8a4b'
   label: 'Footer Contact'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full

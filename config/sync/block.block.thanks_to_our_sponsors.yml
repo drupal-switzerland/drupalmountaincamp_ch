@@ -18,16 +18,16 @@ plugin: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
 settings:
   id: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
   label: 'Thanks to our Sponsors'
-  provider: block_content
   label_display: visible
+  provider: block_content
   status: true
   info: ''
   view_mode: full
 visibility:
   user_role:
     id: user_role
-    roles:
-      administrator: administrator
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator

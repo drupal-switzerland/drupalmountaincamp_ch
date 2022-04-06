@@ -18,14 +18,14 @@ plugin: 'block_content:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
 settings:
   id: 'block_content:f3ca019b-6305-4736-8ea5-50b51ae2c8b2'
   label: 'Top Banner'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full
 visibility:
   request_path:
     id: request_path
-    pages: '<front>'
     negate: false
     context_mapping: {  }
+    pages: '<front>'

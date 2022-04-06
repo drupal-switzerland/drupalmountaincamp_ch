@@ -19,20 +19,20 @@ plugin: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
 settings:
   id: 'block_content:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
   label: 'Call to Speakers and Sponsors'
-  provider: block_content
   label_display: visible
+  provider: block_content
   status: true
   info: ''
   view_mode: full
 visibility:
   request_path:
     id: request_path
-    pages: ''
     negate: true
     context_mapping: {  }
+    pages: ''
   'entity_bundle:node':
     id: 'entity_bundle:node'
-    bundles: {  }
     negate: true
     context_mapping:
       node: '@node.node_route_context:node'
+    bundles: {  }

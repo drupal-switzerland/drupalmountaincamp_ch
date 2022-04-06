@@ -18,14 +18,14 @@ plugin: 'block_content:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
 settings:
   id: 'block_content:bb2df9e6-a32b-4f3f-a4ca-fa4bd1f3053a'
   label: 'Call for sessions header'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full
 visibility:
   request_path:
     id: request_path
-    pages: /node/add/session
     negate: false
     context_mapping: {  }
+    pages: /node/add/session

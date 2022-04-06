@@ -17,8 +17,8 @@ plugin: 'superfish:main'
 settings:
   id: 'superfish:main'
   label: 'Main navigation'
-  provider: superfish
   label_display: '0'
+  provider: superfish
   level: '1'
   depth: '0'
   menu_type: horizontal
