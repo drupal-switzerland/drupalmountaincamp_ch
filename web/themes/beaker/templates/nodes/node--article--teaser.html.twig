@@ -11,7 +11,7 @@
       {{ label['#items'].getString }}
     </h2>
     {{ content.field_image }}
-    {{ content.body }}
+    {{ content.body|striptags('<br><p><b><strong>') }}
     {% if content.field_image[0] %}
       <div class="clear"></div>
     {% endif %}
