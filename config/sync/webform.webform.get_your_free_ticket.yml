@@ -13,6 +13,11 @@ title: 'Get your free ticket'
 description: ''
 category: ''
 elements: |-
+  processed_text:
+    '#type': processed_text
+    '#text': |
+      <h2><strong>Supporting diversity in tech</strong></h2>
+    '#format': basic_html
   markup:
     '#type': webform_markup
     '#markup': |
@@ -20,7 +25,6 @@ elements: |-
       <br />
       Are you interested in the camp but you think you don&rsquo;t fit in? Are you thinking about not coming because of the cost and efforts to join?<br />
       If you answer these questions with yes then please apply for a free diversity ticket, we would love to have you at the camp. Please provide an explanation of your situation and how such a ticket would benefit you. We look forward to welcoming you!
-      
   tell_us_why_a_free_ticket_would_help_you_join_the_event:
     '#type': textarea
     '#title': 'Tell us until May 31st why a free ticket would help you join the event'

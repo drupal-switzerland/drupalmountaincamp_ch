@@ -4,13 +4,16 @@ status: true
 dependencies:
   config:
     - page_manager.page.home_page
+    - views.view.featured_sessions
   content:
+    - 'block_content:basic:b2640e8a-e30f-4a03-be13-d0b9ff32b8a3'
     - 'block_content:basic:bbe207d2-d48c-4033-93e2-938858540ee5'
     - 'block_content:basic:bd934b36-d2ba-4956-891c-d5642dbecc54'
     - 'block_content:basic:be8ee0c7-d8f0-49c3-a629-902f811c99af'
   module:
     - block_content
     - panels
+    - views
 id: home_page-panels_variant-0
 label: Panels
 weight: 0
@@ -31,7 +34,7 @@ variant_settings:
       view_mode: full
       context_mapping: {  }
       region: top
-      weight: 0
+      weight: -1
       uuid: d2392694-72dd-42a1-9c67-df7db161669c
     952909e0-ca48-487a-8aa6-d9842bfde274:
       id: 'block_content:bd934b36-d2ba-4956-891c-d5642dbecc54'
@@ -55,8 +58,31 @@ variant_settings:
       view_mode: full
       context_mapping: {  }
       region: top
-      weight: -1
+      weight: -2
       uuid: 7fd2878a-47bd-4c29-91f7-69f0d1004d7b
+    6d27ac6f-c472-4ffe-a284-b36048687424:
+      id: 'views_block:featured_sessions-block_1'
+      label: ''
+      label_display: '0'
+      provider: views
+      context_mapping: {  }
+      views_label: ''
+      items_per_page: none
+      region: top
+      weight: 1
+      uuid: 6d27ac6f-c472-4ffe-a284-b36048687424
+    c8ec7aed-dd06-4485-938c-693a666f9b8a:
+      id: 'block_content:b2640e8a-e30f-4a03-be13-d0b9ff32b8a3'
+      label: Keynote
+      label_display: '0'
+      provider: block_content
+      status: true
+      info: ''
+      view_mode: full
+      context_mapping: {  }
+      region: top
+      weight: 0
+      uuid: c8ec7aed-dd06-4485-938c-693a666f9b8a
   page_title: ''
   layout: page_general
   layout_settings: {  }
