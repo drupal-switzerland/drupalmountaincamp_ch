@@ -1347,44 +1347,6 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        field_keynote_value:
-          id: field_keynote_value
-          table: node__field_keynote
-          field: field_keynote_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: boolean
-          operator: '='
-          value: '0'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
         field_year_target_id:
           id: field_year_target_id
           table: node__field_year
@@ -1471,6 +1433,44 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_keynote_value:
+          id: field_keynote_value
+          table: node__field_keynote
+          field: field_keynote_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -1509,17 +1509,6 @@ display:
             value: "<p>Find a list of proposed sessions below.<br />Session submission is open until Monday, <strong>18th April 2022</strong> at 23:59.<br />The selected sessions and the full program will be announced on Thursday, <strong>5th May 2022</strong>.</p>\r\n<h2 style=\"margin-top: 2rem; margin-bottom: 0.5rem;\">Free tickets for speakers</h2>\r\n\r\n<p>Every accepted session will receive maximum one free ticket to the Drupal Mountain Camp!<br />\r\nThere is however, a limit of one ticket per person (in case of multiple sessions).</p>\r\n<p>In case that you already purchased a ticket and are eligible for a free ticket, you'll get a <strong>full refund</strong>!</p>\r\n<br />"
             format: full_html
           tokenize: false
-        view:
-          id: view
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: view
-          empty: false
-          view_to_insert: 'sessions:page_2'
-          inherit_arguments: false
       display_extenders: {  }
       path: proposed-sessions
       menu:
