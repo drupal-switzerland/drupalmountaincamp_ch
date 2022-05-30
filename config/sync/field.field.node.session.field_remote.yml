@@ -1,0 +1,23 @@
+uuid: aeee6d2c-7b07-49be-9d7e-c79846604545
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_remote
+    - node.type.session
+id: node.session.field_remote
+field_name: field_remote
+entity_type: node
+bundle: session
+label: 'Remote session'
+description: 'Is this a remote session?'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

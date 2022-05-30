@@ -1516,7 +1516,7 @@ display:
         title: 'Proposed sessions'
         description: ''
         weight: -40
-        enabled: true
+        enabled: false
         expanded: false
         menu_name: main
         parent: ''

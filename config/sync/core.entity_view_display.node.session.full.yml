@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.session.field_keynote
     - field.field.node.session.field_metatags
     - field.field.node.session.field_proposed_tracks
+    - field.field.node.session.field_remote
     - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
@@ -151,6 +152,7 @@ hidden:
   field_closing_session: true
   field_featured: true
   field_keynote: true
+  field_remote: true
   field_session_contact_mail: true
   field_session_remarks: true
   field_social_activity: true

@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.session.field_keynote
     - field.field.node.session.field_metatags
     - field.field.node.session.field_proposed_tracks
+    - field.field.node.session.field_remote
     - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
@@ -78,6 +79,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_remote:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 15
     region: content
   field_room:
     type: entity_reference_label

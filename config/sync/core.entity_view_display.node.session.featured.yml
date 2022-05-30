@@ -6,12 +6,14 @@ dependencies:
     - core.entity_view_mode.node.featured
     - field.field.node.session.body
     - field.field.node.session.field_accepted
+    - field.field.node.session.field_break
     - field.field.node.session.field_closing_session
     - field.field.node.session.field_day
     - field.field.node.session.field_featured
     - field.field.node.session.field_keynote
     - field.field.node.session.field_metatags
     - field.field.node.session.field_proposed_tracks
+    - field.field.node.session.field_remote
     - field.field.node.session.field_room
     - field.field.node.session.field_session_contact_mail
     - field.field.node.session.field_session_expertise_level
@@ -21,6 +23,7 @@ dependencies:
     - field.field.node.session.field_session_speaker
     - field.field.node.session.field_session_track
     - field.field.node.session.field_session_type
+    - field.field.node.session.field_social_activity
     - field.field.node.session.field_speaker_images
     - field.field.node.session.field_tags
     - field.field.node.session.field_time_slot
@@ -62,6 +65,7 @@ hidden:
   field_keynote: true
   field_metatags: true
   field_proposed_tracks: true
+  field_remote: true
   field_room: true
   field_session_contact_mail: true
   field_session_expertise_level: true
