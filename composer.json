@@ -21,13 +21,14 @@
         }
     ],
     "require": {
+        "php": "^8.0",
         "amazeeio/drupal_integrations": "^0.3.6",
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.6",
         "drupal/admin_toolbar": "^3.0",
-        "drupal/core": "^9.4",
-        "drupal/core-composer-scaffold": "^9.4",
-        "drupal/core-recommended": "^9.4",
+        "drupal/core": "^9.5",
+        "drupal/core-composer-scaffold": "^9.5",
+        "drupal/core-recommended": "^9.5",
         "drupal/crop": "^2.1",
         "drupal/ctools": "^3.0",
         "drupal/entity": "^1.3",
