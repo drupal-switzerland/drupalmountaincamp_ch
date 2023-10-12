@@ -4,12 +4,10 @@ status: true
 dependencies:
   config:
     - filter.format.basic_html
-    - node.type.session
   module:
     - field_permissions
     - filter
     - media
-    - node
     - system
 id: anonymous
 label: 'Anonymous user'
@@ -17,7 +15,6 @@ weight: 0
 is_admin: false
 permissions:
   - 'access content'
-  - 'create session content'
   - 'use text format basic_html'
   - 'view field_accepted'
   - 'view field_break'

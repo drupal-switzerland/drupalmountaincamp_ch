@@ -6,6 +6,8 @@ dependencies:
     - field.storage.node.field_year
     - node.type.slides
     - taxonomy.vocabulary.year
+  content:
+    - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
 id: node.slides.field_year
 field_name: field_year
 entity_type: node
@@ -14,7 +16,9 @@ label: Year
 description: ''
 required: true
 translatable: true
-default_value: {  }
+default_value:
+  -
+    target_uuid: 11ea1692-e433-46bc-b065-488b20c825b7
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
@@ -23,6 +27,7 @@ settings:
       year: year
     sort:
       field: _none
+      direction: asc
     auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

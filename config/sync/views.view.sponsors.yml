@@ -17,7 +17,7 @@ dependencies:
     - 'taxonomy_term:sponsorship_type:66227cc4-6a7b-41f1-aa3e-4bc6b04eb55b'
     - 'taxonomy_term:sponsorship_type:8f126427-98fc-4d22-b9e3-6decf5e61242'
     - 'taxonomy_term:sponsorship_type:a86ed1b1-1a52-436e-86bc-8c69a8ea40ec'
-    - 'taxonomy_term:year:cccc57b4-0c5b-4f58-9717-f1ebd9b28e4b'
+    - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
   module:
     - node
     - taxonomy
@@ -159,7 +159,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -286,7 +286,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -433,7 +433,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -579,7 +579,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -725,7 +725,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -871,7 +871,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -1017,7 +1017,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -1163,7 +1163,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:
@@ -1319,7 +1319,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 42
+            - 61
           group: 1
           exposed: false
           expose:

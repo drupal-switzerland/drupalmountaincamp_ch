@@ -9,13 +9,13 @@ unprotected_forms:
   - honeypot_settings_form
 log: false
 element_name: url
-time_limit: 8
+time_limit: 10
 expire: 300
 form_settings:
-  user_register_form: false
-  user_pass: false
-  node_article_form: false
-  node_page_form: false
+  user_register_form: true
+  user_pass: true
+  node_article_form: true
+  node_page_form: true
   node_session_form: true
-  node_slides_form: false
-  node_sponsors_form: false
+  node_slides_form: true
+  node_sponsors_form: true

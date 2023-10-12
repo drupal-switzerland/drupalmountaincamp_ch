@@ -14,7 +14,7 @@ dependencies:
     - taxonomy.vocabulary.year
     - user.role.administrator
   content:
-    - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
+    - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
   module:
     - node
     - taxonomy
@@ -651,7 +651,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 32
+            - 61
           group: 1
           exposed: false
           expose:
