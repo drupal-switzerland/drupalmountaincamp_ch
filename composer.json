@@ -26,6 +26,7 @@
         "composer/installers": "^2.0",
         "cweagans/composer-patches": "^1.6",
         "drupal/admin_toolbar": "^3.0",
+        "drupal/classy": "^1.0",
         "drupal/core": "~10.1",
         "drupal/core-composer-scaffold": "~10.1",
         "drupal/core-recommended": "~10.1",
