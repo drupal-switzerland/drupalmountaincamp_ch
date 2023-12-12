@@ -46,3 +46,4 @@ environments:
           - nginx:
               - "drupalmountaincamp.ch"
               - "www.drupalmountaincamp.ch"
+              - "cfp.drupalmountaincamp.ch"
