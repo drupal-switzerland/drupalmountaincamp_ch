@@ -11,7 +11,7 @@ archive: false
 id: get_your_free_ticket
 title: 'Get your free ticket'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   processed_text:
     '#type': processed_text

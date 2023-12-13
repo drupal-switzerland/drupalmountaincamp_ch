@@ -548,7 +548,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       pager:
         type: some
         options:
@@ -1483,7 +1483,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       defaults:
         access: true
         fields: false
@@ -2353,7 +2353,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       filters:
         status:
           id: status
@@ -3196,7 +3196,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       filters:
         status:
           id: status
@@ -4039,7 +4039,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       filters:
         status:
           id: status
@@ -4944,7 +4944,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       filters:
         status:
           id: status
@@ -5814,7 +5814,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       filters:
         status:
           id: status
@@ -6684,7 +6684,7 @@ display:
           equalto: '1'
           then: '{{ title_1 }}'
           or: '{{ title }}'
-          strip_tags: 0
+          strip_tags: false
       filters:
         status:
           id: status

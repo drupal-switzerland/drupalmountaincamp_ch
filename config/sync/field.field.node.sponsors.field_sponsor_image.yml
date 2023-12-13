@@ -12,7 +12,7 @@ field_name: field_sponsor_image
 entity_type: node
 bundle: sponsors
 label: 'Sponsor Image'
-description: 'Upload the sponsor''s logo.'
+description: "Upload the sponsor's logo."
 required: false
 translatable: false
 default_value: {  }
