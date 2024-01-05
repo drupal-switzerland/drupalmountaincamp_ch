@@ -12,7 +12,7 @@ field_name: field_sponsor_link
 entity_type: node
 bundle: sponsors
 label: 'Sponsor Link'
-description: 'Add the link to the sponsor''s URL'
+description: "Add the link to the sponsor's URL"
 required: false
 translatable: false
 default_value: {  }

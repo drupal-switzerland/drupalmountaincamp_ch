@@ -6,5 +6,6 @@ dependencies:
     - node
 id: node.sessions_view
 label: 'Sessions View'
+description: ''
 targetEntityType: node
 cache: true

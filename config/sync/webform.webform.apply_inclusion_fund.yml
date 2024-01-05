@@ -1,47 +1,66 @@
-uuid: 07fd7619-6150-4120-a20f-93b1b1775331
+uuid: 14a368a6-cce2-4422-b12a-2e88c1c13761
 langcode: en
 status: open
-dependencies:
-  enforced:
-    module:
-      - webform
-_core:
-  default_config_hash: CjLyKc08W5pQDmtIk0iDWmit1eCAlCVJtOzxMdHI51Q
+dependencies: {  }
 weight: 0
 open: null
 close: null
-uid: null
+uid: 1
 template: false
 archive: false
-id: contact
-title: Contact
-description: 'Basic email contact webform.'
+id: apply_inclusion_fund
+title: 'Empowering Diversity: Inclusion funds for Underrepresented Voices'
+description: ''
 categories: {  }
-elements: |
-  name:
-    '#title': 'Your Name'
-    '#type': textfield
-    '#required': true
-    '#default_value': '[current-user:display-name]'
-  email:
-    '#title': 'Your Email'
-    '#type': email
-    '#required': true
-    '#default_value': '[current-user:mail]'
-  subject:
-    '#title': Subject
-    '#type': textfield
-    '#required': true
-    '#test': 'Testing contact webform from [site:name]'
-  message:
-    '#title': Message
+elements: |-
+  processed_text:
+    '#type': processed_text
+    '#text': |
+      <h2>Empowering Diversity: Inclusion funds for Underrepresented Voices</h2>
+    '#format': basic_html
+  markup:
+    '#type': webform_markup
+    '#markup': |-
+      As members of the Drupal community, we want to foster an environment where newcomers feel encouraged to join and become active members. We strive to be respectful and inclusive, but we also realize that active steps need to be taken to really achieve our goal of reaching out to a wide array of people.
+      <br />
+      <br />
+      We therefore aim to provide a number of free tickets for the event, which we want to use to support the participation of those for whom the barriers to entry seem too high.<br />
+      <br />
+      Are you interested in the camp but you think you don&rsquo;t fit in? Are you thinking about not coming because of the cost and efforts to join? If you are a member of the following communities and are experiencing financial/economic hardship:
+      <ul>
+      <li>Ability
+      <li>Age
+      <li>Ethnicity
+      <li>Gender
+      <li>Gender identity
+      <li>Race
+      <li>Religion
+      <li>Sexual orientation
+      <li>Socio-economic status/class
+      <li>Learning differences
+      <li>Family composition
+      </ul>
+      If you answer one of these questions with yes, then please apply for a free diversity ticket, we would love to have you at the camp. Please provide an explanation of your situation and how such a ticket would benefit you. We look forward to welcoming you!
+  tell_us_why_a_free_ticket_would_help_you_join_the_event:
     '#type': textarea
+    '#title': 'Tell us until January 20th'
     '#required': true
-    '#test': 'Please ignore this email.'
-  actions:
-    '#type': webform_actions
-    '#title': 'Submit button(s)'
-    '#submit__label': 'Send message'
+  which_support_would_you_like_to_get:
+    '#type': radios
+    '#title': 'Which support would you like to get?'
+    '#options':
+      'Free ticket': 'Free ticket'
+      'Free ticket & support with costs': 'Free ticket & support with costs'
+  flexbox:
+    '#type': webform_flexbox
+    name:
+      '#type': textfield
+      '#title': Name
+      '#required': true
+    e_mail:
+      '#type': textfield
+      '#title': E-mail
+      '#required': true
 css: ''
 javascript: ''
 settings:
@@ -54,7 +73,7 @@ settings:
   page_submit_path: ''
   page_confirm_path: ''
   page_theme_name: ''
-  form_title: source_entity_webform
+  form_title: both
   form_submit_once: false
   form_open_message: ''
   form_close_message: ''
@@ -129,6 +148,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -144,10 +165,10 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: url_message
-  confirmation_url: '<front>'
+  confirmation_type: page
+  confirmation_url: ''
   confirmation_title: ''
-  confirmation_message: 'Your message has been sent.'
+  confirmation_message: ''
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
@@ -223,79 +244,5 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers:
-  email_confirmation:
-    id: email
-    handler_id: email_confirmation
-    label: 'Email confirmation'
-    notes: ''
-    status: true
-    conditions: {  }
-    weight: 1
-    settings:
-      states:
-        - completed
-      to_mail: '[current-user:mail]'
-      to_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      cc_mail: ''
-      cc_options: {  }
-      from_mail: _default
-      from_options: {  }
-      from_name: _default
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      subject: '[webform_submission:values:subject:raw]'
-      body: '[webform_submission:values:message:value]'
-      excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      exclude_attachments: false
-      html: true
-      attachments: false
-      twig: false
-      theme_name: ''
-      parameters: {  }
-      debug: false
-  email_notification:
-    id: email
-    handler_id: email_notification
-    label: 'Email notification'
-    notes: ''
-    status: true
-    conditions: {  }
-    weight: 2
-    settings:
-      states:
-        - completed
-      to_mail: _default
-      to_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      cc_mail: ''
-      cc_options: {  }
-      from_mail: '[webform_submission:values:email:raw]'
-      from_options: {  }
-      from_name: '[webform_submission:values:name:raw]'
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      subject: '[webform_submission:values:subject:raw]'
-      body: '[webform_submission:values:message:value]'
-      excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      exclude_attachments: false
-      html: true
-      attachments: false
-      twig: false
-      theme_name: ''
-      parameters: {  }
-      debug: false
+handlers: {  }
 variants: {  }
