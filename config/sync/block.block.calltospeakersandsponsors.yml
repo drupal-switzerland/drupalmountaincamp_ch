@@ -6,7 +6,7 @@ dependencies:
     - 'block_content:basic:1a3673a5-fcb6-4e3d-b646-9f002e6b7f87'
   module:
     - block_content
-    - ctools
+    - node
     - system
   theme:
     - beaker

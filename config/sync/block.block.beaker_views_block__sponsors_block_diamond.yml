@@ -1,4 +1,4 @@
-uuid: 4bcce66d-9d62-4c7b-a282-4d249c232544
+uuid: 89420315-3ab6-4518-9302-e9a2ad382d2d
 langcode: en
 status: true
 dependencies:
@@ -8,17 +8,17 @@ dependencies:
     - views
   theme:
     - beaker
-id: views_block__sponsors_diamond
+id: beaker_views_block__sponsors_block_diamond
 theme: beaker
 region: content_bottom
-weight: -16
+weight: 0
 provider: null
-plugin: 'views_block:sponsors-block_2'
+plugin: 'views_block:sponsors-block_diamond'
 settings:
-  id: 'views_block:sponsors-block_2'
-  label: ''
+  id: 'views_block:sponsors-block_diamond'
+  label: Diamond
   label_display: visible
   provider: views
-  views_label: ''
+  views_label: Diamond
   items_per_page: none
 visibility: {  }

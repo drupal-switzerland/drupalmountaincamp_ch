@@ -2,11 +2,8 @@ uuid: e61cd7a4-ca64-4376-aad1-9117ef6f94b3
 langcode: en
 status: false
 dependencies:
-  config:
-    - views.view.sponsors
   module:
     - system
-    - views
   theme:
     - beaker
 id: views_block__sponsors_block_8

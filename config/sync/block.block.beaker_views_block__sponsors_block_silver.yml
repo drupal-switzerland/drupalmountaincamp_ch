@@ -1,4 +1,4 @@
-uuid: 214dcb21-6a50-411b-8b85-80f7cb74f0d9
+uuid: 3c622466-508f-4578-88e9-448881a63736
 langcode: en
 status: true
 dependencies:
@@ -8,17 +8,17 @@ dependencies:
     - views
   theme:
     - beaker
-id: views_block__sponsors_block_4
+id: beaker_views_block__sponsors_block_silver
 theme: beaker
 region: content_bottom
-weight: -14
+weight: 0
 provider: null
-plugin: 'views_block:sponsors-block_4'
+plugin: 'views_block:sponsors-block_silver'
 settings:
-  id: 'views_block:sponsors-block_4'
-  label: ''
+  id: 'views_block:sponsors-block_silver'
+  label: Silver
   label_display: visible
   provider: views
-  views_label: ''
+  views_label: Silver
   items_per_page: '20'
 visibility: {  }
