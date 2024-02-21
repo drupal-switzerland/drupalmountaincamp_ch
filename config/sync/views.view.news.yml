@@ -11,7 +11,7 @@ dependencies:
     - taxonomy.vocabulary.year
     - user.role.administrator
   content:
-    - 'taxonomy_term:tags:29811854-646a-4dd8-a8d5-0cb41a3f3109'
+    - 'taxonomy_term:tags:1d9e4386-7547-4b73-aa53-00ae011d8eed'
     - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
     - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
     - 'taxonomy_term:year:cccc57b4-0c5b-4f58-9717-f1ebd9b28e4b'
@@ -863,52 +863,6 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        field_tags_target_id:
-          id: field_tags_target_id
-          table: node__field_tags
-          field: field_tags_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value:
-            33: 33
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: tags
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
         langcode:
           id: langcode
           table: node_field_data
@@ -951,6 +905,52 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: node__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            62: 62
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: tags
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -975,7 +975,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1104,7 +1103,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
