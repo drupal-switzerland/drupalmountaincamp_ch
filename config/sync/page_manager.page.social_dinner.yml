@@ -1,0 +1,12 @@
+uuid: 48f27134-0b8b-4696-85b1-28ca854c7902
+langcode: en
+status: true
+dependencies: {  }
+id: social_dinner
+label: Social/dinner
+description: ''
+use_admin_theme: false
+path: /social-dinner
+access_logic: and
+access_conditions: {  }
+parameters: {  }

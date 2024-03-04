@@ -1,0 +1,51 @@
+uuid: 7c1e527b-202a-4403-b8a2-45513ef4abf0
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.social_dinner
+  content:
+    - 'block_content:basic:f53a7bb4-0f47-43cc-b534-d2dc56ec2844'
+  module:
+    - block_content
+    - panels
+id: social_dinner-panels_variant-0
+label: Panels
+weight: 0
+variant: panels_variant
+variant_settings:
+  id: panels_variant
+  label: null
+  weight: 0
+  uuid: e5849877-953b-44ff-b8e6-f83a070d3590
+  blocks:
+    d5c72fe6-a83c-4f79-98d3-f9327d2397b7:
+      id: 'block_content:f53a7bb4-0f47-43cc-b534-d2dc56ec2844'
+      label: Social/Dinner
+      label_display: '0'
+      provider: block_content
+      status: true
+      info: ''
+      view_mode: full
+      context_mapping: {  }
+      region: main
+      weight: 0
+      uuid: d5c72fe6-a83c-4f79-98d3-f9327d2397b7
+      css_classes:
+        - ''
+      html_id: ''
+      css_styles: ''
+  page_title: ''
+  layout: page_general
+  layout_settings: {  }
+  builder: standard
+  storage_type: page_manager
+  storage_id: social_dinner-panels_variant-0
+  css_classes:
+    - ''
+  html_id: ''
+  css_styles: ''
+page: social_dinner
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }
