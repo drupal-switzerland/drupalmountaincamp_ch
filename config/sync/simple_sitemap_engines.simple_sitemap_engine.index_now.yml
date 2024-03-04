@@ -1,0 +1,11 @@
+uuid: 26099c4d-ae5f-40c2-b1f0-32b6b9924073
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: CEvRzshIbGfbSDdfC3_RrIcyIACFbQzIqPK0W2l0LpY
+id: index_now
+label: IndexNow
+url: null
+index_now_url: 'https://api.indexnow.org/indexnow?url=[url]&key=[key]'
+sitemap_variants: {  }
