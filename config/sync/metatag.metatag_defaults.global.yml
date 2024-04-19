@@ -7,22 +7,19 @@ _core:
 id: global
 label: Global
 tags:
+  description: '2025 the Drupal community from Switzerland and the world will gather in beautiful Davos for the fifth Drupal Mountain Camp!'
   image_src: '[site:url]/themes/beaker/images/twitter_image.jpg'
-  referrer: origin-when-cross-origin
-  description: '2024 the Drupal community from Switzerland and the world will gather in beautiful Davos for the fourth Drupal Mountain Camp!'
-  title: '[current-page:title] | [site:name]'
-  og_title: 'Drupal Mountain Camp, 2024, Davos Switzerland'
-  og_image_url: '[site:url]/themes/beaker/images/twitter_image.jpg'
+  og_description: '2025 the Drupal community from Switzerland and the world will gather in beautiful Davos for the fifth Drupal Mountain Camp!'
   og_image: '[site:url]/themes/beaker/images/twitter_image.jpg'
-  og_image_width: '2000'
-  og_image_secure_url: '[site:url]/themes/beaker/images/twitter_image.jpg'
   og_image_height: '1052'
-  og_description: '2024 the Drupal community from Switzerland and the world will gather in beautiful Davos for the fourth Drupal Mountain Camp!'
-  twitter_cards_title: 'Drupal Mountain Camp, 2024, Davos Switzerland'
+  og_image_secure_url: '[site:url]/themes/beaker/images/twitter_image.jpg'
+  og_image_url: '[site:url]/themes/beaker/images/twitter_image.jpg'
+  og_image_width: '2000'
+  og_title: 'Drupal Mountain Camp, 2025, Davos Switzerland'
+  referrer: origin-when-cross-origin
+  title: '[current-page:title] | [site:name]'
   twitter_cards_image: '[site:url]/themes/beaker/images/twitter_image.jpg'
-  twitter_cards_page_url: '[site:url]'
-  twitter_cards_image_height: '1052'
-  twitter_cards_type: summary_large_image
+  twitter_cards_image_alt: 'Drupal Mountain Camp, 2025, Davos Switzerland'
   twitter_cards_site: '@mountaincampch'
-  twitter_cards_image_alt: 'Drupal Mountain Camp, 2024, Davos Switzerland'
-  twitter_cards_image_width: '2000'
+  twitter_cards_title: 'Drupal Mountain Camp, 2025, Davos Switzerland'
+  twitter_cards_type: summary_large_image
