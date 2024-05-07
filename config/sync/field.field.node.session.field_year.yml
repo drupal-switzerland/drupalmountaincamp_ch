@@ -7,7 +7,7 @@ dependencies:
     - node.type.session
     - taxonomy.vocabulary.year
   content:
-    - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
+    - 'taxonomy_term:year:81d781ac-31f7-4f44-bba9-bbb1df96e868'
 id: node.session.field_year
 field_name: field_year
 entity_type: node
@@ -18,7 +18,7 @@ required: true
 translatable: true
 default_value:
   -
-    target_uuid: 11ea1692-e433-46bc-b065-488b20c825b7
+    target_uuid: 81d781ac-31f7-4f44-bba9-bbb1df96e868
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
