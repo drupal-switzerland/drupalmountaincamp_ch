@@ -1,5 +1,6 @@
 FROM uselagoon/node-20-builder as nodebuilder
 COPY package.json /app/
+COPY gulpfile.js /app/
 RUN yarn install --pure-lockfile
 RUN yarn run build
 
