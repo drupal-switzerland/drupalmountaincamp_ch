@@ -1,7 +1,7 @@
-FROM uselagoon/node-18-builder as nodebuilder
+FROM uselagoon/node-20-builder as nodebuilder
 COPY package.json /app/
-# RUN yarn install --pure-lockfile
-# RUN yarn run build
+RUN yarn install --pure-lockfile
+RUN yarn run build
 
 FROM uselagoon/php-8.1-cli-drupal as builder
 COPY composer.json composer.lock /app/
