@@ -17,8 +17,8 @@ provider: null
 plugin: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
 settings:
   id: 'block_content:9ec08b40-07cf-4342-9755-7df0d1db1e17'
-  label: 'Thanks to our Sponsors'
-  label_display: visible
+  label: 'Thanks to our 2025 Sponsors'
+  label_display: '0'
   provider: block_content
   status: true
   info: ''

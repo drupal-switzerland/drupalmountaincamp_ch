@@ -1104,7 +1104,7 @@ display:
         type: normal
         title: Sessions
         description: ''
-        weight: -41
+        weight: -40
         enabled: false
         expanded: false
         menu_name: main
