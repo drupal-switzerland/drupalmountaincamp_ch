@@ -1,6 +1,7 @@
 FROM uselagoon/node-20-builder as nodebuilder
 COPY package.json /app/
 COPY gulpfile.js /app/
+COPY web/themes/beaker /app/web/themes/beaker
 RUN yarn install --pure-lockfile
 RUN yarn run build
 
