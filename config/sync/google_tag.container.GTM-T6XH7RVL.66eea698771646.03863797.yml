@@ -1,0 +1,32 @@
+uuid: bae989f9-e7ce-403b-b294-f22018c5c7f5
+langcode: en
+status: true
+dependencies: {  }
+id: GTM-T6XH7RVL.66eea698771646.03863797
+label: GTM-T6XH7RVL
+weight: 0
+tag_container_ids:
+  - GTM-T6XH7RVL
+advanced_settings:
+  consent_mode: true
+  gtm:
+    GTM-T6XH7RVL:
+      data_layer: dataLayer
+      include_classes: false
+      allowlist_classes: ''
+      blocklist_classes: ''
+      include_environment: false
+      environment_id: ''
+      environment_token: ''
+dimensions_metrics: {  }
+conditions: {  }
+events:
+  custom: {  }
+  generate_lead:
+    value: ''
+    currency: ''
+  login:
+    method: CMS
+  search: {  }
+  sign_up:
+    method: CMS
