@@ -6,3 +6,4 @@ name: Day
 vid: day
 description: 'The days of the camp'
 weight: 0
+new_revision: false

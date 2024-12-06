@@ -6,3 +6,4 @@ name: 'Sponsorship Type'
 vid: sponsorship_type
 description: 'Different levels of sponsorship depending on how much they contribute.'
 weight: 0
+new_revision: false

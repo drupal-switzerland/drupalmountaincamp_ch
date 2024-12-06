@@ -14,6 +14,7 @@ dependencies:
     - 'taxonomy_term:tags:1d9e4386-7547-4b73-aa53-00ae011d8eed'
     - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
     - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
+    - 'taxonomy_term:year:81d781ac-31f7-4f44-bba9-bbb1df96e868'
     - 'taxonomy_term:year:cccc57b4-0c5b-4f58-9717-f1ebd9b28e4b'
   module:
     - node
@@ -333,6 +334,7 @@ display:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 10
           total_pages: null
           id: 0
@@ -1028,6 +1030,7 @@ display:
             32: 32
             42: 42
             61: 61
+            63: 63
           group: 1
           exposed: false
           expose:
