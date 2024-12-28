@@ -50,3 +50,7 @@ css/map
 /.drush-lock-update
 /.editorconfig
 /.gitattributes
+
+# Ignore SQL dump
+*.sql
+

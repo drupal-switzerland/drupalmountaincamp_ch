@@ -19,25 +19,75 @@ $base-unit: 8px;
 // =============================================================================
 .grid {
   padding: 0 15px;
-  display: grid;
-  grid-template-columns: repeat(12, var(--column-width));
-  grid-gap: var(--gutter-width);
+}
 
-  @media (min-width: 768px) {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 0 40px;
+@media(min-width: 768px) {
+  .grid {
+      max-width: 1040px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 40px;
   }
 
-  @media (min-width: 1200px) {
-    max-width: calc(var(--column-width) * 8 + var(--gutter-width) * 7);
+  .grid:after {
+      content: " ";
+      display: block;
+      clear: both;
+  }
+}
+
+@media(min-width: 1200px) {
+  .grid {
+      max-width: 1040px;
+      margin-left: auto;
+      margin-right: auto;
   }
 
-  @media (min-width: 1440px) {
-    max-width: calc(var(--column-width) * 6 + var(--gutter-width) * 5);
+  .grid:after {
+      content: " ";
+      display: block;
+      clear: both;
+  }
+}
+
+@media(columns: 12) and (gutters: 0.5) and (column-width: 40px) and (container: 1040px) {
+  .grid {
+      max-width: 1040px;
+      margin-left: auto;
+      margin-right: auto;
   }
 
-  @media (max-width: 600px) {
-    max-width: calc(var(--column-width) * 4 + var(--gutter-width) * 3);
+  .grid:after {
+      content: " ";
+      display: block;
+      clear: both;
+  }
+}
+
+@media(columns: 12) and (gutters: 0.5) and (column-width: 40px) and (container: 1040px) {
+  .grid {
+      max-width: 1040px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .grid:after {
+      content: " ";
+      display: block;
+      clear: both;
+  }
+}
+
+@media(max-width: 480px) {
+  .grid {
+      max-width: 1040px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .grid:after {
+      content: " ";
+      display: block;
+      clear: both;
   }
 }
