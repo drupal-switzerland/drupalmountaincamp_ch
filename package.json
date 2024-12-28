@@ -3,9 +3,9 @@
   "version": "1.2.0",
   "description": "Amazee Labs Standard Theme",
   "main": "gulpfile.js",
-  "devDependencies": {},
   "dependencies": {
     "autoprefixer": "^10.4.19",
+    "breakpoint-sass": "^3.0.0",
     "csswring": "^7.0.0",
     "gulp": "^5.0.0",
     "gulp-css-globbing": "^0.2.2",
@@ -13,7 +13,8 @@
     "gulp-sass": "^5.1.0",
     "postcss": "^8.4.38",
     "postcss-scss": "^4.0.9",
-    "sass": "^1.77.4"
+    "sass": "^1.77.4",
+    "susy": "^3.0.8"
   },
   "scripts": {
     "gulp": "gulp",

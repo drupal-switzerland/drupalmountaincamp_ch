@@ -2,50 +2,42 @@
 // =============================================================================
 $base-unit: 8px;
 
+:root {
+  --base-unit: 8px;
+  --container-width: 1040px;
+  --column-width: 40px;
+  --gutter-width: 20px;
+}
+
 // BORDER BOX
 // =============================================================================
-@include border-box-sizing;
-
-// CONFIGURE SUSY 2 GLOBAL DEFAULTS
-// =============================================================================
-$susy: (
-  columns: 12,
-  gutters: 20px/40px,
-  column-width: 40px,
-  //container: 945px,
-  container: 1040px
-  // gutter-position: inside-static,
-  //debug: (
-    //image: show-columns,
-    //color: rgba($red,0.1),
-    // output: overlay,
-    // toggle: bottom right,
-  //),
-);
-
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 // GENERAL BREAKPOINTS
 // =============================================================================
 .grid {
   padding: 0 15px;
-  @include breakpoint($tablet-up) {
-    @include container($susy);
+  display: grid;
+  grid-template-columns: repeat(12, var(--column-width));
+  grid-gap: var(--gutter-width);
+
+  @media (min-width: 768px) {
+    max-width: var(--container-width);
+    margin: 0 auto;
     padding: 0 40px;
   }
 
-  @include breakpoint($wide) {
-    @include container($susy);
+  @media (min-width: 1200px) {
+    max-width: calc(var(--column-width) * 8 + var(--gutter-width) * 7);
   }
 
-  @include breakpoint($susy) {
-    @include container(8);
+  @media (min-width: 1440px) {
+    max-width: calc(var(--column-width) * 6 + var(--gutter-width) * 5);
   }
 
-  @include breakpoint($susy) {
-    @include container(6);
-  }
-
-  @include breakpoint($small) {
-    @include container(4);
+  @media (max-width: 600px) {
+    max-width: calc(var(--column-width) * 4 + var(--gutter-width) * 3);
   }
 }

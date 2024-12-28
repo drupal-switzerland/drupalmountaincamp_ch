@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const gulp = require('gulp');
 const sassModule = require('sass');
 const gulpSass = require('gulp-sass')(sassModule);
@@ -8,11 +9,9 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const csswring = require('csswring');
 
-const sass = gulpSass(sassModule);
-
 const themes_folder = 'web/themes';
 
-const path = {
+const paths = {
   theme: `${themes_folder}/beaker/`,
   sass: 'sass',
   css: 'css',
@@ -22,12 +21,12 @@ const path = {
   fonts: 'fonts'
 };
 
-path.sass = path.theme + path.sass;
-path.css = path.theme + path.css;
-path.js = path.theme + path.js;
-path.img = path.theme + path.img;
-path.tpl = path.theme + path.tpl;
-path.fonts = path.theme + path.fonts;
+paths.sass = paths.theme + paths.sass;
+paths.css = paths.theme + paths.css;
+paths.js = paths.theme + paths.js;
+paths.img = paths.theme + paths.img;
+paths.tpl = paths.theme + paths.tpl;
+paths.fonts = paths.theme + paths.fonts;
 
 function sassTask() {
   const selectedProcessors = [
@@ -36,14 +35,17 @@ function sassTask() {
   ];
 
   return gulp
-    .src(`${path.sass}/**/*.scss`)
+    .src(`${paths.sass}/**/*.scss`)
     .pipe(globbing({ extensions: ['.scss'] }))
+    .pipe(gulpSass({
+      includePaths: [path.resolve(__dirname, 'node_modules')]
+    }).on('error', gulpSass.logError))
     .pipe(postcss(selectedProcessors, { syntax: require('postcss-scss') }))
-    .pipe(gulp.dest(`./${path.css}`));
+    .pipe(gulp.dest(`./${paths.css}`));
 }
 
 function watchFiles() {
-  gulp.watch(`${path.sass}/**/*.scss`, sassTask);
+  gulp.watch(`${paths.sass}/**/*.scss`, sassTask);
 }
 
 const watch = gulp.series(sassTask, watchFiles);

@@ -167,7 +167,7 @@ $inner-padding: 12px;
         display: inline-block;
         width: auto;
         color: $blue;
-        margin: Calc($header / 4 - 10px) 0;
+        margin: calc($header / 4 - 10px) 0;
 
         @include breakpoint($almost-wide) {
           padding: 10px;
