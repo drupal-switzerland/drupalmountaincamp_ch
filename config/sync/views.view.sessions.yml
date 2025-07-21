@@ -1105,7 +1105,7 @@ display:
         type: normal
         title: Sessions
         description: ''
-        weight: -40
+        weight: -36
         enabled: false
         expanded: false
         menu_name: main
@@ -1514,7 +1514,7 @@ display:
         type: normal
         title: 'Proposed sessions'
         description: ''
-        weight: -36
+        weight: -34
         enabled: false
         expanded: false
         menu_name: main

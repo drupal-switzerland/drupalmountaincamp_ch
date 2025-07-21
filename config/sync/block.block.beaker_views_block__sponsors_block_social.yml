@@ -1,0 +1,24 @@
+uuid: e9b906d0-2cea-4db2-a36a-939501b8ffd7
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.sponsors
+  module:
+    - views
+  theme:
+    - beaker
+id: beaker_views_block__sponsors_block_social
+theme: beaker
+region: content_bottom
+weight: 0
+provider: null
+plugin: 'views_block:sponsors-block_social'
+settings:
+  id: 'views_block:sponsors-block_social'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility: {  }

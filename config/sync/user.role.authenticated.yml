@@ -7,6 +7,7 @@ dependencies:
     - node.type.session
   module:
     - contextual
+    - eu_cookie_compliance
     - field_permissions
     - filter
     - media
@@ -22,6 +23,7 @@ permissions:
   - 'access contextual links'
   - 'access shortcuts'
   - 'create session content'
+  - 'display eu cookie compliance popup'
   - 'edit own session content'
   - 'use text format basic_html'
   - 'view field_accepted'

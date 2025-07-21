@@ -15,7 +15,7 @@ eu_only_js: false
 popup_position: false
 fixed_top_position: true
 popup_info:
-  value: '<h2>We use cookies on this site to gather insights about how our website is used.</h2><p>By clicking the Accept button, you agree to us doing so.</p>'
+  value: "<h2>We use cookies on this site to gather insights about how our website is used.</h2>\r\n\r\n<p>By clicking the Accept button, you agree to us doing so.</p>\r\n"
   format: full_html
 mobile_popup_info:
   value: ''
@@ -28,11 +28,11 @@ popup_agreed_enabled: false
 popup_hide_agreed: false
 disagree_button_label: 'No, thanks'
 popup_agreed:
-  value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
+  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
   format: full_html
 popup_find_more_button_message: 'More info'
 popup_hide_button_message: Hide
-popup_link: '<front>'
+popup_link: 'https://drupalmountaincamp.ch/privacy-policy'
 popup_link_new_window: true
 popup_height: null
 popup_width: 100%
@@ -64,7 +64,7 @@ automatic_cookies_removal: true
 allowed_cookies: ''
 consent_storage_method: basic
 withdraw_message:
-  value: '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>'
+  value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
   format: full_html
 withdraw_tab_button_label: 'Privacy settings'
 withdraw_action_button_label: 'Withdraw consent'
