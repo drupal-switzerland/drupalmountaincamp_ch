@@ -12,6 +12,7 @@ dependencies:
     - user.role.administrator
   content:
     - 'taxonomy_term:tags:1d9e4386-7547-4b73-aa53-00ae011d8eed'
+    - 'taxonomy_term:year:0f748973-08f5-43e3-a4e6-5eb8c120ea9b'
     - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
     - 'taxonomy_term:year:80f142a1-fb48-486a-b0ac-7cccd1a6b64e'
     - 'taxonomy_term:year:81d781ac-31f7-4f44-bba9-bbb1df96e868'
@@ -1031,6 +1032,7 @@ display:
             42: 42
             61: 61
             63: 63
+            64: 64
           group: 1
           exposed: false
           expose:
