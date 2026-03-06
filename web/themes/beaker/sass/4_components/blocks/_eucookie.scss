@@ -1,14 +1,16 @@
-.eu-cookie-compliance-banner {
-  padding: 0.1rem;
-  .agree-button {
-    &:hover {
-      background-color: $blue;
+#sliding-popup {
+  padding: 0.2rem;
+  #popup-buttons {
+    button.agree-button {
+      &:hover {
+        background-color: $blue;
+      }
     }
-  }
-  .decline-button {
-    background-color: $blue;
-    &:hover {
-      background-color: $red;
+    button.decline-buttonn {
+      background-color: $blue;
+      &:hover {
+        background-color: $red;
+      }
     }
   }
 }
