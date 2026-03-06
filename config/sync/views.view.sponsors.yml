@@ -17,6 +17,7 @@ dependencies:
     - 'taxonomy_term:sponsorship_type:66227cc4-6a7b-41f1-aa3e-4bc6b04eb55b'
     - 'taxonomy_term:sponsorship_type:8f126427-98fc-4d22-b9e3-6decf5e61242'
     - 'taxonomy_term:sponsorship_type:a86ed1b1-1a52-436e-86bc-8c69a8ea40ec'
+    - 'taxonomy_term:year:0f748973-08f5-43e3-a4e6-5eb8c120ea9b'
     - 'taxonomy_term:year:11ea1692-e433-46bc-b065-488b20c825b7'
     - 'taxonomy_term:year:81d781ac-31f7-4f44-bba9-bbb1df96e868'
   module:
@@ -576,7 +577,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 63
+            - 64
           group: 1
           exposed: false
           expose:
@@ -1021,7 +1022,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 63
+            - 64
           group: 1
           exposed: false
           expose:
@@ -1166,7 +1167,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            - 63
+            - 64
           group: 1
           exposed: false
           expose:
