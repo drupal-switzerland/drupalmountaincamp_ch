@@ -1,16 +1,29 @@
-#sliding-popup {
-  padding: 0.2rem;
+body #sliding-popup {
+  padding-top: 0.5rem;
+  button.find-more-button {
+    display: block;
+    font-size: 0.75em;
+  }
   #popup-buttons {
-    button.agree-button {
+    button.agree-button.button,
+    button.decline-button.button {
+      box-shadow: none;
+      text-shadow: none;
+      font-weight: bold;
+    }
+    button.agree-button.button {
+      background-color: $red;
       &:hover {
         background-color: $blue;
       }
     }
-    button.decline-buttonn {
-      background-color: $blue;
+    button.decline-button.button {
+      background: $blue;
       &:hover {
-        background-color: $red;
+        background: $ioblack;
       }
     }
   }
 }
+
+    
