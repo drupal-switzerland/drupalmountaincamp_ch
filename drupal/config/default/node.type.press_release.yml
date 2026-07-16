@@ -1,0 +1,31 @@
+uuid: 6c63df29-621d-464a-b1fa-ab4e821af965
+langcode: de
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - scheduler
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+  scheduler:
+    expand_fieldset: when_required
+    fields_display_mode: vertical_tab
+    publish_enable: true
+    publish_past_date: error
+    publish_past_date_created: false
+    publish_required: false
+    publish_revision: false
+    publish_touch: false
+    show_message_after_update: true
+    unpublish_enable: true
+    unpublish_required: false
+    unpublish_revision: false
+name: News
+type: press_release
+description: null
+help: null
+new_revision: true
+preview_mode: 0
+display_submitted: false

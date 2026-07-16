@@ -1,0 +1,51 @@
+label: 'Navigateur de la bibliothèque de paragraphes'
+display:
+  default:
+    display_title: Principal
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtrer
+          reset_button_label: Réinitialiser
+          exposed_sorts_label: 'Trier par'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Éléments par page'
+            items_per_page_options_all_label: '- Tout -'
+            offset_label: Décalage
+          tags:
+            previous: ‹‹
+            next: ››
+      fields:
+        entity_browser_select:
+          label: Sélectionner
+        label:
+          label: Libellé
+          separator: ', '
+        type:
+          label: Type
+          separator: ', '
+        paragraphs__target_id:
+          label: Paragraphs
+          separator: ', '
+        changed:
+          label: Modifié
+          separator: ', '
+      filters:
+        label:
+          expose:
+            label: Libellé
+          group_info:
+            label: Libellé
+        type:
+          expose:
+            label: Type
+      title: 'Bibliothèque de paragraphes'
+      empty:
+        area_text_custom:
+          content: 'Aucun élément de bibliothèque disponible.'
+  entity_browser:
+    display_title: 'Entity browser'

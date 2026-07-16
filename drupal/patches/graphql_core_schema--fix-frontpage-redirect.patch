@@ -1,0 +1,56 @@
+--- a/src/Plugin/GraphQL/DataProducer/Route.php
++++ b/src/Plugin/GraphQL/DataProducer/Route.php
+@@ -16,6 +16,7 @@
+ use Drupal\graphql\GraphQL\Execution\FieldContext;
+ use Drupal\graphql\Plugin\GraphQL\DataProducer\DataProducerPluginBase;
+ use Drupal\graphql_core_schema\GraphQL\Buffers\SubRequestBuffer;
++use Drupal\graphql_core_schema\EventSubscriber\FrontpageResetTrait;
+ use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationUrl;
+ use GraphQL\Deferred;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+@@ -45,6 +46,8 @@
+  */
+ class Route extends DataProducerPluginBase implements ContainerFactoryPluginInterface {
+ 
++  use FrontpageResetTrait;
++
+   /**
+    * The language negotiator service.
+    *
+@@ -224,11 +227,34 @@
+         // '/my-url' is replaced by domain_source with 'http://example.com/my-url'.
+         $isExternal = UrlHelper::isExternal($target_url);
+ 
+-        // Check if the URL has an alias and should be redirected.
++        // Reset the cached frontpage context so isFrontPage() returns the
++        // correct value for the current sub-request path.
++        $this->resetFrontpageContext();
++        $isFrontPage = $this->pathMatcher->isFrontPage();
++
++        // If this is the frontpage node accessed via its alias (e.g. /home)
++        // and skipFrontpageRedirect is false, redirect to /.
++        if (!$isExternal
++              && $isFrontPage
++              && !$skipFrontpageRedirect
++              && $value !== '/'
++              && $this->entityTypeManager->hasDefinition('redirect')
++        ) {
++          $redirectStorage = $this->entityTypeManager->getStorage('redirect');
++          /** @var \Drupal\redirect\Entity\Redirect $redirect */
++          $redirect = $redirectStorage->create();
++          $redirect->setRedirect('/');
++          $redirect->setSource($path);
++          $redirect->setLanguage($negotiatedLangcode);
++          $redirect->setStatusCode(301);
++          return $redirect;
++        }
++
++        // For non-frontpage paths: redirect to canonical alias if different.
+         if (!$isExternal
+               && $value !== $target_url
+               && $this->entityTypeManager->hasDefinition('redirect')
+-              && (!$skipFrontpageRedirect || !$this->pathMatcher->isFrontPage())
++              && !$isFrontPage
+         ) {
+           $redirectStorage = $this->entityTypeManager->getStorage('redirect');
+           /** @var \Drupal\redirect\Entity\Redirect $redirect */

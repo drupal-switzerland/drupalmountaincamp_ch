@@ -1,0 +1,18 @@
+uuid: 8ceb0569-a295-4a6b-9287-9e25cc581730
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+id: comment.blokkli_node.changed
+field_name: changed
+entity_type: comment
+bundle: blokkli_node
+label: Changed
+description: 'The time that the comment was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

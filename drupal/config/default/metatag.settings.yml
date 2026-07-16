@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: 3mgYDspyj5REgG6ooA1izlcMzEs34kHPFUOMIXeDOco
+langcode: de
+entity_type_groups: {  }
+tag_trim_method: afterValue
+use_maxlength: true
+tag_trim_maxlength:
+  metatag_maxlength_title: null
+  metatag_maxlength_description: 180
+  metatag_maxlength_abstract: null
+  metatag_maxlength_og_site_name: null
+  metatag_maxlength_og_title: null
+  metatag_maxlength_og_description: null
+tag_scroll_max_height: ''
+tag_trim_end: '|.,-:;/+&([{"'''

@@ -1,0 +1,20 @@
+uuid: 11027f34-0fff-4068-90c1-c62c3a5a8442
+langcode: de
+status: true
+dependencies:
+  config:
+    - media.type.remote_video
+id: media.remote_video.uid
+field_name: uid
+entity_type: media
+bundle: remote_video
+label: 'Geschrieben von'
+description: 'Die Benutzer-ID des Autors'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: 'Drupal\media\Entity\Media::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

@@ -1,0 +1,86 @@
+diff --git a/core/modules/path_alias/path_alias.services.yml b/core/modules/path_alias/path_alias.services.yml
+index c36eee191e..b962e0207d 100644
+--- a/core/modules/path_alias/path_alias.services.yml
++++ b/core/modules/path_alias/path_alias.services.yml
+@@ -9,7 +9,7 @@ services:
+     tags:
+       - { name: path_processor_inbound, priority: 100 }
+       - { name: path_processor_outbound, priority: 300 }
+-    arguments: ['@path_alias.manager']
++    arguments: ['@path_alias.manager', '@config.factory']
+   path_alias.manager:
+     class: Drupal\path_alias\AliasManager
+     arguments: ['@path_alias.repository', '@path_alias.whitelist', '@language_manager', '@cache.data']
+diff --git a/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php b/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php
+index 9959c9373f..9b77f285e4 100644
+--- a/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php
++++ b/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\path_alias\PathProcessor;
+ 
++use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\PathProcessor\InboundPathProcessorInterface;
+ use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
+ use Drupal\Core\Render\BubbleableMetadata;
+@@ -20,14 +21,24 @@ class AliasPathProcessor implements InboundPathProcessorInterface, OutboundPathP
+    */
+   protected $aliasManager;
+ 
++  /**
++   * A config factory for retrieving required config settings.
++   *
++   * @var \Drupal\Core\Config\ConfigFactoryInterface
++   */
++  protected $config;
++
+   /**
+    * Constructs a AliasPathProcessor object.
+    *
+    * @param \Drupal\path_alias\AliasManagerInterface $alias_manager
+    *   An alias manager for looking up the system path.
++   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
++   *   A config factory for retrieving the site front page configuration.
+    */
+-  public function __construct(AliasManagerInterface $alias_manager) {
++  public function __construct(AliasManagerInterface $alias_manager, ConfigFactoryInterface $config) {
+     $this->aliasManager = $alias_manager;
++    $this->config = $config;
+   }
+ 
+   /**
+@@ -55,6 +66,34 @@ public function processOutbound($path, &$options = [], Request $request = NULL,
+         $path = '/' . ltrim($path, '/');
+       }
+     }
++
++    // Look for paths that are not already the front page.
++    if ($path != '/') {
++      $system_config = $this->config->get('system.site');
++      if (!empty($system_config)) {
++        $front = $system_config->get('page.front');
++        $langcode = !empty($options['language']) ? $options['language']->getId() : NULL;
++
++        // Get path and alias for the configured frontpage setting
++        $alias_manager = \Drupal::service('path_alias.manager');
++        $front_path = $alias_manager->getPathByAlias($front, $langcode);
++        $front_alias = $alias_manager->getAliasByPath($front, $langcode);
++
++        // Replace the path and alias with default frontpage path
++        if (!empty($front_path) && $path === $front_path) {
++          $path = '/';
++        }
++        if (!empty($front_alias) && $path === $front_alias) {
++          $path = '/';
++        }
++      }
++    }
++
++    // The special path '<front>' links to the default front page.
++    if ($path === '/<front>') {
++      $path = '/';
++    }
++
+     return $path;
+   }
+ 

@@ -1,0 +1,28 @@
+purgers:
+  -
+    instance_id: a3ba6b00d6
+    plugin_id: nuxt_multi_cache
+    order_index: 2
+processors:
+  -
+    plugin_id: drush_purge_invalidate
+    status: false
+  -
+    plugin_id: drush_purge_queue_work
+    status: false
+  -
+    plugin_id: cron
+    status: true
+  -
+    plugin_id: purge_ui_block_processor
+    status: false
+queuers:
+  -
+    plugin_id: drush_purge_queue_add
+    status: false
+  -
+    plugin_id: coretags
+    status: true
+  -
+    plugin_id: purge_ui_block_queuer
+    status: false

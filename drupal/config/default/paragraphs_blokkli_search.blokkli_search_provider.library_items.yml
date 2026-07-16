@@ -1,0 +1,12 @@
+uuid: 3de79627-59b2-49d5-b125-87d6c2330ee9
+langcode: de
+status: true
+dependencies: {  }
+id: library_items
+label: 'Library Items'
+search_plugin_id: entity_query_library_items
+search_type: library_items
+description: ''
+weight: 0
+search_plugin_configuration:
+  per_page: '20'

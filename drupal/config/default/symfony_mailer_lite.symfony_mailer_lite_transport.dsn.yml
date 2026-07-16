@@ -1,0 +1,9 @@
+uuid: 3133273c-1177-45e4-bc21-fdb4e4250cbf
+langcode: de
+status: true
+dependencies: {  }
+id: dsn
+label: DSN
+plugin: dsn
+configuration:
+  dsn: 'smtp://mailpit:1025'

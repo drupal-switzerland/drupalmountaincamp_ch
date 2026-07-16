@@ -1,0 +1,17 @@
+uuid: 55c8c91b-1a29-43e3-b05e-ad386083b888
+langcode: de
+status: true
+dependencies:
+  module:
+    - focal_point
+name: blokkli_preview
+label: 'Blokkli Preview'
+effects:
+  c638a9bc-ce39-4e15-8956-9704e45a5882:
+    uuid: c638a9bc-ce39-4e15-8956-9704e45a5882
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 300
+      height: 300
+      crop_type: focal_point

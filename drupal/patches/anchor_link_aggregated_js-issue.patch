@@ -1,0 +1,17 @@
+Index: anchor_link.libraries.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/anchor_link.libraries.yml b/anchor_link.libraries.yml
+--- a/anchor_link.libraries.yml	
++++ b/anchor_link.libraries.yml	(date 1715780490220)
+@@ -8,7 +8,7 @@
+     - core/drupalSettings
+ cke5_anchor_link:
+   js:
+-    /libraries/ckeditor5-anchor-drupal/build/anchor-drupal.js: { preprocess: false, minified: true }
++    /libraries/ckeditor5-anchor-drupal/build/anchor-drupal.js: {  }
+   dependencies:
+     - core/ckeditor5
+ admin.cke5_anchor_link:

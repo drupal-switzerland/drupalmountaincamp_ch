@@ -1,0 +1,8 @@
+label: "Bibliothèque d'éléments de paragraphes"
+display_configuration:
+  link_text: 'Sélectionner un paragraphe réutilisable'
+widgets:
+  19e5e98c-307e-437a-b850-0fab163d7fec:
+    label: 'Éléments disponibles dans la bibliothèque'
+    settings:
+      submit_text: 'Sélectionner un paragraphe réutilisable'

@@ -1,0 +1,12 @@
+uuid: 3466495d-bd5f-4a6c-9309-c98c75db850a
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: pbgJrin6L7zsVEKS8oEDCYJPCzgu765iTGQh2GPX1no
+id: index
+label: Sitemap-Index
+description: 'Der Sitemap-Index-Sitemap-Typ. Eine Sitemap dieses Typs listet Sitemaps aller anderen Typen auf.'
+sitemap_generator: index
+url_generators:
+  - index

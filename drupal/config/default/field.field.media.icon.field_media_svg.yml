@@ -1,0 +1,42 @@
+uuid: 6c576bfe-9c9e-42a9-ae65-09744252e3ba
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_svg
+    - media.type.icon
+  module:
+    - image
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: media.icon.field_media_svg
+field_name: field_media_svg
+entity_type: media
+bundle: icon
+label: SVG
+description: 'Ein Icon in einem SVG-Dateiformat.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: media/icons
+  file_extensions: svg
+  max_filesize: '20 KB'
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image

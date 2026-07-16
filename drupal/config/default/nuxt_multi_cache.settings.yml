@@ -1,0 +1,11 @@
+endpoint: 'http://mountaincamp.lndo.site/api/multi-cache'
+username: null
+password: null
+frontend: 'http://mountaincamp.lndo.site'
+mapping:
+  - ''
+ban_tags:
+  - graphql_response
+  - 'config:graphql.graphql_servers.graphql_compose_server'
+  - http_response
+token: local-development

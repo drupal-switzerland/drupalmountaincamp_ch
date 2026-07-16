@@ -1,0 +1,24 @@
+uuid: 60ea661b-5ae6-4fd5-bd84-c85f837d773a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_video_source
+    - paragraphs.paragraphs_type.video
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.video.field_video_source
+field_name: field_video_source
+entity_type: paragraph
+bundle: video
+label: Quelle
+description: 'Quelle des Videos / Copyright-Informationen. Wird jeweils mit © angezeigt.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

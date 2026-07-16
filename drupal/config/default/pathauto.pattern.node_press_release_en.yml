@@ -1,0 +1,22 @@
+uuid: 8611f609-af67-4861-8ff8-a97af008c0ae
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node_press_release_en
+label: News
+type: 'canonical_entities:node'
+pattern: '/news/[node:title]'
+selection_criteria:
+  e696ce39-cb35-436b-ad0f-c5aa6a3cd7a7:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: e696ce39-cb35-436b-ad0f-c5aa6a3cd7a7
+    context_mapping:
+      node: node
+    bundles:
+      press_release: press_release
+selection_logic: and
+weight: -10
+relationships: {  }

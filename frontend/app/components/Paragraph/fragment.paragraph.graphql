@@ -1,0 +1,17 @@
+fragment paragraph on Paragraph {
+  ...paragraphText
+  ...paragraphBlokkliFragment
+  ...paragraphFromLibrary
+  ...paragraphQuote
+  ...paragraphImage
+  ...paragraphCarousel
+  ...paragraphTextImage
+  ...paragraphAccordeon
+  ...paragraphIconTextItem
+  ...paragraphIconTextList
+  ...paragraphTeaser
+  ...paragraphTeaserList
+  ...paragraphButton
+  ...paragraphVideo
+  ...paragraphIframe
+}

@@ -1,0 +1,23 @@
+query newsOverview($path: String!, $limit: Int = 10, $offset: Int = 0) {
+  ...routeQuery
+
+  entityQuery(
+    entityType: NODE
+    limit: $limit
+    offset: $offset
+    filter: {
+      conditions: [
+        { field: "type", value: ["press_release"] }
+        { field: "status", value: ["1"] }
+      ]
+    }
+    sort: [{ field: "field_date", direction: DESC }]
+  ) {
+    total
+    items {
+      ... on NodePressRelease {
+        ...nodePressReleaseTeaser
+      }
+    }
+  }
+}

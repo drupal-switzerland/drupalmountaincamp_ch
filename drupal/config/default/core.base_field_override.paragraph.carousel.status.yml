@@ -1,0 +1,22 @@
+uuid: b100d3ed-cc38-42c0-bbc4-ab9bcecb3133
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.carousel
+id: paragraph.carousel.status
+field_name: status
+entity_type: paragraph
+bundle: carousel
+label: Veröffentlicht
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: An
+  off_label: Aus
+field_type: boolean

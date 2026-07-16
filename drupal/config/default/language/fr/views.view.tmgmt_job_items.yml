@@ -1,0 +1,56 @@
+display:
+  default:
+    display_title: Principal
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Appliquer
+          reset_button_label: Réinitialiser
+          exposed_sorts_label: 'Trier par'
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Éléments par page'
+            items_per_page_options_all_label: '- Tout -'
+            offset_label: Décalage
+          tags:
+            previous: "‹\_précédent"
+            next: "suivant\_›"
+            first: "«\_premier"
+            last: "dernier\_»"
+      fields:
+        state:
+          label: État
+        label:
+          label: Libellé
+        type:
+          label: Typ
+        progress:
+          label: Progression
+        word_count:
+          label: Mots
+        tags_count:
+          label: Étiquettes
+        changed:
+          label: Modifié
+        operations:
+          label: Actions
+      title: 'Éléments de travail'
+      arguments:
+        tjid:
+          exception:
+            title: Tout
+  checkout:
+    display_title: 'Passer la commande'
+    display_options:
+      fields:
+        label:
+          label: Libellé
+        type:
+          label: Typ
+        word_count:
+          label: Mots
+        changed:
+          label: Modifié

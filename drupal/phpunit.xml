@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Using this project's bootstrap file allows tests in `ExistingSite`,
+    `ExistingSiteSelenium2DriverTest`, and `ExistingSiteWebDriverTest`
+     to run alongside core's test types. -->
+
+<!-- If you use the default `bootstrap-fast.php` and get 'class not
+     found' errors while running tests, head over to
+     https://gitlab.com/weitzman/drupal-test-traits/-/blob/master/src/bootstrap-fast.php
+     for explanation on how to register those classes.
+-->
+<phpunit bootstrap="vendor/weitzman/drupal-test-traits/src/bootstrap.php"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         colors="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <php>
+    <!-- Set error reporting to E_ALL. -->
+    <ini name="error_reporting" value="32767"/>
+    <!-- Do not limit the amount of memory tests take to run. -->
+    <ini name="memory_limit" value="-1"/>
+    <env name="SIMPLETEST_BASE_URL" value="https://starterkit.lndo.site"/>
+    <env name="SIMPLETEST_DB" value="sqlite://localhost/:memory:"/>
+    <env name="DTT_BASE_URL" value="https://starterkit.lndo.site"/>
+    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="sites/simpletest"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+    <!-- To disable deprecation testing completely uncomment the next line. -->
+    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->
+  </php>
+  <testsuites>
+    <testsuite name="starterkit">
+      <directory>docroot/modules/custom</directory>
+      <directory>docroot/themes/custom</directory>
+    </testsuite>
+  </testsuites>
+  <listeners>
+    <listener class="\Drupal\Tests\Listeners\DrupalListener">
+    </listener>
+    <!-- The Symfony deprecation listener has to come after the Drupal listener -->
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
+    </listener>
+  </listeners>
+</phpunit>

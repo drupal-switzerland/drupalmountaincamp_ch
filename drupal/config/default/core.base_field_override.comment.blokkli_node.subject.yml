@@ -1,0 +1,18 @@
+uuid: 78a969c7-f83c-42db-a3c1-68b9dc975310
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+id: comment.blokkli_node.subject
+field_name: subject
+entity_type: comment
+bundle: blokkli_node
+label: Subject
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

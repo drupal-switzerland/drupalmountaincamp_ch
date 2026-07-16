@@ -1,0 +1,30 @@
+uuid: 358a9b83-19ad-4177-a808-f8a10f0c9d7d
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.iframe.field_iframe_url
+    - paragraphs.paragraphs_type.iframe
+  module:
+    - link
+    - maxlength
+id: paragraph.iframe.default
+targetEntityType: paragraph
+bundle: iframe
+mode: default
+content:
+  field_iframe_url:
+    type: link_default
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: null
+        maxlength_js_label: 'Eingabe begrenzt auf @limit Zeichen, verbleibend: <strong>@remaining</strong>'
+        maxlength_js_enforce: false
+hidden:
+  created: true
+  status: true

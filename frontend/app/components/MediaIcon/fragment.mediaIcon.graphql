@@ -1,0 +1,16 @@
+fragment mediaIcon on MediaIcon {
+  id
+  changed: changedRawField {
+    first {
+      formatted
+    }
+  }
+  svg: fieldMediaSvgRawField {
+    first {
+      alt
+      title
+      width
+      height
+    }
+  }
+}

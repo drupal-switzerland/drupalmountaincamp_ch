@@ -1,0 +1,5 @@
+fragment paragraphImage on ParagraphImage {
+  image: fieldImage {
+    ...mediaImage
+  }
+}

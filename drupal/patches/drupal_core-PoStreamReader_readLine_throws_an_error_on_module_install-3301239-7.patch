@@ -1,0 +1,13 @@
+diff --git a/core/lib/Drupal/Component/Gettext/PoStreamReader.php b/core/lib/Drupal/Component/Gettext/PoStreamReader.php
+index e14ed213ab..ce77895ce7 100644
+--- a/core/lib/Drupal/Component/Gettext/PoStreamReader.php
++++ b/core/lib/Drupal/Component/Gettext/PoStreamReader.php
+@@ -245,7 +245,7 @@ private function readHeader() {
+   private function readLine() {
+     // Read a line and set the stream finished indicator if it was not
+     // possible anymore.
+-    $line = fgets($this->fd);
++    $line = $this->fd ? fgets($this->fd) : FALSE;
+     $this->finished = ($line === FALSE);
+ 
+     if (!$this->finished) {

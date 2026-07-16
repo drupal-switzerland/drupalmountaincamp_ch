@@ -1,0 +1,82 @@
+.item-list.views-liip-links {
+  ul {
+    list-style-type: none !important;
+    margin: 0 !important;
+    display: flex;
+  }
+
+  li {
+    text-transform: uppercase;
+    list-style-type: none !important;
+    margin: 0 !important;
+    a,
+    div {
+      display: block;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      width: 2em;
+      height: 2em;
+      line-height: 2em;
+      border-radius: 100%;
+      text-align: center;
+      border: 1px solid transparent;
+
+      &.is-missing {
+        color: #aaa;
+        font-weight: 500;
+      }
+      &.is-source {
+        border-color: #a7b3ce;
+      }
+    }
+    a {
+      &:hover {
+        background: #dbe1ea;
+      }
+    }
+  }
+}
+
+.liip-views-status {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 100%;
+  background: var(--gin-color-danger);
+  position: relative;
+  display: inline-block;
+  margin-right: 0.25em;
+  &.is-published {
+    background: var(--gin-color-green);
+  }
+}
+
+table.permissions thead tr {
+  position: sticky;
+  top: 8rem;
+}
+
+.media-library-item .media-library-item__preview .field img {
+  object-fit: contain;
+}
+
+/* Fix display issue in gin with media library see SV-128 */
+
+.media-library-wrapper .views-display-link::before {
+  display: none !important;
+}
+
+.media-library-wrapper .media-library-views-form {
+  flex-wrap: wrap;
+  flex-direction: unset;
+}
+
+#graphql-explorer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  bottom: 0;
+  z-index: 20000;
+}

@@ -1,0 +1,54 @@
+diff --git a/core/modules/user/src/Tests/UserTemplateSuggestionsTest.php b/core/modules/user/src/Tests/UserTemplateSuggestionsTest.php
+new file mode 100644
+index 0000000..e23e401
+--- /dev/null
++++ b/core/modules/user/src/Tests/UserTemplateSuggestionsTest.php
+@@ -0,0 +1,30 @@
++<?php
++
++namespace Drupal\user\Tests;
++
++use Drupal\simpletest\WebTestBase;
++
++/**
++ * Tests user template suggestions.
++ *
++ * @group user
++ */
++class UserTemplateSuggestionsTest extends WebTestBase {
++
++  /**
++   * Tests if user_theme_suggestions_user() generates the correct suggestions.
++   */
++  public function testUserThemeHookSuggestions() {
++    // Create user to be rendered.
++    $user = $this->drupalCreateUser();
++
++    // Set the view mode.
++    $view_mode = 'user.my_custom_view_mode';
++    $build = \Drupal::entityTypeManager()->getViewBuilder('user')->view($user, $view_mode);
++
++    $variables['elements'] = $build;
++    $suggestions = \Drupal::moduleHandler()->invokeAll('theme_suggestions_user', [$variables]);
++    $this->assertEqual($suggestions, ['user__user_my_custom_view_mode'], 'Found expected user template suggestions.');
++  }
++
++}
+diff --git a/core/modules/user/user.module b/core/modules/user/user.module
+index 90b813f..dbdfd14 100644
+--- a/core/modules/user/user.module
++++ b/core/modules/user/user.module
+@@ -1424,3 +1424,13 @@ function template_preprocess_user(&$variables) {
+     $variables['content'][$key] = $variables['elements'][$key];
+   }
+ }
++
++/**
++ * Implements hook_theme_suggestions_HOOK().
++ */
++function user_theme_suggestions_user(array $variables) {
++  $suggestions = [];
++  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
++  $suggestions[] = 'user__' . $sanitized_view_mode;
++  return $suggestions;
++}

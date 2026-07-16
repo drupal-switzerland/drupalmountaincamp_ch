@@ -1,0 +1,180 @@
+diff --git a/core/modules/jsonapi/tests/src/Functional/MenuLinkContentInternalTest.php b/core/modules/jsonapi/tests/src/Functional/MenuLinkContentInternalTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..ec706390ffd237bb4885d5d592da9352c3fd3266
+--- /dev/null
++++ b/core/modules/jsonapi/tests/src/Functional/MenuLinkContentInternalTest.php
+@@ -0,0 +1,133 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\jsonapi\Functional;
++
++use Drupal\Core\Url;
++use Drupal\menu_link_content\Entity\MenuLinkContent;
++
++/**
++ * JSON:API integration test for the "MenuLinkContent" content entity type.
++ *
++ * Using an internal link.
++ *
++ * @group jsonapi
++ */
++class MenuLinkContentInternalTest extends MenuLinkContentTest {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUpAuthorization($method) {
++    $this->grantPermissionsToTestedRole(['administer menu', 'access user profiles']);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function createEntity() {
++    $menu_link = MenuLinkContent::create([
++      'id' => 'user_1',
++      'title' => 'User 1',
++      'description' => 'Link to the user with the id "1"',
++      'link' => 'entity:user/1',
++      'weight' => 0,
++      'menu_name' => 'main',
++    ]);
++    $menu_link->save();
++
++    return $menu_link;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function getExpectedDocument() {
++    $base_url = Url::fromUri('base:/jsonapi/menu_link_content/menu_link_content/' . $this->entity->uuid())->setAbsolute();
++    $self_url = clone $base_url;
++    $version_identifier = 'id:' . $this->entity->getRevisionId();
++    $self_url = $self_url->setOption('query', ['resourceVersion' => $version_identifier]);
++    $version_query_string = '?resourceVersion=' . urlencode($version_identifier);
++    return [
++      'jsonapi' => [
++        'meta' => [
++          'links' => [
++            'self' => ['href' => 'http://jsonapi.org/format/1.0/'],
++          ],
++        ],
++        'version' => '1.0',
++      ],
++      'links' => [
++        'self' => ['href' => $base_url->toString()],
++      ],
++      'data' => [
++        'id' => $this->entity->uuid(),
++        'type' => 'menu_link_content--menu_link_content',
++        'links' => [
++          'self' => ['href' => $self_url->toString()],
++        ],
++        'attributes' => [
++          'bundle' => 'menu_link_content',
++          'link' => [
++            'uri' => 'entity:user/1',
++            'title' => NULL,
++            'options' => [],
++          ],
++          'changed' => (new \DateTime())->setTimestamp($this->entity->getChangedTime())->setTimezone(new \DateTimeZone('UTC'))->format(\DateTime::RFC3339),
++          'default_langcode' => TRUE,
++          'description' => 'Link to the user with the id "1"',
++          'enabled' => TRUE,
++          'expanded' => FALSE,
++          'external' => FALSE,
++          'langcode' => 'en',
++          'menu_name' => 'main',
++          'parent' => NULL,
++          'rediscover' => FALSE,
++          'title' => 'User 1',
++          'weight' => 0,
++          'drupal_internal__id' => 1,
++          'drupal_internal__revision_id' => 1,
++          'revision_created' => (new \DateTime())->setTimestamp((int) $this->entity->getRevisionCreationTime())->setTimezone(new \DateTimeZone('UTC'))->format(\DateTime::RFC3339),
++          'revision_log_message' => NULL,
++          // @todo Attempt to remove this in https://www.drupal.org/project/drupal/issues/2933518.
++          'revision_translation_affected' => TRUE,
++        ],
++        'relationships' => [
++          'revision_user' => [
++            'data' => NULL,
++            'links' => [
++              'related' => [
++                'href' => $base_url->toString() . '/revision_user' . $version_query_string,
++              ],
++              'self' => [
++                'href' => $base_url->toString() . '/relationships/revision_user' . $version_query_string,
++              ],
++            ],
++          ],
++        ],
++      ],
++    ];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function testRelationships() {
++    // @see \Drupal\Tests\jsonapi\Functional\ResourceTestBase::doTestRelationshipMutation()
++    $this->grantPermissionsToTestedRole(['access user profiles']);
++    parent::testRelationships();
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function getExpectedCacheTags(array $sparse_fieldset = NULL) {
++    return [
++      'http_response',
++      'menu_link_content:1',
++      'user:1',
++    ];
++  }
++
++}
+diff --git a/core/modules/menu_link_content/src/MenuLinkContentAccessControlHandler.php b/core/modules/menu_link_content/src/MenuLinkContentAccessControlHandler.php
+index b08120194e0b67b96133db4a762d0ed1ae4202ea..330caa6dadabb656ddadef713fbff277719ebfe9 100644
+--- a/core/modules/menu_link_content/src/MenuLinkContentAccessControlHandler.php
++++ b/core/modules/menu_link_content/src/MenuLinkContentAccessControlHandler.php
+@@ -50,9 +50,33 @@ public static function createInstance(ContainerInterface $container, EntityTypeI
+   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+     switch ($operation) {
+       case 'view':
+-        // There is no direct viewing of a menu link, but still for purposes of
+-        // content_translation we need a generic way to check access.
+-        return AccessResult::allowedIfHasPermission($account, 'administer menu');
++        if ($account->hasPermission('administer menu')) {
++          return AccessResult::allowed()
++            ->cachePerPermissions()
++            ->addCacheableDependency($entity);
++        }
++        // If menu link is internal, and user has access, grant view access to
++        // the menu link.
++        if (($url_object = $entity->getUrlObject()) && ($url_object->isRouted())) {
++          $link_access = $this->accessManager
++            ->checkNamedRoute(
++              $url_object->getRouteName(),
++              $url_object->getRouteParameters(),
++              $account,
++              TRUE
++            );
++          if ($link_access->isAllowed()) {
++            return AccessResult::allowed()
++              ->cachePerPermissions()
++              ->addCacheableDependency($entity);
++          }
++        }
++        // Grant view access to external links.
++        elseif ($url_object->isExternal()) {
++          return AccessResult::allowed()
++            ->cachePerPermissions()
++            ->addCacheableDependency($entity);
++        }
+ 
+       case 'update':
+         if (!$account->hasPermission('administer menu')) {

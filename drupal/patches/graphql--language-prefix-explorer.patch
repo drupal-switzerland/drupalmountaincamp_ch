@@ -1,0 +1,17 @@
+Index: src/RouteProvider.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/RouteProvider.php b/src/RouteProvider.php
+--- a/src/RouteProvider.php
++++ b/src/RouteProvider.php	(date 1667913184853)
+@@ -66,7 +66,7 @@
+         ])
+         ->addOptions([
+           '_auth' => $auth,
+-          'default_url_options' => ['path_processing' => FALSE],
++          'default_url_options' => ['path_processing' => TRUE],
+           'parameters' => ['graphql_server' => ['type' => 'entity:graphql_server']],
+         ]);
+     }

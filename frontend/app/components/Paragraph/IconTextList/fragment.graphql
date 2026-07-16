@@ -1,0 +1,10 @@
+fragment paragraphIconTextList on ParagraphIconTextList {
+  text: fieldText
+  title: fieldTitle
+  paragraphs: fieldContent {
+    ...paragraphsFieldItem
+    props {
+      ...paragraphIconTextItem
+    }
+  }
+}

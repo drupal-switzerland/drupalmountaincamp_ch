@@ -1,0 +1,65 @@
+@layer components {
+  .button {
+    @apply inline-flex cursor-pointer gap-1 rounded-full border px-8 py-3 text-base font-bold transition-all duration-250 ease-in-out;
+    @apply border-gray-400 bg-white text-primary-500;
+    @apply hover:border-accent-500 hover:text-accent-500;
+    @apply active:border-accent-600 active:text-accent-600;
+
+    &.is-text-only {
+      @apply border-white hover:border-white active:border-white;
+
+      svg {
+        @apply opacity-0 transition-all duration-250 ease-in-out;
+      }
+
+      &:hover svg {
+        @apply opacity-100;
+      }
+    }
+
+    svg {
+      @apply h-6 w-6;
+    }
+
+    &.is-filled {
+      @apply border-accent-500 bg-accent-500 text-white hover:border-accent-600 hover:bg-accent-600 hover:text-white active:border-accent-700 active:bg-accent-700 active:text-white;
+    }
+
+    &.has-icon {
+      @apply inline-flex items-center;
+      @apply pl-3 pr-6;
+      & svg {
+        @apply mr-3 bg-transparent;
+        color: inherit;
+      }
+
+      &.is-sm {
+        @apply pl-1 pr-4;
+      }
+    }
+
+    &.has-icon-right {
+      @apply inline-flex items-center;
+      @apply pl-6 pr-3;
+      & svg {
+        @apply ml-3;
+      }
+
+      &.is-sm {
+        @apply pl-4 pr-1;
+      }
+    }
+
+    &.is-icon-only {
+      @apply inline-flex p-3;
+
+      &.is-sm {
+        @apply p-1;
+      }
+    }
+  }
+}
+
+.bk-edit-indicator {
+  @apply !top-32;
+}

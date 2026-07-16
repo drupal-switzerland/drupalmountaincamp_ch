@@ -1,0 +1,20 @@
+uuid: 418df7f3-ef0d-4c31-9af2-efdba032c809
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+id: comment.blokkli_node.uid
+field_name: uid
+entity_type: comment
+bundle: blokkli_node
+label: 'User ID'
+description: 'The user ID of the comment author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\comment\Entity\Comment::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

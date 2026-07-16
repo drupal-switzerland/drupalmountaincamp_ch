@@ -1,0 +1,35 @@
+diff --git a/formatters/tabs/horizontal-tabs.js b/formatters/tabs/horizontal-tabs.js
+index 528245c..c64aee7 100644
+--- a/formatters/tabs/horizontal-tabs.js
++++ b/formatters/tabs/horizontal-tabs.js
+@@ -64,14 +64,22 @@
+                 } else {
+                   // Remove the required mark element from the tab title, if it
+                   // exists (e.g. gin theme will have it twice).
+-                  tabTitle =
+-                    $summaryElement
+-                      .clone()
+-                      .find('.required-mark')
+-                      .remove()
+-                      .end()
+-                      .html() ||
+-                    $summaryElement.find('> span:first-child').html();
++                  if (!element.querySelector('[required="required"]')) {
++                    tabTitle =
++                      $summaryElement
++                        .clone()
++                        .find('.required-mark')
++                        .remove()
++                        .end()
++                        .html();
++                  } else {
++                    tabTitle =
++                      $summaryElement
++                        .clone()
++                        .end()
++                        .html() ||
++                      $summaryElement.find('> span:first-child').html();
++                  }
+                 }
+ 
+                 const horizontalTab = new Drupal.HorizontalTab({

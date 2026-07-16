@@ -1,0 +1,19 @@
+fragment paragraphFromLibrary on ParagraphFromLibrary {
+  uuid
+  libraryItem: fieldReusableParagraph {
+    uuid
+    label
+    block: paragraphs {
+      ...paragraphsFieldItem
+      props {
+        ...paragraphAccordeon
+        ...paragraphButton
+        ...paragraphCarousel
+        ...paragraphIconTextList
+        ...paragraphImage
+        ...paragraphTeaserList
+        ...paragraphText
+      }
+    }
+  }
+}

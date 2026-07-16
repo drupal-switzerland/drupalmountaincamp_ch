@@ -1,0 +1,26 @@
+uuid: c49fef03-58ae-4012-be5f-f982af6b9973
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - paragraphs.paragraphs_type.teaser_list
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.teaser_list.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: teaser_list
+label: Überschrift
+description: 'Optionale Überschrift.'
+required: true
+translatable: true
+default_value:
+  -
+    value: 'Lorem ipsum dolor'
+default_value_callback: ''
+settings: {  }
+field_type: string

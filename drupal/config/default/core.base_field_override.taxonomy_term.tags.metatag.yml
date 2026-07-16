@@ -1,0 +1,18 @@
+uuid: e2a1eda3-3445-4f18-ab2a-7aa59f6f5427
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.tags
+id: taxonomy_term.tags.metatag
+field_name: metatag
+entity_type: taxonomy_term
+bundle: tags
+label: 'Metatags (ausgeblendetes Feld für JSON-Unterstützung)'
+description: 'Die Meta-Tags dieser Entität.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: map

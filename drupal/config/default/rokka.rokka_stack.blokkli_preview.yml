@@ -1,0 +1,13 @@
+uuid: cf16bd29-3382-472c-b066-33d1441ecbfe
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.blokkli_preview
+id: blokkli_preview
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

@@ -1,0 +1,82 @@
+uuid: a3acac0c-566d-4e32-a87b-368da6910973
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.page.field_blokkli_comments
+    - field.field.node.page.field_hero_image
+    - field.field.node.page.field_image
+    - field.field.node.page.field_lead
+    - field.field.node.page.field_metatags
+    - field.field.node.page.field_paragraphs
+    - field.field.node.page.field_teaser
+    - node.type.page
+  module:
+    - entity_reference_revisions
+    - metatag
+    - text
+    - user
+_core:
+  default_config_hash: M_Y8L5tfmhx7DR143E05YyZSpvgil6VFvqcfBWykalg
+id: node.page.default
+targetEntityType: node
+bundle: page
+mode: default
+content:
+  field_hero_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_lead:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_metatags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_paragraphs:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_teaser:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_blokkli_comments: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,18 @@
+uuid: acf4af0c-49a5-4d4a-8316-c4c65b65c34f
+langcode: de
+status: true
+dependencies:
+  module:
+    - comment
+id: comment.field_resolved
+field_name: field_resolved
+entity_type: comment
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

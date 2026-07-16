@@ -1,0 +1,18 @@
+uuid: 8393ac9d-2214-4c8a-95f0-2289a9d056f4
+langcode: de
+status: true
+dependencies:
+  config:
+    - media.type.document
+id: media.document.metatag
+field_name: metatag
+entity_type: media
+bundle: document
+label: 'Metatags (ausgeblendetes Feld für JSON-Unterstützung)'
+description: 'Die Meta-Tags dieser Entität.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: map

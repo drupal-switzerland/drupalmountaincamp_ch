@@ -1,0 +1,248 @@
+diff --git a/pathologic.module b/pathologic.module
+index 8dcf7d8f1f3f90ad479f03d313d15d76ddeb4dbb..2daced6cf274ef123d3c14fd5a816a9247e45262 100644
+--- a/pathologic.module
++++ b/pathologic.module
+@@ -26,6 +26,7 @@
+ declare(strict_types=1);
+
+ use Drupal\Component\Utility\Html;
++use Drupal\Core\StreamWrapper\PublicStream;
+ use Drupal\Core\Url;
+
+ /**
+@@ -128,13 +129,14 @@ function _pathologic_replace($matches) {
+   // guessâ€¦ Note that we don't do the & thing here so that we can modify
+   // $cached_settings later and not have the changes be "permanent."
+   $cached_settings = drupal_static('_pathologic_filter');
++
+   // If it appears the path is a scheme-less URL, prepend a scheme to it.
+   // parse_url() cannot properly parse scheme-less URLs. Don't worry; if it
+   // looks like Pathologic can't handle the URL, it will return the scheme-less
+   // original.
+   // @see https://drupal.org/node/1617944
+   // @see https://drupal.org/node/2030789
+-  if (strpos($matches[2], '//') === 0) {
++  if (str_starts_with($matches[2], '//')) {
+     if (\Drupal::request()->isSecure()) {
+       $matches[2] = 'https:' . $matches[2];
+     }
+@@ -180,6 +182,12 @@ function _pathologic_replace($matches) {
+     $parts['path'] = '';
+   }
+
++  // Variable to define whether we need to rewrite/transform the URL through a
++  // URL object.
++  $dont_rewrite = FALSE;
++  // Variable to define whether the given path is a file path.
++  $is_file = FALSE;
++
+   // Check to see if we're dealing with a file.
+   // @todo Should we still try to do path correction on these files too?
+   if (isset($parts['scheme']) && $parts['scheme'] === 'files') {
+@@ -194,10 +202,14 @@ function _pathologic_replace($matches) {
+     $new_parts['path'] = rawurldecode($new_parts['path']);
+     $parts = $new_parts;
+     // Don't do language handling for file paths.
+-    $cached_settings['is_file'] = TRUE;
++    $is_file = TRUE;
+   }
+-  else {
+-    $cached_settings['is_file'] = FALSE;
++  // Check to see if instead of a 'files:' scheme we have a normal internal
++  // file url starting with the public base path.
++  elseif (str_contains($parts['path'], PublicStream::basePath())) {
++    // This url should not be turned into a URL object, because we don't want
++    // language handling for this path.
++    $dont_rewrite = TRUE;
+   }
+
+   // Let's also bail out of this doesn't look like a local path.
+@@ -291,14 +303,14 @@ function _pathologic_replace($matches) {
+
+   // If we didn't previously identify this as a file, check to see if the file
+   // exists now that we have the correct path relative to DRUPAL_ROOT
+-  if (!$cached_settings['is_file']) {
+-    $cached_settings['is_file'] = !empty($parts['path']) && is_file(DRUPAL_ROOT . '/' . $parts['path']);
++  if (!$is_file) {
++    $is_file = !empty($parts['path']) && is_file(DRUPAL_ROOT . '/' . $parts['path']);
+   }
+
+-  // Okay, deal with language stuff.
+-  // Let's see if we can split off a language prefix from the path.
+-  $keep_language_prefix = $cached_settings['current_settings']['keep_language_prefix'] ?? FALSE;
+-  if ($keep_language_prefix === FALSE && \Drupal::moduleHandler()->moduleExists('language')) {
++  // Let's see if path has a language prefix, so we can distinguish the target
++  // language for this path.
++  $specific_language = NULL;
++  if (\Drupal::moduleHandler()->moduleExists('language')) {
+     // This logic is based on
+     // \Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationUrl::getLangcode().
+     $languages = \Drupal::languageManager()->getLanguages();
+@@ -311,8 +323,10 @@ function _pathologic_replace($matches) {
+     // Search for prefix within added languages.
+     foreach ($languages as $language) {
+       if (isset($config['prefixes'][$language->getId()]) && $config['prefixes'][$language->getId()] == $prefix) {
+-        $parts['path'] = implode('/', $path_args);
+-        $parts['language_obj'] = $language;
++        $specific_language = $language;
++        if (($cached_settings['current_settings']['keep_language_prefix'] ?? FALSE) === FALSE) {
++          $parts['path'] = implode('/', $path_args);
++        }
+         break;
+       }
+     }
+@@ -336,7 +350,7 @@ function _pathologic_replace($matches) {
+       'absolute' => $cached_settings['current_settings']['protocol_style'] !== 'path',
+       // If we seem to have found a language for the path, pass it along to
+       // url(). Otherwise, ignore the 'language' parameter.
+-      'language' => isset($parts['language_obj']) ? $parts['language_obj'] : NULL,
++      'language' => $specific_language ?? NULL,
+       // A special parameter not actually used by url(), but we use it to see if
+       // an alter hook implementation wants us to just pass through the original
+       // URL.
+@@ -361,8 +375,28 @@ function _pathologic_replace($matches) {
+   if ($parts['path'] == '<front>') {
+     $url = Url::fromRoute('<front>', [], $url_params['options'])->toString();
+   }
++  elseif ($dont_rewrite) {
++    // The URL is just the internal path that doesn't need rewriting.
++    $url = $parts['path'];
++    if (!str_starts_with($url, '/')) {
++      $url = '/' . $url;
++    }
++  }
+   else {
+-    $path = (empty($url_params['options']['external']) ? 'base://' : '') . $url_params['path'];
++    // If we've been told this is already an external URL, leave it alone.
++    if (!empty($url_params['options']['external'])) {
++      $scheme = '';
++    }
++    // If it's a file, use 'base:' so that the path is not re-written.
++    elseif ($is_file) {
++      $scheme = 'base:/';
++    }
++    // For everything we did not recognize as external or files, we use the
++    // internal scheme so aliases and language prefixes are set correctly.
++    else {
++      $scheme = 'internal:/';
++    }
++    $path = $scheme . $url_params['path'];
+     try {
+       $url = Url::fromUri($path, $url_params['options'])->toString();
+     }
+diff --git a/tests/src/Functional/PathologicLanguageTest.php b/tests/src/Functional/PathologicLanguageTest.php
+index b8d825d68c605b3465f4b11da6001af8af833bcc..1d28c58a334be7ca2b6a86e92df7302c04024ee2 100644
+--- a/tests/src/Functional/PathologicLanguageTest.php
++++ b/tests/src/Functional/PathologicLanguageTest.php
+@@ -9,6 +9,7 @@ use Drupal\Tests\BrowserTestBase;
+ use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+ use Drupal\Tests\node\Traits\NodeCreationTrait;
+ use Drupal\Tests\pathologic\Traits\PathologicFormatTrait;
++use Drupal\Tests\Traits\Core\PathAliasTestTrait;
+ use Drupal\Tests\user\Traits\UserCreationTrait;
+
+ /**
+@@ -20,6 +21,7 @@ class PathologicLanguageTest extends BrowserTestBase {
+
+   use ContentTypeCreationTrait;
+   use NodeCreationTrait;
++  use PathAliasTestTrait;
+   use PathologicFormatTrait;
+   use UserCreationTrait;
+
+@@ -32,6 +34,8 @@ class PathologicLanguageTest extends BrowserTestBase {
+     'language',
+     'locale',
+     'node',
++    'path',
++    'path_alias',
+     'pathologic',
+     'text',
+     'user',
+@@ -94,7 +98,7 @@ class PathologicLanguageTest extends BrowserTestBase {
+       'title' => 'Reference page',
+     ]);
+
+-    // Add translations for the reference node, and try a whole
++    // Add translations and path aliases for the reference node, and try a whole
+     // series of possible input texts to see how they are handled.
+     $node_to_reference->addTranslation('fr', [
+       'title' => 'Page de rÃ©fÃ©rence en franÃ§ais',
+@@ -103,6 +107,10 @@ class PathologicLanguageTest extends BrowserTestBase {
+       'title' => 'PÃ¡gina de referÃªncia em PortuguÃªs',
+     ])->save();
+
++    $this->createPathAlias('/node/' . $node_to_reference->id(), '/reference-en', 'en');
++    $this->createPathAlias('/node/' . $node_to_reference->id(), '/reference-fr', 'fr');
++    $this->createPathAlias('/node/' . $node_to_reference->id(), '/referencia-pt', 'pt-br');
++
+     global $base_path;
+     $nid = $node_to_reference->id();
+
+@@ -115,19 +123,19 @@ class PathologicLanguageTest extends BrowserTestBase {
+         "$langcode: file links do not get a language prefix",
+       );
+       $this->assertSame(
+-        '<a href="' . $base_path . 'node/' . $nid . '">Test node link</a>',
++        '<a href="' . $base_path . 'reference-en">Test node link</a>',
+         $this->runFilter('<a href="/node/' . $nid . '">Test node link</a>', $langcode),
+-        "$langcode: node/N link should be unchanged"
++        "$langcode: node/N link uses EN alias",
+       );
+       $this->assertSame(
+-        '<a href="' . $base_path . 'fr/node/' . $nid . '">Test node link</a>',
++        '<a href="' . $base_path . 'fr/reference-fr">Test node link</a>',
+         $this->runFilter('<a href="/fr/node/' . $nid . '">Test node link</a>', $langcode),
+-        "$langcode: fr/node/N link should be unchanged",
++        "$langcode: fr/node/N link uses the FR alias",
+       );
+       $this->assertSame(
+-        '<a href="' . $base_path . 'pt-br/node/' . $nid . '">Test node link</a>',
++        '<a href="' . $base_path . 'pt-br/referencia-pt">Test node link</a>',
+         $this->runFilter('<a href="/pt-br/node/' . $nid . '">Test node link</a>', $langcode),
+-        "$langcode: pt-br/node/N link should be unchanged",
++        "$langcode: pt-br/node/N link uses the PT-BR alias",
+       );
+       $this->assertSame(
+         '<a href="' . $base_path . 'reference-en">Test node link</a>',
+@@ -161,19 +169,19 @@ class PathologicLanguageTest extends BrowserTestBase {
+         "$langcode: file links do not get a language prefix",
+       );
+       $this->assertSame(
+-        '<a href="' . $base_path . 'node/' . $nid . '">Test node link</a>',
++        '<a href="' . $base_path . 'reference-en">Test node link</a>',
+         $this->runFilter('<a href="/node/' . $nid . '">Test node link</a>', $langcode),
+-        "$langcode: node/N link is unchanged"
++        "$langcode: node/N link uses EN alias",
+       );
+       $this->assertSame(
+-        '<a href="' . $base_path . 'node/' . $nid . '">Test node link</a>',
++        '<a href="' . $base_path . 'fr/reference-fr">Test node link</a>',
+         $this->runFilter('<a href="/fr/node/' . $nid . '">Test node link</a>', $langcode),
+-        "$langcode: fr/node/N link should have no langcode prefix"
++        "$langcode: fr/node/N link should use the FR alias with langcode, even if prefix is stripped",
+       );
+       $this->assertSame(
+-        '<a href="' . $base_path . 'node/' . $nid . '">Test node link</a>',
++        '<a href="' . $base_path . 'pt-br/referencia-pt">Test node link</a>',
+         $this->runFilter('<a href="/pt-br/node/' . $nid . '">Test node link</a>', $langcode),
+-        "$langcode: pt-br/node/N link should have no langcode prefix"
++        "$langcode: pt-br/node/N link should use the PT-BR alias with langcode, even if the prefix is stripped",
+       );
+       $this->assertSame(
+         '<a href="' . $base_path . 'reference-en">Test node link</a>',
+@@ -183,12 +191,12 @@ class PathologicLanguageTest extends BrowserTestBase {
+       $this->assertSame(
+         '<a href="' . $base_path . 'reference-fr">Test node link</a>',
+         $this->runFilter('<a href="/fr/reference-fr">Test node link</a>', $langcode),
+-        "$langcode: fr/reference-fr link should have no langcode prefix",
++        "$langcode: fr/reference-fr link (no URL processing) uses the FR alias with langcode removed",
+       );
+       $this->assertSame(
+         '<a href="' . $base_path . 'referencia-pt">Test node link</a>',
+         $this->runFilter('<a href="/pt-br/referencia-pt">Test node link</a>', $langcode),
+-        "$langcode: pt-br/referencia-pt link should have no langcode prefix",
++        "$langcode: pt-br/referencia-pt link (no URL processing)  uses the PT-BR alias with langcode removed",
+       );
+     }
+   }

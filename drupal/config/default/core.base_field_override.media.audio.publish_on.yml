@@ -1,0 +1,18 @@
+uuid: 1a057816-fafc-4dba-8774-cadf5f5e783b
+langcode: de
+status: true
+dependencies:
+  config:
+    - media.type.audio
+id: media.audio.publish_on
+field_name: publish_on
+entity_type: media
+bundle: audio
+label: 'Veröffentlichen am/um'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: timestamp

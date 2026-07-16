@@ -1,0 +1,108 @@
+uuid: b1ee2065-8aa8-4cfb-8540-aa641b2608b4
+langcode: de
+status: true
+dependencies:
+  config:
+    - search_api.server.elasticsearch
+  module:
+    - media
+    - node
+    - paragraphs_blokkli_search_api
+    - search_api_elasticsearch_client
+id: blokkli
+name: Blokkli
+description: 'Provides an index for the blökkli search feature'
+read_only: false
+field_settings:
+  context:
+    label: 'Blokkli: Search Context'
+    property_path: paragraphs_blokkli_search_context
+    type: string
+  entity_bundle:
+    label: Bundle
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:media/bundle'
+        - 'entity:node/field_type'
+        - 'entity:node/type'
+  entity_id:
+    label: 'Entity ID'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:media/mid'
+        - 'entity:node/nid'
+  entity_type:
+    label: Entitätstyp
+    property_path: search_api_entity_type
+    type: string
+  text:
+    label: Text
+    property_path: aggregated_field
+    type: text
+    configuration:
+      type: union
+      fields:
+        - 'entity:media/name'
+        - 'entity:node/body'
+        - 'entity:node/field_lead'
+        - 'entity:node/field_teaser'
+        - 'entity:node/title'
+  thumbnail:
+    label: 'Blokkli: Search Thumbnail'
+    property_path: paragraphs_blokkli_search_thumbnail
+    type: string
+  title:
+    label: Title
+    property_path: aggregated_field
+    type: search_api_elasticsearch_client_edge_ngram
+    boost: 8.0
+    configuration:
+      type: union
+      fields:
+        - 'entity:media/name'
+        - 'entity:node/title'
+datasource_settings:
+  'entity:media':
+    bundles:
+      default: false
+      selected:
+        - audio
+        - document
+        - icon
+        - image
+        - remote_video
+        - video
+    languages:
+      default: true
+      selected: {  }
+  'entity:node':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  custom_value: {  }
+  entity_type: {  }
+  language_with_fallback: {  }
+  paragraphs_blokkli_search_context: {  }
+  paragraphs_blokkli_search_thumbnail: {  }
+  rendered_item: {  }
+  search_api_elasticsearch_client_date_range: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 50
+  index_directly: true
+  track_changes_in_references: true
+server: elasticsearch

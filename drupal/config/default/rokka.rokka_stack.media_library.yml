@@ -1,0 +1,13 @@
+uuid: 47a3bbbe-963c-4b93-b1ad-4138c00a4b75
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.media_library
+id: media_library
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

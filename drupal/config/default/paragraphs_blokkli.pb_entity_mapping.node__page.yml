@@ -1,0 +1,22 @@
+uuid: 5bcd7042-941d-467f-b696-36d1751a9742
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.teaser.field_node_ref
+    - node.type.page
+    - paragraphs.paragraphs_type.teaser
+  module:
+    - node
+    - paragraphs
+id: node__page
+label: 'node - page'
+target_entity_type: node
+target_entity_bundle: page
+paragraph_bundle: null
+paragraph_field: null
+mappings:
+  -
+    paragraph_bundle: teaser
+    paragraph_field: field_node_ref
+context_description: null

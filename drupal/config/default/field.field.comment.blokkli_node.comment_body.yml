@@ -1,0 +1,26 @@
+uuid: 09e106f1-8a65-4ae7-b8d9-e4c8219c642a
+langcode: de
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+    - field.storage.comment.comment_body
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: comment.blokkli_node.comment_body
+field_name: comment_body
+entity_type: comment
+bundle: blokkli_node
+label: Kommentar
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

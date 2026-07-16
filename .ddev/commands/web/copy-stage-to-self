@@ -1,0 +1,4 @@
+#!/bin/bash
+
+## Description: Sync database from stage
+./scripts/copy-stage-to-self.sh

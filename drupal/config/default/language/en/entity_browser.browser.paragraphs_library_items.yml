@@ -1,0 +1,8 @@
+label: 'Paragraphs library items'
+display_configuration:
+  link_text: 'Select reusable paragraph'
+widgets:
+  19e5e98c-307e-437a-b850-0fab163d7fec:
+    settings:
+      submit_text: 'Select reusable paragraph'
+    label: 'Available library items'

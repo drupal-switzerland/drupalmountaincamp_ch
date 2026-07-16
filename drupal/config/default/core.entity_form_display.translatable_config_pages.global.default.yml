@@ -1,0 +1,34 @@
+uuid: cd90ead7-b362-4ca8-960e-64538d662fde
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.translatable_config_pages.global.field_address
+    - translatable_config_pages.translatable_config_pages_type.global
+  module:
+    - address
+id: translatable_config_pages.global.default
+targetEntityType: translatable_config_pages
+bundle: global
+mode: default
+content:
+  field_address:
+    type: address_default
+    weight: 3
+    region: content
+    settings:
+      wrapper_type: details
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

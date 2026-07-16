@@ -1,0 +1,9 @@
+fragment paragraphTeaserList on ParagraphTeaserList {
+  title: fieldTitle
+  paragraphs: fieldParagraphsTeaser {
+    ...paragraphsFieldItem
+    props {
+      ...paragraphTeaser
+    }
+  }
+}

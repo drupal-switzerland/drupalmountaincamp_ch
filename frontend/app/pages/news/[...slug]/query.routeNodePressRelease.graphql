@@ -1,0 +1,11 @@
+query routeNodePressRelease($path: String!) {
+  ...routeQuery
+
+  route(path: $path) {
+    ... on EntityUrl {
+      entity {
+        ...nodePressRelease
+      }
+    }
+  }
+}

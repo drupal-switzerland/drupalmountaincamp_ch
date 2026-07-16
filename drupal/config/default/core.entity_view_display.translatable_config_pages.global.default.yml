@@ -1,0 +1,24 @@
+uuid: c7e617dc-38a6-46ea-889a-7b7ae130c8c2
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.translatable_config_pages.global.field_address
+    - translatable_config_pages.translatable_config_pages_type.global
+  module:
+    - address
+id: translatable_config_pages.global.default
+targetEntityType: translatable_config_pages
+bundle: global
+mode: default
+content:
+  field_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

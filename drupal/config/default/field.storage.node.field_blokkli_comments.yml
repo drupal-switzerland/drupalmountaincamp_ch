@@ -1,0 +1,20 @@
+uuid: 1bd3c485-9874-4ac0-be12-018faa4558b5
+langcode: de
+status: true
+dependencies:
+  module:
+    - comment
+    - node
+id: node.field_blokkli_comments
+field_name: field_blokkli_comments
+entity_type: node
+type: comment
+settings:
+  comment_type: blokkli_node
+module: comment
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

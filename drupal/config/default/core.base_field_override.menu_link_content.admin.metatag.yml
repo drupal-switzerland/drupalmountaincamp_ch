@@ -1,0 +1,18 @@
+uuid: 4acbd9f8-98a1-4bb2-aabe-7255e2c86d59
+langcode: de
+status: true
+dependencies:
+  config:
+    - system.menu.admin
+id: menu_link_content.admin.metatag
+field_name: metatag
+entity_type: menu_link_content
+bundle: admin
+label: 'Metatags (ausgeblendetes Feld für JSON-Unterstützung)'
+description: 'Die Meta-Tags dieser Entität.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: map

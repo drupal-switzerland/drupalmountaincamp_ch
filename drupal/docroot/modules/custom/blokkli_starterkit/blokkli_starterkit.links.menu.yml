@@ -1,0 +1,6 @@
+translates_config_pages.parent:
+  title: Config Pages
+  description: Configure Translated Config Pages.
+  parent: system.admin_structure
+  route_name: entity.translatable_config_pages.collection
+  weight: 99

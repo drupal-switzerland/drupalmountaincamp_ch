@@ -1,0 +1,18 @@
+uuid: 6b9ab321-332e-4a65-a200-fed7881d81d0
+langcode: de
+status: true
+dependencies:
+  module:
+    - user
+id: user.user.metatag
+field_name: metatag
+entity_type: user
+bundle: user
+label: 'Metatags (ausgeblendetes Feld für JSON-Unterstützung)'
+description: 'Die Meta-Tags dieser Entität.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: map

@@ -1,0 +1,12 @@
+_core:
+  default_config_hash: IhwTepsVwtbtbcT5GzQKhCXDCRvbk3MNkWqPiuiZ10s
+langcode: de
+theme: gin
+defaults:
+  sender: symfony_mailer_lite
+  formatter: symfony_mailer_lite
+modules:
+  symfony_mailer_lite:
+    none:
+      sender: symfony_mailer_lite
+      formatter: symfony_mailer_lite

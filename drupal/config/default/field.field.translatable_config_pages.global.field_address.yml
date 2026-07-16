@@ -1,0 +1,49 @@
+uuid: 2c306a99-ec0c-436c-a749-d2a36b0e7cee
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.translatable_config_pages.field_address
+    - translatable_config_pages.translatable_config_pages_type.global
+  module:
+    - address
+    - content_translation
+third_party_settings:
+  content_translation:
+    translation_sync:
+      langcode: langcode
+      country_code: country_code
+      administrative_area: administrative_area
+      locality: locality
+      dependent_locality: dependent_locality
+      postal_code: postal_code
+      sorting_code: sorting_code
+      address_line1: address_line1
+      address_line2: address_line2
+      address_line3: address_line3
+      organization: organization
+      given_name: given_name
+      additional_name: additional_name
+      family_name: family_name
+id: translatable_config_pages.global.field_address
+field_name: field_address
+entity_type: translatable_config_pages
+bundle: global
+label: Adresse
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_countries: {  }
+  langcode_override: ''
+  field_overrides:
+    givenName:
+      override: hidden
+    additionalName:
+      override: hidden
+    familyName:
+      override: hidden
+  fields: {  }
+field_type: address

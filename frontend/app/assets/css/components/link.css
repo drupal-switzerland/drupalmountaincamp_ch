@@ -1,0 +1,21 @@
+@layer components {
+  .link {
+    @apply text-link;
+    @apply hover:text-link-hover hover:visited:text-link-hover;
+    @apply visited:text-link;
+    @apply active:text-link-hover;
+  }
+
+  .link-inverted {
+    @apply text-white;
+    @apply hover:text-white/80;
+    @apply active:text-white;
+  }
+
+  .inline-link {
+    @apply text-link;
+    @apply hover:text-link-hover hover:visited:text-link-hover;
+    @apply visited:text-link;
+    @apply active:text-link-hover;
+  }
+}

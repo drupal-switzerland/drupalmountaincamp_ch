@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## Description: Run phpunit inside the web container.
+## Usage: phpunit [args]
+## Example: "ddev phpunit"
+## HostWorkingDir: false
+
+cd /var/www/html/drupal; phpunit "$@"

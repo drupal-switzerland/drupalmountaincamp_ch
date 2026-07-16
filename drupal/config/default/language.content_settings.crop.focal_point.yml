@@ -1,0 +1,11 @@
+uuid: 424e6b45-9297-487c-956e-5f635962e8c4
+langcode: de
+status: true
+dependencies:
+  config:
+    - crop.type.focal_point
+id: crop.focal_point
+target_entity_type_id: crop
+target_bundle: focal_point
+default_langcode: site_default
+language_alterable: false

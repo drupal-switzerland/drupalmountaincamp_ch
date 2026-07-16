@@ -1,0 +1,9 @@
+fragment mediaImage on MediaImage {
+  name
+  mid
+  caption: fieldCaption
+  copyright: fieldCopyright
+  image: fieldMediaImage {
+    ...imageItem
+  }
+}

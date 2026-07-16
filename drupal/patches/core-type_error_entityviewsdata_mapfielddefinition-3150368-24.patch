@@ -1,0 +1,15 @@
+diff --git a/core/modules/views/src/EntityViewsData.php b/core/modules/views/src/EntityViewsData.php
+index ce2ac1519c..41839bc028 100644
+--- a/core/modules/views/src/EntityViewsData.php
++++ b/core/modules/views/src/EntityViewsData.php
+@@ -330,7 +330,9 @@ public function getViewsData() {
+         if ($data_table && ($table === $base_table || $table === $revision_table) && in_array($field_name, $duplicate_fields)) {
+           continue;
+         }
+-        $this->mapFieldDefinition($table, $field_name, $field_definitions[$field_name], $table_mapping, $data[$table]);
++        if (!empty($field_definitions[$field_name])) {
++          $this->mapFieldDefinition($table, $field_name, $field_definitions[$field_name], $table_mapping, $data[$table]);
++        }
+       }
+     }
+ 

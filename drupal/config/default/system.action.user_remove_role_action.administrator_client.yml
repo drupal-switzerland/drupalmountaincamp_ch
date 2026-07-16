@@ -1,0 +1,14 @@
+uuid: dba3ce4f-4ba5-402d-b947-2a85ae548fe3
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.administrator_client
+  module:
+    - user
+id: user_remove_role_action.administrator_client
+label: 'Den ausgewählten Benutzern die Rolle Administrator entziehen'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: administrator_client

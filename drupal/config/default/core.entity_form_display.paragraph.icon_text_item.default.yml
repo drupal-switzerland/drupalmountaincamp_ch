@@ -1,0 +1,60 @@
+uuid: 77289489-8ffa-4fa8-9f33-691af8ed6384
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.icon_text_item.field_icon
+    - field.field.paragraph.icon_text_item.field_text
+    - field.field.paragraph.icon_text_item.field_title
+    - paragraphs.paragraphs_type.icon_text_item
+  module:
+    - allowed_formats
+    - maxlength
+    - media_library
+    - media_library_edit
+    - text
+id: paragraph.icon_text_item.default
+targetEntityType: paragraph
+bundle: icon_text_item
+mode: default
+content:
+  field_icon:
+    type: media_library_widget
+    weight: 2
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings:
+      media_library_edit:
+        show_edit: '0'
+  field_text:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: null
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: false
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

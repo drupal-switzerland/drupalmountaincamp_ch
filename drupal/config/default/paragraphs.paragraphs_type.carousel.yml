@@ -1,0 +1,18 @@
+uuid: 41436098-f58f-405b-a251-8b596854c647
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: carousel
+label: Carousel
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

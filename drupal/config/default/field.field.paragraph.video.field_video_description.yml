@@ -1,0 +1,24 @@
+uuid: 4bdf7c0b-d0f2-4127-88cb-3388ec0af713
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_video_description
+    - paragraphs.paragraphs_type.video
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.video.field_video_description
+field_name: field_video_description
+entity_type: paragraph
+bundle: video
+label: Video-Legende
+description: 'Beschreibung, die unter dem Video angezeigt wird.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

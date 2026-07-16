@@ -1,0 +1,188 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the blökkli starterkit module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\field_group\FormatterHelper;
+use Drupal\paragraphs_blokkli\Form\ParagraphsBlokkliFormBase;
+use Drupal\user\UserInterface;
+use Drupal\webform\Entity\Webform;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function blokkli_starterkit_page_attachments(array &$attachments) {
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
+  if ($theme === 'gin') {
+    $attachments['#attached']['library'][] = 'blokkli_starterkit/tweaks';
+  }
+}
+
+/**
+ * Implements hook_field_widget_single_element_form_alter().
+ */
+function blokkli_starterkit_field_widget_single_element_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_definition */
+  $field_definition = $context['items']->getFieldDefinition();
+
+  // We can't use the protected isDefaultValueWidget() method.
+  $is_default_value_widget = (bool) $form_state->get('default_value_widget');
+
+  if (in_array($field_definition->getType(), _allowed_formats_field_types()) && !$is_default_value_widget) {
+    $element['#after_build'][] = '_blokkli_starterkit_remove_textarea_help';
+  }
+}
+
+/**
+ * The #after_build callback for text widgets.
+ */
+function _blokkli_starterkit_remove_textarea_help($form_element, FormStateInterface $form_state) {
+  if (isset($form_element['format'])) {
+    unset($form_element['format']['help']);
+    unset($form_element['format']['guidelines']);
+
+    // If nothing is left in the wrapper, hide it as well.
+    if (isset($form_element['#allowed_formats'])
+      && count($form_element['#allowed_formats']) == 1) {
+      unset($form_element['format']['#type']);
+      unset($form_element['format']['#theme_wrappers']);
+    }
+  }
+
+  return $form_element;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function blokkli_starterkit_form_alter(array &$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+
+  // This code snippet implements field_group support on blokkli
+  // paragraph forms. The code is based on ParagraphsWidget.php.
+  if ($form_object instanceof ParagraphsBlokkliFormBase) {
+    $paragraphs_entity = $form_object->getParagraph();
+    $display = EntityFormDisplay::collectRenderDisplay($paragraphs_entity, 'default');
+    if (\Drupal::moduleHandler()->moduleExists('field_group')) {
+      $context = [
+        'entity_type' => $paragraphs_entity->getEntityTypeId(),
+        'bundle' => $paragraphs_entity->bundle(),
+        'entity' => $paragraphs_entity,
+        'context' => 'form',
+        'display_context' => 'form',
+        'mode' => $display->getMode(),
+      ];
+
+      field_group_attach_groups($form, $context);
+      if (method_exists(FormatterHelper::class, 'formProcess')) {
+        $form['#process'][] = [FormatterHelper::class, 'formProcess'];
+      }
+      elseif (function_exists('field_group_form_pre_render')) {
+        $form['#pre_render'][] = 'field_group_form_pre_render';
+      }
+      elseif (function_exists('field_group_form_process')) {
+        $form['#process'][] = 'field_group_form_process';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function blokkli_starterkit_entity_field_access(
+  $operation,
+  FieldDefinitionInterface $field_definition,
+  AccountInterface $account,
+  ?FieldItemListInterface $items = NULL,
+) {
+  $field_name = $field_definition->getName();
+  $entity = $items?->getEntity();
+
+  if ($field_name === 'status' && $operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
+    // Allow viewing the status field.
+    return AccessResult::allowedIf($account->hasPermission('view user status'));
+  }
+
+  if ($entity instanceof UserInterface) {
+    $isSameAccount = (int) $entity->id() === (int) $account->id();
+
+    if ($field_name === 'roles' && $operation === 'view') {
+      // Every user can see their own roles.
+      return AccessResult::allowedIf($isSameAccount);
+    }
+
+    if ($field_name === 'mail' && $operation === 'edit') {
+      // Users are allowed to edit their own email.
+      return AccessResult::allowedIf($isSameAccount);
+    }
+
+    return AccessResult::neutral();
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function blokkli_starterkit_rokka_metadata_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // Since we don't store sensitive files on rokka we can allow anonymous users
+  // access to rokka_metadata entities via this custom permission.
+  if ($operation === 'view' && $account->hasPermission('view rokka metadata entities')) {
+    return AccessResult::allowed();
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ *
+ * By default in core, "neutral" access to a menu is enough for it to be
+ * displayed. But graphql_core_schema requires the access check to be
+ * "allowed". This is why we have to explicitly grant access here.
+ */
+function blokkli_starterkit_menu_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  $id = $entity->id();
+  if ($operation === 'view' && ($id === 'main' || $id === 'footer')) {
+    // Grant view access to the main menu to everyone.
+    return AccessResult::allowed();
+  }
+  elseif ($id === 'admin' && $operation === 'view') {
+    // Grant view access to the admin menu to users with the correct permission.
+    return AccessResult::allowedIfHasPermission($account, 'access toolbar');
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function blokkli_starterkit_webform_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($operation === 'view' && $entity instanceof Webform && $entity->status()) {
+    return AccessResult::allowed();
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function blokkli_starterkit_paragraphs_type_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($operation === 'view') {
+    return AccessResult::allowedIf($account->isAuthenticated());
+  }
+  return AccessResult::neutral();
+}

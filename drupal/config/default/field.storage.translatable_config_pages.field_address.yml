@@ -1,0 +1,19 @@
+uuid: f954dee8-4bc3-40a3-b062-6a9695f3d40c
+langcode: de
+status: true
+dependencies:
+  module:
+    - address
+    - translatable_config_pages
+id: translatable_config_pages.field_address
+field_name: field_address
+entity_type: translatable_config_pages
+type: address
+settings: {  }
+module: address
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,289 @@
+@layer components {
+  :root {
+    --container-max-width: 1380px;
+    --container-max-width-bk: calc(1380px * 0.8); /* 80vw coming from blokkli */
+
+    --grid-gap: theme(spacing.4);
+
+    @screen md {
+      --grid-gap: theme(spacing.6);
+    }
+
+    --container-x-margin-2xs: theme(spacing.4);
+    --container-x-margin-xs: theme(spacing.4);
+    --container-x-margin-sm: theme(spacing.4);
+    --container-x-margin-md: theme(spacing.8);
+    --container-x-margin-lg: theme(spacing.12);
+    --container-x-margin-xl: auto;
+
+    --container-columns-2xs: 1fr 1fr 1fr 1fr; /* 4 */
+    --container-columns-xs: 1fr 1fr 1fr 1fr; /* 4 */
+    --container-columns-sm: 1fr 1fr 1fr 1fr 1fr 1fr; /* 6 */
+    --container-columns-md: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 8 */
+    --container-columns-lg: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 12 */
+
+    --container-columns-width-xl: calc(
+      calc(var(--container-max-width) - calc(11 * var(--grid-gap))) / 12
+    );
+
+    --container-columns-width-xl-bk: calc(
+      calc(var(--container-max-width-bk) - calc(11 * var(--grid-gap))) / 12
+    );
+
+    /* Repeat doesn't work with grid-template, hence we simply repeat by copy-pasting. */
+    --container-columns-xl: var(--container-columns-width-xl)
+      var(--container-columns-width-xl) var(--container-columns-width-xl)
+      var(--container-columns-width-xl) var(--container-columns-width-xl)
+      var(--container-columns-width-xl) var(--container-columns-width-xl)
+      var(--container-columns-width-xl) var(--container-columns-width-xl)
+      var(--container-columns-width-xl) var(--container-columns-width-xl)
+      var(--container-columns-width-xl); /* 12 */
+
+    /* Repeat doesn't work with grid-template, hence we simply repeat by copy-pasting. */
+    --container-columns-xl-bk: var(--container-columns-width-xl-bk)
+      var(--container-columns-width-xl-bk) var(--container-columns-width-xl-bk)
+      var(--container-columns-width-xl-bk) var(--container-columns-width-xl-bk)
+      var(--container-columns-width-xl-bk) var(--container-columns-width-xl-bk)
+      var(--container-columns-width-xl-bk) var(--container-columns-width-xl-bk)
+      var(--container-columns-width-xl-bk) var(--container-columns-width-xl-bk)
+      var(--container-columns-width-xl-bk); /* 12 */
+
+    --container-breakout-border-column-size-2xs: calc(
+      var(--container-x-margin-2xs) - var(--grid-gap)
+    );
+    --container-breakout-border-column-size-xs: calc(
+      var(--container-x-margin-xs) - var(--grid-gap)
+    );
+    --container-breakout-border-column-size-sm: calc(
+      var(--container-x-margin-sm) - var(--grid-gap)
+    );
+    --container-breakout-border-column-size-md: calc(
+      var(--container-x-margin-md) - var(--grid-gap)
+    );
+    --container-breakout-border-column-size-lg: calc(
+      var(--container-x-margin-lg) - var(--grid-gap)
+    );
+  }
+
+  .grid-container {
+    @apply grid;
+    @apply grid-cols-[var(--container-columns-2xs)] gap-[var(--grid-gap)];
+    &:not(.is-small) {
+      @apply px-[var(--container-x-margin-2xs)];
+    }
+
+    @screen xs {
+      @apply grid-cols-[var(--container-columns-xs)] gap-[var(--grid-gap)];
+      &:not(.is-small) {
+        @apply px-[var(--container-x-margin-xs)];
+      }
+    }
+
+    @screen sm {
+      @apply grid-cols-[var(--container-columns-sm)] gap-[var(--grid-gap)];
+      &:not(.is-small) {
+        @apply px-[var(--container-x-margin-sm)];
+      }
+    }
+
+    @screen md {
+      @apply grid-cols-[var(--container-columns-md)] gap-[var(--grid-gap)];
+      &:not(.is-small) {
+        @apply px-[var(--container-x-margin-md)];
+      }
+    }
+
+    @screen lg {
+      &:not(.is-small) {
+        @apply grid-cols-[var(--container-columns-lg)] gap-[var(--grid-gap)] px-[var(--container-x-margin-lg)];
+      }
+    }
+
+    @screen xl {
+      &:not(.is-small) {
+        @apply px-0;
+        @apply grid-cols-[var(--container-columns-xl)] gap-[var(--grid-gap)];
+        @apply mx-auto w-[var(--container-max-width)];
+
+        .bk-main-canvas & {
+          @apply grid-cols-[var(--container-columns-xl-bk)];
+          @apply mx-auto w-[var(--container-max-width-bk)];
+        }
+      }
+    }
+
+    &.breakout-left,
+    &.breakout-right {
+      @apply px-0;
+      @apply mx-0 w-auto;
+    }
+
+    &.breakout-left {
+      & > :nth-child(1) {
+        grid-area: a;
+      }
+
+      & > :nth-child(2) {
+        grid-area: b;
+      }
+
+      @apply max-w-full;
+
+      grid-template:
+        'a a a a a a' auto
+        '. b b b b .' auto
+        / var(--container-breakout-border-column-size-2xs) var(
+          --container-columns-2xs
+        )
+        var(--container-breakout-border-column-size-2xs);
+
+      @screen xs {
+        grid-template:
+          'a a a a a a' auto
+          '. b b b b .' auto
+          / var(--container-breakout-border-column-size-xs) var(
+            --container-columns-xs
+          )
+          var(--container-breakout-border-column-size-xs);
+      }
+
+      @screen sm {
+        grid-template:
+          'a a a a b b b .' auto
+          / var(--container-breakout-border-column-size-sm) var(
+            --container-columns-sm
+          )
+          var(--container-breakout-border-column-size-sm);
+      }
+
+      @screen md {
+        grid-template:
+          'a a a a a b b b b .' auto
+          / var(--container-breakout-border-column-size-md) var(
+            --container-columns-md
+          )
+          var(--container-breakout-border-column-size-md);
+      }
+
+      @screen lg {
+        grid-template:
+          'a a a a a a a a b b b b b .' auto
+          / var(--container-breakout-border-column-size-lg) var(
+            --container-columns-lg
+          )
+          var(--container-breakout-border-column-size-lg);
+      }
+
+      @screen xl {
+        @apply w-full;
+        grid-template:
+          'a a a a a a a a b b b b b .' auto
+          / 1fr var(--container-columns-xl) 1fr;
+
+        .bk-main-canvas & {
+          @apply w-full;
+          grid-template:
+            'a a a a a a a a b b b b b .' auto
+            / 1fr var(--container-columns-xl-bk) 1fr;
+        }
+      }
+    }
+
+    &.breakout-right {
+      & > :nth-child(1) {
+        grid-area: b;
+      }
+
+      & > :nth-child(2) {
+        grid-area: a;
+      }
+
+      @apply max-w-full;
+
+      grid-template:
+        'a a a a a a' auto
+        '. b b b b .' auto
+        / var(--container-breakout-border-column-size-2xs) var(
+          --container-columns-2xs
+        )
+        var(--container-breakout-border-column-size-2xs);
+
+      @screen xs {
+        grid-template:
+          'a a a a a a' auto
+          '. b b b b .' auto
+          / var(--container-breakout-border-column-size-xs) var(
+            --container-columns-xs
+          )
+          var(--container-breakout-border-column-size-xs);
+      }
+
+      @screen sm {
+        grid-template:
+          '. b b b a a a a' auto
+          / var(--container-breakout-border-column-size-sm) var(
+            --container-columns-sm
+          )
+          var(--container-breakout-border-column-size-sm);
+      }
+
+      @screen md {
+        grid-template:
+          '. b b b b a a a a a' auto
+          / var(--container-breakout-border-column-size-md) var(
+            --container-columns-md
+          )
+          var(--container-breakout-border-column-size-md);
+      }
+
+      @screen lg {
+        grid-template:
+          '. b b b b b a a a a a a a a' auto
+          / var(--container-breakout-border-column-size-lg) var(
+            --container-columns-lg
+          )
+          var(--container-breakout-border-column-size-lg);
+      }
+
+      @screen xl {
+        @apply w-full;
+        grid-template:
+          '. b b b b b a a a a a a a a' auto
+          / 1fr var(--container-columns-xl) 1fr;
+
+        .bk-main-canvas & {
+          @apply w-full;
+          grid-template:
+            '. b b b b b a a a a a a a a' auto
+            / 1fr var(--container-columns-xl-bk) 1fr;
+        }
+      }
+    }
+
+    /* @todo: Delete this later, this is just for reference */
+
+    .grid-container-6 {
+      @apply col-span-4 md:col-span-5 md:col-start-2 lg:col-span-6 lg:col-start-3;
+    }
+
+    .grid-container-8 {
+      @apply col-span-4 sm:col-span-6 md:col-span-6 md:col-start-2 lg:col-span-8 lg:col-start-3;
+    }
+
+    .grid-container-6-small {
+      @apply col-span-4 md:col-span-5 lg:col-span-6;
+    }
+
+    .grid-container-8-small {
+      @apply col-span-4 sm:col-span-6 lg:col-span-8;
+    }
+
+    .grid-container-10 {
+      @apply col-span-4 sm:col-span-6 md:col-span-8 lg:col-span-10 lg:col-start-2;
+    }
+
+    .grid-container-12 {
+      @apply col-span-4 sm:col-span-6 md:col-span-8 lg:col-span-12;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+uuid: 464e4dc9-f520-426e-9148-b84b688731c2
+langcode: de
+status: true
+dependencies: {  }
+id: blokkli_node
+label: 'Blokkli Node'
+target_entity_type_id: node
+description: 'Kommentare auf Nodes via blökkli'

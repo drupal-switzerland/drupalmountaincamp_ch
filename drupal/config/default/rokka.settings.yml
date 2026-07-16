@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: ZAY3ARYgbmN6B09D4a7Fbx1uKtO3ImmtdSfTAJG_4QA
+langcode: de
+is_enabled: true
+api_key: use-env-variable
+api_endpoint: 'https://api.rokka.io'
+enable_auto_alt_tag: true
+enable_manual_alt_tag: true
+jpg_quality: 0
+webp_quality: 0
+optim_quality: 0
+autoformat: true
+output_format: jpg
+organization_name: use-env-variable

@@ -1,0 +1,13 @@
+uuid: e297a205-65b8-4c7b-bd70-6faf3944e630
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.medium
+id: medium
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

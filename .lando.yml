@@ -1,0 +1,221 @@
+name: mountaincamp
+recipe: drupal10
+env_file:
+  - lando/.env-shared
+config:
+  via: nginx
+  webroot: drupal/docroot
+  php: '8.3'
+  xdebug: off
+  composer_version: 2-latest
+  config:
+    php: lando/php.ini
+    vhosts: lando/nginx/entry.conf
+
+proxy:
+  appserver_nginx:
+    - mountaincamp.lndo.site
+    - www.mountaincamp.lndo.site
+  mailpit:
+    - mailpit.mountaincamp.lndo.site:8025
+  elasticsearch:
+    - elasticsearch.mountaincamp.lndo.site:9200
+
+services:
+  appserver:
+    # On OSX, you can enable mutagen by uncommenting the following line.
+    # This will get native disk speed, but the first rebuild takes longer.
+    # app_mount: delegated
+    build:
+      - echo 'cd /app/drupal' > $HOME/.bashrc
+      - echo 'export PATH="$PATH:/app/drupal/vendor/bin"' >> $HOME/.bashrc
+      - cd /app/drupal && composer install
+    build_as_root:
+      - curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+      - bash mariadb_repo_setup --mariadb-server-version=10.6
+      - rm mariadb_repo_setup
+      - apt-get update -y && apt-get install -y mariadb-client
+    overrides:
+      environment:
+        # support debugging Drush with XDEBUG.
+        PHP_IDE_CONFIG: "serverName=appserver"
+        #LANDO_HOST_IP: "host.docker.internal"
+        # SIMPLETEST_DB: "sqlite://localhost/:memory:"
+        SIMPLETEST_DB: "mysql://drupal:drupal@database/drupal"
+        SIMPLETEST_BASE_URL: "http://mountaincamp.lndo.site"
+        #XDEBUG_CONFIG: "remote_enable=1 remote_host=host.docker.internal"
+        DRUSH_OPTIONS_URI: "https://mountaincamp.lndo.site"
+        XDEBUG_MODE:
+  database:
+    # You can connect externally via "external_connection" info from `lando info`.
+    portforward: 33119
+    type: mariadb:10.6
+    config:
+      database: lando/custom.cnf
+    creds:
+      # These credentials are used only for this specific instance.
+      # You can use the same credentials for each Lando site.
+      user: drupal
+      password: drupal
+      database: drupal
+
+  mailpit:
+    api: 3
+    type: lando
+    ssl: true
+    sslExpose: false
+    scanner: false
+    services:
+      image: axllent/mailpit
+      command: "/mailpit"
+
+  memcached:
+    type: memcached
+    portforward: false
+    mem: 256
+
+  frontend:
+    type: node:18
+    ssl: true
+    sslExpose: false
+    ports:
+      - 28123:9229
+    build:
+      - echo 'cd /app/frontend' > $HOME/.bashrc
+    overrides:
+      image: imbios/bun-node:1.1-20-debian
+      environment:
+        NUXT_BACKEND_URL: http://appserver_nginx
+        NUXT_REQUEST_HOST: mountaincamp.lndo.site
+        NUXT_PORT: 3000
+        NUXT_ELASTICSEARCH_URL: http://elasticsearch:9200
+    build_as_root:
+      - npm install -g npm@10.8.2
+
+  elasticsearch:
+    type: lando
+    api: 3
+    services:
+      image: elasticsearch:8.15.0
+      command: "/bin/tini -- /usr/local/bin/docker-entrypoint.sh eswrapper"
+      environment:
+        - "TZ=Europe/Zurich"
+        - node.name=es01
+        - cluster.name=main
+        - bootstrap.memory_lock=true
+        - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+        - discovery.type=single-node
+        - xpack.security.enabled=false
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+        nofile:
+          soft: 65536
+          hard: 65536
+      cap_add:
+        - IPC_LOCK
+    ssl: true
+    sslExpose: false
+
+tooling:
+  npm:
+    service: frontend
+    dir: /app/frontend
+
+  node:
+    service: frontend
+
+  phpcbf:
+    service: appserver
+    cmd: ./vendor/bin/phpcbf
+    dir: /app/drupal
+
+  phpcs:
+    service: appserver
+    cmd: ./vendor/bin/phpcs
+    dir: /app/drupal
+
+  phpunit:
+    service: appserver
+    description: Runs phpunit tests
+    cmd: ./vendor/bin/phpunit -v -c /app/drupal/phpunit.xml
+    dir: /app/drupal
+
+  phpstan:
+    service: appserver
+    description: Runs phpstan
+    cmd: ./vendor/bin/phpstan analyse
+    dir: /app/drupal
+
+  xdebug:
+    description: Loads Xdebug in the selected mode.
+    cmd:
+      - appserver: /app/lando/xdebug.sh
+    user: root
+
+  xdebug-on:
+    description: Loads Xdebug in the selected mode.
+    cmd:
+      - appserver: /app/lando/xdebug.sh debug
+    user: root
+
+  xdebug-off:
+    description: Loads Xdebug in the selected mode.
+    cmd:
+      - appserver: /app/lando/xdebug.sh off
+    user: root
+
+  xdebug-profile:
+    description: Loads Xdebug in the selected mode.
+    cmd:
+      - appserver: /app/lando/xdebug.sh profile
+    user: root
+
+  reload:
+    description: Restart nginx.
+    cmd:
+      - appserver_nginx: nginx -s reload
+    user: root
+
+  drush:
+    # Without this drush commands are not recognized outside the container.
+    service: appserver
+    description: Run drush commands.
+    cmd: /app/drupal/vendor/bin/drush --root=/app/drupal/docroot
+
+  init-db:
+    service: appserver
+    description: Import init dump.
+    cmd: /app/drupal/scripts/init-db.sh
+
+  regenerate-nginx-config:
+    service: frontend
+    description: Regenerates the Nginx configurations using nginx-config-generator
+    dir: /app/scripts/nginx-conf-generator
+    cmd: npm ci && npm start
+
+  drupal:copy-live-to-self:
+    service: appserver
+    description: Copies the current database from live server
+    cmd: cd /app/drupal && ./scripts/copy-live-to-self.sh
+
+  drupal:copy-stage-to-self:
+    service: appserver
+    description: Copies the current database from stage server
+    cmd: cd /app/drupal && ./scripts/copy-stage-to-self.sh
+
+  drupal:check-and-update-locale:
+    service: appserver
+    description: Checks for new translations (locales) and updates them
+    cmd: cd /app/drupal && ./scripts/check-and-update-locale.sh
+
+  drupal:reindex-search-api-indices:
+    service: appserver
+    description: Re-index Search API indices
+    cmd: cd /app/drupal && ./scripts/reindex-search-api-indices.sh
+
+  drupal:composer-update-info:
+    service: appserver
+    description: Display update info of packages to be updated and if they are patched.
+    cmd: cd /app/drupal && ./scripts/composer-update-info/composer-update-info.sh

@@ -1,0 +1,45 @@
+/* Basics */
+@import 'typography.css';
+
+/* Components */
+@import './components/container.css';
+@import './components/grid-container.css';
+@import './components/ck-content.css';
+@import './components/link.css';
+@import './components/button.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply hyphens-auto bg-white font-sans text-primary-500;
+  }
+
+  h1,
+  h2 {
+    @apply font-heading font-bold;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-medium;
+  }
+}
+
+@layer components {
+  .gradient-overlay {
+    &:before {
+      content: '';
+      @apply absolute inset-0;
+      background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.5) 12.45%,
+        rgba(0, 0, 0, 0) 40.3%
+      );
+    }
+  }
+}

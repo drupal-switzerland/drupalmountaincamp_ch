@@ -1,0 +1,16 @@
+uuid: d8a58bf3-c3e0-4285-b4f2-1a5cb7f14188
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+_core:
+  default_config_hash: 3vpuQM6oMr9-2by8hl-raN8iipuX3pFaGrrbSzYfuRg
+id: blokkli_fragment
+label: 'blökkli Fragment'
+icon_uuid: null
+icon_default: null
+description: 'A content fragment managed by blökkli.'
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

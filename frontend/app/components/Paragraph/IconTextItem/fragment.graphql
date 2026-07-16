@@ -1,0 +1,7 @@
+fragment paragraphIconTextItem on ParagraphIconTextItem {
+  text: fieldText
+  title: fieldTitle
+  icon: fieldIcon {
+    ...mediaIcon
+  }
+}

@@ -1,0 +1,10 @@
+query drupalUser {
+  messengerMessages
+  currentDrupalUser: currentUser {
+    ...currentDrupalUser
+  }
+}
+
+fragment currentDrupalUser on User {
+  canAccessToolbar: hasPermission(permission: "access toolbar")
+}

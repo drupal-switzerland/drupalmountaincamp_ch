@@ -1,0 +1,18 @@
+uuid: bf066378-62d3-4a69-804b-82fcc7661a15
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: icon_text_list
+label: 'Icon Textliste'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

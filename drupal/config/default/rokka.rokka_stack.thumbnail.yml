@@ -1,0 +1,13 @@
+uuid: d19ab2f3-197d-4bb6-94e3-c28c48bb9720
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.thumbnail
+id: thumbnail
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

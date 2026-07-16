@@ -1,0 +1,39 @@
+Index: core/lib/Drupal/Core/Entity/EntityFieldManager.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/core/lib/Drupal/Core/Entity/EntityFieldManager.php b/core/lib/Drupal/Core/Entity/EntityFieldManager.php
+--- a/core/lib/Drupal/Core/Entity/EntityFieldManager.php
++++ b/core/lib/Drupal/Core/Entity/EntityFieldManager.php	(date 1701159920688)
+@@ -191,6 +191,10 @@
+         $this->baseFieldDefinitions[$entity_type_id] = $cache->data;
+       }
+       else {
++
++        // Set the current language before rebuilding the cache.
++        \Drupal::hasService('language.config_factory_override') && \Drupal::service('language.config_factory_override')->setLanguage(\Drupal::languageManager()->getCurrentLanguage());
++
+         // Rebuild the definitions and put it into the cache.
+         $this->baseFieldDefinitions[$entity_type_id] = $this->buildBaseFieldDefinitions($entity_type_id);
+         $this->cacheSet($cid, $this->baseFieldDefinitions[$entity_type_id], Cache::PERMANENT, ['entity_types', 'entity_field_info']);
+@@ -349,6 +353,9 @@
+         $bundle_field_definitions = $cache->data;
+       }
+       else {
++        // Set the current language before rebuilding the cache.
++        \Drupal::hasService('language.config_factory_override') && \Drupal::service('language.config_factory_override')->setLanguage(\Drupal::languageManager()->getCurrentLanguage());
++
+         // Rebuild the definitions and put it into the cache.
+         $bundle_field_definitions = $this->buildBundleFieldDefinitions($entity_type_id, $bundle, $base_field_definitions);
+         $this->cacheSet($cid, $bundle_field_definitions, Cache::PERMANENT, ['entity_types', 'entity_field_info']);
+@@ -462,6 +469,9 @@
+         $field_storage_definitions = $cache->data;
+       }
+       else {
++        // Set the current language before rebuilding the cache.
++        \Drupal::hasService('language.config_factory_override') && \Drupal::service('language.config_factory_override')->setLanguage(\Drupal::languageManager()->getCurrentLanguage());
++
+         // Rebuild the definitions and put it into the cache.
+         $field_storage_definitions = $this->buildFieldStorageDefinitions($entity_type_id);
+         $this->cacheSet($cid, $field_storage_definitions, Cache::PERMANENT, ['entity_types', 'entity_field_info']);

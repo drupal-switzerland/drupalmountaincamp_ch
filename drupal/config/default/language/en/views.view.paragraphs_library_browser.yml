@@ -1,0 +1,51 @@
+label: 'Paragraphs library browser'
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+          tags:
+            previous: ‹‹
+            next: ››
+      fields:
+        entity_browser_select:
+          label: Select
+        label:
+          label: Label
+          separator: ', '
+        type:
+          label: Type
+          separator: ', '
+        paragraphs__target_id:
+          label: Paragraphs
+          separator: ', '
+        changed:
+          label: Changed
+          separator: ', '
+      filters:
+        label:
+          expose:
+            label: Label
+          group_info:
+            label: Label
+        type:
+          expose:
+            label: Type
+      title: 'Paragraphs library'
+      empty:
+        area_text_custom:
+          content: 'No library items available.'
+  entity_browser:
+    display_title: 'Entity browser'

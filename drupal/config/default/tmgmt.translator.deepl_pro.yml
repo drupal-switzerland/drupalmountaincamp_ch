@@ -1,0 +1,28 @@
+uuid: ff564443-8ba6-4425-8b00-770c9aa9f9ef
+langcode: de
+status: true
+dependencies:
+  module:
+    - tmgmt_deepl
+name: deepl_pro
+label: 'DeepL API Pro (Auto-Accept)'
+description: 'DeepL API Pro Translator service.'
+auto_accept: true
+weight: null
+plugin: deepl_pro
+settings:
+  url: 'https://api.deepl.com/v2/translate'
+  url_usage: 'https://api.deepl.com/v2/usage'
+  auth_key: ''
+  tag_handling: xml
+  non_splitting_tags: ''
+  splitting_tags: ''
+  ignore_tags: ''
+  split_sentences: '1'
+  preserve_formatting: 0
+  formality: default
+  outline_detection: 1
+remote_languages_mappings:
+  de: DE
+  fr: FR
+  en: EN

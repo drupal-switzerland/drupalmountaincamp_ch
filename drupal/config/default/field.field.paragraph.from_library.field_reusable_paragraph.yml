@@ -1,0 +1,33 @@
+uuid: d32e6635-bc57-40d9-9170-cc66a6ea1cfb
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_reusable_paragraph
+    - paragraphs.paragraphs_type.from_library
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+_core:
+  default_config_hash: z_H_kCDBkuITFi-RGZRiO8Ps2UxRDucMs7Dhan7d6yw
+id: paragraph.from_library.field_reusable_paragraph
+field_name: field_reusable_paragraph
+entity_type: paragraph
+bundle: from_library
+label: 'Wiederverwendbarer Paragraph'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraphs_library_item'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

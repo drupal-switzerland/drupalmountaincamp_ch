@@ -1,0 +1,16 @@
+{
+  "name": "nginx-conf-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "defu": "^6.1.1",
+    "nunjucks": "^3.2.3",
+    "yaml": "^2.2.1"
+  }
+}

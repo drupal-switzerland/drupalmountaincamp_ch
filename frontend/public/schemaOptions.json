@@ -1,0 +1,39 @@
+{
+  "image": {
+    "format": {
+      "type": "radios",
+      "label": "Bildformat",
+      "default": "full",
+      "options": {
+        "full": "Full Width",
+        "big": "Big Grid",
+        "text": "Text grid",
+        "small": "Small Grid"
+      }
+    }
+  },
+  "teaser_list": {
+    "teaserStyle": {
+      "type": "radios",
+      "label": "Darstellung",
+      "default": "grid",
+      "options": {
+        "grid": "Grid",
+        "staggered_grid": "Versetztes Grid",
+        "slider": "Slider"
+      }
+    }
+  },
+  "text": {
+    "spacing": {
+      "type": "radios",
+      "label": "Spacing",
+      "default": "none",
+      "options": {
+        "none": "None",
+        "small": "Small",
+        "large": "Large"
+      }
+    }
+  }
+}

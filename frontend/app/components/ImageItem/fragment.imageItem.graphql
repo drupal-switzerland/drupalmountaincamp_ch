@@ -1,0 +1,21 @@
+fragment imageItem on FieldItemTypeImage {
+  alt
+  title
+  file: entity {
+    ...imageFile
+  }
+}
+
+fragment imageFile on File {
+  rokka: rokkaMetadata {
+    ...imageRokkaMetadata
+  }
+  label
+  uri
+}
+
+fragment imageRokkaMetadata on RokkaMetadata {
+  hash
+  sourceHeight: height
+  sourceWidth: width
+}

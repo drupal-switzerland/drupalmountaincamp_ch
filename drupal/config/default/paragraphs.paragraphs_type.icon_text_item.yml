@@ -1,0 +1,14 @@
+uuid: dfe990fa-e6e3-4232-a1ea-be0a1121ad98
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+id: icon_text_item
+label: 'Icon Textelement'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

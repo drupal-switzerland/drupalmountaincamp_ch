@@ -1,0 +1,49 @@
+uuid: c3354907-ae72-44a0-9ffa-e701643ec5d7
+langcode: de
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+    - field.field.comment.blokkli_node.comment_body
+    - field.field.comment.blokkli_node.field_resolved
+    - field.field.comment.blokkli_node.field_target_uuids
+  module:
+    - text
+id: comment.blokkli_node.default
+targetEntityType: comment
+bundle: blokkli_node
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_resolved:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_target_uuids:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

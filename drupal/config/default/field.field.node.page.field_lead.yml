@@ -1,0 +1,28 @@
+uuid: abad9614-b183-4139-9234-9803b5a84290
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lead
+    - filter.format.basic_html
+    - node.type.page
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.page.field_lead
+field_name: field_lead
+entity_type: node
+bundle: page
+label: Lead
+description: 'Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

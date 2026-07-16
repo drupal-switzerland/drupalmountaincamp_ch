@@ -1,0 +1,9 @@
+uuid: 2427f10a-0b12-44c2-9b4e-0f4e829cc878
+langcode: de
+status: true
+dependencies: {  }
+id: global
+label: 'Globale Konfiguration'
+menu:
+  description: 'Globale Konfiguration'
+  menu_parent: 'admin:translates_config_pages.parent'

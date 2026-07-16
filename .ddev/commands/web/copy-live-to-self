@@ -1,0 +1,4 @@
+#!/bin/bash
+
+## Description: Sync database from production
+./scripts/copy-live-to-self.sh

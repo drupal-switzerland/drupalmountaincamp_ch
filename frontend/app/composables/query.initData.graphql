@@ -1,0 +1,59 @@
+query initData {
+  ...mainMenuQuery
+  ...footerQuery
+  ...globalConfigQuery
+  translations: textsLoader {
+    ...easyTexts
+  }
+}
+
+fragment mainMenuQuery on Query {
+  mainMenu: menuByName(name: MAIN) {
+    links {
+      ...menuLinkTreeElementFirst
+    }
+  }
+}
+
+fragment footerQuery on Query {
+  footerMenu: menuByName(name: FOOTER) {
+    links {
+      ...menuLinkTreeElementFirst
+    }
+  }
+}
+
+fragment menuLinkTreeElementFirst on MenuLinkTreeElement {
+  ...menuLinkTree
+  subtree {
+    ...menuLinkTree
+    subtree {
+      ...menuLinkTree
+    }
+  }
+}
+
+fragment menuLinkTree on MenuLinkTreeElement {
+  link {
+    url {
+      path
+    }
+    attribute(name: "target")
+    label
+  }
+}
+
+fragment globalConfigQuery on Query {
+  globalConfig {
+    ...globalConfig
+  }
+}
+
+fragment globalConfig on TranslatableConfigPagesGlobal {
+  address: fieldAddress {
+    locality
+    postalCode
+    addressLine1
+    addressLine2
+  }
+}

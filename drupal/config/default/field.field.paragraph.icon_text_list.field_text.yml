@@ -1,0 +1,28 @@
+uuid: 7ccaaa15-bfc3-4894-b426-86812faa1e58
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text
+    - filter.format.plain_text
+    - paragraphs.paragraphs_type.icon_text_list
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.icon_text_list.field_text
+field_name: field_text
+entity_type: paragraph
+bundle: icon_text_list
+label: Text
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text_long

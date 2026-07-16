@@ -1,0 +1,20 @@
+@layer components {
+  :root {
+    --container-padding: theme(spacing.4);
+
+    @screen md {
+      --container-padding: theme(spacing.8);
+    }
+
+    @screen lg {
+      --container-padding: theme(spacing.12);
+    }
+  }
+  .container {
+    @apply w-full px-outer;
+
+    @screen xl {
+      @apply mx-auto w-[1380px];
+    }
+  }
+}

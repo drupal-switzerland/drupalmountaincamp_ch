@@ -1,0 +1,17 @@
+fragment nodePage on NodePage {
+  uuid
+  title
+  lead: fieldLead
+  blokkliProps {
+    ...blokkliProps
+  }
+  hero: fieldHeroImage {
+    ...mediaImage
+  }
+  paragraphs: fieldParagraphs {
+    ...paragraphsFieldItem
+    props {
+      ...paragraph
+    }
+  }
+}

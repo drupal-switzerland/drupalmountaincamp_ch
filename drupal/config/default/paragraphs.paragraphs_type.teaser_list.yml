@@ -1,0 +1,18 @@
+uuid: d2b1f371-3738-4302-8725-ac68378ffa1e
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: teaser_list
+label: Teaserlist
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

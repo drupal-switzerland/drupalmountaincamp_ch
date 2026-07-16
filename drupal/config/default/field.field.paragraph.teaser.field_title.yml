@@ -1,0 +1,24 @@
+uuid: b425cd04-4391-40ae-88a6-6d4715374c5b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - paragraphs.paragraphs_type.teaser
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.teaser.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: teaser
+label: Titel
+description: 'Optionaler Titel. Standardmässig wird der Nodetitel verwendet.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

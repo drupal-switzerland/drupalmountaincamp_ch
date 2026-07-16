@@ -1,0 +1,14 @@
+fragment nodePressReleaseTeaser on NodePressRelease {
+  uuid
+  title: label
+  url {
+    path
+  }
+  date: fieldDate {
+    formatted(drupalDateFormat: OLIVERO_MEDIUM)
+  }
+  teaser: fieldTeaser
+  image: fieldImage {
+    ...mediaImage
+  }
+}

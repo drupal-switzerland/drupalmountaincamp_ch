@@ -1,0 +1,319 @@
+uuid: f0ee3a5a-0b60-4723-90d2-74f0eb24d8d0
+langcode: de
+status: true
+dependencies: {  }
+name: graphql
+label: GraphQL
+endpoint: /graphql
+debug_flag: 1
+schema: core_composable
+caching: true
+batching: true
+disable_introspection: false
+query_depth: null
+query_complexity: null
+schema_configuration:
+  core_composable:
+    extensions:
+      breadcrumb: breadcrumb
+      debugging: debugging
+      entity_query: entity_query
+      environment_indicator: environment_indicator
+      formatted_date: formatted_date
+      image: image
+      language_schema: language_schema
+      language_switch_links: language_switch_links
+      local_tasks: local_tasks
+      masquerade: masquerade
+      media: media
+      menu: menu
+      messenger: messenger
+      metatag: metatag
+      metatags_schema_org: metatags_schema_org
+      paragraphs_blokkli_comment: paragraphs_blokkli_comment
+      paragraphs_blokkli_edit: paragraphs_blokkli_edit
+      paragraphs_blokkli_library: paragraphs_blokkli_library
+      paragraphs_blokkli_search: paragraphs_blokkli_search
+      paragraphs_blokkli_transform: paragraphs_blokkli_transform
+      rokka: rokka
+      routing: routing
+      taxonomy: taxonomy
+      texts: texts
+      translatable_config_pages: translatable_config_pages
+      user: user
+      user_login: user_login
+    generate_value_fields: 1
+    entity_base_fields:
+      fields:
+        accessCheck: accessCheck
+        entityBundle: entityBundle
+        entityTypeId: entityTypeId
+        isNew: isNew
+        label: label
+        langcode: langcode
+        uuid: uuid
+    enabled_entity_types:
+      comment: 1
+      configurable_language: 1
+      file: 1
+      media: 1
+      menu: 1
+      menu_link_content: 1
+      node: 1
+      paragraph: 1
+      paragraphs_blokkli_edit_state: 1
+      paragraphs_library_item: 1
+      paragraphs_type: 1
+      redirect: 1
+      rokka_metadata: 1
+      taxonomy_term: 1
+      texts: 1
+      translatable_config_pages: 1
+      user: 1
+    fields:
+      comment:
+        changed: changed
+        comment_body: comment_body
+        created: created
+        field_resolved: field_resolved
+        field_target_uuids: field_target_uuids
+        uid: uid
+      configurable_language:
+        status: status
+      file:
+        uri: uri
+      media:
+        bundle: bundle
+        changed: changed
+        created: created
+        field_caption: field_caption
+        field_copyright: field_copyright
+        field_media_audio_file: field_media_audio_file
+        field_media_document: field_media_document
+        field_media_image: field_media_image
+        field_media_oembed_video: field_media_oembed_video
+        field_media_svg: field_media_svg
+        field_media_video_file: field_media_video_file
+        field_thumbnail_custom: field_thumbnail_custom
+        mid: mid
+        name: name
+        path: path
+        status: status
+        thumbnail: thumbnail
+      menu: {  }
+      menu_link_content: {  }
+      node:
+        changed: changed
+        created: created
+        default_langcode: default_langcode
+        field_contact: field_contact
+        field_date: field_date
+        field_email: field_email
+        field_hero_image: field_hero_image
+        field_image: field_image
+        field_job_title: field_job_title
+        field_lead: field_lead
+        field_paragraphs: field_paragraphs
+        field_phone_number: field_phone_number
+        field_photo: field_photo
+        field_teaser: field_teaser
+        field_type: field_type
+        menu_link: menu_link
+        nid: nid
+        path: path
+        promote: promote
+        publish_on: publish_on
+        revision_uid: revision_uid
+        status: status
+        sticky: sticky
+        title: title
+        type: type
+        uid: uid
+        unpublish_on: unpublish_on
+        vid: vid
+      paragraph:
+        behavior_settings: behavior_settings
+        created: created
+        default_langcode: default_langcode
+        field_blokkli_fragment_name: field_blokkli_fragment_name
+        field_company: field_company
+        field_content: field_content
+        field_context_description: field_context_description
+        field_icon: field_icon
+        field_iframe_url: field_iframe_url
+        field_image: field_image
+        field_label: field_label
+        field_link: field_link
+        field_media_image: field_media_image
+        field_name: field_name
+        field_node_ref: field_node_ref
+        field_paragraphs_teaser: field_paragraphs_teaser
+        field_quote: field_quote
+        field_reusable_paragraph: field_reusable_paragraph
+        field_slides: field_slides
+        field_text: field_text
+        field_title: field_title
+        field_video: field_video
+        field_video_description: field_video_description
+        field_video_source: field_video_source
+        parent_field_name: parent_field_name
+        parent_id: parent_id
+        parent_type: parent_type
+        status: status
+        type: type
+      paragraphs_blokkli_edit_state:
+        changed: changed
+        created: created
+        current_index: current_index
+        host_entity_type: host_entity_type
+        host_entity_uuid: host_entity_uuid
+        mutations: mutations
+        preview_hash: preview_hash
+        status: status
+        uid: uid
+      paragraphs_library_item:
+        changed: changed
+        created: created
+        paragraphs: paragraphs
+        status: status
+      paragraphs_type:
+        behavior_plugins: behavior_plugins
+        description: description
+        icon_default: icon_default
+        icon_uuid: icon_uuid
+        status: status
+      redirect:
+        language: language
+        rid: rid
+        status_code: status_code
+        type: type
+      rokka_metadata:
+        binary_hash: binary_hash
+        filesize: filesize
+        format: format
+        hash: hash
+        height: height
+        status: status
+        uri: uri
+        width: width
+      taxonomy_term:
+        changed: changed
+        default_langcode: default_langcode
+        description: description
+        name: name
+        parent: parent
+        status: status
+        tid: tid
+        vid: vid
+        weight: weight
+      texts:
+        key: key
+        plural: plural
+        translation: translation
+      translatable_config_pages:
+        field_address: field_address
+      user:
+        access: access
+        changed: changed
+        created: created
+        mail: mail
+        name: name
+        roles: roles
+        status: status
+        uid: uid
+    bundles:
+      comment:
+        blokkli_node:
+          enabled: true
+      file:
+        file:
+          enabled: true
+      media:
+        audio:
+          enabled: true
+        document:
+          enabled: true
+        icon:
+          enabled: true
+        image:
+          enabled: true
+        remote_video:
+          enabled: true
+        video:
+          enabled: true
+      menu_link_content:
+        account:
+          enabled: true
+        admin:
+          enabled: true
+        footer:
+          enabled: true
+        main:
+          enabled: true
+        tools:
+          enabled: true
+      node:
+        contact:
+          enabled: true
+        page:
+          enabled: true
+        press_release:
+          enabled: true
+      paragraph:
+        accordeon:
+          enabled: true
+        blokkli_fragment:
+          enabled: true
+        button:
+          enabled: true
+        carousel:
+          enabled: true
+        from_library:
+          enabled: true
+        icon_text_item:
+          enabled: true
+        icon_text_list:
+          enabled: true
+        iframe:
+          enabled: true
+        image:
+          enabled: true
+        quote:
+          enabled: true
+        teaser:
+          enabled: true
+        teaser_list:
+          enabled: true
+        text:
+          enabled: true
+        text_image:
+          enabled: true
+        video:
+          enabled: true
+      paragraphs_blokkli_edit_state:
+        paragraphs_blokkli_edit_state:
+          enabled: true
+      paragraphs_library_item:
+        paragraphs_library_item:
+          enabled: true
+      redirect:
+        redirect:
+          enabled: true
+      rokka_metadata:
+        rokka_metadata:
+          enabled: true
+      taxonomy_term:
+        tags:
+          enabled: true
+      texts:
+        texts:
+          enabled: true
+      translatable_config_pages:
+        global:
+          enabled: true
+      user:
+        user:
+          enabled: true
+persisted_queries_settings:
+  dynamic_cached_persisted_query:
+    weight: 0

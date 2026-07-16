@@ -1,0 +1,20 @@
+fragment nodePressRelease on NodePressRelease {
+  title
+  uuid
+  date: fieldDate {
+    formatted(drupalDateFormat: OLIVERO_MEDIUM)
+  }
+  blokkliProps {
+    ...blokkliProps
+  }
+  lead: fieldLead
+  image: fieldImage {
+    ...mediaImage
+  }
+  paragraphs: fieldParagraphs {
+    ...paragraphsFieldItem
+    props {
+      ...paragraph
+    }
+  }
+}

@@ -1,0 +1,100 @@
+uuid: 6d4416c4-10ca-4375-a148-4506e6187250
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paragraphs
+    - node.type.page
+    - paragraphs.paragraphs_type.accordeon
+    - paragraphs.paragraphs_type.button
+    - paragraphs.paragraphs_type.carousel
+    - paragraphs.paragraphs_type.from_library
+    - paragraphs.paragraphs_type.icon_text_list
+    - paragraphs.paragraphs_type.iframe
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.quote
+    - paragraphs.paragraphs_type.teaser_list
+    - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.video
+  module:
+    - entity_reference_revisions
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.page.field_paragraphs
+field_name: field_paragraphs
+entity_type: node
+bundle: page
+label: Paragraphs
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      text: text
+      quote: quote
+      from_library: from_library
+      accordeon: accordeon
+      image: image
+      carousel: carousel
+      button: button
+      icon_text_list: icon_text_list
+      iframe: iframe
+      teaser_list: teaser_list
+      video: video
+    negate: 0
+    target_bundles_drag_drop:
+      accordeon:
+        weight: 8
+        enabled: true
+      blokkli_fragment:
+        weight: -8
+        enabled: false
+      button:
+        weight: 14
+        enabled: true
+      carousel:
+        weight: 10
+        enabled: true
+      from_library:
+        weight: -9
+        enabled: true
+      icon_text_item:
+        weight: 13
+        enabled: false
+      icon_text_list:
+        weight: 14
+        enabled: true
+      iframe:
+        weight: 26
+        enabled: true
+      image:
+        weight: 9
+        enabled: true
+      quote:
+        weight: -10
+        enabled: true
+      static_node_config_pages:
+        weight: -7
+        enabled: false
+      teaser:
+        weight: 14
+        enabled: false
+      teaser_list:
+        weight: 15
+        enabled: true
+      text:
+        weight: -11
+        enabled: true
+      text_image:
+        weight: 30
+        enabled: false
+      video:
+        weight: 16
+        enabled: true
+field_type: entity_reference_revisions

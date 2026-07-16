@@ -1,0 +1,22 @@
+langcode: de
+schema_file: ../docroot/modules/custom/blokkli_starterkit/data/schema.json
+media_bundle_remote_video: remote_video
+media_bundle_image: image
+enabled_types:
+  node:
+    - page
+    - press_release
+clipboard_text_paragraph:
+  bundle: text
+  field: field_text
+media_mapping:
+  image:
+    paragraph_bundle: image
+    paragraph_field: field_image
+  remote_video:
+    paragraph_bundle: video
+    paragraph_field: field_video
+media_bundle_file: document
+image_style: blokkli_preview
+validation_types:
+  - paragraph

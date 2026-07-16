@@ -1,0 +1,65 @@
+display:
+  default:
+    display_title: Principal
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Appliquer
+          reset_button_label: Réinitialiser
+          exposed_sorts_label: 'Trier par'
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Éléments par page'
+            items_per_page_options_all_label: '- Tout -'
+            offset_label: Décalage
+          tags:
+            previous: '‹ Précédent'
+            next: 'Suivant ›'
+            first: '« Premier'
+            last: 'Dernier »'
+      fields:
+        state:
+          label: État
+        label:
+          label: Libellé
+        type:
+          label: Typ
+        source_language:
+          label: 'A partir de'
+        target_language:
+          label: À
+        progress:
+          label: Progression
+        tags_count:
+          label: Étiquettes
+        changed:
+          label: Modifié
+        operations:
+          label: Actions
+      filters:
+        state:
+          expose:
+            label: États
+          group_info:
+            label: État
+        source_language:
+          expose:
+            label: "Langue d'origine"
+        target_language:
+          expose:
+            label: Zielsprache
+        job_type:
+          group_info:
+            label: 'Type de processus'
+            group_items:
+              2:
+                title: Continu
+      title: 'Éléments de travail'
+  page_1:
+    display_title: Seite
+    display_options:
+      menu:
+        title: 'Éléments de travail'

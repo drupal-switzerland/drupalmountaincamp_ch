@@ -1,0 +1,268 @@
+{
+    "name": "mountaincamp/project",
+    "type": "project",
+    "description": "Project template for mountaincamp",
+    "license": "GPL-2.0-only",
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        "anchor-link": {
+            "type": "package",
+            "package": {
+                "name": "northernco/ckeditor5-anchor-drupal",
+                "version": "0.5.0",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://registry.npmjs.org/@northernco/ckeditor5-anchor-drupal/-/ckeditor5-anchor-drupal-0.5.0.tgz",
+                    "type": "tar"
+                }
+            }
+        }
+    },
+    "require": {
+        "php": ">=8.3",
+        "ext-curl": "*",
+        "ext-fileinfo": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "amazeeio/drupal_integrations": "*",
+        "bower-asset/chosen": "^1.8",
+        "cweagans/composer-patches": "^2.0",
+        "drupal/address": "^2.0",
+        "drupal/admin_toolbar": "~3.0",
+        "drupal/allowed_formats": "^3.0",
+        "drupal/anchor_link": "^3",
+        "drupal/artifact_deployment": "^1.0@dev",
+        "drupal/bca": "^1.1",
+        "drupal/chosen": "^5.0",
+        "drupal/coder": "^8.3",
+        "drupal/config_devel": "^1.2",
+        "drupal/config_ignore": "^3.3",
+        "drupal/config_import_locale": "^2.1",
+        "drupal/config_patch": "3.0.x-dev",
+        "drupal/config_patch_gitlab_api": "^3.0",
+        "drupal/core-composer-scaffold": "^11",
+        "drupal/core-recommended": "^11",
+        "drupal/crop": "~2.0",
+        "drupal/devel": "^5.1",
+        "drupal/devel_entity_updates": "5.0.x-dev@dev",
+        "drupal/diff": "~1.3",
+        "drupal/editor_advanced_link": "^2.1",
+        "drupal/entity_browser": "~2.0",
+        "drupal/entity_reference_patterns": "^1.0",
+        "drupal/entity_reference_revisions": "^1.8",
+        "drupal/entity_usage": "^2.0@beta",
+        "drupal/environment_indicator": "^4.0",
+        "drupal/field_group": "^4.0",
+        "drupal/flood_control": "^3.0",
+        "drupal/focal_point": "~2.0",
+        "drupal/frontend_routing": "^1.0",
+        "drupal/geofield": "^10.3",
+        "drupal/gin": "^5.0",
+        "drupal/graphql": "~4.0",
+        "drupal/graphql_core_schema": "~1.0",
+        "drupal/graphql_extra_cache": "^1.0",
+        "drupal/inline_entity_form": "~3.0",
+        "drupal/libraries": "^4.0",
+        "drupal/link_attributes": "^2.0",
+        "drupal/linkit": "^7.0",
+        "drupal/mailsystem": "^4.1",
+        "drupal/masquerade": "^2.0@beta",
+        "drupal/maxlength": "^3.1",
+        "drupal/media_icon_deliver": "^1.0",
+        "drupal/media_library_edit": "^3.0",
+        "drupal/media_name": "^1.0@alpha",
+        "drupal/memcache": "~2.0",
+        "drupal/menu_breadcrumb": "~2.0",
+        "drupal/menu_item_extras": "~3.0",
+        "drupal/menu_position": "^1.0@beta",
+        "drupal/metatag": "~2.0",
+        "drupal/migrate_plus": "~6.0",
+        "drupal/migrate_source_csv": "^3.2",
+        "drupal/migrate_tools": "~6.0",
+        "drupal/nuxt_multi_cache": "^2.0@beta",
+        "drupal/paragraphs": "^1.15",
+        "drupal/paragraphs_blokkli": "2.0.x-dev",
+        "drupal/pathauto": "^1.6",
+        "drupal/pathologic": "^2.0@alpha",
+        "drupal/purge": "^3.5",
+        "drupal/queue_ui": "^3.1",
+        "drupal/r4032login": "^2.2.3",
+        "drupal/redirect": "~1.0",
+        "drupal/rokka": "^3.0",
+        "drupal/role_delegation": "^1.2",
+        "drupal/roleassign": "~2.0",
+        "drupal/scheduler": "~2.0",
+        "drupal/schema_metatag": "~3.0",
+        "drupal/search_api": "~1.0",
+        "drupal/search_api_elasticsearch_client": "^1.0",
+        "drupal/shs": "~3.0",
+        "drupal/simple_sitemap": "^4.1",
+        "drupal/svg_image": "^3.0",
+        "drupal/symfony_mailer_lite": "^2.0",
+        "drupal/tablefield": "~3.0",
+        "drupal/telephone_validation": "^2.4",
+        "drupal/term_sidebar": "^1.0",
+        "drupal/texts": "^1.0",
+        "drupal/tmgmt": "^1.15",
+        "drupal/tmgmt_deepl": "^2.2",
+        "drupal/token": "^1.5",
+        "drupal/token_or": "^2.1",
+        "drupal/translatable_config_pages": "^1.0",
+        "drupal/upgrade_status": "^4.3",
+        "drupal/view_unpublished": "^1.0",
+        "drupal/views_bulk_operations": "^4.2",
+        "drupal/views_data_export": "^1.3",
+        "drupal/webform": "^6.3",
+        "drush/drush": "^13",
+        "elasticsearch/elasticsearch": "^9.3",
+        "loophp/phposinfo": "^1.8",
+        "mglaman/composer-drupal-lenient": "^1.0",
+        "northernco/ckeditor5-anchor-drupal": "^0.5.0",
+        "oomphinc/composer-installers-extender": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^1.2",
+        "rokka/client-cli": "^1.8",
+        "ronanguilloux/isocodes": "^2.3",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "require-dev": {
+        "composer/installers": "^1 || ^2",
+        "drupal/core-dev": "^11",
+        "mglaman/drupal-check": "~1.0",
+        "palantirnet/drupal-rector": "^0.21",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "weitzman/drupal-test-traits": "^2.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "process-timeout": 36000,
+        "allow-plugins": {
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "drupal/core-composer-scaffold": true,
+            "drupalspoons/composer-plugin": true,
+            "mglaman/composer-drupal-lenient": true,
+            "mglaman/composer-drupalse-lenient": true,
+            "oomphinc/composer-installers-extender": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "tbachert/spi": true
+        },
+        "sort-packages": true,
+        "optimize-autoloader": false,
+        "apcu-autoloader": false,
+        "discard-changes": true,
+        "secure-http": false,
+        "platform": {
+            "php": "8.3"
+        },
+        "preferred-install": {
+            "drupal/search_api_elasticsearch_client": "source",
+            "drupal/graphql_core_schema": "source",
+            "drupal/nuxt_multi_cache": "source",
+            "drupal/frontend_routing": "source",
+            "drupal/paragraphs_blokkli": "source",
+            "drupal/texts": "source",
+            "drupal/rokka": "source",
+            "drupal/media_icon_deliver": "source"
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "docroot/core": [
+                "type:drupal-core"
+            ],
+            "docroot/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "docroot/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "docroot/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "docroot/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "docroot/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "docroot/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "docroot/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
+            ],
+            "drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ]
+        },
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "docroot"
+            },
+            "allowed-packages": [
+                "drupal/core",
+                "amazeeio/drupal_integrations"
+            ],
+            "file-mapping": {
+                "[web-root]/.htaccess": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/htaccess",
+                    "overwrite": false
+                },
+                "[web-root]/web.config": false,
+                "[web-root]/robots.txt": false,
+                "[web-root]/sites/development.services.yml": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/development.services.yml",
+                    "overwrite": false
+                },
+                "[web-root]/update.php": false,
+                "[web-root]/install.php": false,
+                "[web-root]/INSTALL.txt": false,
+                "[web-root]/README.txt": false
+            }
+        },
+        "drush": {
+            "services": {
+                "drush.services.yml": "^9 || ^10 || ^11"
+            }
+        },
+        "composer-exit-on-patch-failure": false,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "enable-patching": true,
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ],
+        "patches": {
+        },
+        "drupal-lenient": {
+            "allowed-list": []
+        }
+    },
+    "autoload": {
+        "files": [
+            "load.environment.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\Tests\\PHPUnit\\": "tests/phpunit/src/"
+        }
+    }
+}

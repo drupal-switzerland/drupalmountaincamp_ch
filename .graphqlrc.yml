@@ -1,0 +1,13 @@
+schema: './frontend/schema.graphql'
+documents:
+  - './frontend/pages/**/*.graphql'
+  - './frontend/components/**/*.graphql'
+  - './frontend/features/**/*.graphql'
+  - './frontend/composables/**/*.graphql'
+  - './frontend/plugins/**/*.graphql'
+  - './frontend/modules/**/*.graphql'
+  - './frontend/stores/**/*.graphql'
+  - './frontend/graphql/**/*.graphql'
+  - './frontend/node_modules/vuepal/dist/**/*.graphql'
+  - './frontend/node_modules/blokkli-beta/dist/**/*.graphql'
+

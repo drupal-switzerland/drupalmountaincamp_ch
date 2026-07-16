@@ -1,0 +1,150 @@
+# The possible language prefixes.
+languages:
+  - de
+  - fr
+  - it
+  - en
+
+block:
+  # Obvious 404 routes to directly handle on nginx.
+  paths:
+    - wp-
+    - autodiscover
+    - xmlrpc
+    - phpmyadmin
+    - pma
+    - dbadmin
+    - update.php
+    - package.json
+    - composer.json
+    - .git
+    - .env
+    - .htpasswd
+    - .htaccess
+
+  # Block these file extensions.
+  extensions:
+    - asp
+    - jsp
+    - php3
+    - exe
+    - md
+    - bat
+    - sh
+    - sql
+    - lib
+    - txt
+    - xml
+
+location_rewrite:
+  # The route prefixes (with or without language) to pass to Drupal.
+  # Any request that matches this prefix will be passed to Drupal.
+  # Used for e.g. /admin, /de/block, etc.
+  #
+  # You should e.g. not put "node" here because then /node/123 will also be
+  # passed to Drupal, which is wrong.
+  drupal:
+    - user
+    - user/
+    - group
+    - storage
+    - api-docs
+    - devel/
+    - admin
+    - run-cron
+    - comment/
+    - machine_name
+    - multi-site
+    - big_pipe
+    - autologout
+    - autocomplete
+    - contextual
+    - editor
+    - message
+    - entity
+    - webform
+    - entity-browser
+    - paragraphs_blokkli
+    - facets
+    - file/progress
+    - filter
+    - geocoder
+    - quickedit
+    - system/
+    - layout_builder
+    - block
+    - linkit
+    - masquerade
+    - unmasquerade
+    - media
+    - media-library
+    - scheduler
+    - shs-term-data
+    - batch
+    - cron
+    - session
+    - views
+    - token
+    - toolbar
+    - modules
+    - libraries
+    - sites
+    - themes/custom
+    - themes/contrib
+    - core
+    - tfa
+    - tmgmt
+    - graphql
+    - sitemap
+    - translate
+    - api/openai-ckeditor/completion
+    - news/planet_drupal.xml
+
+  # The possible entity types whose canonical route can be rendered by the
+  # frontend. Usually just node and media.
+  # NOTE: All other entity types MUST be put in the list above. E.g. if a
+  # taxonomy is never rendered in the frontend by its canonical, then it should
+  # be put in the list above.
+  canonical_entity_types:
+    - node
+    - taxonomy/term
+    - product
+    - profile
+
+  # The entity operations that should be passed to Drupal.
+  # E.g. /de/node/123/edit, /de/media/456/delete
+  # This is only needed if the entity's canonical was defined in canonical_entity_types.
+  entity_operations:
+    - add
+    - edit
+    - revisions
+    - translations
+    - delete
+
+# Enable Vite HMR config.
+hmr: true
+
+# Fallback to drupal if the frontend is not running.
+fallback: true
+
+certbot_off: true
+basic_auth: false
+
+error_page_root: /app/frontend/public
+
+# The possible sites.
+sites:
+  default:
+    server_name: mountaincamp.lndo.site
+    frontend_host: frontend
+    frontend_port: 3000
+    ssl_certificate: /certs/cert.crt
+    ssl_certificate_key: /certs/cert.key
+
+# The server where Drupal runs using php-fpm. Only used internally to proxy
+# requests.
+php:
+  listen: "8888"
+  server_name: localhost
+  root: /app/drupal/docroot
+  fastcgi_pass: "fpm:9000"

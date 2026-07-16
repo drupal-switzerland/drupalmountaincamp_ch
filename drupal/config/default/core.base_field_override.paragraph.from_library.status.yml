@@ -1,0 +1,22 @@
+uuid: 3b71fae1-d363-4a52-9f06-638fed4ab9a0
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.from_library
+id: paragraph.from_library.status
+field_name: status
+entity_type: paragraph
+bundle: from_library
+label: Veröffentlicht
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: An
+  off_label: Aus
+field_type: boolean

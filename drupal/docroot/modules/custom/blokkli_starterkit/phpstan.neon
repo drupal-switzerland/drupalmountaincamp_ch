@@ -1,0 +1,12 @@
+parameters:
+  excludePaths:
+    - tests/*/data/*
+  parallel:
+    jobSize: 20
+    maximumNumberOfProcesses: 4
+    minimumNumberOfJobsPerProcess: 2
+  customRulesetUsed: true
+  reportUnmatchedIgnoredErrors: false
+  # Ignore phpstan-drupal extension's rules.
+  ignoreErrors:
+    - '#\Drupal calls should be avoided in classes, use dependency injection instead#'

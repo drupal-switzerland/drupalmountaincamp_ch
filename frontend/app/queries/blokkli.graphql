@@ -1,0 +1,6 @@
+fragment pbMutatedEntity on Entity {
+  ...nodePage
+  ...nodePressRelease
+  # New field.
+  libraryItemLabel: label
+}

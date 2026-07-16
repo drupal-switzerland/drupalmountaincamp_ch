@@ -1,0 +1,58 @@
+uuid: 43a58e4e-cc67-4ca3-84ba-a2ad935bcb46
+langcode: de
+status: true
+dependencies:
+  config:
+    - filter.format.email_html
+    - user.role.authenticated
+    - user.role.content_editor
+  module:
+    - comment
+    - filter
+    - graphql
+    - locale
+    - masquerade
+    - paragraphs
+    - paragraphs_blokkli
+    - queue_ui
+    - role_delegation
+    - simple_sitemap
+    - system
+    - tmgmt
+    - translatable_config_pages
+id: administrator_client
+label: 'Administrator (Client)'
+weight: 4
+is_admin: null
+permissions:
+  - 'accept translation jobs'
+  - 'access administration pages'
+  - 'access comments'
+  - 'admin queue_ui'
+  - 'administer menu'
+  - 'administer sitemap settings'
+  - 'administer users'
+  - 'assign administrator_client role'
+  - 'assign content_editor role'
+  - 'bypass graphql access'
+  - 'create paragraphs blokkli edit state'
+  - 'create translation jobs'
+  - 'delete paragraphs blokkli edit state'
+  - 'delete translation jobs'
+  - 'edit behavior plugin settings'
+  - 'edit own comments'
+  - 'edit paragraphs blokkli edit state'
+  - 'execute graphql arbitrary graphql requests'
+  - 'manage translatable config pages'
+  - 'masquerade as authenticated'
+  - 'masquerade as content_editor'
+  - 'post comments'
+  - 'skip comment approval'
+  - 'submit translation jobs'
+  - 'take ownership of paragraphs blokkli edit state'
+  - 'translate interface'
+  - 'use graphql graphql explorer'
+  - 'use graphql graphql voyager'
+  - 'use text format email_html'
+  - 'view paragraphs blokkli edit state'
+  - 'view user email addresses'

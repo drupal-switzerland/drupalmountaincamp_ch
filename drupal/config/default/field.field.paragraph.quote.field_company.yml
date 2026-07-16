@@ -1,0 +1,24 @@
+uuid: fbe17454-5db4-42b5-89a0-aa9a9457c86b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_company
+    - paragraphs.paragraphs_type.quote
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.quote.field_company
+field_name: field_company
+entity_type: paragraph
+bundle: quote
+label: Position/Firma
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

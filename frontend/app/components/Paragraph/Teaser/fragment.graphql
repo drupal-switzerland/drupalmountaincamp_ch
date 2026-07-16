@@ -1,0 +1,15 @@
+fragment paragraphTeaser on ParagraphTeaser {
+  title: fieldTitle
+  node: fieldNodeRef {
+    ... on NodePage {
+      url {
+        path
+      }
+      teaserTitle: label
+      teaserText: fieldTeaser
+      teaserImage: fieldImage {
+        ...mediaImage
+      }
+    }
+  }
+}

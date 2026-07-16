@@ -1,0 +1,61 @@
+Index: admin_toolbar_tools/admin_toolbar_tools.routing.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- admin_toolbar_tools/admin_toolbar_tools.routing.yml	(revision )
++++ admin_toolbar_tools/admin_toolbar_tools.routing.yml	(revision )
+@@ -4,7 +4,7 @@
+     _controller: '\Drupal\admin_toolbar_tools\Controller\ToolbarController::flushAll'
+     _title: 'Flush all caches'
+   requirements:
+-    _permission: 'administer site configuration'
++    _permission: 'access administration pages'
+     _csrf_token: 'TRUE'
+ admin_toolbar_tools.cssjs:
+   path: '/admin/flush/cssjs'
+@@ -12,7 +12,7 @@
+     _controller: '\Drupal\admin_toolbar_tools\Controller\ToolbarController::flush_js_css'
+     _title: 'Flush Css and Javascript'
+   requirements:
+-    _permission: 'administer site configuration'
++    _permission: 'access administration pages'
+     _csrf_token: 'TRUE'
+ admin_toolbar_tools.plugin:
+   path: '/admin/flush/plugin'
+@@ -20,7 +20,7 @@
+     _controller: '\Drupal\admin_toolbar_tools\Controller\ToolbarController::flush_plugins'
+     _title: 'Plugin'
+   requirements:
+-    _permission: 'administer site configuration'
++    _permission: 'access administration pages'
+     _csrf_token: 'TRUE'
+ admin_toolbar_tools.flush_static:
+   path: '/admin/flush/static-caches'
+@@ -28,7 +28,7 @@
+     _controller: '\Drupal\admin_toolbar_tools\Controller\ToolbarController::flush_static'
+     _title: 'Static caches'
+   requirements:
+-    _permission: 'administer site configuration'
++    _permission: 'access administration pages'
+     _csrf_token: 'TRUE'
+ admin_toolbar_tools.flush_menu:
+   path: '/admin/flush/menu'
+@@ -36,7 +36,7 @@
+     _controller: '\Drupal\admin_toolbar_tools\Controller\ToolbarController::flush_menu'
+     _title: 'Menu'
+   requirements:
+-    _permission: 'administer site configuration'
++    _permission: 'access administration pages'
+     _csrf_token: 'TRUE'
+ admin_toolbar_tools.flush_rendercache:
+   path: '/admin/flush/rendercache'
+@@ -44,7 +44,7 @@
+     _controller: '\Drupal\admin_toolbar_tools\Controller\ToolbarController::cacheRender'
+     _title: 'Render cache'
+   requirements:
+-    _permission: 'administer site configuration'
++    _permission: 'access administration pages'
+     _csrf_token: 'TRUE'
+ admin_toolbar_tools.drupalorg:
+   path: '/admin/drupal8'

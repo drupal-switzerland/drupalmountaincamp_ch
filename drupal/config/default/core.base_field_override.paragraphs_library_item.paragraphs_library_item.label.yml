@@ -1,0 +1,18 @@
+uuid: 09ab81e4-3356-4497-a225-c3ff3bd01781
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+id: paragraphs_library_item.paragraphs_library_item.label
+field_name: label
+entity_type: paragraphs_library_item
+bundle: paragraphs_library_item
+label: Beschriftung
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

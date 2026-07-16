@@ -1,0 +1,28 @@
+uuid: 3f8cd986-e3b9-4039-a312-bc5205a19232
+langcode: de
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+    - field.storage.comment.field_resolved
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: comment.blokkli_node.field_resolved
+field_name: field_resolved
+entity_type: comment
+bundle: blokkli_node
+label: Erledigt
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Ja
+  off_label: Nein
+field_type: boolean

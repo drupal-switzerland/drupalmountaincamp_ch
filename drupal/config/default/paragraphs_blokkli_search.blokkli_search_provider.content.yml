@@ -1,0 +1,24 @@
+uuid: ca8b239b-cdac-4f6c-b0f1-91c19087a38d
+langcode: de
+status: true
+dependencies: {  }
+id: content
+label: Content
+search_plugin_id: search_api
+search_type: content
+description: ''
+weight: 0
+search_plugin_configuration:
+  index_id: blokkli
+  field_mapping:
+    entity_type: entity_type
+    entity_bundle: entity_bundle
+    entity_id: entity_id
+    title: title
+    text: text
+    image_url: thumbnail
+    context: entity_bundle
+  bundle_filters:
+    - 'node:contact'
+    - 'node:page'
+    - 'node:press_release'

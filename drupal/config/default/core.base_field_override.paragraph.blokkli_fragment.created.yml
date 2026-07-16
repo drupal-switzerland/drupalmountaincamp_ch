@@ -1,0 +1,18 @@
+uuid: 908483ec-3f8e-4f9e-a972-0d75f1850bf1
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.blokkli_fragment
+id: paragraph.blokkli_fragment.created
+field_name: created
+entity_type: paragraph
+bundle: blokkli_fragment
+label: 'Geschrieben am'
+description: 'Der Zeitpunkt, zu dem der Seitenabschnittstyp erstellt wurde.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

@@ -1,0 +1,28 @@
+uuid: 2685c739-872a-46a6-b024-31924a2ede1b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_teaser
+    - filter.format.basic_html
+    - node.type.page
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.page.field_teaser
+field_name: field_teaser
+entity_type: node
+bundle: page
+label: Teaser
+description: 'Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

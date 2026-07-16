@@ -1,0 +1,13 @@
+uuid: 36c9f975-9079-447c-b9f9-a394c995e57a
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.large
+id: large
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

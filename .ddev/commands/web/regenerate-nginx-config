@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## Description: Regenerates the Nginx configurations using nginx-config-generator.
+## Usage: regenerate-nginx-config
+
+cd /var/www/html/scripts/nginx-conf-generator
+
+npm ci && npm start

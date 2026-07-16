@@ -1,0 +1,34 @@
+uuid: 022338ec-0acb-49c1-a22e-7ada2ce80cdc
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_media_image
+    - media.type.image
+    - paragraphs.paragraphs_type.quote
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.quote.field_media_image
+field_name: field_media_image
+entity_type: paragraph
+bundle: quote
+label: Image
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

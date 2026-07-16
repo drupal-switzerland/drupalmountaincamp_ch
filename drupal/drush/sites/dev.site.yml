@@ -1,0 +1,15 @@
+dev:
+  root: /home/liip/www/drupal/docroot
+  user: liip
+  host: starterkit.blokk.li
+  uri: 'https://starterkit.blokk.li'
+  ssh:
+    tty: false
+
+manager:
+  root: /home/manager
+  user: manager
+  host: starterkit.blokk.li
+  uri: 'https://starterkit.blokk.li'
+  ssh:
+    tty: false

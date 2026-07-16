@@ -1,0 +1,18 @@
+uuid: 61752d58-b328-4d52-800b-65bc497526d8
+langcode: de
+status: true
+dependencies:
+  config:
+    - block_content.type.basic
+id: block_content.basic.metatag
+field_name: metatag
+entity_type: block_content
+bundle: basic
+label: 'Metatags (ausgeblendetes Feld für JSON-Unterstützung)'
+description: 'Die Meta-Tags dieser Entität.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: map

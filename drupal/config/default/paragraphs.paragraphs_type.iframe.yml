@@ -1,0 +1,10 @@
+uuid: 305e0f64-f3f4-4442-91f1-0bdd530d8269
+langcode: de
+status: true
+dependencies: {  }
+id: iframe
+label: iFrame
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

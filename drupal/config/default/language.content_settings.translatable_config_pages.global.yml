@@ -1,0 +1,18 @@
+uuid: 79a07954-cba2-42e4-8082-fb26499214cf
+langcode: de
+status: true
+dependencies:
+  config:
+    - translatable_config_pages.translatable_config_pages_type.global
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: translatable_config_pages.global
+target_entity_type_id: translatable_config_pages
+target_bundle: global
+default_langcode: site_default
+language_alterable: true

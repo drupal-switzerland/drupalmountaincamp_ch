@@ -1,0 +1,8 @@
+dist
+.nuxt
+.output
+.env
+node_modules
+schema.graphql
+modules/vuepal3
+queries/translations.graphql

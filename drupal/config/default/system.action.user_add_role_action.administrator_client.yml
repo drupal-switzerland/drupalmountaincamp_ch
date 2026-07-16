@@ -1,0 +1,14 @@
+uuid: 0a9162bf-b9bc-4bc6-ad29-702fc7331f17
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.administrator_client
+  module:
+    - user
+id: user_add_role_action.administrator_client
+label: 'Den ausgewählten Benutzern die Rolle Administrator zuweisen'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: administrator_client

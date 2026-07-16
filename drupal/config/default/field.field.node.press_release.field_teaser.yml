@@ -1,0 +1,26 @@
+uuid: 114ff865-35d8-41b0-98b5-ee0c942bf5cb
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_teaser
+    - node.type.press_release
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.press_release.field_teaser
+field_name: field_teaser
+entity_type: node
+bundle: press_release
+label: Teaser
+description: 'Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

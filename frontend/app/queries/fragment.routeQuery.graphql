@@ -1,0 +1,51 @@
+fragment routeQuery on Query {
+  messengerMessages
+  # Data used for the useDrupalRoute composable.
+  ...useDrupalRoute
+
+  # Data used for rendering entities.
+  route(path: $path) {
+    __typename
+    ... on EntityUrl {
+      breadcrumb {
+        ...breadcrumb
+      }
+      ...entityUrl
+    }
+    ... on InternalUrl {
+      languageSwitchLinks {
+        ...languageSwitchLink
+      }
+    }
+  }
+}
+
+fragment entityUrl on EntityUrl {
+  languageSwitchLinks {
+    ...languageSwitchLink
+  }
+  entity {
+    uuid
+  }
+  entityGlobal: entity {
+    ...entityGlobal
+  }
+}
+
+fragment entityGlobal on Entity {
+  __typename
+  canEdit: accessCheck(operation: "edit-blokkli")
+  id
+  bundle: entityBundle
+}
+
+fragment languageSwitchLink on LanguageSwitchLink {
+  active
+  language {
+    id
+  }
+  title
+  url {
+    path
+  }
+}

@@ -1,0 +1,22 @@
+uuid: a3bc9ebe-5b7f-4719-80cc-3ec6d91f56ec
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.button.field_link
+    - node.type.press_release
+    - paragraphs.paragraphs_type.button
+  module:
+    - node
+    - paragraphs
+id: node__press_release
+label: 'node - press_release'
+target_entity_type: node
+target_entity_bundle: press_release
+paragraph_bundle: null
+paragraph_field: null
+mappings:
+  -
+    paragraph_bundle: button
+    paragraph_field: field_link
+context_description: null

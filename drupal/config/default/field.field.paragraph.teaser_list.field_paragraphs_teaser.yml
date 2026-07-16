@@ -1,0 +1,56 @@
+uuid: cf484f39-2b48-477d-a982-d5801bf434cd
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_paragraphs_teaser
+    - paragraphs.paragraphs_type.teaser
+    - paragraphs.paragraphs_type.teaser_list
+  module:
+    - entity_reference_revisions
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.teaser_list.field_paragraphs_teaser
+field_name: field_paragraphs_teaser
+entity_type: paragraph
+bundle: teaser_list
+label: Teaser
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      teaser: teaser
+    negate: 0
+    target_bundles_drag_drop:
+      blokkli_fragment:
+        weight: 9
+        enabled: false
+      from_library:
+        weight: 10
+        enabled: false
+      image:
+        weight: 11
+        enabled: false
+      quote:
+        weight: 12
+        enabled: false
+      static_node_config_pages:
+        weight: 13
+        enabled: false
+      teaser:
+        weight: 14
+        enabled: true
+      teaser_list:
+        weight: 15
+        enabled: false
+      text:
+        weight: 16
+        enabled: false
+field_type: entity_reference_revisions

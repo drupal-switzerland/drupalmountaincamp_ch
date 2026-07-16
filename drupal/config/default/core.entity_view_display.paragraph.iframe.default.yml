@@ -1,0 +1,28 @@
+uuid: f6f237b9-b5ce-4767-b3f9-f4fe653582ec
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.iframe.field_iframe_url
+    - paragraphs.paragraphs_type.iframe
+  module:
+    - link
+id: paragraph.iframe.default
+targetEntityType: paragraph
+bundle: iframe
+mode: default
+content:
+  field_iframe_url:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: true
+      url_plain: true
+      rel: '0'
+      target: _blank
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

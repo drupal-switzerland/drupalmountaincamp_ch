@@ -1,0 +1,34 @@
+uuid: c85963cd-6a1f-4957-94e3-65b0bcd6cb4a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_icon
+    - media.type.icon
+    - paragraphs.paragraphs_type.icon_text_item
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.icon_text_item.field_icon
+field_name: field_icon
+entity_type: paragraph
+bundle: icon_text_item
+label: Icon
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      icon: icon
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

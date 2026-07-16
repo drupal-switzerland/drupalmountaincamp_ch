@@ -1,0 +1,18 @@
+uuid: 8b10c5c3-74ce-4056-87d5-454144c3e7cb
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+id: paragraphs_library_item.paragraphs_library_item.metatag
+field_name: metatag
+entity_type: paragraphs_library_item
+bundle: paragraphs_library_item
+label: 'Metatags (ausgeblendetes Feld für JSON-Unterstützung)'
+description: 'Die Meta-Tags dieser Entität.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: map

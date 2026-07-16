@@ -1,0 +1,13 @@
+uuid: 8b1185e6-6c88-4f66-aaa9-d699981a0783
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.linkit_result_thumbnail
+id: linkit_result_thumbnail
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

@@ -1,0 +1,17 @@
+Index: src/ResponsivePreview.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/ResponsivePreview.php b/src/ResponsivePreview.php
+--- a/src/ResponsivePreview.php	
++++ b/src/ResponsivePreview.php	(date 1718800770000)
+@@ -321,7 +321,7 @@
+     );
+     $items['responsive_preview']['#cache']['contexts'] = Cache::mergeContexts(
+       $items['responsive_preview']['#cache']['contexts'],
+-      ['route.is_admin', 'url'],
++      ['route.is_admin', 'url.site'],
+     );
+ 
+     $url = $this->getPreviewUrl();

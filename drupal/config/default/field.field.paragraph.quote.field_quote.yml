@@ -1,0 +1,26 @@
+uuid: 63cd25c6-ec0f-4284-a585-59e49a8ef714
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_quote
+    - paragraphs.paragraphs_type.quote
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.quote.field_quote
+field_name: field_quote
+entity_type: paragraph
+bundle: quote
+label: Quote
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    value: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'
+default_value_callback: ''
+settings: {  }
+field_type: string_long

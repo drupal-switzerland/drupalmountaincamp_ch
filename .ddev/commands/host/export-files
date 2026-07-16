@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd drupal/docroot/sites/default/files && tar -czf /tmp/files.tar.gz .
+

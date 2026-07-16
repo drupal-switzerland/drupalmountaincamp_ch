@@ -1,0 +1,8 @@
+fragment paragraphQuote on ParagraphQuote {
+  quote: fieldQuote
+  name: fieldName
+  company: fieldCompany
+  image: fieldMediaImage {
+    ...mediaImage
+  }
+}

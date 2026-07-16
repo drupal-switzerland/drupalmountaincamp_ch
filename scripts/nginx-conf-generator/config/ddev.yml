@@ -1,0 +1,16 @@
+sites:
+  default:
+    server_name: mountaincamp.ddev.site
+    frontend_host: localhost
+    frontend_port: 3000
+    ssl_certificate: /etc/ssl/certs/master.crt
+    ssl_certificate_key: /etc/ssl/certs/master.key
+
+error_page_root: /var/www/html/frontend/public
+
+ddev: true
+
+php:
+  fastcgi_pass: 'unix:/run/php-fpm.sock'
+  server_name: localhost
+  root: /var/www/html/drupal/docroot

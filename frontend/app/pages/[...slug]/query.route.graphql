@@ -1,0 +1,11 @@
+query route($path: String!) {
+  ...routeQuery
+
+  route(path: $path) {
+    ... on EntityUrl {
+      entity {
+        ...nodePage
+      }
+    }
+  }
+}

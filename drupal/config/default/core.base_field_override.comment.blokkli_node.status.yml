@@ -1,0 +1,22 @@
+uuid: fd223d51-dfe9-4a97-afe7-05e4dd3a5c97
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+id: comment.blokkli_node.status
+field_name: status
+entity_type: comment
+bundle: blokkli_node
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: 'Drupal\comment\Entity\Comment::getDefaultStatus'
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

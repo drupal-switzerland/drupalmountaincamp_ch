@@ -1,0 +1,18 @@
+uuid: 65ea5399-e1aa-42ae-a833-31d55110b30a
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
+id: text
+label: Text
+icon_uuid: null
+icon_default: null
+description: 'Ein Textabsatz, der Fett- und Kursivdruck, Listenelemente, Überschriftenelemente (h3, h4) und Links unterstützt.'
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

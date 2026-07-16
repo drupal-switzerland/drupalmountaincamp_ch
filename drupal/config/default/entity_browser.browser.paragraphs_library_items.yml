@@ -1,0 +1,33 @@
+uuid: 23b7fdb9-a9f7-4f07-a107-aa312e3292f9
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.paragraphs_library_browser
+  module:
+    - views
+_core:
+  default_config_hash: hL10O_U8EaCNhab9aVtHZVC9bUAvPGeOQOVh9K1yyls
+name: paragraphs_library_items
+label: Seitenabschnittbibliothekselemente
+display: modal
+display_configuration:
+  width: ''
+  height: ''
+  link_text: 'Wiederverwendbaren Seitenabschnitt auswählen'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: single
+widget_selector_configuration: {  }
+widgets:
+  19e5e98c-307e-437a-b850-0fab163d7fec:
+    id: view
+    uuid: 19e5e98c-307e-437a-b850-0fab163d7fec
+    label: 'Verfügbare Bibliothekeinträge'
+    weight: 1
+    settings:
+      submit_text: 'Wiederverwendbaren Seitenabschnitt auswählen'
+      auto_select: false
+      view: paragraphs_library_browser
+      view_display: entity_browser

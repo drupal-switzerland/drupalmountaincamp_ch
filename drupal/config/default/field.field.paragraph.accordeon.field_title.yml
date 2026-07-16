@@ -1,0 +1,26 @@
+uuid: b74a3eb4-e8a7-4f85-83e8-4db4bb0a1813
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - paragraphs.paragraphs_type.accordeon
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.accordeon.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: accordeon
+label: Titel
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    value: 'Lorem ipsum dolor'
+default_value_callback: ''
+settings: {  }
+field_type: string

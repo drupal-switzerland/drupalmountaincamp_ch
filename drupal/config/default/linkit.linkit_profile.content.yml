@@ -1,0 +1,22 @@
+uuid: 87419a1b-6313-4037-9427-fbb4801a7222
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+label: Inhalt
+id: content
+description: ''
+matchers:
+  44123142-d312-4467-b370-a3c1b176f73a:
+    id: 'entity:node'
+    uuid: 44123142-d312-4467-b370-a3c1b176f73a
+    settings:
+      metadata: '[node:content-type:name] #[node:nid] | [node:created:olivero_medium] von [node:author]'
+      bundles:
+        page: page
+      group_by_bundle: false
+      substitution_type: canonical
+      limit: 100
+      include_unpublished: false
+    weight: 0

@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/tailwind-fonts.css">
+    <title>
+      <!--# echo var="status" -->: <!--# if expr="$lang = fr" --> <!--# echo
+      var="status_title_fr" --> <!--# elif expr="$lang = it" --> <!--# echo
+      var="status_title_it" --> <!--# else --> <!--# echo var="status_title_de"
+      --> <!--# endif -->
+    </title>
+    <style>
+      html {
+        background: white;
+        color: #303030;
+        margin: 0;
+        padding: 0;
+
+        font-family: Calibre, system-ui, "Segoe UI", Roboto, Helvetica, Arial,
+          sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        border: 10px solid #e9eef0;
+        box-sizing: border-box;
+      }
+      svg {
+        width: 100px;
+      }
+      main {
+        padding: 1rem;
+      }
+      h1 {
+        font-weight: 300;
+        font-size: 32px;
+        line-height: 1.1;
+      }
+      h1 div {
+        font-weight: 600;
+      }
+      p {
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      @media screen and (min-width: 768px) {
+        body {
+          border: 20px solid #e9eef0;
+        }
+        svg {
+          width: 200px;
+        }
+        h1 {
+          font-size: 64px;
+        }
+        p {
+          font-size: 32px;
+        }
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 2rem;
+      }
+
+      .button {
+        border: 0 solid;
+        box-sizing: border-box;
+        text-decoration: inherit;
+        align-items: center;
+        border-color: transparent;
+        border-radius: 9999px;
+        border-width: 2px;
+        cursor: pointer;
+        display: inline-flex;
+        font-weight: 500;
+        justify-self: start;
+        text-transform: uppercase;
+        font-size: 18px;
+        line-height: 26px;
+        min-height: 50px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: rgb(104 171 68);
+        color: #fff;
+      }
+
+      .button:hover {
+        background: #a5c400;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+
+      </header>
+      <h1>
+        <div>
+          <!--# if expr="$lang = fr" -->
+          Erreur
+          <!--# elif expr="$lang = it" -->
+          Errore
+          <!--# else -->
+          Fehler
+          <!--# endif -->
+          <!--# echo var="status" -->
+        </div>
+
+        <!--# if expr="$lang = fr" -->
+        <!--# echo var="status_title_fr" -->
+        <!--# elif expr="$lang = it" -->
+        <!--# echo var="status_title_it" -->
+        <!--# else -->
+        <!--# echo var="status_title_de" -->
+        <!--# endif -->
+      </h1>
+
+      <p>
+        <!--# if expr="$lang = fr" -->
+        <!--# echo var="status_text_fr" -->
+        <!--# elif expr="$lang = it" -->
+        <!--# echo var="status_text_it" -->
+        <!--# else -->
+        <!--# echo var="status_text_de" -->
+        <!--# endif -->
+      </p>
+
+      <div class="buttons">
+        <a href="/<!--# echo var="lang" -->" class="button">
+          <span>
+            <!--# if expr="$lang = fr" -->
+            Vers la page d'accueil
+            <!--# elif expr="$lang = it" -->
+            Alla pagina iniziale
+            <!--# else -->
+            Zur Startseite
+            <!--# endif -->
+          </span>
+        </a>
+
+        <!--# if expr="$lang = fr" -->
+        <a href="/fr/rechercher-sur-le-site" class="button">
+          <span>
+            Page de recherche
+          </span>
+        </a>
+        <!--# elif expr="$lang = it" -->
+        <a href="/it/pagina-di-ricerca-ora" class="button">
+          <span>
+            Pagina di ricerca
+          </span>
+        </a>
+
+        <!--# else -->
+        <a href="/de/seite-jetzt-durchsuchen" class="button">
+          <span>
+            Seite durchsuchen
+          </span>
+        </a>
+        <!--# endif -->
+
+      </div>
+
+    </main>
+  </body>
+</html>

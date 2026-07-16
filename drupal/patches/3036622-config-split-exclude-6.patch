@@ -1,0 +1,36 @@
+diff --git a/src/ConfigSplitManager.php b/src/ConfigSplitManager.php
+index 575680e..1dc1e39 100644
+--- a/src/ConfigSplitManager.php
++++ b/src/ConfigSplitManager.php
+@@ -874,6 +874,10 @@ protected static function inFilterList($name, array $list) {
+       return str_replace('\*', '.*', preg_quote($line, '/'));
+     }, $list);
+     foreach ($list as $line) {
++      // Remove from filter list if its explicitly excluded
++      if ((strpos($line, '~') === 0) && preg_match('/^' . (substr($line, 1)) . '$/', $name) ) {
++        return FALSE;
++      }
+       if (preg_match('/^' . $line . '$/', $name)) {
+         return TRUE;
+       }
+diff --git a/src/Form/ConfigSplitEntityForm.php b/src/Form/ConfigSplitEntityForm.php
+index f21da51..963d6db 100644
+--- a/src/Form/ConfigSplitEntityForm.php
++++ b/src/Form/ConfigSplitEntityForm.php
+@@ -415,6 +415,7 @@ protected function readValuesFromPicker(array $pickerSelection) {
+    */
+   protected function filterConfigNames($text) {
+     if (!is_array($text)) {
++      $text = str_replace("\r", '', $text);
+       $text = explode("\n", $text);
+     }
+ 
+@@ -423,7 +424,7 @@ protected function filterConfigNames($text) {
+     }
+ 
+     // Filter out illegal characters.
+-    return array_filter(preg_replace('/[^a-z0-9_\.\-\*]+/', '', $text));
++    return array_filter(preg_replace('/[^\~\a-z0-9_\.\-\*]+/', '', $text));
+   }
+ 
+   /**

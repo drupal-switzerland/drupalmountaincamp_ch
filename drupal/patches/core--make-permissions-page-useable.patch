@@ -1,0 +1,13 @@
+diff --git a/core/modules/user/src/Form/UserPermissionsForm.php b/core/modules/user/src/Form/UserPermissionsForm.php
+index 49b8511e..f96ff2e0 100644
+--- a/core/modules/user/src/Form/UserPermissionsForm.php
++++ b/core/modules/user/src/Form/UserPermissionsForm.php
+@@ -190,7 +190,7 @@ class UserPermissionsForm extends FormBase {
+         foreach ($role_names as $rid => $name) {
+           $form['permissions'][$perm][$rid] = [
+             '#title' => $name . ': ' . $perm_item['title'],
+-            '#title_display' => 'invisible',
++            '#title_display' => 'hidden',
+             '#wrapper_attributes' => [
+               'class' => ['checkbox'],
+             ],

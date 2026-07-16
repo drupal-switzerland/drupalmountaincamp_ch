@@ -1,0 +1,14 @@
+uuid: 8e010bc6-12d6-43e5-91b0-5915bc1130b3
+langcode: de
+status: true
+dependencies: {  }
+name: focal_point
+label: 'Fokus Punkt'
+effects:
+  f00c18d6-d99e-4f65-9cf8-a5de8425b23e:
+    uuid: f00c18d6-d99e-4f65-9cf8-a5de8425b23e
+    id: image_resize
+    weight: 1
+    data:
+      width: 400
+      height: 400

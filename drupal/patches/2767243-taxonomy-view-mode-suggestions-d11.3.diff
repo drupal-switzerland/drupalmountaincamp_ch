@@ -1,0 +1,16 @@
+--- a/core/modules/taxonomy/src/Hook/TaxonomyThemeHooks.php
++++ b/core/modules/taxonomy/src/Hook/TaxonomyThemeHooks.php
+@@ -36,8 +36,13 @@
+     $suggestions = [];
+     /** @var \Drupal\taxonomy\TermInterface $term */
+     $term = $variables['elements']['#taxonomy_term'];
++    $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
++
++    $suggestions[] = 'taxonomy_term__' . $sanitized_view_mode;
+     $suggestions[] = 'taxonomy_term__' . $term->bundle();
++    $suggestions[] = 'taxonomy_term__' . $term->bundle() . '__' . $sanitized_view_mode;
+     $suggestions[] = 'taxonomy_term__' . $term->id();
++    $suggestions[] = 'taxonomy_term__' . $term->id() . '__' . $sanitized_view_mode;
+     return $suggestions;
+   }
+ 

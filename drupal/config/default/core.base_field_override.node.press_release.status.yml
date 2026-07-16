@@ -1,0 +1,22 @@
+uuid: d912eebf-978a-4273-bcd9-a630403a7b5f
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.press_release
+id: node.press_release.status
+field_name: status
+entity_type: node
+bundle: press_release
+label: Veröffentlicht
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: An
+  off_label: Aus
+field_type: boolean

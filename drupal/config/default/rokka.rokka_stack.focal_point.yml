@@ -1,0 +1,13 @@
+uuid: b8950564-340e-4c04-b4b9-917cabe8560a
+langcode: de
+status: true
+dependencies:
+  config:
+    - image.style.focal_point
+id: focal_point
+outputFormat: jpg
+stackOptions:
+  jpg_quality: null
+  webp_quality: null
+  optim_quality: null
+  autoformat: null

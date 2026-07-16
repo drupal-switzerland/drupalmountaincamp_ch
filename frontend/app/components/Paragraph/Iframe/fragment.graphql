@@ -1,0 +1,7 @@
+fragment paragraphIframe on ParagraphIframe {
+  url: fieldIframeUrl {
+    uri {
+      path
+    }
+  }
+}

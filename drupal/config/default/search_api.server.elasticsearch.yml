@@ -1,0 +1,17 @@
+uuid: 504aebed-bb70-4d1c-93fc-e589ebb0423e
+langcode: de
+status: true
+dependencies:
+  module:
+    - search_api_elasticsearch_client
+id: elasticsearch
+name: Elasticsearch
+description: ''
+backend: elasticsearch_client
+backend_config:
+  connector: standard
+  connector_config:
+    url: 'http://elasticsearch:9200'
+  advanced:
+    fuzziness: '0'
+    prefix: ''

@@ -1,0 +1,20 @@
+uuid: 8974d4ab-f234-4670-ad17-9184049a0fb9
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_library
+id: paragraphs_library_item.paragraphs_library_item.uid
+field_name: uid
+entity_type: paragraphs_library_item
+bundle: paragraphs_library_item
+label: 'Geschrieben von'
+description: 'Die Benutzer-ID des Autors des Bibliothekseintrags.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\paragraphs_library\Entity\LibraryItem::getCurrentUserId'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

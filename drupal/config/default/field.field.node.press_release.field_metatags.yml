@@ -1,0 +1,25 @@
+uuid: 0cd4dab6-cfb7-4619-abe3-08632f36fd83
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_metatags
+    - node.type.press_release
+  module:
+    - metatag
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.press_release.field_metatags
+field_name: field_metatags
+entity_type: node
+bundle: press_release
+label: Metatags
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: metatag

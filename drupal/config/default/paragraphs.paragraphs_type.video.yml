@@ -1,0 +1,10 @@
+uuid: 00902038-1634-4b95-b376-af8055786a34
+langcode: de
+status: true
+dependencies: {  }
+id: video
+label: Video
+icon_uuid: null
+icon_default: null
+description: 'Ein Video von YouTube.'
+behavior_plugins: {  }

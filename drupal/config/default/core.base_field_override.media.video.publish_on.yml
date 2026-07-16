@@ -1,0 +1,18 @@
+uuid: e1495d8a-ef67-4ceb-a215-0a13717df8cd
+langcode: de
+status: true
+dependencies:
+  config:
+    - media.type.video
+id: media.video.publish_on
+field_name: publish_on
+entity_type: media
+bundle: video
+label: 'Veröffentlichen am/um'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: timestamp

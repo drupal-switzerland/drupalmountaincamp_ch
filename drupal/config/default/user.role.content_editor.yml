@@ -1,0 +1,107 @@
+uuid: ba112333-42bf-420a-aebd-e594510d6da9
+langcode: de
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+    - taxonomy.vocabulary.tags
+  module:
+    - admin_toolbar_search
+    - comment
+    - content_translation
+    - contextual
+    - environment_indicator
+    - file
+    - filter
+    - help
+    - locale
+    - media
+    - node
+    - paragraphs
+    - paragraphs_blokkli
+    - paragraphs_library
+    - path
+    - redirect
+    - scheduler
+    - system
+    - taxonomy
+    - texts
+    - tmgmt
+    - toolbar
+    - translatable_config_pages
+    - view_unpublished
+_core:
+  default_config_hash: e_wG1u7SrGaJbY2-Szgbgl-c8T3kdirU3uTNq2c_QJQ
+id: content_editor
+label: 'Content editor'
+weight: 2
+is_admin: false
+permissions:
+  - 'accept translation jobs'
+  - 'access administration pages'
+  - 'access comments'
+  - 'access content'
+  - 'access content overview'
+  - 'access contextual links'
+  - 'access environment indicator'
+  - 'access files overview'
+  - 'access help pages'
+  - 'access media overview'
+  - 'access site in maintenance mode'
+  - 'access site reports'
+  - 'access string translation overview'
+  - 'access taxonomy overview'
+  - 'access toolbar'
+  - 'access user profiles'
+  - 'administer menu'
+  - 'administer nodes'
+  - 'administer paragraphs library'
+  - 'administer redirects'
+  - 'bypass node access'
+  - 'create content translations'
+  - 'create media'
+  - 'create paragraph library item'
+  - 'create paragraphs blokkli edit state'
+  - 'create string translation'
+  - 'create terms in tags'
+  - 'create translation jobs'
+  - 'create url aliases'
+  - 'delete content translations'
+  - 'delete media'
+  - 'delete own files'
+  - 'delete paragraphs blokkli edit state'
+  - 'delete string translation'
+  - 'delete terms in tags'
+  - 'delete translation jobs'
+  - 'edit behavior plugin settings'
+  - 'edit own comments'
+  - 'edit paragraph library item'
+  - 'edit paragraphs blokkli edit state'
+  - 'edit string translation'
+  - 'edit terms in tags'
+  - 'post comments'
+  - 'rebuild node access permissions'
+  - 'revert all revisions'
+  - 'schedule publishing of nodes'
+  - 'skip comment approval'
+  - 'submit translation jobs'
+  - 'take ownership of paragraphs blokkli edit state'
+  - 'translate any entity'
+  - 'translate interface'
+  - 'translate translatable_config_pages'
+  - 'update any media'
+  - 'update content translations'
+  - 'update media'
+  - 'use admin toolbar search'
+  - 'use text format basic_html'
+  - 'view all media revisions'
+  - 'view all revisions'
+  - 'view any unpublished content'
+  - 'view media'
+  - 'view own unpublished content'
+  - 'view own unpublished media'
+  - 'view paragraphs blokkli edit state'
+  - 'view scheduled content'
+  - 'view string translation'
+  - 'view the administration theme'
+  - 'view unpublished paragraphs'

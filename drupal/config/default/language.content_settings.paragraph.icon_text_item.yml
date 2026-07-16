@@ -1,0 +1,18 @@
+uuid: b0a2a043-a965-4192-aa34-443cbdfe2a27
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.icon_text_item
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: paragraph.icon_text_item
+target_entity_type_id: paragraph
+target_bundle: icon_text_item
+default_langcode: site_default
+language_alterable: true

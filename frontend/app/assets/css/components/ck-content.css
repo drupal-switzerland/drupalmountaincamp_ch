@@ -1,0 +1,61 @@
+@import './link.css';
+@tailwind components;
+
+@layer components {
+  .ck-content {
+    @apply break-words;
+
+    &:not(.is-small) {
+      @apply font-regular md:text-lg xl:text-xl;
+    }
+
+    h2 {
+      @apply text-3xl text-accent-500 lg:text-4xl;
+    }
+
+    h3 {
+      @apply text-2xl lg:text-3xl;
+    }
+
+    h4 {
+      @apply text-xl lg:text-2xl;
+    }
+
+    h5 {
+      @apply text-lg font-bold lg:text-xl;
+    }
+
+    p {
+      @apply not-last:mb-5 not-first:mt-5 xl:not-last:mb-6 xl:not-first:mt-6;
+    }
+
+    a {
+      @apply text-link underline hover:text-link-hover;
+    }
+
+    ol,
+    ul {
+      @apply mb-5;
+      li {
+        @apply ml-6;
+      }
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+    ul {
+      @apply list-disc;
+    }
+  }
+
+  /* List margin fix for Box paragraph */
+  .box-paragraph .ck-content {
+    ol,
+    ul {
+      li {
+        @apply ml-0 pb-0 pl-0;
+      }
+    }
+  }
+}

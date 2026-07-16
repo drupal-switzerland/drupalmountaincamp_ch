@@ -1,0 +1,14 @@
+uuid: cb8ee3ec-9921-4fce-aed3-58004d05a1e0
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+id: quote
+label: Quote
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true

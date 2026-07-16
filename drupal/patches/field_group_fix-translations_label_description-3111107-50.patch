@@ -1,0 +1,96 @@
+diff --git a/includes/field_ui.inc b/includes/field_ui.inc
+index 3654839..909283b 100644
+--- a/includes/field_ui.inc
++++ b/includes/field_ui.inc
+@@ -183,7 +183,7 @@ function field_group_field_ui_display_form_alter(&$form, FormStateInterface $for
+       '#region_callback' => 'field_group_display_overview_row_region',
+       '#js_settings' => ['rowHandler' => 'group'],
+       'human_name' => [
+-        '#markup' => $group->label,
++        '#markup' => t($group->label),
+         '#prefix' => '<span class="group-label">',
+         '#suffix' => '</span>',
+       ],
+diff --git a/modules/field_group_accordion/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php b/modules/field_group_accordion/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php
+index f598a6f..7c42d94 100644
+--- a/modules/field_group_accordion/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php
++++ b/modules/field_group_accordion/src/Plugin/field_group/FieldGroupFormatter/AccordionItem.php
+@@ -37,7 +37,7 @@ class AccordionItem extends FieldGroupFormatterBase {
+     $element += [
+       '#type' => 'field_group_accordion_item',
+       '#effect' => $this->getSetting('effect'),
+-      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->getLabel())) : Markup::create(Html::escape($this->getLabel())),
++      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->t($this->getLabel()))) : Markup::create(Html::escape($this->t($this->getLabel()))),
+       // Prevent \Drupal\content_translation\ContentTranslationHandler::addTranslatabilityClue()
+       // from adding an incorrect suffix to the field group title.
+       '#multilingual' => TRUE,
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Details.php b/src/Plugin/field_group/FieldGroupFormatter/Details.php
+index 3fa04af..83bf16e 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Details.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Details.php
+@@ -29,7 +29,7 @@ class Details extends FieldGroupFormatterBase {
+ 
+     $element += [
+       '#type' => 'details',
+-      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->getLabel())) : Markup::create(Html::escape($this->getLabel())),
++      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->t($this->getLabel()))) : Markup::create(Html::escape($this->t($this->getLabel()))),
+       '#open' => $this->getSetting('open'),
+       '#show_empty_fields' => $this->getSetting('show_empty_fields'),
+       '#description' => $this->getSetting('description'),
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php b/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php
+index 09ad1cf..bc7a9bd 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Fieldset.php
+@@ -29,9 +29,9 @@ class Fieldset extends FieldGroupFormatterBase {
+ 
+     $element += [
+       '#type' => 'fieldset',
+-      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->getLabel())) : Markup::create(Html::escape($this->getLabel())),
++      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->t($this->getLabel()))) : Markup::create(Html::escape($this->t($this->getLabel()))),
+       '#attributes' => [],
+-      '#description' => $this->getSetting('description'),
++      '#description' => $this->getSetting('description') ? $this->t($this->getSetting('description')) : '',
+       '#description_display' => 'after',
+       // Prevent \Drupal\content_translation\ContentTranslationHandler::addTranslatabilityClue()
+       // from adding an incorrect suffix to the field group title.
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php b/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php
+index 66a1104..797d7df 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/HtmlElement.php
+@@ -74,7 +74,7 @@ class HtmlElement extends FieldGroupFormatterBase {
+     $element['#attributes'] = $element_attributes;
+     if ($this->getSetting('show_label')) {
+       $element['#title_element'] = $this->getSetting('label_element');
+-      $element['#title'] = $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->getLabel())) : Markup::create(Html::escape($this->getLabel()));
++      $element['#title'] = $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->t($this->getLabel()))) : Markup::create(Html::escape($this->t($this->getLabel())));
+       // Prevent \Drupal\content_translation\ContentTranslationHandler::addTranslatabilityClue()
+       // from adding an incorrect suffix to the field group title.
+       $element['#multilingual'] = TRUE;
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Tab.php b/src/Plugin/field_group/FieldGroupFormatter/Tab.php
+index 4135a29..7b7ab70 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Tab.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Tab.php
+@@ -36,8 +36,8 @@ class Tab extends FieldGroupFormatterBase {
+ 
+     $add = [
+       '#type' => 'details',
+-      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->getLabel())) : Markup::create(Html::escape($this->getLabel())),
+-      '#description' => $this->getSetting('description'),
++      '#title' => $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->t($this->getLabel()))) : Markup::create(Html::escape($this->t($this->getLabel()))),
++      '#description' => $this->getSetting('description') ? t($this->getSetting('description')) : '',
+       '#group' => $this->group->parent_name,
+     ];
+ 
+diff --git a/src/Plugin/field_group/FieldGroupFormatter/Tabs.php b/src/Plugin/field_group/FieldGroupFormatter/Tabs.php
+index 5218a43..926b333 100644
+--- a/src/Plugin/field_group/FieldGroupFormatter/Tabs.php
++++ b/src/Plugin/field_group/FieldGroupFormatter/Tabs.php
+@@ -47,7 +47,7 @@ class Tabs extends FieldGroupFormatterBase {
+ 
+     // By default tabs don't have titles but you can override it in the theme.
+     if ($this->getLabel()) {
+-      $element['#title'] = $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->getLabel())) : Markup::create(Html::escape($this->getLabel()));
++      $element['#title'] = $this->getSetting('label_as_html') ? Markup::create(Xss::filterAdmin($this->t($this->getLabel()))) : Markup::create(Html::escape($this->t($this->getLabel())));
+     }
+ 
+     $element += [

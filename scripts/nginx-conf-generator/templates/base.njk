@@ -1,0 +1,610 @@
+# vi: ft=nginx
+
+# IMPORTANT: This file is generated automatically, do not edit!
+
+# Base config copied from here:
+# https://github.com/lando/drupal/blob/main/recipes/drupal8/default.conf.tpl
+
+# Check if a X-Forwarded-Host header (set by reverse-proxy) is already present. If not take the value of the 'Host' header.
+map $http_x_forwarded_host $proxy_x_forwarded_host {
+    default $http_x_forwarded_host;
+    ""      $http_host;
+}
+
+map $http_x_forwarded_proto $proxy_x_forwarded_proto {
+  default $http_x_forwarded_proto;
+  ''      $scheme;
+}
+
+map $http_x_forwarded_port $proxy_x_forwarded_port {
+  default $http_x_forwarded_port;
+  ''      $server_port;
+}
+
+map $http_upgrade $proxy_connection {
+  default upgrade;
+  '' close;
+}
+
+map $scheme $proxy_x_forwarded_ssl {
+  default off;
+  https on;
+}
+
+map $status $status_title_de {
+  400 'Ungültige Anfrage';
+  401 'Nicht autorisiert';
+  403 'Zugriff verweigert';
+  404 'Seite nicht gefunden';
+  500 'Interner Serverfehler';
+  502 'Wartungsarbeiten';
+  503 'Wartungsarbeiten';
+  504 'Gateway-Timeout';
+  default 'Fehler';
+}
+
+map $status $status_title_fr {
+  400 'Requête invalide';
+  401 'Non autorisé';
+  403 'Accès refusé';
+  404 'Page non trouvée';
+  500 'Erreur interne du serveur';
+  502 'Service indisponible';
+  503 'Service indisponible';
+  504 'Délai d’attente de la passerelle expiré';
+  default 'Erreur';
+}
+
+map $status $status_title_it {
+  400 'Richiesta non valida';
+  401 'Non autorizzato';
+  403 'Accesso negato';
+  404 'Pagina non trovata';
+  500 'Errore interno del server';
+  502 'Servizio non disponibile';
+  503 'Servizio non disponibile';
+  504 'Timeout del Gateway';
+  default 'Errore';
+}
+
+
+map $status $status_subtitle_de {
+  400 'Fehler 400';
+  401 'Fehler 401';
+  403 'Fehler 403';
+  404 'Fehler 404';
+  500 'Fehler 500';
+  502 'Fehler 502';
+  503 'Fehler 503';
+  504 'Fehler 504';
+  default '';
+}
+
+map $status $status_subtitle_fr {
+  400 'Erreur 400';
+  401 'Erreur 401';
+  403 'Erreur 403';
+  404 'Erreur 404';
+  500 'Erreur 500';
+  502 'Erreur 502';
+  503 'Erreur 503';
+  504 'Erreur 504';
+  default '';
+}
+
+map $status $status_subtitle_it {
+  400 'Errore  400';
+  401 'Errore  401';
+  403 'Errore  403';
+  404 'Errore  404';
+  500 'Errore  500';
+  502 'Errore  502';
+  503 'Errore  503';
+  504 'Errore  504';
+  default '';
+}
+
+map $status $status_text_de {
+  400 'Die Anfrage konnte aufgrund fehlerhafter Syntax nicht verarbeitet werden.';
+  401 'Sie müssen sich authentifizieren, um Zugang zu erhalten.';
+  403 'Sie haben keine Berechtigung, auf diese Ressource zuzugreifen.';
+  404 'Die angeforderte Ressource konnte auf dem Server nicht gefunden werden.';
+  500 'Ein unerwarteter Fehler ist auf dem Server aufgetreten.';
+  502 'Die Seite ist aktuell aufgrund von Wartungsarbeiten nicht verfügbar. Bitte versuchen Sie es später noch einmal.';
+  503 'Die Seite ist aktuell aufgrund von Wartungsarbeiten nicht verfügbar. Bitte versuchen Sie es später noch einmal.';
+  504 'Der Server konnte keine rechtzeitige Antwort von einem übergeordneten Server erhalten.';
+  default 'Ein unerwarteter Fehler ist aufgetreten.';
+}
+
+map $status $status_text_fr {
+  400 'La requête n\'a pas pu être traitée en raison d\'une syntaxe incorrecte.';
+  401 'Vous devez vous authentifier pour accéder à cette ressource.';
+  403 'Vous n\'avez pas la permission d\'accéder à cette ressource.';
+  404 'La ressource demandée n\'a pas pu être trouvée sur le serveur.';
+  500 'Une erreur inattendue s\'est produite sur le serveur.';
+  502 'La page est actuellement indisponible en raison de travaux de maintenance. Veuillez réessayer ultérieurement.';
+  503 'La page est actuellement indisponible en raison de travaux de maintenance. Veuillez réessayer ultérieurement.';
+  504 'Le serveur n\'a pas reçu de réponse à temps d\'un serveur supérieur.';
+  default 'Une erreur inattendue s\'est produite.';
+}
+
+map $status $status_text_it {
+  400 'La richiesta non può essere elaborata a causa di una sintassi errata.';
+  401 'È necessario autenticarsi per accedere a questa risorsa.';
+  403 'Non hai il permesso di accedere a questa risorsa.';
+  404 'La risorsa richiesta non è stata trovata sul server.';
+  500 'Si è verificato un errore inaspettato sul server.';
+  502 'La pagina non è attualmente disponibile a causa di lavori di manutenzione. Si prega di riprovare più tardi.';
+  503 'La pagina non è attualmente disponibile a causa di lavori di manutenzione. Si prega di riprovare più tardi.';
+  504 'Il server non ha ricevuto una risposta in tempo da un server superiore.';
+  default 'Si è verificato un errore inaspettato.';
+}
+
+server {
+  listen {{ php.listen }} default_server;
+  server_name {{ php.server_name }}; # certbot_domain:{{ sites.default.server_name }}
+  server_name_in_redirect off;
+  port_in_redirect off;
+  large_client_header_buffers 4 32k;
+  fastcgi_buffers 32 256k;
+  fastcgi_buffer_size 512k;
+  proxy_buffers 32 256k;
+  proxy_buffer_size 128k;
+  proxy_busy_buffers_size    256k;
+  server_tokens off;
+
+  root {{ php.root }};
+  index index.php index.htm index.html;
+
+  client_max_body_size 100M;
+  {% if fallback %}
+  error_page 404 @errorpage;
+  {% else %}
+  error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 @errorpage;
+  {% endif %}
+
+  {% if ddev %}
+  error_log /dev/stdout info;
+  access_log /var/log/nginx/access.log;
+  {% endif %}
+
+  set $lang "de";
+
+  if ($request_uri ~ "^/fr/") {
+    set $lang "fr";
+  }
+
+  if ($request_uri ~ "^/it/") {
+    set $lang "it";
+  }
+
+  if ($request_uri ~ "^/en/") {
+    set $lang "en";
+  }
+
+  location @errorpage {
+    root "{{ error_page_root }}";
+    ssi on;
+    internal;
+    try_files /error.html =404;
+  }
+
+  location /nginx_status {
+      stub_status;
+      access_log off;
+  }
+
+  location = /favicon.ico {
+    log_not_found off;
+    access_log off;
+  }
+
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
+
+  location ~ \..*/.*\.php$ {
+    return 403;
+  }
+
+  location ~ ^/sites/.*/private/ {
+    return 403;
+  }
+
+  # Allow "Well-Known URIs" as per RFC 5785
+  location ~* ^/.well-known/ {
+    allow all;
+  }
+
+  # Block access to "hidden" files and directories whose names begin with a
+  # period. This includes directories used by version control systems such
+  # as Subversion or Git to store control files.
+
+  location / {
+    absolute_redirect off;
+    try_files $uri /index.php?$query_string; # For Drupal >= 7
+  }
+
+  location @rewrite {
+    rewrite ^ /index.php;
+  }
+
+  # Don't allow direct access to PHP files in the vendor directory.
+  location ~ /vendor/.*\.php$ {
+    deny all;
+    return 404;
+  }
+
+  # In Drupal 8, we must also match new paths where the '.php' appears in
+  # the middle, such as update.php/selection. The rule we use is strict,
+  # and only allows this pattern with the update.php front controller.
+  # This allows legacy path aliases in the form of
+  # blog/index.php/legacy-path to continue to route to Drupal nodes. If
+  # you do not have any paths like that, then you might prefer to use a
+  # laxer rule, such as:
+  #   location ~ \.php(/|$) {
+  # The laxer rule will continue to work if Drupal uses this new URL
+  # pattern with front controllers other than update.php in a future
+  # release.
+  location ~ '\.php$|^/update.php' {
+    fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
+    fastcgi_pass {{ php.fastcgi_pass }};
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_intercept_errors off;
+    # fastcgi_read_timeout should match max_execution_time in php.ini
+    fastcgi_read_timeout 10m;
+    fastcgi_param SERVER_NAME $host;
+  }
+
+  # Prevent clients from accessing to backup/config/source files
+  location ~* (?:\.(?:bak|conf|dist|fla|in[ci]|log|psd|sh|sql|sw[op])|~)$ {
+      deny all;
+  }
+
+
+  # Handle image styles for Drupal 7+
+  location ~ ^/sites/.*/files/styles/ {
+      try_files $uri @rewrite;
+  }
+
+  # Prevent clients from accessing to backup/config/source files
+  location ~* (?:\.(?:bak|conf|dist|fla|in[ci]|log|psd|sh|sql|sw[op])|~)$ {
+      deny all;
+  }
+
+  ## Regular private file serving (i.e. handled by Drupal).
+  location ^~ /system/files/ {
+      ## For not signaling a 404 in the error log whenever the
+      ## system/files directory is accessed add the line below.
+      ## Note that the 404 is the intended behavior.
+      log_not_found off;
+      access_log off;
+      expires 30d;
+      try_files $uri @rewrite;
+  }
+
+  # Media: images, icons, video, audio, HTC
+  location ~* \.(jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|webp|htc)$ {
+      try_files $uri @rewrite;
+      expires max;
+      log_not_found off;
+  }
+
+  # js and css always loaded
+  location ~* \.(js|css)$ {
+      try_files $uri @rewrite;
+      expires -1;
+      log_not_found off;
+  }
+}
+
+{% if mailpit.enabled %}
+server {
+	server_name {{ mailpit.server_name }};
+
+	location / {
+		proxy_pass      http://localhost:8025;
+		proxy_set_header    Host             $host;
+		proxy_set_header    X-Real-IP        $remote_addr;
+		proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+		proxy_set_header    X-Client-Verify  SUCCESS;
+		proxy_set_header    X-Client-DN      $ssl_client_s_dn;
+		proxy_set_header    X-SSL-Subject    $ssl_client_s_dn;
+		proxy_set_header    X-SSL-Issuer     $ssl_client_i_dn;
+		proxy_read_timeout 1800;
+		proxy_connect_timeout 1800;
+		chunked_transfer_encoding on;
+		proxy_set_header X-NginX-Proxy true;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_http_version 1.1;
+		proxy_redirect off;
+		proxy_buffering off;
+	}
+
+  listen [::]:443 ssl ipv6only=on; # managed by Certbot
+  listen 443 ssl; # managed by Certbot
+  ssl_certificate {{ mailpit.ssl_certificate }}; # managed by Certbot
+  ssl_certificate_key {{ mailpit.ssl_certificate_key }}; # managed by Certbot
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+{% endif %}
+
+{% for site_name, site in sites %}
+# {{ site_name }}
+server {
+  {% if not certbot_enabled %}listen 80;{% endif %}
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  large_client_header_buffers 4 32k;
+  server_tokens off;
+
+  server_name {{ site.server_name }};
+
+  root "/frontend-public";
+
+  ssl_certificate           {{ site.ssl_certificate }};
+  ssl_certificate_key       {{ site.ssl_certificate_key }};
+  {% if site.ssl_certificate_chain %}
+  ssl_trusted_certificate   {{ site.ssl_certificate_chain }};
+  {% endif %}
+
+  # Local debug.
+  # ssl_certificate           /certs/cert.crt;
+  # ssl_certificate_key       /certs/cert.key;
+
+  ssl_verify_client         off;
+
+  # Load the Diffie-Hellman parameter.
+  {% if certbot_enabled %}ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;{% endif %}
+
+  ssl_session_cache    shared:SSL:1m;
+  ssl_session_timeout  5m;
+
+  ssl_ciphers  HIGH:!aNULL:!MD5;
+  ssl_prefer_server_ciphers  on;
+
+  port_in_redirect off;
+  client_max_body_size 100M;
+  fastcgi_buffers 32 128k;
+  fastcgi_buffer_size 128k;
+  proxy_buffers 32 256k;
+  proxy_buffer_size 128k;
+  proxy_busy_buffers_size    256k;
+
+  proxy_read_timeout    190;
+  proxy_connect_timeout 3;
+  proxy_redirect        off;
+  proxy_http_version    1.1;
+  proxy_set_header      Host $host;
+  proxy_set_header      Upgrade $http_upgrade;
+  proxy_set_header      Connection $proxy_connection;
+  proxy_set_header      X-Real-IP $remote_addr;
+  proxy_set_header      X-Forwarded-Host $proxy_x_forwarded_host;
+  proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header      X-Forwarded-Proto https;
+  proxy_set_header      X-Forwarded-Ssl on;
+  proxy_set_header      X-Forwarded-Port $proxy_x_forwarded_port;
+  proxy_set_header      Proxy "";
+
+  error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 @errorpage;
+
+  location /nginx {
+    ssi on;
+  }
+
+  {% if ddev %}
+  error_log /dev/stdout info;
+  access_log /var/log/nginx/access.log;
+  include /etc/nginx/monitoring.conf;
+  {% endif %}
+
+  set $lang "de";
+
+  if ($request_uri ~ "^/fr/") {
+    set $lang "fr";
+  }
+
+  if ($request_uri ~ "^/it/") {
+    set $lang "it";
+  }
+
+  if ($request_uri ~ "^/en/") {
+    set $lang "en";
+  }
+
+  location @errorpage {
+    root "{{ error_page_root }}";
+    ssi on;
+    internal;
+    try_files /error.html =404;
+  }
+
+  {% if basic_auth and not site.disable_basic_auth %}
+  auth_basic "Restricted Content";
+  auth_basic_user_file /etc/nginx/user_conf.d/.htpasswd;
+  {% endif %}
+
+  {% if site.redirect_to_non_www %}
+  # Only redirect if www is present
+    if ($host ~* ^www\.(.*)) {
+        set $host_without_www $1;
+        rewrite ^(.*)$ $scheme://$host_without_www$1 permanent;
+    }
+  {% endif %}
+
+  location = / {
+    if ($http_accept_language ~* ^fr) {
+      return 302 https://$host/fr;
+    }
+
+    if ($http_accept_language ~* ^it) {
+      return 302 https://$host/it;
+    }
+
+    if ($http_accept_language ~* ^en) {
+      return 302 https://$host/en;
+    }
+
+    return 302 https://$host/de;
+  }
+
+  {% set proxy_pass_drupal = 'http://' ~ php.server_name ~ ':' ~ php.listen -%}
+  {% set proxy_pass_frontend = 'http://' ~ site.frontend_host ~ ':' ~ site.frontend_port -%}
+  {% set regex_language = languages|join('|') -%}
+  {% set regex_drupal = location_rewrite.drupal|join('|') -%}
+  {% set regex_entity = location_rewrite.canonical_entity_types|join('|') -%}
+  {% set regex_entity_operations = location_rewrite.entity_operations|join('|') -%}
+  {% set regex_block_paths = block.paths|join('|') -%}
+  {% set regex_block_extensions = block.extensions|join('|') -%}
+
+  location @drupal {
+    proxy_intercept_errors off;
+    proxy_pass {{ proxy_pass_drupal }};
+  }
+
+  location @frontend {
+    proxy_intercept_errors on;
+    {% if fallback %}
+      error_page 502 = @drupal;
+    {% endif %}
+    proxy_pass {{ proxy_pass_frontend }};
+  }
+
+  # Unblock specific files which would be blocked due to their file extension.
+  location = /sitemap.xml {
+    try_files false @drupal;
+  }
+
+  location = /robots.txt {
+    try_files false @frontend;
+  }
+
+  # {-% include "templates/spam.conf" %-}
+
+  location ^~ /sites/default/files {
+    auth_basic off;
+    try_files $uri $uri/ @drupal;
+  }
+
+  location ~ ^((\/({{ regex_language }}))?\/graphql) {
+    auth_basic off;
+    allow all; # Allow all to see content
+    try_files "" @drupal;
+  }
+
+  location ~ ^((\/({{ regex_language }}))?\/({{ regex_drupal }})) {
+    try_files ""  @drupal;
+  }
+
+  location ~ ^\/(({{ regex_language }})/)?({{ regex_entity }})/add {
+    try_files "" @drupal;
+  }
+
+  location ~ ^\/(({{ regex_language }})/)?({{ regex_entity }})/\d+/({{ regex_entity_operations }}) {
+    try_files "" @drupal;
+  }
+
+  {% if basic_auth %}
+  # Disable Basic Auth for fonts and mail logo
+  location ^~ /tailwind-fonts.css {
+    auth_basic off;
+    allow all; # Allow all to see content
+    try_files $uri $uri/ @frontend;
+  }
+  location ^~ /fonts/ {
+    auth_basic off;
+    allow all; # Allow all to see content
+    try_files $uri $uri/ @frontend;
+  }
+  location ^~ /logo-de.png {
+    auth_basic off;
+    allow all; # Allow all to see content
+    try_files $uri $uri/ @frontend;
+  }
+  location ^~ /logo-fr.png {
+    auth_basic off;
+    allow all; # Allow all to see content
+    try_files $uri $uri/ @frontend;
+  }
+  location ^~ /logo-it.png {
+    auth_basic off;
+    allow all; # Allow all to see content
+    try_files $uri $uri/ @frontend;
+  }
+  {% endif %}
+
+  location ~ ^((\/({{ regex_language }}))?\/drupal-api) {
+    proxy_intercept_errors off;
+    auth_basic off;
+    proxy_pass {{ proxy_pass_drupal }};
+  }
+
+  location /api {
+    proxy_intercept_errors off;
+    auth_basic off;
+    proxy_pass {{ proxy_pass_frontend }};
+  }
+
+  location /nginx_status {
+    stub_status;
+    access_log off;
+  }
+
+  location /__nuxt {
+    auth_basic off;
+    access_log off;
+    expires 365d;
+    add_header Cache-Control public;
+    try_files $uri $uri/ @frontend;
+  }
+
+  location /_nuxt {
+    expires 365d;
+    auth_basic off;
+    access_log off;
+    try_files $uri $uri/ @frontend;
+  }
+
+  location ~* (favicon|logo-de|logo-fr|logo-it) {
+    expires 7d;
+    add_header Cache-Control public;
+    add_header Vary Accept-Encoding;
+    access_log off;
+    try_files $uri $uri/ @frontend;
+  }
+
+  location ~*  \.(woff|woff2)$ {
+    expires 365d;
+    try_files $uri $uri/ @frontend;
+  }
+
+  location / {
+    try_files $uri $uri/ @frontend;
+  }
+
+}
+
+{% if certbot_enabled %}
+server {
+  listen 80;
+  {% if ipv6 %}
+    listen [::]:80 ipv6only=on;
+  {% endif %}
+  return 301 https://$host$request_uri;
+
+  server_name {{ site.server_name }};
+    return 404;
+}
+{% endif %}
+
+{% endfor %}

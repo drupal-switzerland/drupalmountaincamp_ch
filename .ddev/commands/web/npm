@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## Description: Run npm inside the web container for the nuxt frontend.
+## Usage: npm [flags] [args]
+## Example: "ddev npm install" or "ddev npm update"
+## HostWorkingDir: true
+
+cd /var/www/html/frontend; npm "$@"

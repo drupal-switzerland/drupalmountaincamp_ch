@@ -1,0 +1,18 @@
+uuid: a402fc27-fa81-46a2-8014-cd32e0b2a091
+langcode: de
+status: true
+dependencies:
+  config:
+    - media.type.audio
+id: media.audio.unpublish_on
+field_name: unpublish_on
+entity_type: media
+bundle: audio
+label: 'Depublizieren am/um'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: timestamp

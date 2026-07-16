@@ -1,0 +1,40 @@
+diff --git a/admin_toolbar_tools/admin_toolbar_tools.module b/admin_toolbar_tools/admin_toolbar_tools.module
+index 2107c0d5c3fb207b49f6693a4cf61a9f686e25b7..e44248f27f327f0352c60fdfc544dfdd05891d83 100644
+--- a/admin_toolbar_tools/admin_toolbar_tools.module
++++ b/admin_toolbar_tools/admin_toolbar_tools.module
+@@ -5,9 +5,12 @@
+  * Provides extra menu links for the core drupal toolbar.
+  */
+
++use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Routing\RouteMatchInterface;
+ use Drupal\Core\Url;
++use Drupal\user\Entity\EntityPermissionsRouteProviderWithCheck;
++use Drupal\user\Entity\EntityPermissionsRouteProvider;
+
+ /**
+  * Implements hook_toolbar().
+@@ -97,3 +100,22 @@ function admin_toolbar_tools_entity_delete(EntityInterface $entity) {
+     }
+   }
+ }
++
++/**
++ * Implements hook_entity_type_alter().
++ */
++function admin_toolbar_tools_entity_type_alter(array &$entity_types): void {
++  // These are the only bundle types in Drupal core that use the
++  // EntityPermissionsRouteProviderWithCheck route provider.
++  $bundle_types = array_flip(['comment_type', 'contact_form']);
++  foreach (array_intersect_key($entity_types, $bundle_types) as $bundle) {
++    assert($bundle instanceof ConfigEntityTypeInterface);
++    $route_providers = $bundle->getRouteProviderClasses();
++    if (($route_providers['permissions'] ?? '') !== EntityPermissionsRouteProviderWithCheck::class) {
++      continue;
++    }
++    // Replace the route provider with the faster variant.
++    $route_providers['permissions'] = EntityPermissionsRouteProvider::class;
++    $bundle->setHandlerClass('route_provider', $route_providers);
++  }
++}

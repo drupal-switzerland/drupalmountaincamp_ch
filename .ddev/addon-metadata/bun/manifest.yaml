@@ -1,0 +1,9 @@
+name: bun
+repository: Morgy93/ddev-bun
+version: 1.1.1
+install_date: "2024-08-22T13:25:50+02:00"
+project_files:
+    - commands/web/bun
+    - web-build/Dockerfile.bun
+global_files: []
+removal_actions: []

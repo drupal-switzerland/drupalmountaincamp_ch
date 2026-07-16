@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: SSH into ddev and change the directory to /var/www/html/frontend
+## Usage: f
+## ExecRaw: true
+
+ddev ssh -d /var/www/html/frontend

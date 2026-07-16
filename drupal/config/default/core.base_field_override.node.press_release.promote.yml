@@ -1,0 +1,22 @@
+uuid: 99c1c779-8784-46f9-a8e2-475d6d69748d
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.press_release
+id: node.press_release.promote
+field_name: promote
+entity_type: node
+bundle: press_release
+label: 'Auf der Startseite anzeigen'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: An
+  off_label: Aus
+field_type: boolean

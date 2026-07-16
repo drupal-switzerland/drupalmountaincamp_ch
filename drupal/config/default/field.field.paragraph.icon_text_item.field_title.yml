@@ -1,0 +1,24 @@
+uuid: 28685e74-4ae7-47bf-9e1a-7b95cc2fad27
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - paragraphs.paragraphs_type.icon_text_item
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.icon_text_item.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: icon_text_item
+label: Titel
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

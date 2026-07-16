@@ -1,0 +1,5 @@
+#!/bin/bash
+
+## Description: Display update info of packages to be updated and if they are patched.
+
+./scripts/composer-update-info/composer-update-info.sh

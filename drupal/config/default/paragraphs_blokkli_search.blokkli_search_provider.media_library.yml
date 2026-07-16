@@ -1,0 +1,19 @@
+uuid: 93d6df29-e6f7-49c2-9532-db7ac21a97aa
+langcode: de
+status: true
+dependencies: {  }
+id: media_library
+label: 'Media Library'
+search_plugin_id: search_api_media_library
+search_type: media_library
+description: ''
+weight: 0
+search_plugin_configuration:
+  index_id: blokkli
+  field_mapping:
+    entity_type: entity_type
+    entity_bundle: entity_bundle
+    entity_id: entity_id
+    title: title
+    image_url: thumbnail
+    context: context

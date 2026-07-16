@@ -1,0 +1,25 @@
+fragment video on MediaRemoteVideo {
+  url: fieldMediaOembedVideo
+  thumbnailCustom: fieldThumbnailCustom {
+    ...imageItem
+  }
+  thumbnailOriginal: thumbnail {
+    entity {
+      __typename
+      uri: uriRawField {
+        first {
+          url
+        }
+      }
+    }
+  }
+}
+
+fragment paragraphVideo on ParagraphVideo {
+  title: fieldTitle
+  video: fieldVideo {
+    ...video
+  }
+  videoDescription: fieldVideoDescription
+  source: fieldVideoSource
+}

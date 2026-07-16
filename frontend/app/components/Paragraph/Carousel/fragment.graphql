@@ -1,0 +1,6 @@
+fragment paragraphCarousel on ParagraphCarousel {
+  slides: fieldSlides {
+    ...paragraphTextImage
+  }
+  title: fieldTitle
+}

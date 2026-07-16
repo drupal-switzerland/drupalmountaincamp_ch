@@ -1,0 +1,26 @@
+uuid: 8b0953de-8224-473a-9fff-55b0534977b3
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lead
+    - node.type.press_release
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.press_release.field_lead
+field_name: field_lead
+entity_type: node
+bundle: press_release
+label: Lead
+description: 'Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

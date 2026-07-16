@@ -1,0 +1,28 @@
+uuid: 84ae6cc9-fbf9-4456-9533-8c7d248b5eaa
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_context_description
+    - filter.format.basic_html
+    - paragraphs.paragraphs_type.video
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.video.field_context_description
+field_name: field_context_description
+entity_type: paragraph
+bundle: video
+label: Video-Einleitung
+description: 'Beschreibung des Inhaltes des Videos.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

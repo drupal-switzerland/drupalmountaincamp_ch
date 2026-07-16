@@ -1,0 +1,41 @@
+# This file defines drush configuration that applies to drush commands
+# for the entire application. For site-specific settings, like URI, use
+# ../docroot/sites/[site]/drush.yml
+drush:
+  paths:
+    config:
+      # Load a drush.yml configuration file from the current working directory.
+      - ../docroot/sites/default/local.drush.yml
+      # Allow local global config overrides.
+      - local.drush.yml
+    include:
+      - '${env.home}/.drush'
+      - /usr/share/drush/commands
+
+command:
+  sql:
+    dump:
+      options:
+        extra-dump: '--no-tablespaces'
+        structure-tables-key: common
+
+sql:
+  # List of tables whose *data* is skipped by the 'sql-dump' and 'sql-sync'
+  # commands when the "--structure-tables-key=common" option is provided.
+  # You may add specific tables to the existing array or add a new element.
+  structure-tables:
+    common:
+      - cache
+      - 'cache_*'
+      - history
+      - 'search_*'
+      - 'sessions'
+      - 'watchdog'
+  # List of tables to be omitted entirely from SQL dumps made by the 'sql-dump'
+  # and 'sql-sync' commands when the "--skip-tables-key=common" option is
+  # provided on the command line.  This is useful if your database contains
+  # non-Drupal tables used by some other application or during a migration for
+  # example.  You may add new tables to the existing array or add a new element.
+  #skip-tables:
+  #  common:
+  #    - 'migration_*'

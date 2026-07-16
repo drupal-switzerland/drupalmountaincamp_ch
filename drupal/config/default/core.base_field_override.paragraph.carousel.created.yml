@@ -1,0 +1,18 @@
+uuid: ace0b343-cc75-40da-b726-b82b07fe08fa
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.carousel
+id: paragraph.carousel.created
+field_name: created
+entity_type: paragraph
+bundle: carousel
+label: 'Geschrieben am'
+description: 'Der Zeitpunkt, zu dem der Seitenabschnittstyp erstellt wurde.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

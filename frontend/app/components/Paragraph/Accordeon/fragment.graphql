@@ -1,0 +1,10 @@
+fragment paragraphAccordeon on ParagraphAccordeon {
+  title: fieldTitle
+  paragraphs: fieldContent {
+    ...paragraphsFieldItem
+    props {
+      ...paragraphText
+      ...paragraphImage
+    }
+  }
+}

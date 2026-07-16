@@ -1,0 +1,21 @@
+query paragraphsLibraryItem($uuid: String!, $id: ID!) {
+  byUuid: entityByUuid(uuid: $uuid, entityType: PARAGRAPHS_LIBRARY_ITEM) {
+    ...paragraphsLibraryItemCanonical
+  }
+  byId: entityById(id: $id, entityType: PARAGRAPHS_LIBRARY_ITEM) {
+    ...paragraphsLibraryItemCanonical
+  }
+}
+
+fragment paragraphsLibraryItemCanonical on ParagraphsLibraryItem {
+  libraryItemLabel: label
+  blokkliProps {
+    ...blokkliProps
+  }
+  paragraphs {
+    ...paragraphsFieldItem
+    props {
+      ...paragraph
+    }
+  }
+}

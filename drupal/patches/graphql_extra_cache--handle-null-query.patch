@@ -1,0 +1,15 @@
+--- a/src/Controller/CachedRequestController.php
++++ b/src/Controller/CachedRequestController.php
+@@ -66,6 +66,12 @@
+     // We only care about single operations for now.
+     if (!is_array($operations)) {
+       /** @var \GraphQL\Server\OperationParams $operations */
++
++      // If the query is null (e.g. when using queryId/persisted queries),
++      // fall back to the parent handler which can resolve these.
++      if ($operations->query === NULL) {
++        return parent::handleRequest($graphql_server, $operations);
++      }
+ 
+       // The hash of the query.
+       $queryHash = hash('sha256', $operations->query);

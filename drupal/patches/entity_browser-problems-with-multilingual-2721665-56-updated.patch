@@ -1,0 +1,300 @@
+diff --git a/entity_browser.module b/entity_browser.module
+index 67d956f..745bd8d 100644
+--- a/entity_browser.module
++++ b/entity_browser.module
+@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+ use Drupal\Core\Entity\EntityForm;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Render\Element;
+ use Drupal\Core\Url;
+ use Drupal\file\FileInterface;
+@@ -82,6 +83,7 @@ function entity_browser_form_alter(&$form, FormStateInterface &$form_state) {
+       'options' => [
+         'query' => [
+           'details_id' => \Drupal::request()->query->get('details_id'),
++          'langcode' => \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+         ],
+       ],
+       'disable-refocus' => TRUE,
+diff --git a/js/entity_browser.common.js b/js/entity_browser.common.js
+index 9863321..bf00246 100644
+--- a/js/entity_browser.common.js
++++ b/js/entity_browser.common.js
+@@ -146,4 +146,23 @@
+     }
+   };
+ 
++  // AJAX beforeSubmit callback.
++  var ajaxBeforeSubmitOriginal = Drupal.Ajax.prototype.beforeSubmit;
++  Drupal.Ajax.prototype.beforeSubmit = function (form_values, element, options) {
++    if (this.$form) {
++
++      // If there is a langcode select element on the form, use its value in the
++      // AJAX call.
++      var langcodeSelectElementName = $(this.element).data('entity-browser-langcode-select-element-name');
++      if (langcodeSelectElementName) {
++        var $langcode = this.$form.find('select[name="' + langcodeSelectElementName + '"]');
++        if ($langcode.length) {
++          options.url = options.url.replace(/([?&]langcode=)[^&]+/, '$1' + $langcode.val() + '$2');
++        }
++      }
++    }
++
++    ajaxBeforeSubmitOriginal.call(this, form_values, element, options);
++  };
++
+ }(jQuery, Drupal, drupalSettings));
+diff --git a/src/Controllers/EntityBrowserController.php b/src/Controllers/EntityBrowserController.php
+index f0df5fb..f439ce1 100644
+--- a/src/Controllers/EntityBrowserController.php
++++ b/src/Controllers/EntityBrowserController.php
+@@ -9,6 +9,8 @@ use Drupal\Core\Ajax\OpenDialogCommand;
+ use Drupal\Core\Controller\ControllerBase;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Form\FormState;
++use Drupal\Core\Language\LanguageInterface;
++use Drupal\Core\TypedData\TranslatableInterface;
+ use Drupal\entity_browser\Ajax\ValueUpdatedCommand;
+ use Symfony\Component\HttpFoundation\ParameterBag;
+ use Symfony\Component\HttpFoundation\Request;
+@@ -54,10 +56,45 @@ class EntityBrowserController extends ControllerBase {
+     if (!empty($operation)) {
+       // Build the entity edit form.
+       $form_object = $this->entityTypeManager()->getFormObject($entity->getEntityTypeId(), $operation);
+-      $form_object->setEntity($entity);
+       $form_state = (new FormState())
+         ->setFormObject($form_object)
+         ->disableRedirect();
++
++      // Prepare an entity translation in the parent form language.
++      if ($entity instanceof TranslatableInterface && $entity->isTranslatable()) {
++        $langcode = $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
++        if (is_string($langcode)) {
++          try {
++            if (!$entity->hasTranslation($langcode)) {
++              // Get the selected translation of the entity.
++              $entity_langcode = $entity->language()->getId();
++              $source = $form_state->get(['content_translation', 'source']);
++              $source_langcode = $source ? $source->getId() : $entity_langcode;
++              $entity = $entity->getTranslation($source_langcode);
++              // The entity has no content translation source field if
++              // no entity field is translatable, even if the host is.
++              if ($entity->hasField('content_translation_source')) {
++                // Initialise the translation with source language values.
++                $entity->addTranslation($langcode, $entity->toArray());
++                $translation = $entity->getTranslation($langcode);
++                $manager = \Drupal::service('content_translation.manager');
++                $manager->getTranslationMetadata($translation)
++                  ->setSource($entity->language()->getId());
++              }
++            }
++            $form_state->set('langcode', $langcode);
++          }
++          catch (\InvalidArgumentException $e) {
++            // It could be that the parent form language is inappropriate for
++            // translations. Do not change form langcode in this case. Let it
++            // fallback to the default behavior - edit entity in its original
++            // language.
++          }
++        }
++      }
++
++      $form_object->setEntity($entity);
++
+       // Building the form also submits.
+       $form = $this->formBuilder()->buildForm($form_object, $form_state);
+     }
+diff --git a/src/Form/EntityBrowserForm.php b/src/Form/EntityBrowserForm.php
+index 7273c79..f42dd62 100644
+--- a/src/Form/EntityBrowserForm.php
++++ b/src/Form/EntityBrowserForm.php
+@@ -8,6 +8,8 @@ use Drupal\Core\Form\BaseFormIdInterface;
+ use Drupal\Core\Form\FormBase;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface;
++use Drupal\Core\Language\LanguageInterface;
++use Drupal\Core\Language\LanguageManagerInterface;
+ use Drupal\Core\Messenger\MessengerInterface;
+ use Drupal\entity_browser\DisplayAjaxInterface;
+ use Drupal\entity_browser\EntityBrowserFormInterface;
+@@ -48,6 +50,13 @@ class EntityBrowserForm extends FormBase implements EntityBrowserFormInterface,
+    */
+   protected $renderer;
+ 
++  /**
++   * The language manager service.
++   *
++   * @var \Drupal\Core\Language\LanguageManagerInterface
++   */
++  protected $languageManager;
++
+   /**
+    * Constructs a EntityBrowserForm object.
+    *
+@@ -59,12 +68,15 @@ class EntityBrowserForm extends FormBase implements EntityBrowserFormInterface,
+    *   The renderer service.
+    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+    *   The messenger.
++   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
++   *   The language manager.
+    */
+-  public function __construct(UuidInterface $uuid_generator, KeyValueStoreExpirableInterface $selection_storage, RendererInterface $renderer, MessengerInterface $messenger) {
++  public function __construct(UuidInterface $uuid_generator, KeyValueStoreExpirableInterface $selection_storage, RendererInterface $renderer, MessengerInterface $messenger, LanguageManagerInterface $language_manager) {
+     $this->uuidGenerator = $uuid_generator;
+     $this->selectionStorage = $selection_storage;
+     $this->renderer = $renderer;
+     $this->messenger = $messenger;
++    $this->languageManager = $language_manager;
+   }
+ 
+   /**
+@@ -75,7 +87,8 @@ class EntityBrowserForm extends FormBase implements EntityBrowserFormInterface,
+       $container->get('uuid'),
+       $container->get('entity_browser.selection_storage'),
+       $container->get('renderer'),
+-      $container->get('messenger')
++      $container->get('messenger'),
++      $container->get('language_manager')
+     );
+   }
+ 
+@@ -187,6 +200,12 @@ class EntityBrowserForm extends FormBase implements EntityBrowserFormInterface,
+       $this->renderer->addCacheableDependency($form, $widget->access());
+     }
+ 
++    if (isset($form[$form['#browser_parts']['widget']]['inline_entity_form'])) {
++      $form[$form['#browser_parts']['widget']]['inline_entity_form']['#langcode'] = $this->languageManager
++        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
++        ->getId();
++    }
++
+     $form[$form['#browser_parts']['selection_display']] = $this->entityBrowser
+       ->getSelectionDisplay()
+       ->getForm($form, $form_state);
+diff --git a/src/Plugin/Field/FieldWidget/EntityReferenceBrowserWidget.php b/src/Plugin/Field/FieldWidget/EntityReferenceBrowserWidget.php
+index 13df19e..f775549 100644
+--- a/src/Plugin/Field/FieldWidget/EntityReferenceBrowserWidget.php
++++ b/src/Plugin/Field/FieldWidget/EntityReferenceBrowserWidget.php
+@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
+ use Drupal\Component\Utility\NestedArray;
+ use Drupal\Core\Entity\ContentEntityInterface;
+ use Drupal\Core\Entity\EntityInterface;
++use Drupal\Core\Entity\EntityFormInterface;
+ use Drupal\Core\Field\FieldItemListInterface;
+ use Drupal\Core\Field\WidgetBase;
+ use Drupal\Core\Form\FormStateInterface;
+@@ -412,7 +413,7 @@ class EntityReferenceBrowserWidget extends WidgetBase {
+ 
+     $field_parents = $element['#field_parents'];
+ 
+-    $element['current'] = $this->displayCurrentSelection($details_id, $field_parents, $entities);
++    $element['current'] = $this->displayCurrentSelection($details_id, $field_parents, $entities, $form_state->get('langcode'));
+ 
+     return $element;
+   }
+@@ -524,11 +525,13 @@ class EntityReferenceBrowserWidget extends WidgetBase {
+    *   Field parents.
+    * @param \Drupal\Core\Entity\ContentEntityInterface[] $entities
+    *   Array of referenced entities.
++   * @param string $langcode
++   *   The langcode.
+    *
+    * @return array
+    *   The render array for the current selection.
+    */
+-  protected function displayCurrentSelection($details_id, array $field_parents, array $entities) {
++  protected function displayCurrentSelection($details_id, array $field_parents, array $entities, $langcode = NULL) {
+ 
+     $target_entity_type = $this->fieldDefinition->getFieldStorageDefinition()->getSetting('target_type');
+ 
+@@ -554,7 +557,7 @@ class EntityReferenceBrowserWidget extends WidgetBase {
+       '#attributes' => ['class' => $classes],
+       '#prefix' => '<p>' . $this->getCardinalityMessage($entities) . '</p>',
+       'items' => array_map(
+-        function (ContentEntityInterface $entity, $row_id) use ($field_widget_display, $details_id, $field_parents, $replace_button_access) {
++        function (ContentEntityInterface $entity, $row_id) use ($field_widget_display, $details_id, $field_parents, $replace_button_access, $langcode) {
+           $display = $field_widget_display->view($entity);
+           $edit_button_access = $this->getSetting('field_widget_edit') && $entity->access('update', $this->currentUser);
+           if ($entity->getEntityTypeId() == 'file') {
+@@ -622,12 +625,14 @@ class EntityReferenceBrowserWidget extends WidgetBase {
+                 'options' => [
+                   'query' => [
+                     'details_id' => $details_id,
++                    'langcode' => $langcode,
+                   ],
+                 ],
+               ],
+               '#attributes' => [
+                 'class' => ['edit-button'],
+               ],
++              '#after_build' => [[$this, 'ajaxEditButtonAfterBuild']],
+               '#access' => $edit_button_access,
+             ],
+           ];
+@@ -888,4 +893,36 @@ class EntityReferenceBrowserWidget extends WidgetBase {
+     return FALSE;
+   }
+ 
++  /**
++   * After build callback for the AJAX "Edit" buttons.
++   *
++   * @param array $element
++   *   The form element.
++   * @param \Drupal\Core\Form\FormStateInterface $form_state
++   *   The form state.
++   *
++   * @return array
++   *   The form element.
++   */
++  public function ajaxEditButtonAfterBuild(array $element, FormStateInterface $form_state) {
++    $form_object = $form_state->getFormObject();
++    if ($form_object instanceof EntityFormInterface) {
++      $form = $form_state->getCompleteForm();
++      $langcode_key = $form_object->getEntity()->getEntityType()->getKey('langcode');
++
++      // If there is a langcode select element on the form - pass its name as
++      // data attribute for further use in JS.
++      if ($langcode_key && isset($form[$langcode_key]['widget'])) {
++        $path = array_merge(
++          $form[$langcode_key]['widget']['#field_parents'],
++          [$langcode_key, 0, 'value']
++        );
++        $name = array_shift($path) . '[' . implode('][', $path) . ']';
++        $element['#attributes']['data-entity-browser-langcode-select-element-name'] = $name;
++      }
++    }
++
++    return $element;
++  }
++
+ }
+diff --git a/src/Plugin/Field/FieldWidget/FileBrowserWidget.php b/src/Plugin/Field/FieldWidget/FileBrowserWidget.php
+index 1b02bbf..d4558a5 100644
+--- a/src/Plugin/Field/FieldWidget/FileBrowserWidget.php
++++ b/src/Plugin/Field/FieldWidget/FileBrowserWidget.php
+@@ -147,7 +147,7 @@ class FileBrowserWidget extends EntityReferenceBrowserWidget {
+   /**
+    * {@inheritdoc}
+    */
+-  protected function displayCurrentSelection($details_id, array $field_parents, array $entities) {
++  protected function displayCurrentSelection($details_id, array $field_parents, array $entities, $langcode = NULL) {
+     $field_type = $this->fieldDefinition->getType();
+     $field_settings = $this->fieldDefinition->getSettings();
+     $field_machine_name = $this->fieldDefinition->getName();
+@@ -302,7 +302,13 @@ class FileBrowserWidget extends EntityReferenceBrowserWidget {
+           '#value' => $this->t('Edit'),
+           '#ajax' => [
+             'url' => Url::fromRoute('entity_browser.edit_form', ['entity_type' => $entity->getEntityTypeId(), 'entity' => $entity_id]),
+-            'options' => ['query' => ['details_id' => $details_id]],
++            'options' => [
++              'query' => [
++                'details_id' => $details_id,
++                'langcode' => $langcode,
++              ],
++            ],
++            '#after_build' => [[$this, 'ajaxEditButtonAfterBuild']],
+           ],
+           '#attributes' => [
+             'data-entity-id' => $entity->getEntityTypeId() . ':' . $entity->id(),

@@ -1,0 +1,28 @@
+uuid: 8657cb65-e8d1-4914-b131-dc632bd6556b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date
+    - node.type.press_release
+  module:
+    - datetime
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.press_release.field_date
+field_name: field_date
+entity_type: node
+bundle: press_release
+label: Datum
+description: 'Das offizielle angezeigte Datum der Medienmitteilung.'
+required: true
+translatable: false
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

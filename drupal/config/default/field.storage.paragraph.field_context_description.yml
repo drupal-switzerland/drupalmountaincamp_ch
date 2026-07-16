@@ -1,0 +1,19 @@
+uuid: 3057d74a-f70c-463d-b04a-e792dd01b02d
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+id: paragraph.field_context_description
+field_name: field_context_description
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

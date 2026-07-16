@@ -1,0 +1,18 @@
+uuid: 820be7f5-ae1f-4d01-8f88-60312b7aa14c
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.blokkli_fragment
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: paragraph.blokkli_fragment
+target_entity_type_id: paragraph
+target_bundle: blokkli_fragment
+default_langcode: site_default
+language_alterable: false

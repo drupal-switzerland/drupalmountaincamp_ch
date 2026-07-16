@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="drupal-project">
+    <description>Default PHP CodeSniffer configuration for Drupal project.</description>
+    <rule ref="vendor/drupal/coder/coder_sniffer/Drupal/ruleset.xml"/>
+    <!-- https://www.drupal.org/drupalorg/docs/drupal-ci/using-coderphpcs-in-drupalci -->
+    <arg name="extensions" value="php,inc,module,install,info,test,profile,theme"/>
+
+    <!-- Speed up coding standards checking by running multiple processes in parallel. -->
+    <arg name="parallel" value="4"/>
+
+    <!-- Exceptions which keep us sane. -->
+    <rule ref="Drupal.Files.LineLength.TooLong"><severity>0</severity></rule>
+    <rule ref="Drupal.Arrays.Array.LongLineDeclaration"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.FunctionComment.Missing"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.FileComment.Missing"><severity>0</severity></rule>
+    <rule ref="Drupal.Classes.FullyQualifiedNamespace.UseStatementMissing"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.ClassComment.Missing"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.FunctionComment.MissingReturnType"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.InlineComment.InvalidEndChar"><severity>0</severity></rule>
+    <rule ref="Drupal.Arrays.Array.LongLineDeclaration"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.VariableComment.Missing"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.DataTypeNamespace.DataTypeNamespace"><severity>0</severity></rule>
+    <rule ref="Drupal.Classes.UseGlobalClass.RedundantUseStatement"><severity>0</severity></rule>
+    <rule ref="Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.FunctionComment.MissingParamComment"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.Deprecated.IncorrectTextLayout"><severity>0</severity></rule>
+    <rule ref="Drupal.Commenting.Deprecated.DeprecatedMissingSeeTag"><severity>0</severity></rule>
+
+    <file>docroot/modules/custom</file>
+    <file>docroot/themes/custom</file>
+
+    <exclude-pattern>*/behat</exclude-pattern>
+    <exclude-pattern>*/node_modules</exclude-pattern>
+    <exclude-pattern>*/vendor</exclude-pattern>
+
+</ruleset>

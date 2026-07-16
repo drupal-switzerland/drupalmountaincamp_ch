@@ -1,0 +1,20 @@
+uuid: 2b330950-a512-4641-8617-66b01ac743db
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.blokkli_node
+id: comment.blokkli_node.name
+field_name: name
+entity_type: comment
+bundle: blokkli_node
+label: Name
+description: "The comment author's name."
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+default_value_callback: ''
+settings: {  }
+field_type: string

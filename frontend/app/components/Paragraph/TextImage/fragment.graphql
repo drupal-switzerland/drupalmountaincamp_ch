@@ -1,0 +1,9 @@
+fragment paragraphTextImage on ParagraphTextImage {
+  bundle: entityBundle
+  uuid
+  image: fieldImage {
+    ...mediaImage
+  }
+  title: fieldTitle
+  text: fieldText
+}

@@ -1,0 +1,26 @@
+uuid: a717ce28-3d3a-422f-8dce-c3c4466b5208
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_name
+    - paragraphs.paragraphs_type.quote
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: paragraph.quote.field_name
+field_name: field_name
+entity_type: paragraph
+bundle: quote
+label: Name
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 'Martha Muster'
+default_value_callback: ''
+settings: {  }
+field_type: string

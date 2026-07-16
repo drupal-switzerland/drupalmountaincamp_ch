@@ -1,0 +1,25 @@
+From 53ef71fadf8f11386b396423d32cdcfa261f6a81 Mon Sep 17 00:00:00 2001
+From: Trent Crawford <trent.crawford@liip.ch>
+Date: Wed, 13 Sep 2023 15:43:33 +0200
+Subject: [PATCH] #3371959: Avoid calling str_starts_with unless  is a string.
+
+---
+ .../modules/path_alias/src/PathProcessor/AliasPathProcessor.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php b/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php
+index e9e572ca5c..e2129048eb 100644
+--- a/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php
++++ b/core/modules/path_alias/src/PathProcessor/AliasPathProcessor.php
+@@ -51,7 +51,7 @@ public function processOutbound($path, &$options = [], Request $request = NULL,
+       // also, to protect against this problem in arbitrary path processors,
+       // but it is duplicated here to protect any other URL generation code
+       // that might call this method separately.
+-      if (str_starts_with($path, '//')) {
++      if (is_string($path) && str_starts_with($path, '//')) {
+         $path = '/' . ltrim($path, '/');
+       }
+     }
+--
+2.42.0
+

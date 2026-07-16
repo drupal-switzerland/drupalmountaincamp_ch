@@ -1,0 +1,18 @@
+uuid: 15b3ab9f-0a5f-4efe-8ff7-a96e2b0b726e
+langcode: de
+status: true
+dependencies:
+  config:
+    - media.type.video
+id: media.video.unpublish_on
+field_name: unpublish_on
+entity_type: media
+bundle: video
+label: 'Depublizieren am/um'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: timestamp

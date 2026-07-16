@@ -1,0 +1,12 @@
+uuid: 748df660-710b-4a08-adc7-a3d11e7822a5
+langcode: de
+status: true
+dependencies: {  }
+id: inhalt_pattern
+label: 'Inhalt pattern'
+type: node
+pattern: '[node:title] / #[node:nid]'
+selection_criteria:
+  bundles:
+    page: page
+weight: 0

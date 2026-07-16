@@ -1,0 +1,8 @@
+fragment paragraphButton on ParagraphButton {
+  label: fieldLabel
+  link: fieldLink {
+    uri {
+      path
+    }
+  }
+}
