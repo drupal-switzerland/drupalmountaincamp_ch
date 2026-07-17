@@ -30,6 +30,7 @@
     "@formkit/nuxt": "^1.7.2",
     "@iframe-resizer/child": "^5.3.3",
     "@iframe-resizer/vue": "^5.3.3",
+    "@lunarisapp/readability": "^1.1.1",
     "@rokka-io/nuxt": "^1.0.2",
     "@vueuse/core": "^13.0.0",
     "nuxt-easy-texts": "^2.1.2",
