@@ -1331,6 +1331,9 @@ enum ImageStyleId {
   """{blokkli_preview} Blokkli Preview"""
   BLOKKLI_PREVIEW
 
+  """{extra_wide} Extra breit (2070)"""
+  EXTRA_WIDE
+
   """{focal_point} Fokus Punkt"""
   FOCAL_POINT
 

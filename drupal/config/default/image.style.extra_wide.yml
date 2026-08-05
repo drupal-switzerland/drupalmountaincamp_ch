@@ -1,0 +1,15 @@
+uuid: d1c6d7f7-d2bb-4ce3-b83c-d8aeb2853955
+langcode: de
+status: true
+dependencies: {  }
+name: extra_wide
+label: 'Extra breit (2070)'
+effects:
+  8d8d1728-6b8b-461c-b520-b51ddaa80e3b:
+    uuid: 8d8d1728-6b8b-461c-b520-b51ddaa80e3b
+    id: image_scale
+    weight: 1
+    data:
+      width: 2070
+      height: null
+      upscale: false

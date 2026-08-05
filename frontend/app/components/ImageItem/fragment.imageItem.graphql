@@ -1,8 +1,19 @@
 fragment imageItem on FieldItemTypeImage {
   alt
   title
-  # Drupal-generated derivative used when no rokka hash is available.
+  # Drupal-generated derivatives used when no rokka hash is available,
+  # combined into a srcset by ImageItem.
+  large: derivative(style: LARGE) {
+    urlPath
+    width
+    height
+  }
   wide: derivative(style: WIDE) {
+    urlPath
+    width
+    height
+  }
+  extraWide: derivative(style: EXTRA_WIDE) {
     urlPath
     width
     height
