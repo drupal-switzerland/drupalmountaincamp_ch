@@ -59,3 +59,18 @@ ENV HOST=0.0.0.0
 ENV NITRO_HOST=0.0.0.0
 # Nuxt 4/3 output is in .output
 CMD ["node", ".output/server/index.mjs"]
+
+# Stage 7: Elasticsearch image
+# uselagoon only ships elasticsearch-7, but our composer elasticsearch/elasticsearch
+# client is v9 (required by search_api_elasticsearch_client) and can't talk to a 7.x
+# server. Bake the Lagoon-style single-node config into the official 9.x image.
+FROM docker.elastic.co/elasticsearch/elasticsearch:9.3.8 AS elasticsearch
+RUN { \
+      echo 'discovery.type: single-node'; \
+      echo 'xpack.security.enabled: false'; \
+      echo 'ingest.geoip.downloader.enabled: false'; \
+      # The persistent volume still holds ES7 data which a 9.x node refuses to
+      # start on — use a fresh subdirectory on the same volume.
+      echo 'path.data: /usr/share/elasticsearch/data/es9'; \
+    } >> config/elasticsearch.yml
+ENV ES_JAVA_OPTS="-Xms512m -Xmx512m"

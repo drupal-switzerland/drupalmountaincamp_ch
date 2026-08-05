@@ -20,6 +20,8 @@
     :alt="alt"
     :title="title"
     :loading="loading"
+    :width="wide?.width"
+    :height="wide?.height"
     class="max-w-full"
     :class="imgClass"
   />
@@ -37,6 +39,7 @@ defineOptions({
 const props = withDefaults(
   defineProps<{
     file?: ImageItemFragment['file']
+    wide?: ImageItemFragment['wide']
     alt?: string
     title?: string
     imageStyle?: DefineImageStyleConfig | string
@@ -46,6 +49,7 @@ const props = withDefaults(
   }>(),
   {
     file: undefined,
+    wide: undefined,
     alt: '',
     title: '',
     imageStyle: () => {
@@ -60,6 +64,10 @@ const props = withDefaults(
 const appConfig = useAppConfig()
 
 const localSrc = computed(() => {
+  // Prefer the Drupal image style derivative over the (potentially huge) original.
+  if (props.wide?.urlPath) {
+    return props.wide.urlPath
+  }
   const uri = props.file?.uri
   if (!uri) {
     return ''

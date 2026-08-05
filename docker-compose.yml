@@ -127,7 +127,10 @@ services:
       HOST: 0.0.0.0
 
   elasticsearch:
-    image: uselagoon/elasticsearch-7
+    build:
+      context: .
+      dockerfile: .lagoon/Dockerfile
+      target: elasticsearch
     labels:
       lagoon.type: elasticsearch
     << : *default-user # uses the defined user from top

@@ -17,4 +17,11 @@
       @apply mx-auto w-[1380px];
     }
   }
+
+  /* Vertical rhythm for containers in the page content area only —
+     header, breadcrumb and footer keep their own spacing. */
+  .page-content .container,
+  .page-content .grid-container {
+    @apply my-8;
+  }
 }

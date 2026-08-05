@@ -15,7 +15,7 @@
         <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
       </NuxtPageDependency>
 
-      <div>
+      <div class="page-content">
         <ClientOnly>
           <DrupalMessages v-if="!isEditing" />
         </ClientOnly>

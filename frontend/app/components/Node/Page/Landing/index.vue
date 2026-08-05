@@ -12,8 +12,8 @@
           :image-style="bigGrid"
           class="w-full"
         />
-        <Container>
-          <div class="grid-container absolute bottom-6 md:bottom-12">
+        <Container class="my-0">
+          <div class="grid-container absolute bottom-6 my-0 md:bottom-12">
             <h1
               v-blokkli-editable:title
               class="col-span-4 text-4xl text-white sm:col-span-6 md:col-span-6 md:text-5xl lg:col-span-8 lg:text-7xl xl:text-8xl"

@@ -34,6 +34,10 @@ tasks:
           name: drush cr
           command: drush -y cr
           service: cli
+      - run:
+          name: drush search-api index
+          command: drush -y search-api:index || true
+          service: cli
 
 environments:
   prod:
