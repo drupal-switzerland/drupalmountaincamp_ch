@@ -17,10 +17,13 @@ definePageMeta({
 
 const nuxtRoute = useRoute()
 
-// Get the data.
+// Get the data. Query the front node's alias instead of "/" — Drupal's route
+// resolver answers "/" with a 301 RedirectUrl to the alias (and no entity),
+// while the alias itself resolves to the entity. /home redirects to "/" in
+// middleware/frontpage.global.ts.
 const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
   return await useGraphqlQuery('route', {
-    path: nuxtRoute.path,
+    path: '/home',
   }).then((v) => {
     return v.data
   })
