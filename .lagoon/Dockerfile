@@ -5,7 +5,7 @@ WORKDIR /app/drupal
 RUN composer install --no-dev --optimize-autoloader
 
 # Stage 2: Frontend build
-FROM uselagoon/node-20-builder:latest AS frontend-builder
+FROM uselagoon/node-24-builder:latest AS frontend-builder
 # Install bun
 RUN npm install -g bun@latest
 ENV PATH="/root/.bun/bin:${PATH}"
@@ -51,7 +51,7 @@ ENV WEBROOT=drupal/docroot
 COPY .lagoon/nginx-lagoon.conf /etc/nginx/conf.d/app.conf
 
 # Stage 6: Frontend image (Nuxt SSR)
-FROM uselagoon/node-20:latest AS frontend
+FROM uselagoon/node-24:latest AS frontend
 COPY --from=frontend-builder /app/frontend /app/frontend
 WORKDIR /app/frontend
 ENV NODE_ENV=production
