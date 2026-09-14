@@ -80,6 +80,9 @@ settings:
       quote:
         weight: -10
         enabled: true
+      sponsor_list:
+        weight: 17
+        enabled: true
       static_node_config_pages:
         weight: -7
         enabled: false
@@ -97,8 +100,5 @@ settings:
         enabled: false
       video:
         weight: 16
-        enabled: true
-      sponsor_list:
-        weight: 17
         enabled: true
 field_type: entity_reference_revisions

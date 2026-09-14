@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: A8kP39r7dzwKbIle_YHyuxJSjEDcYibc2BSBwT4VYME
+api_key: amazeeai_api_key
+moderation: false
+amazee_host: 'https://api.amazee.ai'
+host: 'https://api.amazee.ai'
+postgres_host: ''
+postgres_port: 5432
+postgres_default_database: ''
+postgres_username: ''
+postgres_password: amazeeio_ai_database

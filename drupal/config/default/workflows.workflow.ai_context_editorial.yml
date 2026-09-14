@@ -1,0 +1,70 @@
+uuid: 2604e571-18ce-49ab-bd4a-5ec601d35f2b
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_context
+    - content_moderation
+  enforced:
+    module:
+      - ai_context
+_core:
+  default_config_hash: fFJ4XAKF0c1Q0HY2C-fBLAawm5_ZDbzU_V_iOJAfCV8
+id: ai_context_editorial
+label: 'AI Context editorial'
+type: content_moderation
+type_settings:
+  states:
+    archived:
+      label: Archived
+      published: false
+      default_revision: true
+      weight: 1
+    draft:
+      label: Draft
+      published: false
+      default_revision: false
+      weight: -1
+    published:
+      label: Published
+      published: true
+      default_revision: true
+      weight: 0
+  transitions:
+    create_new_draft:
+      label: 'Create new draft'
+      from:
+        - draft
+        - published
+      to: draft
+      weight: 0
+    publish:
+      label: Publish
+      from:
+        - draft
+        - published
+      to: published
+      weight: 1
+    archive:
+      label: Archive
+      from:
+        - draft
+        - published
+      to: archived
+      weight: 2
+    restore_to_draft:
+      label: 'Restore to Draft'
+      from:
+        - archived
+      to: draft
+      weight: 3
+    restore:
+      label: Restore
+      from:
+        - archived
+      to: published
+      weight: 4
+  entity_types:
+    ai_context_item:
+      - ai_context_item
+  default_moderation_state: draft
