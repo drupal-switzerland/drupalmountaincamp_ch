@@ -828,6 +828,13 @@ $config['rokka.settings']['organization_name'] = getenv('ROKKA_ORGANIZATION_NAME
 if (getenv('AMAZEEAI_HOST')) {
   $config['ai_provider_amazeeio.settings']['host'] = getenv('AMAZEEAI_HOST');
 }
+// amazee.ai vector database (PostgreSQL) connection, also config-ignored by the
+// provider. The password is a Key entity reading AMAZEEAI_POSTGRES_PASSWORD.
+foreach (['postgres_host', 'postgres_port', 'postgres_default_database', 'postgres_username'] as $amazeeai_setting) {
+  if (getenv('AMAZEEAI_' . strtoupper($amazeeai_setting))) {
+    $config['ai_provider_amazeeio.settings'][$amazeeai_setting] = getenv('AMAZEEAI_' . strtoupper($amazeeai_setting));
+  }
+}
 
 // Automatically generated include for settings managed by ddev.
 $ddev_settings = dirname(__FILE__) . '/settings.ddev.php';

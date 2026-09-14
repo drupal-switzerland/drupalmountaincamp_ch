@@ -131,6 +131,12 @@ Set the variables per Lagoon environment before deploying:
 ```bash
 lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_API_KEY -V <key> -S runtime
 lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_HOST -V https://<region>.api.amazee.ai -S runtime
+# Vector database (PostgreSQL); the password is read by the Key entity `amazeeio_ai_database`.
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_PASSWORD -V <password> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_HOST -V <host> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_PORT -V 5432 -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_DEFAULT_DATABASE -V <database> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_USERNAME -V <user> -S runtime
 ```
 
 Locally, add the same variables to `.ddev/config.local.yaml` under `web_environment`.
