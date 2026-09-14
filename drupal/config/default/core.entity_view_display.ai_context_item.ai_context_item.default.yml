@@ -1,0 +1,100 @@
+uuid: ad16836f-f41b-4528-9675-32c3e5a96ea5
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_context
+    - options
+    - user
+_core:
+  default_config_hash: W_jbR1f7DdM5nGXyRyG6HQbL13q-AT6MeCf3HEYh8Mw
+id: ai_context_item.ai_context_item.default
+targetEntityType: ai_context_item
+bundle: ai_context_item
+mode: default
+content:
+  content:
+    type: ai_context_markdown
+    label: above
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  description:
+    type: basic_string
+    label: above
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  label:
+    type: string
+    label: hidden
+    weight: 1
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    region: content
+  langcode:
+    type: language
+    label: above
+    weight: 7
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+    region: content
+  parent:
+    type: entity_reference_label
+    label: above
+    weight: 5
+    settings:
+      link: true
+    third_party_settings: {  }
+    region: content
+  purpose:
+    type: basic_string
+    label: above
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  scope:
+    type: ai_context_scope
+    label: above
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  subcontext_type:
+    type: list_default
+    label: above
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  tags:
+    type: entity_reference_label
+    label: above
+    weight: 9
+    settings:
+      link: true
+    third_party_settings: {  }
+    region: content
+  uid:
+    type: author
+    label: above
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  entity_items: true
+  priority: true
+  search_api_excerpt: true
+  status: true

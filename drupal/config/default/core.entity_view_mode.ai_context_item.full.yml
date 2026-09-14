@@ -1,0 +1,13 @@
+uuid: 0dc79b70-f787-47df-aed0-ed539e17d825
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_context
+_core:
+  default_config_hash: BMeyptEqzY9wrNGa-FGiSitKMCLo5XhXiXghc93aTSU
+id: ai_context_item.full
+label: Full
+description: null
+targetEntityType: ai_context_item
+cache: true

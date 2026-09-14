@@ -1,0 +1,21 @@
+_core:
+  default_config_hash: XEBTx2fUwKnjs7WI9IUt2GnKx3WMc2IAqMnc0Ss9ADc
+max_global_items: 3
+max_tokens: 1200
+provider_config:
+  use_default: true
+  provider: ''
+  model: ''
+  config: {  }
+show_overview_page: true
+context_prefix: 'The following site-specific context applies to this task. Use it strictly when relevant; do not override user intent.'
+selection_mode: relevant
+usage_tracking_enabled: false
+usage_max_records: 10000
+usage_max_age: 7776000
+debug_logging: false
+subcontext_enabled: true
+conditional_subcontext_enabled: true
+conditional_max_parents: 3
+default_status: true
+new_revision: true

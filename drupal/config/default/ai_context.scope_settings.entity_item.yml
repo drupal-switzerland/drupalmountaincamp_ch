@@ -1,0 +1,7 @@
+_core:
+  default_config_hash: LJVCK123DIrnFAkEKQl5jZpDkDs_o-GPYc-op4PXSlc
+enabled: true
+entity_item_types:
+  - node
+  - taxonomy_term
+  - media
