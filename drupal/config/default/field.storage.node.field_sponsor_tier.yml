@@ -1,0 +1,48 @@
+uuid: 6baf5077-d798-4536-a884-aee5de6d7b63
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_sponsor_tier
+field_name: field_sponsor_tier
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: diamond
+      label: Diamond
+    -
+      value: platinum
+      label: Platinum
+    -
+      value: gold
+      label: Gold
+    -
+      value: silver
+      label: Silver
+    -
+      value: bronze
+      label: Bronze
+    -
+      value: social
+      label: 'Social Event Sponsor'
+    -
+      value: contribution
+      label: 'Contribution Sponsor'
+    -
+      value: media
+      label: 'Media partner'
+    -
+      value: individual
+      label: 'Individual Sponsor'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,4 @@
+fragment paragraphSponsorList on ParagraphSponsorList {
+  title: fieldTitle
+  year: fieldYear
+}

@@ -1,0 +1,39 @@
+fragment nodeSponsor on NodeSponsor {
+  uuid
+  title
+  year: fieldYear
+  tier: fieldSponsorTier
+  link: fieldLink {
+    uri {
+      path
+    }
+  }
+  logo: fieldImage {
+    ...mediaImage
+  }
+}
+
+# ponytail: one unfiltered query, grouped client-side — a few dozen sponsors
+# per decade; add a year variable if the list ever gets big.
+query sponsorList {
+  entityQuery(
+    entityType: NODE
+    limit: 500
+    filter: {
+      conditions: [
+        { field: "type", value: ["sponsor"] }
+        { field: "status", value: ["1"] }
+      ]
+    }
+    sort: [
+      { field: "field_year", direction: DESC }
+      { field: "title", direction: ASC }
+    ]
+  ) {
+    items {
+      ... on NodeSponsor {
+        ...nodeSponsor
+      }
+    }
+  }
+}

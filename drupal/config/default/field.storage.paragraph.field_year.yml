@@ -1,0 +1,20 @@
+uuid: 0f09bdef-1407-4f5b-bb1b-a09d80d43339
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_year
+field_name: field_year
+entity_type: paragraph
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,21 @@
+uuid: 38cc4ff0-3c65-456e-9869-c55cb79a42f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sponsor_tier
+    - node.type.sponsor
+  module:
+    - options
+id: node.sponsor.field_sponsor_tier
+field_name: field_sponsor_tier
+entity_type: node
+bundle: sponsor
+label: Tier
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

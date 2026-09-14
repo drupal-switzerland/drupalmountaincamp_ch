@@ -1,0 +1,22 @@
+uuid: d650482d-85ba-49d3-b74a-f17c489225e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_teaser
+    - node.type.sponsor
+  module:
+    - text
+id: node.sponsor.field_teaser
+field_name: field_teaser
+entity_type: node
+bundle: sponsor
+label: Description
+description: 'Optional short description of the sponsor.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long
