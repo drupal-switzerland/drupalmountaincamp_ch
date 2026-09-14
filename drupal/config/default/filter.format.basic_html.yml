@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - editor
+    - paragraphs_blokkli_comment
     - pathologic
 _core:
   default_config_hash: mclCbTlJwWJORez4Y1eX2MqA0aGjSMAoJb3TaBABcK8
@@ -11,6 +12,12 @@ name: 'Einfaches HTML'
 format: basic_html
 weight: 0
 filters:
+  blokkli_comment_html:
+    id: blokkli_comment_html
+    provider: paragraphs_blokkli_comment
+    status: false
+    weight: -10
+    settings: {  }
   editor_file_reference:
     id: editor_file_reference
     provider: editor
@@ -35,7 +42,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a id target rel class="ck-anchor" hreflang href data-entity-type data-entity-uuid data-entity-substitution> <br> <p> <h2 id> <h3 id> <h4 id> <cite> <dl> <dt> <dd> <blockquote cite> <ul type> <ol type start> <h5 id> <h6 id> <strong> <em> <code> <sub> <sup> <li>'
+      allowed_html: '<a id target rel class="ck-anchor" hreflang href data-entity-type data-entity-uuid data-entity-substitution> <br> <p> <h2 id> <h3 id> <h4 id> <cite> <dl> <dt> <dd> <blockquote cite> <ul type> <ol type start> <h5 id> <h6 id> <strong> <em> <code> <sub> <sup> <li> <a name>'
       filter_html_help: false
       filter_html_nofollow: false
   filter_html_image_secure:

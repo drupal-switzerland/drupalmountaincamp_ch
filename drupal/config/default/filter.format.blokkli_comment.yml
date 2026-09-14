@@ -1,0 +1,22 @@
+uuid: 5ffc3b06-f4c2-422c-a078-83662267e7c0
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli_comment
+name: 'Blokkli Comment'
+format: blokkli_comment
+weight: 100
+filters:
+  blokkli_comment_html:
+    id: blokkli_comment_html
+    provider: paragraphs_blokkli_comment
+    status: true
+    weight: -10
+    settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
