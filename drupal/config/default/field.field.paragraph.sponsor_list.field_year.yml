@@ -1,0 +1,23 @@
+uuid: 8f1ae843-7151-4bdd-a4a5-7ed9351f0fd3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_year
+    - paragraphs.paragraphs_type.sponsor_list
+id: paragraph.sponsor_list.field_year
+field_name: field_year
+entity_type: paragraph
+bundle: sponsor_list
+label: Year
+description: 'Only show sponsors of this year. Leave empty to show all years.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 2000
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -8,7 +8,8 @@ export default withNuxt([
   {
     settings: {
       tailwindcss: {
-        config: './tailwind.config.ts',
+        // eslint-plugin-tailwindcss >=3.18.1 resolves tailwindcss from this dir; must be absolute.
+        config: new URL('./tailwind.config.ts', import.meta.url).pathname,
       },
     },
   },

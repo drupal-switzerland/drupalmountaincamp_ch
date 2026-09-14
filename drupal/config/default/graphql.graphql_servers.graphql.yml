@@ -10,8 +10,8 @@ schema: core_composable
 caching: true
 batching: true
 disable_introspection: false
-query_depth: null
-query_complexity: null
+query_depth: 0
+query_complexity: 0
 schema_configuration:
   core_composable:
     extensions:
@@ -113,11 +113,14 @@ schema_configuration:
         field_image: field_image
         field_job_title: field_job_title
         field_lead: field_lead
+        field_link: field_link
         field_paragraphs: field_paragraphs
         field_phone_number: field_phone_number
         field_photo: field_photo
+        field_sponsor_tier: field_sponsor_tier
         field_teaser: field_teaser
         field_type: field_type
+        field_year: field_year
         menu_link: menu_link
         nid: nid
         path: path
@@ -156,6 +159,7 @@ schema_configuration:
         field_video: field_video
         field_video_description: field_video_description
         field_video_source: field_video_source
+        field_year: field_year
         parent_field_name: parent_field_name
         parent_id: parent_id
         parent_type: parent_type
@@ -259,6 +263,8 @@ schema_configuration:
           enabled: true
         press_release:
           enabled: true
+        sponsor:
+          enabled: true
       paragraph:
         accordeon:
           enabled: true
@@ -279,6 +285,8 @@ schema_configuration:
         image:
           enabled: true
         quote:
+          enabled: true
+        sponsor_list:
           enabled: true
         teaser:
           enabled: true

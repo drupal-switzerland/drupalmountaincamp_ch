@@ -11,6 +11,7 @@ fragment paragraph on Paragraph {
   ...paragraphIconTextList
   ...paragraphTeaser
   ...paragraphTeaserList
+  ...paragraphSponsorList
   ...paragraphButton
   ...paragraphVideo
   ...paragraphIframe

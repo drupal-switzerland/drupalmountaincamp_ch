@@ -1,0 +1,36 @@
+uuid: dbca29f7-e6b5-45d0-afd6-97fbc880920c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.sponsor_list.field_title
+    - field.field.paragraph.sponsor_list.field_year
+    - paragraphs.paragraphs_type.sponsor_list
+id: paragraph.sponsor_list.default
+targetEntityType: paragraph
+bundle: sponsor_list
+mode: default
+content:
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_year:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

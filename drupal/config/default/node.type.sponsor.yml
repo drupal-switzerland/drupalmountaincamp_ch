@@ -1,0 +1,11 @@
+uuid: 4470e7ea-097a-4c5f-8a7d-a561327a79a2
+langcode: en
+status: true
+dependencies: {  }
+name: Sponsor
+type: sponsor
+description: 'A sponsor or partner of a camp. Shown by the "Sponsor list" page section; has no page of its own.'
+help: null
+new_revision: true
+preview_mode: 0
+display_submitted: false

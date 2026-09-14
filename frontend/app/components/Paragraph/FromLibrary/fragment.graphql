@@ -12,6 +12,7 @@ fragment paragraphFromLibrary on ParagraphFromLibrary {
         ...paragraphIconTextList
         ...paragraphImage
         ...paragraphTeaserList
+        ...paragraphSponsorList
         ...paragraphText
       }
     }

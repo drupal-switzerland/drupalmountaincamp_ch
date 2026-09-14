@@ -47,6 +47,7 @@ settings:
       iframe: iframe
       teaser_list: teaser_list
       video: video
+      sponsor_list: sponsor_list
     negate: 0
     target_bundles_drag_drop:
       accordeon:
@@ -96,5 +97,8 @@ settings:
         enabled: false
       video:
         weight: 16
+        enabled: true
+      sponsor_list:
+        weight: 17
         enabled: true
 field_type: entity_reference_revisions
