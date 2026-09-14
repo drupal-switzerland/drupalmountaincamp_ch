@@ -29,7 +29,7 @@ export default defineNuxtConfig({
     rootId: 'nuxt-root',
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: 'Mountain Camp 2027 — Davos, Switzerland',
+      title: 'Mountain Camp 2027, Davos, Switzerland',
       htmlAttrs: {
         lang: 'en',
       },
@@ -38,7 +38,7 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'Mountain Camp 2027 — the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
+            'Mountain Camp 2027 is the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
         },
       ],
       link: [
