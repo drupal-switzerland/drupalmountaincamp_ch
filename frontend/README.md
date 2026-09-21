@@ -4,7 +4,7 @@
 
 - Move the `frontend/.env.example` file to `frontend/.env` and adapt the
   variables if needed.
-- Install the frontend dependencies `lando npm ci`.
+- Install the frontend dependencies `lando bun install`.
 - Start the frontend using `lando npm run dev`.
 
 ## Start the frontend
@@ -14,7 +14,7 @@ and start it by running:
 
 ```sh
 lando ssh -s frontend
-npm ci # install dependencies if not already done
+bun install # install dependencies if not already done
 npm run dev
 ```
 
