@@ -118,3 +118,25 @@ Run `ddev regenerate-nginx-config` (for DDEV) or `lando regenerate-nginx-config`
 #### Step 3: Restart/Reload nginx
 
 Simply run `ddev restart` (for DDEV) or `lando reload` (for Lando)
+
+## AI modules (drupal/ai + amazee.ai provider)
+
+`drush cim` on deploy enables `ai`, `ai_api_explorer`, `ai_ckeditor`, `ai_context`, `key` and
+`ai_provider_amazeeio`. No secret is committed: the amazee.ai API key is the Key entity
+`amazeeai_api_key`, which reads the `AMAZEEAI_API_KEY` environment variable. The region specific LLM
+endpoint is passed through `AMAZEEAI_HOST` (see `settings.php`); it falls back to the provider default.
+
+Set the variables per Lagoon environment before deploying:
+
+```bash
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_API_KEY -V <key> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_HOST -V https://<region>.api.amazee.ai -S runtime
+# Vector database (PostgreSQL); the password is read by the Key entity `amazeeio_ai_database`.
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_PASSWORD -V <password> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_HOST -V <host> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_PORT -V 5432 -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_DEFAULT_DATABASE -V <database> -S runtime
+lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_USERNAME -V <user> -S runtime
+```
+
+Locally, add the same variables to `.ddev/config.local.yaml` under `web_environment`.
