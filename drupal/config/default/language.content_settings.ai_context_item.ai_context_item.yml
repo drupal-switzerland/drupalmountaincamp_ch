@@ -1,0 +1,19 @@
+uuid: 0dd54951-dd2e-4e84-bff1-b951010925dd
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_context
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+_core:
+  default_config_hash: q9LynYlkgGIq-X66iMEglV_lwSdBMPnDC1RnXuXU3AM
+id: ai_context_item.ai_context_item
+target_entity_type_id: ai_context_item
+target_bundle: ai_context_item
+default_langcode: site_default
+language_alterable: true

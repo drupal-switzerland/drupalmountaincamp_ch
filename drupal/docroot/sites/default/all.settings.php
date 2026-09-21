@@ -29,5 +29,15 @@ if (getenv('LAGOON')) {
     $first_route = 'https://' . trim($routes[0]);
     $config['nuxt_multi_cache.settings']['endpoint'] = $first_route . '/api/multi-cache';
     $config['nuxt_multi_cache.settings']['frontend'] = $first_route;
+
+    // Sitemap links must use the public route. The exported config carries a
+    // local dev value, and cron generates the sitemap from CLI where Drupal
+    // cannot derive the host itself.
+    $config['simple_sitemap.settings']['base_url'] = $first_route;
   }
+
+  // The exported transport points at the local mailpit container, which does
+  // not exist on Lagoon - without this nothing is ever delivered. native://
+  // hands the mail to PHP's configured sendmail, which the cluster relays.
+  $config['symfony_mailer_lite.symfony_mailer_lite_transport.dsn']['configuration']['dsn'] = 'native://default';
 }

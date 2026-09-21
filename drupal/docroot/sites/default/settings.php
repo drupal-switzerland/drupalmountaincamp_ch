@@ -823,6 +823,18 @@ $settings['access_graphql.token'] = getenv('DRUPAL_GRAPHQL_TOKEN');
 $config['rokka.settings']['api_key'] = getenv('ROKKA_API_KEY');
 $config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY');
 $config['rokka.settings']['organization_name'] = getenv('ROKKA_ORGANIZATION_NAME');
+// amazee.ai LLM endpoint (region specific, not committed: the provider
+// config-ignores it). The API key itself is a Key entity reading AMAZEEAI_API_KEY.
+if (getenv('AMAZEEAI_HOST')) {
+  $config['ai_provider_amazeeio.settings']['host'] = getenv('AMAZEEAI_HOST');
+}
+// amazee.ai vector database (PostgreSQL) connection, also config-ignored by the
+// provider. The password is a Key entity reading AMAZEEAI_POSTGRES_PASSWORD.
+foreach (['postgres_host', 'postgres_port', 'postgres_default_database', 'postgres_username'] as $amazeeai_setting) {
+  if (getenv('AMAZEEAI_' . strtoupper($amazeeai_setting))) {
+    $config['ai_provider_amazeeio.settings'][$amazeeai_setting] = getenv('AMAZEEAI_' . strtoupper($amazeeai_setting));
+  }
+}
 
 // Automatically generated include for settings managed by ddev.
 $ddev_settings = dirname(__FILE__) . '/settings.ddev.php';

@@ -1,0 +1,6 @@
+_core:
+  default_config_hash: HwzNkM2PJFQYiY41lMOB527PhUiWzAyngtb1lq95h3I
+enabled: true
+entity_types:
+  - node
+  - taxonomy_term

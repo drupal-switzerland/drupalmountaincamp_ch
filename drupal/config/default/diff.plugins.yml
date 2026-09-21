@@ -1,0 +1,44 @@
+fields:
+  ai_context_item:
+    label:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+    description:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+    purpose:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+    content:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+    uid:
+      type: entity_reference_field_diff_builder
+      settings:
+        show_header: 1
+        compare_entity_reference: 0
+    status:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+    priority:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+    entity_items:
+      type: dynamic_entity_reference_field_diff_builder
+      settings:
+        show_header: 1
+    parent:
+      type: entity_reference_field_diff_builder
+      settings:
+        show_header: 1
+        compare_entity_reference: 0
+    scope:
+      type: ai_context_scope_field_diff_builder
+      settings:
+        show_header: 1
