@@ -51,6 +51,18 @@
     figure.table,
     & > table {
       @apply my-5 max-w-full overflow-x-auto;
+
+      /* Scroll hint: "local" covers hide the "scroll" edge shadows at each end. */
+      background:
+        linear-gradient(to right, theme(colors.white) 30%, transparent) left /
+          theme(spacing.10) 100% no-repeat local,
+        linear-gradient(to left, theme(colors.white) 30%, transparent) right /
+          theme(spacing.10) 100% no-repeat local,
+        linear-gradient(to right, theme(colors.primary.500 / 15%), transparent)
+          left / theme(spacing.3) 100% no-repeat scroll,
+        linear-gradient(to left, theme(colors.primary.500 / 15%), transparent)
+          right / theme(spacing.3) 100% no-repeat scroll;
+      background-color: theme(colors.white);
     }
 
     & > table {
