@@ -25,7 +25,9 @@ settings:
       - subscript
       - superscript
       - removeFormat
+      - drupalInsertImage
       - code
+      - insertTable
       - sourceEditing
       - '|'
   plugins:
@@ -34,6 +36,8 @@ settings:
         - heading2
         - heading3
         - heading4
+    ckeditor5_imageResize:
+      allow_resize: true
     ckeditor5_list:
       properties:
         reversed: false
