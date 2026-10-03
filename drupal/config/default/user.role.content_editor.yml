@@ -8,6 +8,7 @@ dependencies:
   module:
     - admin_toolbar_search
     - comment
+    - content_moderation
     - content_translation
     - contextual
     - environment_indicator
@@ -29,7 +30,6 @@ dependencies:
     - tmgmt
     - toolbar
     - translatable_config_pages
-    - view_unpublished
 _core:
   default_config_hash: e_wG1u7SrGaJbY2-Szgbgl-c8T3kdirU3uTNq2c_QJQ
 id: content_editor

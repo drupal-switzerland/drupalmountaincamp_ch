@@ -24,7 +24,7 @@
         <h2 class="mb-4 text-2xl md:text-4xl">
           {{ title }}
         </h2>
-        <div class="ck-content hyphens-auto" v-html="text" />
+        <div ref="content" class="ck-content hyphens-auto" v-html="text" />
       </div>
     </div>
   </div>
@@ -51,6 +51,14 @@ const imageStyle = defineImageStyle({
 
 const { index, parentType } = defineBlokkli({
   bundle: 'text_image',
+})
+
+const content = ref<HTMLElement | null>(null)
+
+useScrollableTables(content, {
+  breakout: false,
+  enabled: !import.meta.blokkliEditing,
+  content: () => props.text,
 })
 
 const preload = computed(() => index.value === 0 && !parentType.value)

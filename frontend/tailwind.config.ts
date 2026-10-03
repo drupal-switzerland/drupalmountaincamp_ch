@@ -143,6 +143,9 @@ const config: Config = {
     // purge classes away that are only used there.
     './formkit.config.ts',
   ],
+  // CKEditor marks rich text tables with class="table"; the display: table
+  // utility would disable their overflow scrolling.
+  blocklist: ['table'],
   theme: {
     screens: Object.fromEntries(
       Object.entries(SCREENS).map(([key, minWidth]) => {
@@ -166,6 +169,7 @@ const config: Config = {
       current: 'currentColor',
       transparent: 'transparent',
       body: colors.gray['900'],
+      'table-border': '#4B5262',
 
       ...colors,
     },

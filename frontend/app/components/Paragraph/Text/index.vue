@@ -1,6 +1,7 @@
 <template>
   <div v-if="text" class="text-lg lg:text-xl" :class="paragraphClassList">
     <div
+      ref="content"
       v-blokkli-editable:field_text
       class="ck-content hyphens-auto lg:hyphens-none"
       :class="{
@@ -13,7 +14,9 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{ text?: string }>()
+const props = defineProps<{ text?: string }>()
+
+const content = ref<HTMLElement | null>(null)
 
 const { options, parentType } = defineBlokkli({
   bundle: 'text',
@@ -29,6 +32,12 @@ const { options, parentType } = defineBlokkli({
     },
   },
   globalOptions: ['spacing'],
+})
+
+useScrollableTables(content, {
+  breakout: () => !parentType.value,
+  enabled: !import.meta.blokkliEditing,
+  content: () => props.text,
 })
 
 const paragraphClassList = computed(() => {

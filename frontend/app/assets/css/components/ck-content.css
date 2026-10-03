@@ -47,6 +47,53 @@
     ul {
       @apply list-disc;
     }
+
+    figure.table,
+    & > table {
+      @apply my-5 block max-w-full overflow-x-auto;
+
+      /* Scroll hint: "local" covers hide the "scroll" edge shadows at each end. */
+      background:
+        linear-gradient(to right, theme(colors.white) 30%, transparent) left /
+          theme(spacing.10) 100% no-repeat local,
+        linear-gradient(to left, theme(colors.white) 30%, transparent) right /
+          theme(spacing.10) 100% no-repeat local,
+        linear-gradient(to right, theme(colors.primary.500 / 22%), transparent)
+          left / theme(spacing.4) 100% no-repeat scroll,
+        linear-gradient(to left, theme(colors.primary.500 / 22%), transparent)
+          right / theme(spacing.4) 100% no-repeat scroll;
+      background-color: theme(colors.white);
+    }
+
+    /* Set by useScrollableTables; the column is centred, so equal negative
+       margins keep the table centred within the grid container's gutters. */
+    figure.table.is-wide-table,
+    & > table.is-wide-table {
+      --wide-table-width: min(
+        var(--container-wide-table-max-width),
+        var(--wide-table-available-width, 100%)
+      );
+      @apply max-w-none;
+      width: var(--wide-table-width);
+      margin-inline: calc((100% - var(--wide-table-width)) / 2);
+    }
+
+    [data-scrollable-table]:focus-visible {
+      @apply outline outline-2 outline-offset-2 outline-primary-500;
+    }
+
+    table {
+      @apply border-collapse;
+    }
+
+    th,
+    td {
+      @apply whitespace-normal border border-solid border-table-border px-3 py-2 align-top;
+    }
+
+    th {
+      @apply text-left font-bold;
+    }
   }
 
   /* List margin fix for Box paragraph */
