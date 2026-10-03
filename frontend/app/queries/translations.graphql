@@ -4,7 +4,7 @@
 fragment easyTexts on TextsLoader {
   home: getText(key: "home", default: "Home")
   more_information: getText(key: "more_information", default: "Mehr Informationen")
-  scrollableTable: getText(key: "scrollableTable", default: "Scrollable table")
+  scrollableTable: getText(key: "scrollableTable", default: "Scrollbare Tabelle")
   search__ctaButton: getText(key: "ctaButton", context: "search", default: "Suchen")
   search__searchFieldLabel: getText(key: "searchFieldLabel", context: "search", default: "Suchbegriff")
   search__searchFieldPlaceholder: getText(key: "searchFieldPlaceholder", context: "search", default: "Suchbegriff eingeben")
