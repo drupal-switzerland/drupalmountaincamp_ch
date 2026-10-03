@@ -58,10 +58,10 @@
           theme(spacing.10) 100% no-repeat local,
         linear-gradient(to left, theme(colors.white) 30%, transparent) right /
           theme(spacing.10) 100% no-repeat local,
-        linear-gradient(to right, theme(colors.primary.500 / 15%), transparent)
-          left / theme(spacing.3) 100% no-repeat scroll,
-        linear-gradient(to left, theme(colors.primary.500 / 15%), transparent)
-          right / theme(spacing.3) 100% no-repeat scroll;
+        linear-gradient(to right, theme(colors.primary.500 / 22%), transparent)
+          left / theme(spacing.4) 100% no-repeat scroll,
+        linear-gradient(to left, theme(colors.primary.500 / 22%), transparent)
+          right / theme(spacing.4) 100% no-repeat scroll;
       background-color: theme(colors.white);
     }
 
