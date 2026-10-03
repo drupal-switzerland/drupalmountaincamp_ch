@@ -50,7 +50,7 @@
 
     figure.table,
     & > table {
-      @apply my-5 max-w-full overflow-x-auto;
+      @apply my-5 block max-w-full overflow-x-auto;
 
       /* Scroll hint: "local" covers hide the "scroll" edge shadows at each end. */
       background:
@@ -65,8 +65,21 @@
       background-color: theme(colors.white);
     }
 
-    & > table {
-      @apply block;
+    /* Set by useScrollableTables; the column is centred, so equal negative
+       margins keep the table centred within the grid container's gutters. */
+    figure.table.is-wide-table,
+    & > table.is-wide-table {
+      --wide-table-width: min(
+        var(--container-wide-table-max-width),
+        var(--wide-table-available-width, 100%)
+      );
+      @apply max-w-none;
+      width: var(--wide-table-width);
+      margin-inline: calc((100% - var(--wide-table-width)) / 2);
+    }
+
+    [data-scrollable-table]:focus-visible {
+      @apply outline outline-2 outline-offset-2 outline-primary-500;
     }
 
     table {

@@ -2,6 +2,7 @@
   :root {
     --container-max-width: 1380px;
     --container-max-width-bk: calc(1380px * 0.8); /* 80vw coming from blokkli */
+    --container-wide-table-max-width: 1200px;
 
     --grid-gap: theme(spacing.4);
 

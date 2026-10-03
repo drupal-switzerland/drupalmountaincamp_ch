@@ -14,6 +14,7 @@
         {{ title }}
       </h3>
       <div
+        ref="content"
         v-blokkli-editable:field_text
         class="ck-content col-span-7 hyphens-auto lg:hyphens-none"
         v-html="text"
@@ -25,7 +26,7 @@
 <script lang="ts" setup>
 import type { ParagraphIconTextItemFragment } from '#graphql-operations'
 
-defineProps<{
+const props = defineProps<{
   icon: ParagraphIconTextItemFragment['icon']
   text: ParagraphIconTextItemFragment['text']
   title: ParagraphIconTextItemFragment['title']
@@ -33,5 +34,13 @@ defineProps<{
 
 defineBlokkli({
   bundle: 'icon_text_item',
+})
+
+const content = ref<HTMLElement | null>(null)
+
+useScrollableTables(content, {
+  breakout: false,
+  enabled: !import.meta.blokkliEditing,
+  content: () => props.text,
 })
 </script>
