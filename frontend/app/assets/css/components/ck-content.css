@@ -47,6 +47,28 @@
     ul {
       @apply list-disc;
     }
+
+    figure.table,
+    & > table {
+      @apply my-5 max-w-full overflow-x-auto;
+    }
+
+    & > table {
+      @apply block;
+    }
+
+    table {
+      @apply border-collapse;
+    }
+
+    th,
+    td {
+      @apply whitespace-normal border border-solid border-table-border px-3 py-2 align-top;
+    }
+
+    th {
+      @apply text-left font-bold;
+    }
   }
 
   /* List margin fix for Box paragraph */

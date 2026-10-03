@@ -166,6 +166,7 @@ const config: Config = {
       current: 'currentColor',
       transparent: 'transparent',
       body: colors.gray['900'],
+      'table-border': '#4B5262',
 
       ...colors,
     },
