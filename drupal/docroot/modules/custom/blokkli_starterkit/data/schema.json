@@ -332,6 +332,25 @@
         }
       },
       "type": "radios"
+    },
+    "width": {
+      "default": "text",
+      "label": {
+        "en": "Width"
+      },
+      "options": {
+        "text": {
+          "label": {
+            "en": "Text column"
+          }
+        },
+        "wide": {
+          "label": {
+            "en": "Wide"
+          }
+        }
+      },
+      "type": "radios"
     }
   },
   "text_image": {},
