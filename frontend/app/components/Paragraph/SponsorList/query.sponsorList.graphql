@@ -8,8 +8,21 @@ fragment nodeSponsor on NodeSponsor {
       path
     }
   }
-  logo: fieldImage {
-    ...mediaImage
+  # The raw field returns the referenced entity as is, so the logo can be
+  # Image or Icon (SVG) media.
+  logo: fieldImageRawField {
+    first {
+      entity {
+        ... on MediaImage {
+          image: fieldMediaImage {
+            ...imageItem
+          }
+        }
+        ... on MediaIcon {
+          ...mediaIcon
+        }
+      }
+    }
   }
 }
 

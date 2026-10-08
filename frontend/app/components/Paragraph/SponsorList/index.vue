@@ -11,29 +11,21 @@
         <h3 class="mb-6 text-sm uppercase tracking-wide text-gray-500">
           {{ group.label }}
         </h3>
-        <ul class="flex flex-wrap items-center gap-x-12 gap-y-8">
+        <ul class="flex flex-wrap gap-4">
           <li v-for="sponsor in group.sponsors" :key="sponsor.uuid">
-            <a
-              :href="sponsor.link?.uri?.path || undefined"
-              :title="sponsor.title"
-              rel="nofollow noopener"
-              target="_blank"
-              class="block"
-            >
-              <ImageItem
-                v-if="sponsor.logo?.image"
-                v-bind="sponsor.logo.image"
-                :alt="sponsor.title"
-                img-class="max-h-16 w-auto object-contain"
-              />
-              <span v-else class="text-lg font-medium">
-                {{ sponsor.title }}
-              </span>
-            </a>
+            <SponsorTile
+              :sponsor
+              :box="LOGO_BOXES.standard"
+              tile-class="h-[72px] w-[200px]"
+              :described-by="newTabHintId"
+            />
           </li>
         </ul>
       </section>
     </Container>
+    <span :id="newTabHintId" hidden>
+      {{ $texts('newTabHint', 'opens in a new tab') }}
+    </span>
   </div>
 </template>
 
@@ -42,6 +34,7 @@ import type {
   NodeSponsorFragment,
   ParagraphSponsorListFragment,
 } from '#graphql-operations'
+import { LOGO_BOXES } from '~/helpers/sponsors'
 
 const props = defineProps<{
   title?: ParagraphSponsorListFragment['title']
@@ -56,6 +49,8 @@ defineBlokkli({
 })
 
 const isEditing = import.meta.blokkliEditing
+const { $texts } = useEasyTexts()
+const newTabHintId = useId()
 
 // Display order and labels of the field_sponsor_tier allowed values.
 const TIERS: Record<string, string> = {
@@ -67,18 +62,16 @@ const TIERS: Record<string, string> = {
   social: 'Social Event Sponsor',
   contribution: 'Contribution Sponsor',
   media: 'Media partner',
+  hosting: 'Hosting partner',
   individual: 'Individual Sponsor',
 }
 const TIER_ORDER = Object.keys(TIERS)
 
-const { data } = await useAsyncData('sponsor-list', () =>
-  useGraphqlQuery('sponsorList').then((v) => v.data),
-)
+const { sponsors: allSponsors } = await useSponsors()
 
 const groups = computed(() => {
-  const sponsors = (data.value?.entityQuery.items ?? []).filter(
-    (item): item is NodeSponsorFragment =>
-      !!item && 'title' in item && (!props.year || item.year === props.year),
+  const sponsors = allSponsors.value.filter(
+    (item) => !props.year || item.year === props.year,
   )
   const byKey = new Map<string, NodeSponsorFragment[]>()
   for (const s of sponsors) {

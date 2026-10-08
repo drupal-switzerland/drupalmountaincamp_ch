@@ -1,40 +1,68 @@
 <template>
   <footer class="z-10 mt-14">
-    <section aria-labelledby="footer-partners-title" class="bg-primary-50">
+    <div class="bg-primary-50">
       <div class="brand-strip" aria-hidden="true" />
-      <Container
-        class="flex flex-wrap items-end justify-between gap-x-12 gap-y-6 py-7"
-      >
-        <h2 id="footer-partners-title" class="sr-only">
-          {{ $texts('partners.title', 'Partners') }}
-        </h2>
-        <div
-          v-for="group in partnerGroups"
-          :key="group.key"
-          class="flex flex-col gap-3"
+      <Container class="flex flex-col gap-7 py-7">
+        <section
+          :aria-labelledby="sponsorsTitleId"
+          class="flex flex-col gap-4 rounded-xl border-2 border-primary-100 bg-white p-5 md:p-6"
         >
-          <h3 class="label">{{ group.label }}</h3>
-          <ul class="flex flex-wrap gap-4">
-            <li v-for="partner in group.partners" :key="partner.href">
-              <a
-                :href="partner.href"
-                rel="nofollow noopener"
-                target="_blank"
-                :aria-describedby="newTabHintId"
-                class="flex h-[72px] w-[200px] items-center justify-center rounded-xl border-2 border-primary-100 bg-white px-4"
-              >
-                <img
-                  :src="partner.logo"
-                  :alt="partner.name"
-                  v-bind="logoSize(partner.width, partner.height)"
-                  class="object-contain"
+          <div
+            class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2"
+          >
+            <h2 :id="sponsorsTitleId" class="label">
+              {{ $texts('sponsors.label', 'Sponsors 2027') }}
+            </h2>
+            <VuepalLink :to="SPONSORSHIP_PATH" class="link font-bold">
+              {{ $texts('sponsors.cta', 'Become a sponsor') }}
+            </VuepalLink>
+          </div>
+          <div
+            v-for="tier in sponsorTiers"
+            :key="tier.key"
+            class="flex flex-col gap-2"
+          >
+            <h3 class="label text-primary-500">{{ tier.label }}</h3>
+            <ul class="flex flex-wrap gap-4">
+              <li v-for="sponsor in tier.sponsors" :key="sponsor.uuid">
+                <SponsorTile
+                  :sponsor
+                  :box="tier.box"
+                  :tile-class="tier.tileClass"
+                  :described-by="newTabHintId"
                 />
-              </a>
-            </li>
-          </ul>
-        </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section
+          v-if="partnerGroups.length"
+          aria-labelledby="footer-partners-title"
+          class="flex flex-wrap items-end justify-between gap-x-12 gap-y-6"
+        >
+          <h2 id="footer-partners-title" class="sr-only">
+            {{ $texts('partners.title', 'Partners') }}
+          </h2>
+          <div
+            v-for="group in partnerGroups"
+            :key="group.key"
+            class="flex flex-col gap-3"
+          >
+            <h3 class="label">{{ group.label }}</h3>
+            <ul class="flex flex-wrap gap-4">
+              <li v-for="sponsor in group.sponsors" :key="sponsor.uuid">
+                <SponsorTile
+                  :sponsor
+                  :box="LOGO_BOXES.standard"
+                  :tile-class="STANDARD_TILE"
+                  :described-by="newTabHintId"
+                />
+              </li>
+            </ul>
+          </div>
+        </section>
       </Container>
-    </section>
+    </div>
     <div class="on-dark bg-primary-500 text-white">
       <Container class="flex flex-col gap-4 py-9">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -67,6 +95,8 @@
 </template>
 
 <script lang="ts" setup>
+import { LOGO_BOXES, SPONSORSHIP_PATH } from '~/helpers/sponsors'
+
 const { $texts } = useEasyTexts()
 const data = await useInitData()
 const footerMenuLinks = data.value.footerMenuLinks
@@ -77,63 +107,46 @@ const newTabHintId = useId()
 const copyright =
   '© Drupal Events Switzerland. Drupal is a registered trademark of Dries Buytaert.'
 
-// Logos get the same visual area whatever their shape, capped to the tile
-// (200x72, 2px border, 16px side padding).
-const LOGO_AREA = 7000
-const LOGO_MAX_WIDTH = 168
-const LOGO_MAX_HEIGHT = 64
+const sponsorsTitleId = useId()
+const { currentByTier } = await useSponsors()
 
-function logoSize(width: number, height: number) {
-  const ratio = width / height
-  let w = Math.sqrt(LOGO_AREA * ratio)
-  let h = w / ratio
-  if (h > LOGO_MAX_HEIGHT) {
-    h = LOGO_MAX_HEIGHT
-    w = h * ratio
-  }
-  if (w > LOGO_MAX_WIDTH) {
-    w = LOGO_MAX_WIDTH
-    h = w / ratio
-  }
-  return { width: Math.round(w), height: Math.round(h) }
-}
+const STANDARD_TILE = 'h-[72px] w-[200px]'
 
-// ponytail: hardcoded like on the current prod site (a static block there) —
-// move to Drupal content/menu if partners start changing per camp.
-// width/height: the logo file's pixel size, used for its aspect ratio.
-const partnerGroups = computed(() => [
-  {
-    key: 'media',
-    label: $texts('partners.media', 'Media partners'),
-    partners: [
-      {
-        name: 'The DropTimes',
-        href: 'https://www.thedroptimes.com/',
-        logo: '/images/logos/droptimes-logo.png',
-        width: 1167,
-        height: 505,
-      },
-      {
-        name: 'The Weekly Drop',
-        href: 'https://www.theweeklydrop.com/',
-        logo: '/images/logos/weeklydrop-logo-mini.png',
-        width: 594,
-        height: 73,
-      },
-    ],
-  },
-  {
-    key: 'hosting',
-    label: $texts('partners.hosting', 'Hosting powered by'),
-    partners: [
-      {
-        name: 'amazee.io',
-        href: 'https://www.amazee.io',
-        logo: '/images/logos/amazeeio.png',
-        width: 66,
-        height: 86,
-      },
-    ],
-  },
-])
+// Platinum, Gold and Silver as one panel; Silver tiles match the partner tiles.
+const sponsorTiers = computed(() =>
+  [
+    {
+      key: 'platinum',
+      label: $texts('sponsors.platinum', 'Platinum'),
+      box: LOGO_BOXES.large,
+      tileClass: 'h-[100px] w-[280px]',
+    },
+    {
+      key: 'gold',
+      label: $texts('sponsors.gold', 'Gold'),
+      box: LOGO_BOXES.medium,
+      tileClass: 'h-[88px] w-[240px]',
+    },
+    {
+      key: 'silver',
+      label: $texts('sponsors.silver', 'Silver'),
+      box: LOGO_BOXES.standard,
+      tileClass: STANDARD_TILE,
+    },
+  ]
+    .map((tier) => ({ ...tier, sponsors: currentByTier.value[tier.key] ?? [] }))
+    .filter((tier) => tier.sponsors.length),
+)
+
+const partnerGroups = computed(() =>
+  [
+    { key: 'media', label: $texts('partners.media', 'Media partners') },
+    { key: 'hosting', label: $texts('partners.hosting', 'Hosting powered by') },
+  ]
+    .map((group) => ({
+      ...group,
+      sponsors: currentByTier.value[group.key] ?? [],
+    }))
+    .filter((group) => group.sponsors.length),
+)
 </script>
