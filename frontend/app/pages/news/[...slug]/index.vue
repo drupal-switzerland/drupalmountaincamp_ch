@@ -28,6 +28,7 @@ const { entity: node } = await useDrupalRoute<NodePressReleaseFragment>(
 )
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
+setPageHasHero(false)
 setLanguageLinksFromRoute(query.value ?? null)
 await renderPageDependencies()
 </script>

@@ -27,9 +27,12 @@ const { data: query } = await useAsyncData('staticPageExample', async () => {
 })
 
 // Handles redirects and metatags.
-const { entity: node } = await useDrupalRoute<NodePageFragment>(query.value ?? null)
+const { entity: node } = await useDrupalRoute<NodePageFragment>(
+  query.value ?? null,
+)
 
 setBreadcrumbLinks()
+setPageHasHero(false)
 setLanguageLinksFromRoute(query.value ?? null)
 await renderPageDependencies()
 </script>

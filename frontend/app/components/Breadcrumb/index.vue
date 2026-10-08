@@ -1,9 +1,16 @@
 <template>
-  <div class="container mb-[30px] h-6 pt-20">
-    <section v-if="links.length" class="relative mobile-only:overflow-hidden">
-      <nav class="breadcrumb" aria-label="breadcrumbs">
+  <div :class="{ 'container mb-[30px] h-6 pt-20': variant !== 'hero' }">
+    <section
+      v-if="links.length || currentTitle"
+      ref="scroller"
+      class="relative mobile-only:overflow-hidden"
+    >
+      <nav
+        class="breadcrumb"
+        :class="{ 'is-hero': variant === 'hero' }"
+        aria-label="breadcrumbs"
+      >
         <ol
-          ref="list"
           itemscope
           itemtype="http://schema.org/BreadcrumbList"
           class="flex items-center whitespace-nowrap"
@@ -22,6 +29,18 @@
             </component>
             <meta itemprop="position" :content="`${index + 2}`" />
           </li>
+          <li
+            v-if="currentTitle"
+            itemprop="itemListElement"
+            itemscope
+            itemtype="http://schema.org/ListItem"
+          >
+            <span itemprop="name" aria-current="page">{{ currentTitle }}</span>
+            <meta
+              itemprop="position"
+              :content="`${linksComputed.length + 2}`"
+            />
+          </li>
         </ol>
       </nav>
     </section>
@@ -32,13 +51,18 @@
 import type { BreadcrumbFragment } from '#graphql-operations'
 import type { Langcode } from '#nuxt-language-negotiation/config'
 import { NuxtLink } from '#components'
+import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
   links: BreadcrumbFragment[]
   language?: Langcode
+  /** "hero": inside the navy page hero, without the layout spacing. */
+  variant?: 'default' | 'hero'
+  /** Drupal's breadcrumb ends before the current page; this adds it. */
+  currentTitle?: string
 }>()
 
-const list = ref<HTMLOListElement | null>(null)
+const scroller = ref<HTMLElement | null>(null)
 
 const linksComputed = computed(() => {
   return props.links.map((link) => {
@@ -52,13 +76,19 @@ const linksComputed = computed(() => {
   })
 })
 
-watch(linksComputed, () => {
+// On narrow screens long trails overflow; keep the end in view. Only the
+// trail scrolls sideways, never the window (scrollIntoView would).
+function scrollToLastItem() {
   nextTick(() => {
-    if (list.value && window.innerWidth < 768) {
-      list.value.querySelector('li:last-child')?.scrollIntoView()
+    const el = scroller.value
+    if (el && window.innerWidth < SCREENS.sm) {
+      el.scrollLeft = el.scrollWidth - el.clientWidth
     }
   })
-})
+}
+
+onMounted(scrollToLastItem)
+watch([linksComputed, () => props.currentTitle], scrollToLastItem)
 </script>
 
 <style lang="postcss">
@@ -74,6 +104,17 @@ watch(linksComputed, () => {
 
   a {
     @apply text-gray-600 hover:text-gray-900;
+  }
+
+  &.is-hero {
+    li,
+    a {
+      @apply text-primary-100;
+    }
+
+    a {
+      @apply underline-offset-4 hover:text-white hover:underline;
+    }
   }
 }
 .breadcrumb-slide-enter-active,

@@ -29,9 +29,13 @@ const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
 })
 
 // Handles redirects and metatags.
-const { entity: node } = await useDrupalRoute<NodePageFragment>(query.value ?? null)
+const { entity: node } = await useDrupalRoute<NodePageFragment>(
+  query.value ?? null,
+)
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
+// NodePage renders the hero band; NodePageLanding (hero image) does not.
+setPageHasHero(!!unref(node) && !unref(node)?.hero)
 setLanguageLinksFromRoute(query.value ?? null)
 await renderPageDependencies()
 </script>

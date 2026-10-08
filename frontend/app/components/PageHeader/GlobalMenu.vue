@@ -1,39 +1,76 @@
 <template>
   <nav
-    class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-10 [&_.router-link-active]:text-primary-400"
+    class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-10"
   >
     <ul
-      class="flex h-full flex-col gap-4 pt-24 text-2xl md:flex-row md:justify-end md:gap-2 md:pt-0 md:text-base md:font-medium"
+      class="flex flex-col pt-4 text-xl font-medium md:h-full md:flex-row md:items-center md:justify-end md:gap-2 md:pt-0 md:text-base"
     >
       <li
-        v-for="(link, i) in menuLinks"
-        :key="`global_${i}`"
-        class="flex items-stretch px-8 md:px-0"
+        v-for="item in items"
+        :key="`global_${item.index}`"
+        class="flex items-stretch border-b border-primary-100 px-outer md:border-0 md:px-0"
       >
         <div
-          v-if="link.subtree.length > 0"
+          v-if="item.link.subtree.length > 0"
           class="min-w-[60px] transition-all duration-250 ease-in-out md:relative"
         >
-          <PageHeaderGlobalMenuLinkGroup :link-index="i" />
+          <PageHeaderGlobalMenuLinkGroup :link-index="item.index" />
         </div>
 
-        <div
+        <VuepalLink
           v-else
-          class="flex h-10 min-w-[60px] items-center hover:text-primary-400 md:h-20 lg:justify-between"
+          :to="item.path"
+          :aria-current="item.isCurrent ? 'page' : undefined"
+          class="flex min-h-14 w-full items-center decoration-primary-400 decoration-[3px] underline-offset-8 hover:text-primary-400 md:min-h-0 md:px-3 md:py-2"
+          :class="{
+            'border-l-4 border-primary-400 pl-3 md:border-l-0 md:underline':
+              item.isActive,
+          }"
         >
-          <VuepalLink
-            :to="link.link?.url?.path"
-            class="flex h-[50px] w-full items-center px-4 pl-2 transition-all duration-250 ease-in-out md:size-auto md:px-3"
-          >
-            {{ link.link.label }}
-          </VuepalLink>
-        </div>
+          {{ item.link.link.label }}
+        </VuepalLink>
+      </li>
+      <li v-if="ticketsLink" class="mt-8 px-outer md:mt-0 md:pl-3 md:pr-0">
+        <VuepalLink
+          :to="ticketsLink.link.url?.path"
+          :aria-current="
+            route.path === ticketsLink.link.url?.path ? 'page' : undefined
+          "
+          class="button is-filled w-full justify-center md:w-auto md:px-6 md:py-2"
+        >
+          {{ ticketsLink.link.label }}
+        </VuepalLink>
       </li>
     </ul>
   </nav>
 </template>
 
 <script lang="ts" setup>
+import { TICKETS_PATH, isActivePath } from '~/helpers/navigation'
+
 const data = await useInitData()
 const menuLinks = data.value.mainMenuLinks
+const route = useRoute()
+
+// Tickets is rendered as the call-to-action button at the end, wherever
+// editors place it in the Drupal menu.
+const ticketsLink = computed(() =>
+  menuLinks.find((link) => link.link.url?.path === TICKETS_PATH),
+)
+
+const items = computed(() =>
+  menuLinks
+    // index: position in the Drupal menu, used by GlobalMenuLinkGroup.
+    .map((link, index) => {
+      const path = link.link.url?.path
+      return {
+        link,
+        index,
+        path,
+        isCurrent: !!path && route.path === path,
+        isActive: isActivePath(route.path, path),
+      }
+    })
+    .filter((item) => item.link !== ticketsLink.value),
+)
 </script>
