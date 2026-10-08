@@ -1,68 +1,75 @@
 <template>
   <footer class="z-10 mt-14">
-    <div class="bg-gray-100 py-8 text-center">
-      <Container>
-        <div class="flex flex-wrap items-end justify-center gap-x-16 gap-y-8">
-          <div>
-            <p class="mb-4 text-sm">Media partners</p>
-            <div class="flex items-center justify-center gap-8">
+    <section aria-labelledby="footer-partners-title" class="bg-primary-50">
+      <div class="brand-strip" aria-hidden="true" />
+      <Container
+        class="flex flex-wrap items-end justify-between gap-x-12 gap-y-6 py-7"
+      >
+        <h2 id="footer-partners-title" class="sr-only">
+          {{ $texts('partners.title', 'Partners') }}
+        </h2>
+        <div
+          v-for="group in partnerGroups"
+          :key="group.key"
+          class="flex flex-col gap-3"
+        >
+          <h3 class="label">{{ group.label }}</h3>
+          <ul class="flex flex-wrap gap-4">
+            <li v-for="partner in group.partners" :key="partner.href">
               <a
-                v-for="partner in mediaPartners"
-                :key="partner.href"
                 :href="partner.href"
                 rel="nofollow noopener"
                 target="_blank"
+                :aria-describedby="newTabHintId"
+                class="flex h-[72px] w-[200px] items-center justify-center rounded-xl border-2 border-primary-100 bg-white px-5 py-3"
               >
-                <img :src="partner.logo" :alt="partner.name" class="h-16" />
+                <img
+                  :src="partner.logo"
+                  :alt="partner.name"
+                  class="max-h-full max-w-full object-contain"
+                />
               </a>
-            </div>
-          </div>
-          <div>
-            <p class="mb-4 text-sm">Hosting powered by</p>
-            <a
-              href="https://www.amazee.io"
-              rel="nofollow noopener"
-              target="_blank"
-            >
-              <img
-                src="/images/logos/amazeeio.png"
-                alt="amazee.io"
-                class="mx-auto h-16"
-              />
-            </a>
-          </div>
+            </li>
+          </ul>
         </div>
       </Container>
-    </div>
-    <div class="bg-primary-500 py-8 text-center text-white">
-      <Container>
-        <p class="text-sm">{{ copyright }}</p>
-        <ul
-          v-if="footerMenuLinks.length"
-          class="mt-6 flex flex-wrap items-center justify-center gap-x-2 text-sm"
-        >
-          <li
-            v-for="(link, i) in footerMenuLinks"
-            :key="`footer_${i}`"
-            class="flex items-center gap-2"
+    </section>
+    <div class="on-dark bg-primary-500 text-white">
+      <Container class="flex flex-col gap-4 py-9">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p class="font-heading text-xl font-bold uppercase tracking-wide">
+            Mountain Camp <span class="text-primary-300">2027</span>
+          </p>
+          <nav
+            v-if="footerMenuLinks.length"
+            :aria-label="$texts('footer.navigation', 'Footer')"
           >
-            <span v-if="i > 0" aria-hidden="true">&ndash;</span>
-            <VuepalLink
-              :to="link.link?.url?.path"
-              class="hover:text-primary-100 hover:underline"
-            >
-              {{ link.link.label }}
-            </VuepalLink>
-          </li>
-        </ul>
+            <ul class="flex flex-wrap gap-x-5 gap-y-1">
+              <li v-for="(link, i) in footerMenuLinks" :key="`footer_${i}`">
+                <VuepalLink
+                  :to="link.link?.url?.path"
+                  class="inline-block py-3 underline-offset-4 hover:underline"
+                >
+                  {{ link.link.label }}
+                </VuepalLink>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <p class="text-sm text-primary-100">{{ copyright }}</p>
       </Container>
     </div>
+    <span :id="newTabHintId" hidden>
+      {{ $texts('newTabHint', 'opens in a new tab') }}
+    </span>
   </footer>
 </template>
 
 <script lang="ts" setup>
+const { $texts } = useEasyTexts()
 const data = await useInitData()
 const footerMenuLinks = data.value.footerMenuLinks
+const newTabHintId = useId()
 
 // Fixed legal line — the Drupal-side easy_texts value still carries the Liip
 // starter default ("@year Liip AG"), so don't source this from translations.
@@ -71,16 +78,33 @@ const copyright =
 
 // ponytail: hardcoded like on the current prod site (a static block there) —
 // move to Drupal content/menu if partners start changing per camp.
-const mediaPartners = [
+const partnerGroups = computed(() => [
   {
-    name: 'The DropTimes',
-    href: 'https://www.thedroptimes.com/',
-    logo: '/images/logos/droptimes-logo.png',
+    key: 'media',
+    label: $texts('partners.media', 'Media partners'),
+    partners: [
+      {
+        name: 'The DropTimes',
+        href: 'https://www.thedroptimes.com/',
+        logo: '/images/logos/droptimes-logo.png',
+      },
+      {
+        name: 'The Weekly Drop',
+        href: 'https://www.theweeklydrop.com/',
+        logo: '/images/logos/weeklydrop-logo-mini.png',
+      },
+    ],
   },
   {
-    name: 'The Weekly Drop',
-    href: 'https://www.theweeklydrop.com/',
-    logo: '/images/logos/weeklydrop-logo-mini.png',
+    key: 'hosting',
+    label: $texts('partners.hosting', 'Hosting powered by'),
+    partners: [
+      {
+        name: 'amazee.io',
+        href: 'https://www.amazee.io',
+        logo: '/images/logos/amazeeio.png',
+      },
+    ],
   },
-]
+])
 </script>

@@ -1,7 +1,15 @@
 <template>
   <BlokkliProvider v-slot="{ entity }" v-bind="blokkliProps" :entity="props">
-    <div class="mt-[-88px]">
-      <div class="gradient-overlay relative my-8 max-h-screen overflow-hidden">
+    <div :class="{ 'mt-[-88px]': !isFront }">
+      <HomeHero
+        v-if="isFront"
+        :title="entity?.title || title"
+        :lead="entity?.lead || lead"
+      />
+      <div
+        v-else
+        class="gradient-overlay relative my-8 max-h-screen overflow-hidden"
+      >
         <MediaImage
           v-if="hero"
           v-blokkli-droppable:field_hero_image
@@ -23,7 +31,7 @@
           </div>
         </Container>
       </div>
-      <div v-if="lead" class="grid-container">
+      <div v-if="lead && !isFront" class="grid-container">
         <div
           class="col-span-4 pb-10 sm:col-span-6 md:col-span-6 md:col-start-2 lg:col-span-8 lg:col-start-3"
         >
@@ -48,6 +56,7 @@ const props = defineProps<{
   uuid: string
   title?: string
   lead?: string
+  isFront?: boolean
   hero?: NodePageFragment['hero']
   paragraphs?: NodePageFragment['paragraphs']
   body?: string
