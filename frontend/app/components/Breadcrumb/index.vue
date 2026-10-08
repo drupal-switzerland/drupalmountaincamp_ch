@@ -2,6 +2,7 @@
   <div :class="{ 'container mb-[30px] h-6 pt-20': variant !== 'hero' }">
     <section
       v-if="links.length || currentTitle"
+      ref="scroller"
       class="relative mobile-only:overflow-hidden"
     >
       <nav
@@ -10,7 +11,6 @@
         aria-label="breadcrumbs"
       >
         <ol
-          ref="list"
           itemscope
           itemtype="http://schema.org/BreadcrumbList"
           class="flex items-center whitespace-nowrap"
@@ -51,6 +51,7 @@
 import type { BreadcrumbFragment } from '#graphql-operations'
 import type { Langcode } from '#nuxt-language-negotiation/config'
 import { NuxtLink } from '#components'
+import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
   links: BreadcrumbFragment[]
@@ -61,7 +62,7 @@ const props = defineProps<{
   currentTitle?: string
 }>()
 
-const list = ref<HTMLOListElement | null>(null)
+const scroller = ref<HTMLElement | null>(null)
 
 const linksComputed = computed(() => {
   return props.links.map((link) => {
@@ -75,13 +76,13 @@ const linksComputed = computed(() => {
   })
 })
 
-// On narrow screens long trails overflow; keep the last item in view.
+// On narrow screens long trails overflow; keep the end in view. Only the
+// trail scrolls sideways, never the window (scrollIntoView would).
 function scrollToLastItem() {
   nextTick(() => {
-    if (list.value && window.innerWidth < 768) {
-      list.value
-        .querySelector('li:last-child')
-        ?.scrollIntoView({ block: 'nearest', inline: 'end' })
+    const el = scroller.value
+    if (el && window.innerWidth < SCREENS.sm) {
+      el.scrollLeft = el.scrollWidth - el.clientWidth
     }
   })
 }

@@ -2,7 +2,9 @@
   <vuepal-link
     v-click-away="clickAway"
     :to="link.link.url?.path"
-    class="flex h-10 w-full cursor-pointer items-center p-2 transition-all duration-250 ease-in-out hover:text-primary-400 md:h-20 lg:justify-between"
+    :aria-current="route.path === link.link.url?.path ? 'page' : undefined"
+    class="flex h-10 w-full cursor-pointer items-center p-2 decoration-primary-400 decoration-[3px] underline-offset-8 transition-all duration-250 ease-in-out hover:text-primary-400 md:h-20 lg:justify-between"
+    :class="{ underline: isGroupActive }"
     @mouseenter="menuHoverOpen"
     @mouseleave="menuHoverClose"
   >
@@ -49,7 +51,13 @@
       >
         <VuepalLink
           :to="subLink.link?.url?.path"
-          class="flex h-[50px] w-full items-center px-4 py-2 pl-2 transition-all duration-250 ease-in-out hover:text-primary-400 md:size-auto md:px-3"
+          :aria-current="
+            route.path === subLink.link?.url?.path ? 'page' : undefined
+          "
+          class="flex h-[50px] w-full items-center px-4 py-2 pl-2 decoration-primary-400 decoration-[3px] underline-offset-8 transition-all duration-250 ease-in-out hover:text-primary-400 md:size-auto md:px-3"
+          :class="{
+            underline: isActivePath(route.path, subLink.link?.url?.path),
+          }"
         >
           {{ subLink.link.label }}
         </VuepalLink>
@@ -59,6 +67,8 @@
 </template>
 
 <script lang="ts" setup>
+import { isActivePath } from '~/helpers/navigation'
+
 const props = defineProps<{
   linkIndex: number
 }>()
@@ -66,6 +76,16 @@ const props = defineProps<{
 const data = await useInitData()
 const menuLinks = data.value.mainMenuLinks
 const link = menuLinks[props.linkIndex]
+const route = useRoute()
+
+// The parent stays marked on its own page and on any of its sub-pages.
+const isGroupActive = computed(
+  () =>
+    isActivePath(route.path, link?.link.url?.path) ||
+    !!link?.subtree.some((sub) =>
+      isActivePath(route.path, sub.link?.url?.path),
+    ),
+)
 
 const { isLessThanMd } = useViewport()
 
