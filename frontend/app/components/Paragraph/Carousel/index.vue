@@ -35,9 +35,11 @@ defineProps<{
   title: ParagraphCarouselFragment['title']
 }>()
 
-const { isEditing } = defineBlokkli({
+const isEditing = import.meta.blokkliEditing
+defineBlokkli({
   bundle: 'carousel',
   propsFieldMapping: {
+    title: { type: 'editable', name: 'field_title' },
     slides: { type: 'field', name: 'field_slides' },
   },
   editor: {

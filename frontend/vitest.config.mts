@@ -1,13 +1,9 @@
 import { defineVitestConfig } from '@nuxt/test-utils/config'
-import path from 'path'
 
 export default defineVitestConfig({
   test: {
     globals: true,
     environment: 'nuxt',
-    alias: {
-      '~': path.resolve(__dirname, './'),
-    },
     include: ['**/__tests__/*.*'],
     coverage: {
       all: true,
