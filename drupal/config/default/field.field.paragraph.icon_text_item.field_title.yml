@@ -16,7 +16,7 @@ entity_type: paragraph
 bundle: icon_text_item
 label: Titel
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''

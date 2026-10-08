@@ -17,7 +17,7 @@ entity_type: paragraph
 bundle: icon_text_item
 label: Icon
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
