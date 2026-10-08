@@ -1,17 +1,16 @@
 <template>
   <p
-    class="m-0 flex min-h-8 flex-wrap items-center justify-center gap-x-2 border-b border-primary-100 bg-primary-50 px-outer py-1 text-center text-sm font-medium text-primary-500"
+    class="m-0 h-8 truncate border-b border-primary-100 bg-primary-50 px-outer text-center text-xs font-medium leading-8 text-primary-500 xs:text-sm"
   >
-    <span>{{ $texts('edition.dates', 'March 2–4, 2027') }}</span>
-    <span aria-hidden="true" class="text-primary-400">·</span>
-    <span>{{
-      $texts('edition.venue', 'Davos Congress Centre, Switzerland')
-    }}</span>
+    {{ $texts('edition.dates', 'March 2–4, 2027') }}
+    <span aria-hidden="true" class="mx-1 text-primary-400">·</span>
+    {{ $texts('edition.venue', 'Davos Congress Centre, Switzerland') }}
   </p>
 </template>
 
 <script lang="ts" setup>
 // Rendered above the sticky header in the page flow, so it scrolls away on its
-// own while the header stays.
+// own while the header stays. One line at a fixed height: if the text wrapped
+// in the fallback font and not in the web font, the page would jump on load.
 const { $texts } = useEasyTexts()
 </script>
