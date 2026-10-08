@@ -95,7 +95,8 @@
 </template>
 
 <script lang="ts" setup>
-import { LOGO_BOXES, SPONSORSHIP_PATH } from '~/helpers/sponsors'
+import type { NodeSponsorFragment } from '#graphql-operations'
+import { LOGO_BOXES, SPONSORSHIP_PATH, SPONSOR_YEAR } from '~/helpers/sponsors'
 
 const { $texts } = useEasyTexts()
 const data = await useInitData()
@@ -138,15 +139,56 @@ const sponsorTiers = computed(() =>
     .filter((tier) => tier.sponsors.length),
 )
 
+function bundledPartner(
+  title: string,
+  href: string,
+  src: string,
+  width: number,
+  height: number,
+): NodeSponsorFragment {
+  return {
+    uuid: href,
+    title,
+    tier: 'media',
+    year: SPONSOR_YEAR,
+    link: { uri: { path: href } },
+    logo: {
+      first: { entity: { image: { wide: { urlPath: src, width, height } } } },
+    },
+  }
+}
+
+// Image uploads to Rokka currently fail, so media partners use bundled logos
+// unless Media partner Sponsor entries exist.
+const BUNDLED_MEDIA_PARTNERS = [
+  bundledPartner(
+    'The DropTimes',
+    'https://www.thedroptimes.com/',
+    '/images/logos/droptimes-logo.png',
+    1167,
+    505,
+  ),
+  bundledPartner(
+    'The Weekly Drop',
+    'https://www.theweeklydrop.com/',
+    '/images/logos/weeklydrop-logo-mini.png',
+    594,
+    73,
+  ),
+]
+
 const partnerGroups = computed(() =>
   [
-    { key: 'media', label: $texts('partners.media', 'Media partners') },
-    { key: 'hosting', label: $texts('partners.hosting', 'Hosting powered by') },
-  ]
-    .map((group) => ({
-      ...group,
-      sponsors: currentByTier.value[group.key] ?? [],
-    }))
-    .filter((group) => group.sponsors.length),
+    {
+      key: 'media',
+      label: $texts('partners.media', 'Media partners'),
+      sponsors: currentByTier.value.media ?? BUNDLED_MEDIA_PARTNERS,
+    },
+    {
+      key: 'hosting',
+      label: $texts('partners.hosting', 'Hosting powered by'),
+      sponsors: currentByTier.value.hosting ?? [],
+    },
+  ].filter((group) => group.sponsors.length),
 )
 </script>
