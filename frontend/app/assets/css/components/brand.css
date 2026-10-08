@@ -32,6 +32,14 @@
       );
     }
 
+    /* Tint fill, keeps the navy-to-sky edge (homepage sponsors card). */
+    &.is-light {
+      --gradient-fill: linear-gradient(
+        theme(colors.brand.tint),
+        theme(colors.brand.tint)
+      );
+    }
+
     &.is-tint {
       --gradient-fill: linear-gradient(
         theme(colors.brand.tint),

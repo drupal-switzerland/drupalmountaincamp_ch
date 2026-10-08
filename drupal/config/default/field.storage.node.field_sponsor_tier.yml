@@ -36,6 +36,9 @@ settings:
       value: media
       label: 'Media partner'
     -
+      value: hosting
+      label: 'Hosting partner'
+    -
       value: individual
       label: 'Individual Sponsor'
   allowed_values_function: ''
