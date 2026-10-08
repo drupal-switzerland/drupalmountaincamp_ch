@@ -17,9 +17,13 @@
       </h2>
       <div
         v-if="image"
-        class="-mx-4 mb-6 border-b-4 border-t-4 border-current md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:max-w-xs md:border-4"
+        class="-mx-4 mb-6 border-y-4 border-current md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:max-w-xs md:border-4"
       >
-        <MediaImage v-bind="image" :image-style="imageStyle" hide-caption />
+        <MediaImage
+          v-bind="image"
+          :image-style="isPortrait ? portraitImageStyle : imageStyle"
+          hide-caption
+        />
       </div>
       <div v-if="teaser" class="overflow-auto text-base" v-html="teaser" />
       <div class="clear-both" />
@@ -30,16 +34,27 @@
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
 
-defineProps<NodePressReleaseTeaserFragment>()
+const props = defineProps<NodePressReleaseTeaserFragment>()
 
-const imageStyle = defineImageStyle({
+const sizes = {
+  xs: 728,
+  sm: 400,
+  md: 320,
+  lg: 320,
+}
+
+const imageStyle = defineImageStyle({ type: 'sizes', sizes })
+
+// Landscape and square images keep their ratio; portrait ones are capped at
+// square so a tall image can't stretch the card.
+const portraitImageStyle = defineImageStyle({
   type: 'sizes',
   aspectRatio: 1,
-  sizes: {
-    xs: 728,
-    sm: 400,
-    md: 320,
-    lg: 320,
-  },
+  sizes,
+})
+
+const isPortrait = computed(() => {
+  const { width, height } = props.image?.image?.wide ?? {}
+  return !!width && !!height && height > width
 })
 </script>
