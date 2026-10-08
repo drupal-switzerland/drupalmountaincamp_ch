@@ -33,7 +33,7 @@
 const route = useRoute()
 const drupalUser = useDrupalUser()
 const language = useCurrentLanguage()
-const breadcrumb = useBreadcrumbLinks()
+const breadcrumb = useDisplayedBreadcrumbLinks()
 const { isLessThanLg } = useViewport()
 
 const isEditing = computed(
@@ -42,7 +42,7 @@ const isEditing = computed(
     drupalUser.value.accessToolbar,
 )
 
-const pageHasHero = usePageHasHero()
+const pageHasHero = useDisplayedPageHasHero()
 const isMainMenuOpen = useMainMenuOpen()
 const showBreadcrumb = computed(
   () => !route.meta.hideBreadcrumb && !pageHasHero.value,

@@ -3,9 +3,9 @@
  * breadcrumb instead of the layout.
  *
  * Every page sets it next to its breadcrumb links, before
- * `renderPageDependencies()`. Both then change together once the new page's
- * data has loaded, so client navigation never shows the layout breadcrumb
- * above a page that has its own (enforced in pages/__tests__).
+ * `renderPageDependencies()` (enforced in pages/__tests__). The layout reads
+ * it through useDisplayedPageHasHero(), so it only changes on screen together
+ * with the page.
  */
 export function usePageHasHero() {
   return useState<boolean>('pageHasHero', () => false)

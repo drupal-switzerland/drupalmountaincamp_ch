@@ -14,7 +14,9 @@
       </div>
     </ClientOnly>
     <NuxtLayout>
-      <NuxtPage :page-key="route.path" />
+      <!-- Function form: the page's own route. The `route` above only updates
+           after a page has resolved, so as a key it never changed. -->
+      <NuxtPage :page-key="(pageRoute) => pageRoute.path" />
     </NuxtLayout>
   </div>
 </template>

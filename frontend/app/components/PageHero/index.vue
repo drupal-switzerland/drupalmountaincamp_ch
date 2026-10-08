@@ -32,7 +32,7 @@ defineSlots<{
 }>()
 
 const { $texts } = useEasyTexts()
-const breadcrumbLinks = useBreadcrumbLinks()
+const breadcrumbLinks = useDisplayedBreadcrumbLinks()
 
 // Some routes (e.g. the news overview) come without a Drupal breadcrumb.
 const breadcrumb = computed<BreadcrumbFragment[]>(() =>
