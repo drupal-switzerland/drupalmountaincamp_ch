@@ -1,5 +1,6 @@
 <template>
   <div>
+    <PageHeaderEventStrip />
     <PageHeader
       @menu:open="menuOpen"
       @menu:close:start="menuCloseStart"
@@ -7,6 +8,7 @@
     />
 
     <div
+      :inert="isMainMenuOpen || undefined"
       :class="{
         'pt-[100px]': (isMenuOpen || !hasMenuFinishedClosing) && isLessThanLg,
       }"
@@ -23,7 +25,7 @@
         <slot />
       </main>
     </div>
-    <PageFooter />
+    <PageFooter :inert="isMainMenuOpen || undefined" />
   </div>
 </template>
 
@@ -40,7 +42,11 @@ const isEditing = computed(
     drupalUser.value.accessToolbar,
 )
 
-const showBreadcrumb = computed(() => !route.meta.hideBreadcrumb)
+const pageHasHero = usePageHasHero()
+const isMainMenuOpen = useMainMenuOpen()
+const showBreadcrumb = computed(
+  () => !route.meta.hideBreadcrumb && !pageHasHero.value,
+)
 
 useHead({
   htmlAttrs: {

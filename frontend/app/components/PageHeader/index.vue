@@ -10,8 +10,9 @@
       'fixed w-full': isGlobalSticky,
       sticky: !isGlobalSticky,
     }"
+    @keydown.esc="closeMenuAndFocusToggle"
   >
-    <div class="page-header-grid container mx-auto grid">
+    <div class="page-header-grid container mx-auto grid max-w-none">
       <div class="grid-area-logo h-7 md:h-20">
         <div
           class="flex h-full items-center pr-1 pt-5 transition-all duration-250 ease-in-out md:pt-0"
@@ -19,20 +20,14 @@
             'sticky top-0': isGlobalSticky,
           }"
         >
-          <nuxt-link
-            :to="{ name: 'home' }"
-            :class="{
-              hidden: isMenuOpen,
-            }"
-            class="flex items-center gap-2"
-          >
+          <nuxt-link :to="{ name: 'home' }" class="flex items-center gap-2">
             <img
               src="/images/icon-mountain.png"
               alt=""
-              class="size-8 md:size-10"
+              class="size-7 xs:size-8 md:size-10"
             />
             <span
-              class="font-heading text-lg font-bold uppercase leading-none tracking-wide text-primary-500 md:text-xl"
+              class="font-heading text-base font-bold uppercase leading-none tracking-wide text-primary-500 xs:text-lg md:text-xl"
             >
               Mountain Camp <span class="text-primary-400">2027</span>
             </span>
@@ -40,11 +35,19 @@
         </div>
       </div>
       <div
-        class="grid-area-hamburger flex items-center justify-between px-4 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
+        class="grid-area-hamburger flex items-center justify-between pl-2 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
       >
+        <VuepalLink
+          v-if="ticketsLink && !isMenuOpen"
+          :to="ticketsLink.link.url?.path"
+          class="button is-filled mr-1 px-4 py-2 text-sm md:hidden"
+        >
+          {{ ticketsLink.link.label }}
+        </VuepalLink>
         <button
+          ref="menuToggle"
           type="button"
-          class="flex items-center gap-3 leading-none md:hidden"
+          class="flex size-11 items-center justify-center gap-3 leading-none md:hidden"
           :aria-label="$texts('menu', 'Menü')"
           :aria-expanded="isMenuOpen"
           aria-controls="global-menu"
@@ -66,12 +69,18 @@
 
 <script setup lang="ts">
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
+import { TICKETS_PATH } from '~/helpers/navigation'
 
 const route = useRoute()
+const data = await useInitData()
+const ticketsLink = computed(() =>
+  data.value.mainMenuLinks.find((link) => link.link.url?.path === TICKETS_PATH),
+)
+const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
 const container = ref<HTMLElement | null>(null)
 const isGlobalSticky = ref(false)
-const isMenuOpen = ref(false)
+const isMenuOpen = useMainMenuOpen()
 const { $texts } = useEasyTexts()
 
 let timeout: number | null = null
@@ -111,6 +120,14 @@ function closeMenu() {
   timeout = window.setTimeout(() => {
     isGlobalSticky.value = false
   }, 250)
+}
+
+function closeMenuAndFocusToggle() {
+  if (!isMenuOpen.value) {
+    return
+  }
+  closeMenu()
+  menuToggle.value?.focus()
 }
 
 function openMenu() {

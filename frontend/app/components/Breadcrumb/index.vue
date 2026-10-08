@@ -1,7 +1,14 @@
 <template>
-  <div class="container mb-[30px] h-6 pt-20">
-    <section v-if="links.length" class="relative mobile-only:overflow-hidden">
-      <nav class="breadcrumb" aria-label="breadcrumbs">
+  <div :class="{ 'container mb-[30px] h-6 pt-20': variant !== 'hero' }">
+    <section
+      v-if="links.length || currentTitle"
+      class="relative mobile-only:overflow-hidden"
+    >
+      <nav
+        class="breadcrumb"
+        :class="{ 'is-hero': variant === 'hero' }"
+        aria-label="breadcrumbs"
+      >
         <ol
           ref="list"
           itemscope
@@ -22,6 +29,18 @@
             </component>
             <meta itemprop="position" :content="`${index + 2}`" />
           </li>
+          <li
+            v-if="currentTitle"
+            itemprop="itemListElement"
+            itemscope
+            itemtype="http://schema.org/ListItem"
+          >
+            <span itemprop="name" aria-current="page">{{ currentTitle }}</span>
+            <meta
+              itemprop="position"
+              :content="`${linksComputed.length + 2}`"
+            />
+          </li>
         </ol>
       </nav>
     </section>
@@ -36,6 +55,10 @@ import { NuxtLink } from '#components'
 const props = defineProps<{
   links: BreadcrumbFragment[]
   language?: Langcode
+  /** "hero": inside the navy page hero, without the layout spacing. */
+  variant?: 'default' | 'hero'
+  /** Drupal's breadcrumb ends before the current page; this adds it. */
+  currentTitle?: string
 }>()
 
 const list = ref<HTMLOListElement | null>(null)
@@ -55,7 +78,9 @@ const linksComputed = computed(() => {
 watch(linksComputed, () => {
   nextTick(() => {
     if (list.value && window.innerWidth < 768) {
-      list.value.querySelector('li:last-child')?.scrollIntoView()
+      list.value
+        .querySelector('li:last-child')
+        ?.scrollIntoView({ block: 'nearest', inline: 'end' })
     }
   })
 })
@@ -74,6 +99,17 @@ watch(linksComputed, () => {
 
   a {
     @apply text-gray-600 hover:text-gray-900;
+  }
+
+  &.is-hero {
+    li,
+    a {
+      @apply text-primary-100;
+    }
+
+    a {
+      @apply underline-offset-4 hover:text-white hover:underline;
+    }
   }
 }
 .breadcrumb-slide-enter-active,
