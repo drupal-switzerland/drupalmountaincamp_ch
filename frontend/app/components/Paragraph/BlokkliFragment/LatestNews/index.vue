@@ -4,7 +4,7 @@
     :aria-labelledby="headingId"
     class="container"
   >
-    <div class="mx-auto flex max-w-3xl flex-col gap-10">
+    <div class="flex flex-col gap-10">
       <div class="flex flex-wrap items-baseline justify-between gap-4">
         <h2 :id="headingId" class="text-3xl lg:text-4xl">
           {{ $texts('latestNews.title', 'News') }}
@@ -13,12 +13,15 @@
           {{ $texts('latestNews.all', 'All news') }}
         </VuepalLink>
       </div>
-      <NodePressReleaseTeaser
-        v-for="pressRelease in pressReleases"
-        :key="pressRelease.uuid"
-        v-bind="pressRelease"
-        heading-tag="h3"
-      />
+      <!-- md:pl-10 offsets the card image, which hangs 40px left of the card. -->
+      <div class="flex max-w-4xl flex-col gap-10 md:pl-10">
+        <NodePressReleaseTeaser
+          v-for="pressRelease in pressReleases"
+          :key="pressRelease.uuid"
+          v-bind="pressRelease"
+          heading-tag="h3"
+        />
+      </div>
     </div>
   </section>
   <p v-else-if="isEditing" class="container text-gray-600">
