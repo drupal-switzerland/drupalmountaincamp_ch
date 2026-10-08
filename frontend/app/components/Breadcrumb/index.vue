@@ -75,7 +75,8 @@ const linksComputed = computed(() => {
   })
 })
 
-watch(linksComputed, () => {
+// On narrow screens long trails overflow; keep the last item in view.
+function scrollToLastItem() {
   nextTick(() => {
     if (list.value && window.innerWidth < 768) {
       list.value
@@ -83,7 +84,10 @@ watch(linksComputed, () => {
         ?.scrollIntoView({ block: 'nearest', inline: 'end' })
     }
   })
-})
+}
+
+onMounted(scrollToLastItem)
+watch([linksComputed, () => props.currentTitle], scrollToLastItem)
 </script>
 
 <style lang="postcss">

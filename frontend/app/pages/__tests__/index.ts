@@ -75,5 +75,10 @@ describe('The Nuxt page component', async () => {
           functionIsCalledAtLeastOnce(content, 'useDrupalRoute'),
       ).toEqual(true)
     })
+    it(`"${filePath}" should call setPageHasHero()`, () => {
+      expect(functionIsCalledAtLeastOnce(content, 'setPageHasHero')).toEqual(
+        true,
+      )
+    })
   })
 })
