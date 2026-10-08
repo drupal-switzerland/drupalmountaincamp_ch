@@ -23,26 +23,13 @@
             {{ titleParts.year }}
           </span>
         </h1>
+        <!-- Rich text so editors can add Button / Button (outline) links. -->
         <div
           v-if="lead"
           v-blokkli-editable:field_lead
-          class="max-w-2xl text-xl md:text-2xl"
+          class="ck-content is-small max-w-2xl text-xl md:text-2xl"
           v-html="lead"
         />
-        <div class="flex flex-wrap gap-3">
-          <VuepalLink
-            :to="EVENT.ticketsPath"
-            class="rounded-full bg-white px-6 py-3 font-bold text-primary-500 transition-colors hover:bg-primary-100"
-          >
-            {{ $texts('hero.tickets', 'Get your ticket') }}
-          </VuepalLink>
-          <VuepalLink
-            :to="EVENT.callForSessionsPath"
-            class="rounded-full border-2 border-white px-6 py-[10px] font-bold text-white transition-colors hover:bg-white hover:text-primary-500"
-          >
-            {{ $texts('hero.proposeTalk', 'Propose a talk') }}
-          </VuepalLink>
-        </div>
       </div>
       <div class="brand-strip" aria-hidden="true" />
     </section>
@@ -53,8 +40,6 @@
 </template>
 
 <script lang="ts" setup>
-import { EVENT } from '~/helpers/event'
-
 const props = defineProps<{
   title?: string
   lead?: string

@@ -33,9 +33,9 @@
       @apply text-link underline hover:text-link-hover;
     }
 
-    /* CKEditor "Button" style. */
+    /* CKEditor "Button" styles; side by side when in one paragraph. */
     a.button {
-      @apply no-underline;
+      @apply mb-2 mr-3 no-underline;
     }
 
     /* CKEditor "Highlight" style: sky only where it passes contrast (large
@@ -78,6 +78,10 @@
 
       a.button.is-filled {
         @apply border-white bg-white text-primary-500 hover:border-primary-100 hover:bg-primary-100 hover:text-primary-500;
+      }
+
+      a.button.is-outline {
+        @apply border-white bg-transparent text-white hover:bg-white hover:text-primary-500;
       }
     }
 
