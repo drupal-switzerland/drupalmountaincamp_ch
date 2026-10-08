@@ -10,12 +10,11 @@
       <p v-if="date" class="font-bold text-primary-500">
         {{ date.formatted }}
       </p>
-      <component
-        :is="headingTag ?? 'h2'"
+      <h2
         class="mb-6 text-2xl font-bold leading-snug text-primary-500 md:text-3xl"
       >
         {{ title }}
-      </component>
+      </h2>
       <div
         v-if="image"
         class="-mx-4 mb-6 border-y-4 border-current md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:max-w-xs md:border-4"
@@ -35,9 +34,7 @@
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
 
-const props = defineProps<
-  NodePressReleaseTeaserFragment & { headingTag?: 'h2' | 'h3' }
->()
+const props = defineProps<NodePressReleaseTeaserFragment>()
 
 const sizes = {
   xs: 728,

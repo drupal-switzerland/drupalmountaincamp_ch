@@ -13,15 +13,11 @@
           {{ $texts('latestNews.all', 'All news') }}
         </VuepalLink>
       </div>
-      <!-- md:pl-10 offsets the card image, which hangs 40px left of the card. -->
-      <div class="flex max-w-4xl flex-col gap-10 md:pl-10">
-        <NodePressReleaseTeaser
-          v-for="pressRelease in pressReleases"
-          :key="pressRelease.uuid"
-          v-bind="pressRelease"
-          heading-tag="h3"
-        />
-      </div>
+      <ul class="grid gap-6 md:grid-cols-3">
+        <li v-for="pressRelease in pressReleases" :key="pressRelease.uuid">
+          <NodePressReleaseCard v-bind="pressRelease" />
+        </li>
+      </ul>
     </div>
   </section>
   <p v-else-if="isEditing" class="container text-gray-600">
