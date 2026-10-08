@@ -9,6 +9,7 @@
         {{ title }}
       </h2>
       <div
+        v-if="text || isEditing"
         ref="content"
         v-blokkli-editable:field_text
         class="ck-content hyphens-auto lg:hyphens-none"

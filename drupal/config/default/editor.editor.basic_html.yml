@@ -73,6 +73,9 @@ settings:
         -
           label: Button
           element: '<a class="button is-filled">'
+        -
+          label: 'Button (outline)'
+          element: '<a class="button is-outline">'
     linkit_extension:
       linkit_enabled: true
       linkit_profile: default

@@ -42,7 +42,6 @@ const props = defineProps<{
 
 const imageStyle = defineImageStyle({
   type: 'sizes',
-  aspectRatio: 4 / 3,
   sizes: {
     sm: 530,
     md: 728,
@@ -50,8 +49,4 @@ const imageStyle = defineImageStyle({
     xl: 1040,
   },
 })
-
-function mapLead(v?: string) {
-  return `<span class="float-left">${props.date?.formatted} –&nbsp;</span> ${v}`
-}
 </script>

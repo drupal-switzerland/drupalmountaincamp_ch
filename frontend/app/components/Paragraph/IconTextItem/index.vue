@@ -7,11 +7,16 @@
       class="brand-card-header on-dark flex flex-col gap-2 px-6 py-5 text-white"
     >
       <p class="label">{{ dayLabel }}</p>
-      <h3 v-blokkli-editable:field_title class="text-2xl">
+      <h3
+        v-if="title || isEditing"
+        v-blokkli-editable:field_title
+        class="text-2xl"
+      >
         {{ title }}
       </h3>
     </div>
     <div
+      v-if="text || isEditing"
       ref="content"
       v-blokkli-editable:field_text
       class="ck-content hyphens-auto px-6 pb-6 pt-5 lg:hyphens-none"
@@ -23,10 +28,15 @@
     v-else-if="display === 'infoCards'"
     class="gradient-border flex flex-col gap-3 rounded-[18px] p-6 md:p-8"
   >
-    <h3 v-blokkli-editable:field_title class="text-2xl">
+    <h3
+      v-if="title || isEditing"
+      v-blokkli-editable:field_title
+      class="text-2xl"
+    >
       {{ title }}
     </h3>
     <div
+      v-if="text || isEditing"
       ref="content"
       v-blokkli-editable:field_text
       class="ck-content hyphens-auto lg:hyphens-none"
@@ -46,10 +56,15 @@
       />
     </div>
     <div class="grid">
-      <h3 v-blokkli-editable:field_title class="col-span-7 mb-2 text-3xl">
+      <h3
+        v-if="title || isEditing"
+        v-blokkli-editable:field_title
+        class="col-span-7 mb-2 text-3xl"
+      >
         {{ title }}
       </h3>
       <div
+        v-if="text || isEditing"
         ref="content"
         v-blokkli-editable:field_text
         class="ck-content col-span-7 hyphens-auto lg:hyphens-none"
@@ -73,6 +88,7 @@ const { index } = defineBlokkli({
 })
 
 const { $texts } = useEasyTexts()
+const isEditing = import.meta.blokkliEditing
 
 const display = inject(
   ICON_TEXT_LIST_DISPLAY,
