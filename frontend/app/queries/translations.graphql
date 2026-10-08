@@ -9,6 +9,8 @@ fragment easyTexts on TextsLoader {
   footer__navigation: getText(key: "navigation", context: "footer", default: "Footer")
   hero__badge: getText(key: "badge", context: "hero", default: "10 years of community")
   iconText__day: getText(key: "day", context: "iconText", default: "Day")
+  latestNews__all: getText(key: "all", context: "latestNews", default: "All news")
+  latestNews__title: getText(key: "title", context: "latestNews", default: "News")
   menu: getText(key: "menu", default: "Menü")
   more_information: getText(key: "more_information", default: "Mehr Informationen")
   newTabHint: getText(key: "newTabHint", default: "opens in a new tab")

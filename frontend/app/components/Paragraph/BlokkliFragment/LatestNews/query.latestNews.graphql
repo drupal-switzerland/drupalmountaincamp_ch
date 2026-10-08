@@ -1,0 +1,19 @@
+query latestNews($limit: Int = 3) {
+  entityQuery(
+    entityType: NODE
+    limit: $limit
+    filter: {
+      conditions: [
+        { field: "type", value: ["press_release"] }
+        { field: "status", value: ["1"] }
+      ]
+    }
+    sort: [{ field: "field_date", direction: DESC }]
+  ) {
+    items {
+      ... on NodePressRelease {
+        ...nodePressReleaseTeaser
+      }
+    }
+  }
+}

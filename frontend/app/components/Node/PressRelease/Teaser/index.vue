@@ -5,16 +5,17 @@
     class="teaser__link group block text-body no-underline"
   >
     <article
-      class="rounded-sm border-4 border-primary-500 p-4 transition-colors duration-500 ease-in-out group-hover:border-error-500 group-focus:border-error-500"
+      class="rounded-sm border-4 border-primary-500 p-4 transition-colors duration-500 ease-in-out group-hover:border-primary-400 group-focus:border-primary-400"
     >
       <p v-if="date" class="font-bold text-primary-500">
         {{ date.formatted }}
       </p>
-      <h2
+      <component
+        :is="headingTag ?? 'h2'"
         class="mb-6 text-2xl font-bold leading-snug text-primary-500 md:text-3xl"
       >
         {{ title }}
-      </h2>
+      </component>
       <div
         v-if="image"
         class="-mx-4 mb-6 border-y-4 border-current md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:max-w-xs md:border-4"
@@ -34,7 +35,9 @@
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
 
-const props = defineProps<NodePressReleaseTeaserFragment>()
+const props = defineProps<
+  NodePressReleaseTeaserFragment & { headingTag?: 'h2' | 'h3' }
+>()
 
 const sizes = {
   xs: 728,
