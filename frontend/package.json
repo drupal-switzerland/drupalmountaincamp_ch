@@ -31,6 +31,7 @@
     "@iframe-resizer/child": "^5.5.9",
     "@iframe-resizer/vue": "^5.5.9",
     "@lunarisapp/readability": "^1.1.1",
+    "@nuxt/fonts": "^0.14.0",
     "@rokka-io/nuxt": "^1.0.2",
     "@vueuse/core": "^14.4.0",
     "nuxt-easy-texts": "^2.2.0",
