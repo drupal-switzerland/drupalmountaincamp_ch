@@ -43,7 +43,11 @@
         </div>
       </div>
       <div>
-        <BlokkliField :list="paragraphs" name="field_paragraphs" />
+        <BlokkliField
+          :list="paragraphs"
+          name="field_paragraphs"
+          :allowed-fragments="PAGE_FRAGMENTS"
+        />
       </div>
     </div>
   </BlokkliProvider>
@@ -51,6 +55,7 @@
 
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
+import { PAGE_FRAGMENTS } from '~/composables/pageFragments'
 
 const props = defineProps<{
   uuid: string
