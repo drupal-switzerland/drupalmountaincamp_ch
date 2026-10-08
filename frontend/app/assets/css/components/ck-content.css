@@ -142,6 +142,57 @@
     th {
       @apply text-left font-bold;
     }
+
+    /* Inline images: filter_align puts align-* on the <img>, or on the
+       <figure class="caption"> filter_caption wraps it in. A table-display
+       figure keeps the caption as wide as the image. */
+    &::after {
+      @apply clear-both;
+      content: '';
+      display: table;
+    }
+
+    img {
+      @apply h-auto max-w-full;
+    }
+
+    figure.caption {
+      @apply my-5 max-w-full;
+      display: table;
+
+      img {
+        @apply block;
+      }
+    }
+
+    figcaption {
+      @apply pt-2 text-sm;
+      display: table-caption;
+      caption-side: bottom;
+    }
+
+    img.align-center,
+    figure.align-center {
+      @apply mx-auto my-5;
+    }
+
+    img.align-center,
+    img.align-left,
+    img.align-right {
+      @apply my-5 block;
+    }
+
+    @screen md {
+      img.align-left,
+      figure.align-left {
+        @apply float-left mb-4 mr-6 mt-1 max-w-[50%];
+      }
+
+      img.align-right,
+      figure.align-right {
+        @apply float-right mb-4 ml-6 mt-1 max-w-[50%];
+      }
+    }
   }
 
   /* List margin fix for Box paragraph */
