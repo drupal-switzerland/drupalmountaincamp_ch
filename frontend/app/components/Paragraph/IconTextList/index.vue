@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-container" :open="isEditing" :class="paragraphClassList">
+  <div class="grid-container" :class="paragraphClassList">
     <div class="col-span-4 sm:col-span-6 md:col-span-8 lg:col-span-12">
       <h2
         v-if="title || isEditing"
@@ -33,9 +33,12 @@ const props = defineProps<{
   paragraphs: ParagraphIconTextListFragment['paragraphs']
 }>()
 
-const { isEditing, options } = defineBlokkli({
+const isEditing = import.meta.blokkliEditing
+const { options } = defineBlokkli({
   bundle: 'icon_text_list',
   propsFieldMapping: {
+    title: { type: 'editable', name: 'field_title' },
+    text: { type: 'editable', name: 'field_text' },
     paragraphs: { type: 'field', name: 'field_content' },
   },
   editor: {

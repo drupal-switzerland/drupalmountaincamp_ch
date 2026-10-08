@@ -1,6 +1,9 @@
 fragment paragraphCarousel on ParagraphCarousel {
   slides: fieldSlides {
-    ...paragraphTextImage
+    ...paragraphsFieldItem
+    props {
+      ...paragraphTextImage
+    }
   }
   title: fieldTitle
 }

@@ -14,7 +14,8 @@ import IframeResizer from '@iframe-resizer/vue/iframe-resizer.vue'
 import '@iframe-resizer/child'
 import type { ParagraphIframeFragment } from '#graphql-operations'
 
-const { isEditing, options } = defineBlokkli({
+const isEditing = import.meta.blokkliEditing
+const { options } = defineBlokkli({
   bundle: 'iframe',
   globalOptions: ['spacing'],
 })

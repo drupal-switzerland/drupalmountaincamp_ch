@@ -1,14 +1,6 @@
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import graphqlMiddlewareConfig from './../../server/graphqlMiddleware.serverOptions'
 import type { H3Event } from 'h3'
-
-vi.mock('#graphql-server-options', () => {
-  return {
-    defineGraphqlServerOptions(v: unknown) {
-      return v
-    },
-  }
-})
 
 describe('The nuxt-graphql-middleware config', () => {
   test('Passes appropriate incoming headers', async () => {

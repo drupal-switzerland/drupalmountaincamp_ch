@@ -64,9 +64,12 @@ defineProps<{
   paragraphs?: ParagraphTeaserListFragment['paragraphs']
 }>()
 
-const { options, isEditing } = defineBlokkli({
+const isEditing = import.meta.blokkliEditing
+const { options } = defineBlokkli({
   bundle: 'teaser_list',
   propsFieldMapping: {
+    // The title is rendered but not editable inline.
+    title: null,
     paragraphs: { type: 'field', name: 'field_paragraphs_teaser' },
   },
   options: {

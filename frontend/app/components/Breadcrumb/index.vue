@@ -64,7 +64,7 @@ watch(linksComputed, () => {
 <style lang="postcss">
 .breadcrumb {
   li {
-    @apply h-6 text-gray-900/60;
+    @apply h-6 text-gray-600;
     &:not(:first-child):before {
       content: '›';
       @apply me-4 ms-4 text-2xl;
@@ -73,7 +73,7 @@ watch(linksComputed, () => {
   }
 
   a {
-    @apply text-gray-900/60 hover:text-gray-700;
+    @apply text-gray-600 hover:text-gray-900;
   }
 }
 .breadcrumb-slide-enter-active,

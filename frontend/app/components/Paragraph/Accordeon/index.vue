@@ -46,9 +46,11 @@ defineProps<{
   alwaysOpen?: boolean
 }>()
 
-const { isEditing, parentType } = defineBlokkli({
+const isEditing = import.meta.blokkliEditing
+const { parentType } = defineBlokkli({
   bundle: 'accordeon',
   propsFieldMapping: {
+    title: { type: 'editable', name: 'field_title' },
     paragraphs: { type: 'field', name: 'field_content' },
   },
   editor: {
