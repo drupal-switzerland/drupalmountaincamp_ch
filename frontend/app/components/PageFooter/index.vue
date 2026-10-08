@@ -21,12 +21,13 @@
                 rel="nofollow noopener"
                 target="_blank"
                 :aria-describedby="newTabHintId"
-                class="flex h-[72px] w-[200px] items-center justify-center rounded-xl border-2 border-primary-100 bg-white px-5 py-3"
+                class="flex h-[72px] w-[200px] items-center justify-center rounded-xl border-2 border-primary-100 bg-white px-4"
               >
                 <img
                   :src="partner.logo"
                   :alt="partner.name"
-                  class="max-h-full max-w-full object-contain"
+                  v-bind="logoSize(partner.width, partner.height)"
+                  class="object-contain"
                 />
               </a>
             </li>
@@ -76,8 +77,30 @@ const newTabHintId = useId()
 const copyright =
   '© Drupal Events Switzerland. Drupal is a registered trademark of Dries Buytaert.'
 
+// Logos get the same visual area whatever their shape, capped to the tile
+// (200x72, 2px border, 16px side padding).
+const LOGO_AREA = 7000
+const LOGO_MAX_WIDTH = 168
+const LOGO_MAX_HEIGHT = 64
+
+function logoSize(width: number, height: number) {
+  const ratio = width / height
+  let w = Math.sqrt(LOGO_AREA * ratio)
+  let h = w / ratio
+  if (h > LOGO_MAX_HEIGHT) {
+    h = LOGO_MAX_HEIGHT
+    w = h * ratio
+  }
+  if (w > LOGO_MAX_WIDTH) {
+    w = LOGO_MAX_WIDTH
+    h = w / ratio
+  }
+  return { width: Math.round(w), height: Math.round(h) }
+}
+
 // ponytail: hardcoded like on the current prod site (a static block there) —
 // move to Drupal content/menu if partners start changing per camp.
+// width/height: the logo file's pixel size, used for its aspect ratio.
 const partnerGroups = computed(() => [
   {
     key: 'media',
@@ -87,11 +110,15 @@ const partnerGroups = computed(() => [
         name: 'The DropTimes',
         href: 'https://www.thedroptimes.com/',
         logo: '/images/logos/droptimes-logo.png',
+        width: 1167,
+        height: 505,
       },
       {
         name: 'The Weekly Drop',
         href: 'https://www.theweeklydrop.com/',
         logo: '/images/logos/weeklydrop-logo-mini.png',
+        width: 594,
+        height: 73,
       },
     ],
   },
@@ -103,6 +130,8 @@ const partnerGroups = computed(() => [
         name: 'amazee.io',
         href: 'https://www.amazee.io',
         logo: '/images/logos/amazeeio.png',
+        width: 66,
+        height: 86,
       },
     ],
   },
