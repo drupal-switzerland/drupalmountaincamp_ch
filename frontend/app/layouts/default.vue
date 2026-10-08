@@ -15,13 +15,13 @@
         <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
       </NuxtPageDependency>
 
-      <div class="page-content">
+      <main id="main-content" class="page-content">
         <ClientOnly>
           <DrupalMessages v-if="!isEditing" />
         </ClientOnly>
 
         <slot />
-      </div>
+      </main>
     </div>
     <PageFooter />
   </div>

@@ -1,6 +1,6 @@
 @layer components {
   .button {
-    @apply inline-flex cursor-pointer gap-1 rounded-full border px-8 py-3 text-base font-bold transition-all duration-250 ease-in-out;
+    @apply inline-flex cursor-pointer gap-1 rounded-full border px-8 py-3 text-base font-bold transition-colors duration-250 ease-in-out motion-reduce:transition-none;
     @apply border-gray-400 bg-white text-primary-500;
     @apply hover:border-primary-400 hover:text-primary-400;
     @apply active:border-primary-600 active:text-primary-600;
