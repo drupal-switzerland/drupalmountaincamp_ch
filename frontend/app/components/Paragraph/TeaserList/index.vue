@@ -56,7 +56,8 @@
 
 <script lang="ts" setup>
 import type { ParagraphTeaserListFragment } from '#graphql-operations'
-import Swiper from 'swiper'
+import type Swiper from 'swiper'
+// Slide layout styles stay static so slides don't shift while the JS loads.
 import 'swiper/css'
 
 defineProps<{
@@ -135,12 +136,20 @@ watch(shouldMountSwiper, function (shouldMount) {
   }
 })
 
-function initSwiper() {
-  if (shouldMountSwiper.value && container.value) {
-    swiperInstance = new Swiper(container.value, {
-      slidesPerView: isMdUpwards.value ? 3 : 2,
-    })
+// Swiper's JS is only loaded when a list is actually shown as a slider.
+async function initSwiper() {
+  if (!shouldMountSwiper.value || !container.value) {
+    return
   }
+  const { default: SwiperClass } = await import('swiper')
+  // The option or viewport may have changed, or the list unmounted, meanwhile.
+  if (!shouldMountSwiper.value || !container.value) {
+    return
+  }
+  swiperInstance?.destroy()
+  swiperInstance = new SwiperClass(container.value, {
+    slidesPerView: isMdUpwards.value ? 3 : 2,
+  })
 }
 
 function prev() {

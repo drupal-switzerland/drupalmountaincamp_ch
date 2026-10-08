@@ -15,7 +15,7 @@
         :list="slides"
         proxy-mode
       >
-        <ParagraphCarouselSlider
+        <LazyParagraphCarouselSlider
           :key="items.map((v) => v.uuid).join('-')"
           :slides="items"
           :class="{
