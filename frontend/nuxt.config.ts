@@ -9,6 +9,8 @@ import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
 
 const ONE_YEAR = 31_536_000
+const ONE_DAY = 60 * 60 * 24
+const ONE_WEEK = ONE_DAY * 7
 const NUXT_REQUEST_HOST = process.env.NUXT_REQUEST_HOST
 
 const LANGCODES = [{ code: 'en', prefix: '' }]
@@ -43,12 +45,6 @@ export default defineNuxtConfig({
             'Mountain Camp 2027 is the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
         },
       ],
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300..900;1,300..900&family=Zilla+Slab:wght@500;600;700&display=swap',
-        },
-      ],
     },
   },
 
@@ -56,6 +52,7 @@ export default defineNuxtConfig({
    * Nuxt.js modules
    */
   modules: [
+    '@nuxt/fonts',
     '@nuxt/test-utils/module',
     '@formkit/nuxt',
     '@nuxtjs/tailwindcss',
@@ -126,6 +123,28 @@ export default defineNuxtConfig({
       url: `https://${NUXT_REQUEST_HOST}`,
       forceHttps: true,
     },
+  },
+
+  // Self-hosted at build time (served from /_fonts with long caching) instead
+  // of a render-blocking Google Fonts stylesheet; only the weights in use.
+  fonts: {
+    defaults: {
+      subsets: ['latin', 'latin-ext'],
+    },
+    families: [
+      {
+        name: 'Source Sans 3',
+        provider: 'google',
+        weights: [400, 600, 700],
+        styles: ['normal', 'italic'],
+      },
+      {
+        name: 'Zilla Slab',
+        provider: 'google',
+        weights: [600, 700],
+        styles: ['normal'],
+      },
+    ],
   },
 
   sourcemap: true,
@@ -214,6 +233,19 @@ export default defineNuxtConfig({
       },
       headers: {
         'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR}`,
+      },
+    },
+    // Self-hosted fonts from @nuxt/fonts; file names contain a content hash.
+    '/_fonts/**': {
+      headers: {
+        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR},immutable`,
+      },
+    },
+    // public/images has no content hash in its file names: short browser cache,
+    // then revalidate in the background.
+    '/images/**': {
+      headers: {
+        'cache-control': `public,max-age=${ONE_DAY},stale-while-revalidate=${ONE_WEEK}`,
       },
     },
   },
