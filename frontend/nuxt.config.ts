@@ -1,12 +1,14 @@
 import { resolve } from 'node:path'
-import { pathPrefix, acceptLanguage } from 'nuxt-language-negotiation/negotiators'
+import {
+  pathPrefix,
+  acceptLanguage,
+} from 'nuxt-language-negotiation/negotiators'
 import blokkliDrupal from '@blokkli/editor/drupal'
 import { runtimeConfig } from './config/runtimeConfig'
 import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
 
 const ONE_YEAR = 31_536_000
-const IS_DEV = process.env.NODE_ENV === 'development'
 const NUXT_REQUEST_HOST = process.env.NUXT_REQUEST_HOST
 
 const LANGCODES = [{ code: 'en', prefix: '' }]
@@ -278,9 +280,12 @@ export default defineNuxtConfig({
     storageDefaults: {
       blockFavorites: ['text'],
     },
-    schemaOptionsPath: IS_DEV
-      ? '../drupal/docroot/modules/custom/blokkli_starterkit/data/schema.json'
-      : undefined,
+    // Generated on every build: Drupal's paragraph form drops any option that
+    // is missing from this file when a paragraph is saved there.
+    schemaOptionsPath: resolve(
+      import.meta.dirname,
+      '../drupal/docroot/modules/custom/blokkli_starterkit/data/schema.json',
+    ),
     defaultLanguage: 'en',
     // Make sure the editor is always rendered in the default language
     // instead of the current page language.

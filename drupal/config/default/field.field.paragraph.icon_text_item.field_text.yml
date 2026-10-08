@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_text
+    - filter.format.basic_html
     - filter.format.plain_text
     - paragraphs.paragraphs_type.icon_text_item
   module:
@@ -24,5 +25,6 @@ default_value: {  }
 default_value_callback: ''
 settings:
   allowed_formats:
+    - basic_html
     - plain_text
 field_type: text_long

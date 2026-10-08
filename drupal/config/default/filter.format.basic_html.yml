@@ -42,7 +42,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a id target rel class="ck-anchor" hreflang href data-entity-type data-entity-uuid data-entity-substitution> <br> <p> <h2 id> <h3 id> <h4 id> <cite> <dl> <dt> <dd> <blockquote cite> <ul type> <ol type start> <h5 id> <h6 id> <strong> <em> <code> <sub> <sup> <li> <a name> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <img src alt height width data-caption data-align>'
+      allowed_html: '<a id target rel class="ck-anchor button is-filled" hreflang href data-entity-type data-entity-uuid data-entity-substitution> <br> <p class="label"> <h2 id> <h3 id> <h4 id> <cite> <dl> <dt> <dd> <blockquote cite> <ul type> <ol type start> <h5 id> <h6 id> <strong> <em> <code> <sub> <sup> <li> <a name> <span class="highlight"> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <img src alt height width data-caption data-align>'
       filter_html_help: false
       filter_html_nofollow: false
   filter_html_image_secure:

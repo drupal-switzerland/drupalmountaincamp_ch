@@ -10,7 +10,7 @@
       type="search"
       autocomplete="off"
       name="searchterm"
-      class="block w-full rounded-lg border-2 border-primary-300 bg-gray-50 p-5 pr-20 text-sm text-gray-900 focus:border-primary-400 focus:outline-none md:pr-40"
+      class="block w-full rounded-lg border-2 border-primary-300 bg-gray-50 p-5 pr-20 text-sm text-gray-900 focus:border-primary-400 md:pr-40"
       spellcheck="false"
       role="searchbox"
       aria-owns="searchterm-suggestions"
@@ -24,7 +24,7 @@
 
     <button
       type="submit"
-      class="button is-icon-only md:has-icon absolute bottom-[7px] right-2 rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 focus:bg-primary-600 focus:outline-none active:text-white"
+      class="button is-icon-only md:has-icon absolute bottom-[7px] right-2 rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-primary-600 focus:bg-primary-600 active:text-white"
       aria-label="Search"
       @click.prevent="updateSearchTerm"
     >

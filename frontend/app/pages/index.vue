@@ -1,5 +1,5 @@
 <template>
-  <NodePageLanding v-if="node" v-bind="node" />
+  <NodePageLanding v-if="node" v-bind="node" is-front />
 </template>
 
 <script lang="ts" setup>
@@ -30,7 +30,9 @@ const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
 })
 
 // Handles redirects and metatags.
-const { entity: node } = await useDrupalRoute<NodePageFragment>(query.value ?? null)
+const { entity: node } = await useDrupalRoute<NodePageFragment>(
+  query.value ?? null,
+)
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
 setLanguageLinksFromRoute(query.value ?? null)

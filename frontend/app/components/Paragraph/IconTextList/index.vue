@@ -1,7 +1,11 @@
 <template>
   <div class="grid-container" :open="isEditing" :class="paragraphClassList">
     <div class="col-span-4 sm:col-span-6 md:col-span-8 lg:col-span-12">
-      <h2 v-blokkli-editable:field_title class="mb-5 text-lg lg:text-4xl">
+      <h2
+        v-if="title || isEditing"
+        v-blokkli-editable:field_title
+        class="mb-5 text-3xl lg:text-4xl"
+      >
         {{ title }}
       </h2>
       <div
@@ -13,7 +17,7 @@
       <BlokkliField
         :list="paragraphs"
         name="field_content"
-        class="grid-container py-20"
+        :class="fieldClassList"
       />
     </div>
   </div>
@@ -38,6 +42,31 @@ const { isEditing, options } = defineBlokkli({
     getDraggableElement: (el) => el.querySelector('.paragraph-icon-text-list'),
   },
   globalOptions: ['spacing'],
+  options: {
+    display: {
+      type: 'radios',
+      label: 'Display',
+      default: 'list',
+      options: {
+        list: 'List',
+        dayCards: 'Day cards',
+        infoCards: 'Info cards',
+      },
+    },
+  },
+})
+
+const display = computed(() => options.value.display as IconTextListDisplay)
+provide(ICON_TEXT_LIST_DISPLAY, display)
+
+const fieldClassList = computed(() => {
+  if (display.value === 'dayCards') {
+    return ['grid', 'gap-5', 'py-8', 'md:grid-cols-3']
+  }
+  if (display.value === 'infoCards') {
+    return ['grid', 'gap-5', 'py-8', 'md:grid-cols-2']
+  }
+  return ['grid-container', 'py-20']
 })
 
 const content = ref<HTMLElement | null>(null)

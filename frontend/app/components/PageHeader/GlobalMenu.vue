@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-10 [&_.router-link-active]:text-accent-500"
+    class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-10 [&_.router-link-active]:text-primary-400"
   >
     <ul
       class="flex h-full flex-col gap-4 pt-24 text-2xl md:flex-row md:justify-end md:gap-2 md:pt-0 md:text-base md:font-medium"
@@ -19,7 +19,7 @@
 
         <div
           v-else
-          class="flex h-10 min-w-[60px] items-center hover:text-accent-500 md:h-20 lg:justify-between"
+          class="flex h-10 min-w-[60px] items-center hover:text-primary-400 md:h-20 lg:justify-between"
         >
           <VuepalLink
             :to="link.link?.url?.path"

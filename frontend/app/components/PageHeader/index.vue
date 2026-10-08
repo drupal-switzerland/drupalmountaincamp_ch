@@ -24,34 +24,39 @@
             :class="{
               hidden: isMenuOpen,
             }"
-            :aria-label="$texts('home', 'Home')"
             class="flex items-center gap-2"
           >
             <img
               src="/images/icon-mountain.png"
-              alt="Mountain Camp logo"
+              alt=""
               class="size-8 md:size-10"
             />
             <span
               class="font-heading text-lg font-bold uppercase leading-none tracking-wide text-primary-500 md:text-xl"
             >
-              Mountain Camp 2027
+              Mountain Camp <span class="text-primary-400">2027</span>
             </span>
           </nuxt-link>
-          <h2 class="sr-only">Mountain Camp 2027 Logo</h2>
         </div>
       </div>
       <div
         class="grid-area-hamburger flex items-center justify-between px-4 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
-        @click.prevent="toggleMenu"
       >
-        <button class="flex items-center gap-3 leading-none md:hidden">
+        <button
+          type="button"
+          class="flex items-center gap-3 leading-none md:hidden"
+          :aria-label="$texts('menu', 'Menü')"
+          :aria-expanded="isMenuOpen"
+          aria-controls="global-menu"
+          @click.prevent="toggleMenu"
+        >
           <PageHeaderMenuIcon :is-in-closable-state="isMenuOpen" />
         </button>
       </div>
 
       <PageHeaderGlobalMenu
         v-show="isMenuOpen"
+        id="global-menu"
         ref="globalMenu"
         class="grid-area-global md:!block"
       />

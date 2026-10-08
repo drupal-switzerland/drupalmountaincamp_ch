@@ -2,7 +2,7 @@
   <vuepal-link
     v-click-away="clickAway"
     :to="link.link.url?.path"
-    class="flex h-10 w-full cursor-pointer items-center p-2 transition-all duration-250 ease-in-out hover:text-accent-500 md:h-20 lg:justify-between"
+    class="flex h-10 w-full cursor-pointer items-center p-2 transition-all duration-250 ease-in-out hover:text-primary-400 md:h-20 lg:justify-between"
     @mouseenter="menuHoverOpen"
     @mouseleave="menuHoverClose"
   >
@@ -49,7 +49,7 @@
       >
         <VuepalLink
           :to="subLink.link?.url?.path"
-          class="flex h-[50px] w-full items-center px-4 py-2 pl-2 transition-all duration-250 ease-in-out hover:text-accent-500 md:size-auto md:px-3"
+          class="flex h-[50px] w-full items-center px-4 py-2 pl-2 transition-all duration-250 ease-in-out hover:text-primary-400 md:size-auto md:px-3"
         >
           {{ subLink.link.label }}
         </VuepalLink>

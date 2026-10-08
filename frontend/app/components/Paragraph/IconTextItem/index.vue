@@ -1,5 +1,41 @@
 <template>
+  <article
+    v-if="display === 'dayCards'"
+    class="day-card gradient-border relative flex flex-col overflow-hidden rounded-[18px]"
+  >
+    <div
+      class="brand-card-header on-dark flex flex-col gap-2 px-6 py-5 text-white"
+    >
+      <p class="label">{{ dayLabel }}</p>
+      <h3 v-blokkli-editable:field_title class="text-2xl">
+        {{ title }}
+      </h3>
+    </div>
+    <div
+      ref="content"
+      v-blokkli-editable:field_text
+      class="ck-content hyphens-auto px-6 pb-6 pt-5 lg:hyphens-none"
+      v-html="text"
+    />
+  </article>
+
+  <article
+    v-else-if="display === 'infoCards'"
+    class="gradient-border flex flex-col gap-3 rounded-[18px] p-6 md:p-8"
+  >
+    <h3 v-blokkli-editable:field_title class="text-2xl">
+      {{ title }}
+    </h3>
+    <div
+      ref="content"
+      v-blokkli-editable:field_text
+      class="ck-content hyphens-auto lg:hyphens-none"
+      v-html="text"
+    />
+  </article>
+
   <div
+    v-else
     class="col-span-4 flex flex-col items-center gap-4 border-b pb-8 sm:col-span-6 sm:flex-row sm:items-start sm:py-8 md:col-span-4 lg:col-span-6"
   >
     <div v-blokkli-droppable:field_icon class="sm:w-[207px]">
@@ -32,9 +68,20 @@ const props = defineProps<{
   title: ParagraphIconTextItemFragment['title']
 }>()
 
-defineBlokkli({
+const { index } = defineBlokkli({
   bundle: 'icon_text_item',
 })
+
+const { $texts } = useEasyTexts()
+
+const display = inject(
+  ICON_TEXT_LIST_DISPLAY,
+  computed<IconTextListDisplay>(() => 'list'),
+)
+
+const dayLabel = computed(
+  () => `${$texts('iconText.day', 'Day')} ${index.value + 1}`,
+)
 
 const content = ref<HTMLElement | null>(null)
 

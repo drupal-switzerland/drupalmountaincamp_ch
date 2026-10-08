@@ -4,7 +4,7 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     class="size-6 overflow-visible text-primary-500"
-    aria-hidden
+    aria-hidden="true"
   >
     <rect
       width="22"

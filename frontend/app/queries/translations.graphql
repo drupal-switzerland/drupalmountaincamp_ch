@@ -2,8 +2,21 @@
 # Any manual changes will be overwritten.
 
 fragment easyTexts on TextsLoader {
-  home: getText(key: "home", default: "Home")
+  edition__dates: getText(key: "dates", context: "edition", default: "March 2–4, 2027")
+  edition__label: getText(key: "label", context: "edition", default: "10th anniversary gathering")
+  edition__title: getText(key: "title", context: "edition", default: "Join us for our 6th edition")
+  edition__venue: getText(key: "venue", context: "edition", default: "Davos Congress Centre, Switzerland")
+  footer__navigation: getText(key: "navigation", context: "footer", default: "Footer")
+  hero__badge: getText(key: "badge", context: "hero", default: "10 years of community")
+  hero__proposeTalk: getText(key: "proposeTalk", context: "hero", default: "Propose a talk")
+  hero__tickets: getText(key: "tickets", context: "hero", default: "Get your ticket")
+  iconText__day: getText(key: "day", context: "iconText", default: "Day")
+  menu: getText(key: "menu", default: "Menü")
   more_information: getText(key: "more_information", default: "Mehr Informationen")
+  newTabHint: getText(key: "newTabHint", default: "opens in a new tab")
+  partners__hosting: getText(key: "hosting", context: "partners", default: "Hosting powered by")
+  partners__media: getText(key: "media", context: "partners", default: "Media partners")
+  partners__title: getText(key: "title", context: "partners", default: "Partners")
   scrollableTable: getText(key: "scrollableTable", default: "Scrollbare Tabelle")
   search__ctaButton: getText(key: "ctaButton", context: "search", default: "Suchen")
   search__searchFieldLabel: getText(key: "searchFieldLabel", context: "search", default: "Suchbegriff")
