@@ -37,6 +37,6 @@ settings:
   handler_settings: {  }
   file_directory: media/documents
   file_extensions: 'txt rtf doc docx ppt pptx xls xlsx pdf odf odg odp ods odt fodt fods fodp fodg key numbers pages'
-  max_filesize: ''
+  max_filesize: '20 MB'
   description_field: false
 field_type: file
