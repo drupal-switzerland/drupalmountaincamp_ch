@@ -49,7 +49,7 @@
             <span v-if="i > 0" aria-hidden="true">&ndash;</span>
             <VuepalLink
               :to="link.link?.url?.path"
-              class="hover:text-accent-300 hover:underline"
+              class="hover:text-primary-100 hover:underline"
             >
               {{ link.link.label }}
             </VuepalLink>
