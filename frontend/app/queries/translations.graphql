@@ -10,6 +10,7 @@ fragment easyTexts on TextsLoader {
   hero__badge: getText(key: "badge", context: "hero", default: "10 years of community")
   hero__proposeTalk: getText(key: "proposeTalk", context: "hero", default: "Propose a talk")
   hero__tickets: getText(key: "tickets", context: "hero", default: "Get your ticket")
+  iconText__day: getText(key: "day", context: "iconText", default: "Day")
   menu: getText(key: "menu", default: "Menü")
   more_information: getText(key: "more_information", default: "Mehr Informationen")
   newTabHint: getText(key: "newTabHint", default: "opens in a new tab")

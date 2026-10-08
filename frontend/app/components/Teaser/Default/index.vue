@@ -1,5 +1,8 @@
 <template>
-  <VuepalLink :to="to" class="group flex flex-col text-start">
+  <VuepalLink
+    :to="to"
+    class="gradient-border group flex h-full flex-col overflow-hidden rounded-[18px] text-start"
+  >
     <div class="mb-5">
       <MediaImage
         v-if="media"

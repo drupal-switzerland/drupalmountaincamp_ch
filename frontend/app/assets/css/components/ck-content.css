@@ -33,6 +33,54 @@
       @apply text-link underline hover:text-link-hover;
     }
 
+    /* CKEditor "Button" style. */
+    a.button {
+      @apply no-underline;
+    }
+
+    /* CKEditor "Highlight" style: sky only where it passes contrast (large
+       headings on white, anything on navy); blue elsewhere. */
+    .highlight {
+      @apply text-primary-400;
+    }
+
+    h2 .highlight,
+    h3 .highlight {
+      @apply text-primary-300;
+    }
+
+    .is-tint & h2 .highlight,
+    .is-tint & h3 .highlight,
+    .is-theme & h2 .highlight,
+    .is-theme & h3 .highlight {
+      @apply text-primary-400;
+    }
+
+    .is-theme & .highlight {
+      @apply text-primary-500;
+    }
+
+    .on-dark & {
+      h2,
+      h3,
+      h4,
+      h5 {
+        @apply text-white;
+      }
+
+      a:not(.button) {
+        @apply text-white hover:text-primary-100;
+      }
+
+      .highlight {
+        @apply text-primary-300;
+      }
+
+      a.button.is-filled {
+        @apply border-white bg-white text-primary-500 hover:border-primary-100 hover:bg-primary-100 hover:text-primary-500;
+      }
+    }
+
     ol,
     ul {
       @apply mb-5;

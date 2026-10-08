@@ -31,6 +31,49 @@
         theme(colors.brand.lilac)
       );
     }
+
+    &.is-tint {
+      --gradient-fill: linear-gradient(
+        theme(colors.brand.tint),
+        theme(colors.brand.tint)
+      );
+      --gradient-edge: linear-gradient(
+        135deg,
+        theme(colors.brand.ice),
+        theme(colors.brand.sky)
+      );
+    }
+
+    /* Conference theme band: lilac only behind navy text (lilac fails as text). */
+    &.is-theme {
+      --gradient-fill: linear-gradient(
+        90deg,
+        theme(colors.brand.ice),
+        theme(colors.brand.lilac)
+      );
+      --gradient-edge: linear-gradient(
+        135deg,
+        theme(colors.brand.navy),
+        theme(colors.brand.lilac)
+      );
+
+      .label {
+        @apply text-primary-500;
+      }
+    }
+  }
+
+  /* A leading "Label" paragraph becomes the tag pill in the card header. */
+  .day-card .ck-content > p.label:first-child {
+    @apply absolute right-6 top-5 m-0 rounded-full bg-primary-100 px-3 text-primary-500;
+  }
+
+  .brand-card-header {
+    background: linear-gradient(
+      160deg,
+      theme(colors.brand.navy),
+      theme(colors.brand.blue)
+    );
   }
 
   .brand-strip {

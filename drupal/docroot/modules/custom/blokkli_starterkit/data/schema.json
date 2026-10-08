@@ -31,6 +31,30 @@
   "from_library": {},
   "icon_text_item": {},
   "icon_text_list": {
+    "display": {
+      "default": "list",
+      "label": {
+        "en": "Display"
+      },
+      "options": {
+        "dayCards": {
+          "label": {
+            "en": "Day cards"
+          }
+        },
+        "infoCards": {
+          "label": {
+            "en": "Info cards"
+          }
+        },
+        "list": {
+          "label": {
+            "en": "List"
+          }
+        }
+      },
+      "type": "radios"
+    },
     "spacing": {
       "default": "none",
       "displayAs": "icons",
@@ -233,6 +257,54 @@
     }
   },
   "text": {
+    "alignment": {
+      "default": "left",
+      "label": {
+        "en": "Alignment"
+      },
+      "options": {
+        "center": {
+          "label": {
+            "en": "Center"
+          }
+        },
+        "left": {
+          "label": {
+            "en": "Left"
+          }
+        }
+      },
+      "type": "radios"
+    },
+    "background": {
+      "default": "none",
+      "label": {
+        "en": "Background"
+      },
+      "options": {
+        "light": {
+          "label": {
+            "en": "Light card"
+          }
+        },
+        "navy": {
+          "label": {
+            "en": "Navy band"
+          }
+        },
+        "none": {
+          "label": {
+            "en": "None"
+          }
+        },
+        "theme": {
+          "label": {
+            "en": "Theme band"
+          }
+        }
+      },
+      "type": "radios"
+    },
     "spacing": {
       "default": "none",
       "displayAs": "icons",
