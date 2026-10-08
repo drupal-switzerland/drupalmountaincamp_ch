@@ -7,6 +7,7 @@
 @import './components/ck-content.css';
 @import './components/link.css';
 @import './components/button.css';
+@import './components/brand.css';
 
 @tailwind base;
 @tailwind components;

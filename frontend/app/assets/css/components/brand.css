@@ -1,0 +1,74 @@
+@layer base {
+  :focus-visible {
+    outline: 3px solid theme(colors.brand.navy);
+    outline-offset: 3px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: theme(colors.white);
+  }
+}
+
+@layer components {
+  /* Rounded gradient border: the fill and edge are two background layers, so
+     the border keeps its radius. Set --gradient-fill for a tinted fill. */
+  .gradient-border {
+    --gradient-fill: linear-gradient(theme(colors.white), theme(colors.white));
+    --gradient-edge: linear-gradient(
+      135deg,
+      theme(colors.brand.navy),
+      theme(colors.brand.sky)
+    );
+    border: 3px solid transparent;
+    background:
+      var(--gradient-fill) padding-box,
+      var(--gradient-edge) border-box;
+
+    &.is-lilac {
+      --gradient-edge: linear-gradient(
+        135deg,
+        theme(colors.brand.navy),
+        theme(colors.brand.lilac)
+      );
+    }
+  }
+
+  .brand-strip {
+    height: 6px;
+    background: linear-gradient(
+      90deg,
+      theme(colors.brand.navy) 0%,
+      theme(colors.brand.blue) 45%,
+      theme(colors.brand.sky) 100%
+    );
+  }
+
+  .brand-hero {
+    background: linear-gradient(
+      160deg,
+      theme(colors.brand.navy) 0%,
+      theme(colors.brand.navy) 50%,
+      theme(colors.brand.blue) 100%
+    );
+  }
+
+  /* Small uppercase label above a heading (also the CKEditor "Label" style). */
+  .label {
+    @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;
+
+    .on-dark & {
+      @apply text-primary-100;
+    }
+  }
+
+  /* Forced colours drop backgrounds, which would erase gradient edges. */
+  @media (forced-colors: active) {
+    .gradient-border {
+      border-color: CanvasText;
+    }
+
+    .brand-strip {
+      background: CanvasText;
+    }
+  }
+}
