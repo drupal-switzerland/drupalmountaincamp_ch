@@ -1,12 +1,44 @@
 <template>
   <footer class="z-10 mt-14">
-    <div class="bg-primary-50">
-      <div class="brand-strip" aria-hidden="true" />
-      <Container class="flex flex-col gap-7 py-7">
-        <section
-          :aria-labelledby="sponsorsTitleId"
-          class="flex flex-col gap-4 rounded-xl border-2 border-primary-100 bg-white p-5 md:p-6"
+    <!-- Same on every page: the event call to action under a night sky, the
+         ridge, then every sponsor tier and the partners in the snow. -->
+    <section
+      :aria-labelledby="ctaTitleId"
+      class="brand-hero on-dark overflow-hidden text-white"
+    >
+      <div
+        class="container relative !my-0 flex flex-col items-start gap-4 pt-14 md:pt-20"
+      >
+        <BrandSparkles
+          class="pointer-events-none absolute right-outer top-14 hidden w-24 text-white md:top-20 md:block lg:w-28"
+        />
+        <p class="label">
+          {{ $texts('edition.label', '10th anniversary gathering') }}
+        </p>
+        <h2 :id="ctaTitleId" class="max-w-3xl text-4xl md:text-5xl">
+          {{ $texts('edition.title', 'Join us for our 6th edition') }}
+        </h2>
+        <p class="text-lg text-primary-100 md:text-xl">
+          {{ $texts('edition.dates', 'March 2–4, 2027') }}
+          <span aria-hidden="true" class="mx-1">·</span>
+          {{ $texts('edition.venue', 'Davos Congress Centre, Switzerland') }}
+        </p>
+        <VuepalLink
+          v-if="ticketsLink"
+          :to="ticketsLink.link.url?.path"
+          class="ticket-button mt-2"
         >
+          {{ $texts('edition.tickets', 'Get tickets') }}
+          <span aria-hidden="true">→</span>
+        </VuepalLink>
+      </div>
+      <BrandRidge class="mt-8 xs:mt-0" />
+    </section>
+    <div class="bg-primary-100">
+      <Container
+        class="relative !my-0 flex flex-col gap-8 pb-14 pt-2 xs:-mt-10"
+      >
+        <section :aria-labelledby="sponsorsTitleId" class="flex flex-col gap-5">
           <div
             class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2"
           >
@@ -38,7 +70,7 @@
         <section
           v-if="partnerGroups.length"
           aria-labelledby="footer-partners-title"
-          class="flex flex-wrap items-end justify-between gap-x-12 gap-y-6"
+          class="flex flex-wrap items-end justify-between gap-x-12 gap-y-6 border-t border-primary-500 pt-7"
         >
           <h2 id="footer-partners-title" class="sr-only">
             {{ $texts('partners.title', 'Partners') }}
@@ -109,6 +141,8 @@ const copyright =
   '© Drupal Events Switzerland. Drupal is a registered trademark of Dries Buytaert.'
 
 const sponsorsTitleId = useId()
+const ctaTitleId = useId()
+const ticketsLink = await useTicketsLink()
 const { currentByTier } = await useSponsors()
 
 const STANDARD_TILE = 'h-[72px] w-[200px]'
