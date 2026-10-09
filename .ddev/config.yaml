@@ -33,7 +33,6 @@ web_environment:
     - NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN=local-development
     - NUXT_ELASTICSEARCH_URL=http://elasticsearch:9200
     - SIMPLETEST_DB=mysql://db:db@db/db
-    - SIMPLETEST_BASE_URL=https://mountaincamp.ddev.site
 nodejs_version: "20"
 corepack_enable: true
 
