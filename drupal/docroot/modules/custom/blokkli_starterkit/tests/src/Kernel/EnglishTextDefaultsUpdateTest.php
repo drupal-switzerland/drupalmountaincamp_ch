@@ -8,11 +8,13 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\texts\TextsInterface;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests blokkli_starterkit_post_update_english_text_defaults().
  */
 #[Group('blokkli_starterkit')]
+#[RunTestsInSeparateProcesses]
 class EnglishTextDefaultsUpdateTest extends KernelTestBase {
 
   /**
