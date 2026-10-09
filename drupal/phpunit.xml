@@ -29,9 +29,6 @@
     <env name="SIMPLETEST_DB" value="sqlite://localhost/:memory:"/>
     <env name="DTT_BASE_URL" value="http://localhost"/>
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="sites/simpletest"/>
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
-    <!-- To disable deprecation testing completely uncomment the next line. -->
-    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->
   </php>
   <testsuites>
     <testsuite name="starterkit">
@@ -39,4 +36,27 @@
       <directory>docroot/themes/custom</directory>
     </testsuite>
   </testsuites>
+  <extensions>
+    <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
+      <parameter name="outputDirectory" value="sites/simpletest/browser_output"/>
+      <parameter name="verbose" value="true"/>
+    </bootstrap>
+    <bootstrap class="Drupal\TestTools\Extension\Dump\DebugDump">
+      <parameter name="colors" value="true"/>
+      <parameter name="printCaller" value="true"/>
+    </bootstrap>
+  </extensions>
+  <!-- Suppressed (@trigger_error) deprecations stay hidden: contrib raises
+       them during cache rebuilds, so the count changes from run to run.
+       phpstan-deprecation-rules covers deprecated API use in custom code. -->
+  <source>
+    <include>
+      <directory>docroot/modules/custom</directory>
+      <directory>docroot/themes/custom</directory>
+    </include>
+    <exclude>
+      <directory>docroot/modules/custom/*/tests</directory>
+      <directory>docroot/themes/custom/*/tests</directory>
+    </exclude>
+  </source>
 </phpunit>

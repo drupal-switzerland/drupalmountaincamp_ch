@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\rokka\Entity\RokkaMetadata;
 use Drupal\system\Entity\Menu;
 use Drupal\user\UserInterface;
 
@@ -59,6 +60,9 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
     $this->assertTrue(blokkli_starterkit_paragraphs_type_access($type, 'view', $this->createUser())->isAllowed());
     $this->assertFalse(blokkli_starterkit_paragraphs_type_access($type, 'view', new AnonymousUserSession())->isAllowed());
     $this->assertTrue(blokkli_starterkit_paragraphs_type_access($type, 'update', $this->createUser())->isNeutral());
+
+    $this->assertTrue($type->access('view', $this->createUser()));
+    $this->assertFalse($type->access('view', new AnonymousUserSession()));
   }
 
   /**
@@ -67,11 +71,19 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
    * The permission is not declared by any module, so only admin roles have it.
    */
   public function testRokkaMetadataNeedsPermission(): void {
-    $entity = $this->loadMenu('main');
+    // Never saved: access checks don't need a stored entity.
+    $entity = RokkaMetadata::create([
+      'uri' => 'public://access-hooks-test.jpg',
+      'hash' => $this->randomMachineName(40),
+    ]);
 
     $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', $this->createUser([], NULL, TRUE))->isAllowed());
     $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', $this->createUser())->isNeutral());
     $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', new AnonymousUserSession())->isNeutral());
+
+    $this->assertTrue($entity->access('view', $this->createUser([], NULL, TRUE)));
+    $this->assertFalse($entity->access('view', $this->createUser()));
+    $this->assertFalse($entity->access('view', new AnonymousUserSession()));
   }
 
   /**
@@ -83,6 +95,9 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
 
     $this->assertTrue($this->fieldAccess($user, 'roles', 'view', $user)->isAllowed());
     $this->assertFalse($this->fieldAccess($user, 'roles', 'view', $other)->isAllowed());
+
+    $this->assertTrue($this->handlerFieldAccess($user, 'roles', 'view', $user));
+    $this->assertFalse($this->handlerFieldAccess($user, 'roles', 'view', $other));
   }
 
   /**
@@ -95,6 +110,10 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
     $this->assertTrue($this->fieldAccess($user, 'mail', 'edit', $user)->isAllowed());
     $this->assertFalse($this->fieldAccess($user, 'mail', 'edit', $other)->isAllowed());
     $this->assertTrue($this->fieldAccess($user, 'mail', 'view', $user)->isNeutral());
+
+    // Field edit access defaults to allowed; entity update access is what
+    // stops other users, so only the own-account path is checked here.
+    $this->assertTrue($this->handlerFieldAccess($user, 'mail', 'edit', $user));
   }
 
   /**
@@ -107,6 +126,9 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
 
     $this->assertTrue($this->fieldAccess($user, 'status', 'view', $this->createUser([], NULL, TRUE))->isAllowed());
     $this->assertFalse($this->fieldAccess($user, 'status', 'view', $user)->isAllowed());
+
+    $this->assertTrue($this->handlerFieldAccess($user, 'status', 'view', $this->createUser([], NULL, TRUE)));
+    $this->assertFalse($this->handlerFieldAccess($user, 'status', 'view', $user));
   }
 
   /**
@@ -135,6 +157,16 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
   private function fieldAccess(UserInterface $owner, string $field, string $operation, AccountInterface $account): AccessResultInterface {
     $items = $owner->get($field);
     return blokkli_starterkit_entity_field_access($operation, $items->getFieldDefinition(), $account, $items);
+  }
+
+  /**
+   * Runs the user access handler, which invokes all field access hooks.
+   */
+  private function handlerFieldAccess(UserInterface $owner, string $field, string $operation, AccountInterface $account): bool {
+    $items = $owner->get($field);
+    return \Drupal::entityTypeManager()
+      ->getAccessControlHandler('user')
+      ->fieldAccess($operation, $items->getFieldDefinition(), $account, $items);
   }
 
 }
