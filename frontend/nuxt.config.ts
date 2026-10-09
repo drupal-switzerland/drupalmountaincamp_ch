@@ -40,6 +40,10 @@ export default defineNuxtConfig({
       meta: [
         { name: 'theme-color', content: '#184759' },
         {
+          name: 'google-site-verification',
+          content: 'SCUdRugj-xdUAPc-l5QvGazhSoLCk41JiDAOoztuT8I',
+        },
+        {
           name: 'description',
           content:
             'Mountain Camp 2027 is the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
