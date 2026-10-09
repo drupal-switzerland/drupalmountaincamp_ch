@@ -30,10 +30,11 @@ jobs:
         with:
           node-version-file: frontend/.nvmrc
 
-      # The Lagoon build installs bun@latest as well.
+      # Same version as the ddev web container. The Lagoon build installs
+      # bun@latest, so bump this when Lagoon picks up a new release.
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.2
 
       - run: bun install --frozen-lockfile
 
