@@ -4,11 +4,107 @@ type IconApi = typeof import('../../server/api/icon/[...params]')
 
 let replaceColors: IconApi['replaceColors']
 let extractSymbol: IconApi['extractSymbol']
+let parseIconId: IconApi['parseIconId']
+let processIcon: IconApi['processIcon']
 
 // The module reads the runtime config on import, which needs the Nuxt app.
 beforeAll(async () => {
-  ;({ replaceColors, extractSymbol } =
+  ;({ replaceColors, extractSymbol, parseIconId, processIcon } =
     await import('../../server/api/icon/[...params]'))
+})
+
+describe('parseIconId', () => {
+  it.each([
+    ['7', '7'],
+    ['7.svg', '7'],
+    ['7--.svg', '7'],
+    ['123--amazee-io-logo.svg', '123'],
+    ['42--snake_case-1', '42'],
+  ])('reads the id from %j', (params, id) => {
+    expect(parseIconId(params)).toBe(id)
+  })
+
+  it.each([
+    undefined,
+    null,
+    7,
+    ['7'],
+    '',
+    'abc',
+    '-1',
+    '7a',
+    '7-slug.svg',
+    '7--slug.png',
+    '7--slug/x.svg',
+    '../7',
+    '7/../../user/1',
+    '..%2F7',
+    '7?x=1',
+    '7--slug.svg#icon',
+    ' 7',
+    '7\n',
+  ])('rejects %j', (params) => {
+    expect(parseIconId(params)).toBeUndefined()
+  })
+})
+
+describe('processIcon', () => {
+  const XLINK = 'xmlns:xlink="http://www.w3.org/1999/xlink"'
+
+  it('keeps the rendered parts of a normal icon', () => {
+    expect(
+      processIcon(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>Logo</title><path fill="#f00" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="4" stroke="#000" fill="none"/></svg>',
+      ),
+    ).toBe(
+      '<svg xmlns="http://www.w3.org/2000/svg"><symbol id="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="4" stroke="currentColor" fill="none"/></symbol></svg>',
+    )
+  })
+
+  it('keeps fragment links and inline raster images', () => {
+    const result = processIcon(
+      `<svg xmlns="http://www.w3.org/2000/svg" ${XLINK} viewBox="0 0 2 2"><defs><path id="p" d="M0 0h1v1H0z"/></defs><use xlink:href="#p"/><use href="#p" x="1"/><image href="data:image/png;base64,AAAA" width="1" height="1"/></svg>`,
+    )
+    expect(result).toContain('<use xlink:href="#a"/><use href="#a" x="1"/>')
+    expect(result).toContain('href="data:image/png;base64,AAAA"')
+  })
+
+  it.each([
+    [
+      'script element',
+      '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'onload attribute',
+      '<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"><path onclick="alert(1)" ONMOUSEOVER="alert(1)" d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'javascript link',
+      `<svg xmlns="http://www.w3.org/2000/svg" ${XLINK}><a xlink:href="javascript:alert(1)"><path d="M0 0h1v1z"/></a><a href=" JavaScript:alert(1)"><path d="M0 0h1v1z"/></a></svg>`,
+    ],
+    [
+      'foreignObject with script',
+      '<svg xmlns="http://www.w3.org/2000/svg"><foreignObject><body xmlns="http://www.w3.org/1999/xhtml"><script>alert(1)</script><img src="x" onerror="alert(1)"/></body></foreignObject><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'namespaced html script',
+      '<svg xmlns="http://www.w3.org/2000/svg" xmlns:h="http://www.w3.org/1999/xhtml"><h:script>alert(1)</h:script><h:iframe src="javascript:alert(1)"/><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'animation rewriting a link',
+      '<svg xmlns="http://www.w3.org/2000/svg"><a><set attributeName="href" to="javascript:alert(1)"/><animate attributeName="xlink:href" values="javascript:alert(1)"/><path d="M0 0h1v1z"/></a></svg>',
+    ],
+    [
+      'external use and data svg image',
+      `<svg xmlns="http://www.w3.org/2000/svg" ${XLINK}><use xlink:href="https://evil.example/x.svg#a"/><image href="data:image/svg+xml;base64,PHN2Zz4="/><path d="M0 0h1v1z"/></svg>`,
+    ],
+  ])('strips a %s', (_, markup) => {
+    const result = processIcon(markup)
+    expect(result).toContain('<path d="M0 0h1v1z"/>')
+    expect(result).not.toMatch(
+      /script|javascript|\bon\w+=|foreignObject|iframe|evil|svg\+xml|<set|<animate/i,
+    )
+  })
 })
 
 describe('replaceColors', () => {

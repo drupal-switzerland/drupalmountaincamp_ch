@@ -4,9 +4,11 @@ import {
   defaultContentType,
   defineEventHandler,
   setHeader,
+  setResponseStatus,
 } from 'h3'
 import type { H3Event } from 'h3'
 import { optimize } from 'svgo'
+import type { CustomPlugin, XastElement } from 'svgo'
 import { MAX_AGE } from '../../helpers'
 
 const config = useRuntimeConfig()
@@ -108,12 +110,83 @@ export function extractSymbol(source = ''): ParsedSymbol {
   }
 }
 
+const ICON_PARAMS = /^(\d+)(?:--[\w-]*)?(?:\.svg)?$/
+
+/** Returns the media ID from "{id}--{slug}.svg", or undefined if malformed. */
+export function parseIconId(params: unknown): string | undefined {
+  if (typeof params !== 'string') {
+    return
+  }
+  return ICON_PARAMS.exec(params)?.[1]
+}
+
+const ACTIVE_ELEMENTS = new Set(['script', 'foreignobject', 'iframe', 'embed'])
+const ANIMATION_ELEMENTS = new Set([
+  'set',
+  'animate',
+  'animatemotion',
+  'animatetransform',
+])
+const SAFE_HREF = /^(?:#|data:image\/(?:png|jpe?g|gif|webp)[;,])/i
+
+function localName(name: string) {
+  return name.slice(name.lastIndexOf(':') + 1).toLowerCase()
+}
+
+function isHrefAttribute(name: string) {
+  return localName(name) === 'href'
+}
+
+function isEventAttribute(name: string) {
+  return localName(name).startsWith('on')
+}
+
+function isActiveElement(node: XastElement) {
+  if (node.name.includes(':') || ACTIVE_ELEMENTS.has(localName(node.name))) {
+    return true
+  }
+  if (!ANIMATION_ELEMENTS.has(localName(node.name))) {
+    return false
+  }
+  const target = node.attributes.attributeName ?? ''
+  return isHrefAttribute(target) || isEventAttribute(target)
+}
+
+/**
+ * Backs up svgo's removeScripts: drops namespaced and embedding elements,
+ * animations that rewrite links or handlers, every on* attribute and any
+ * href that is not a fragment or an inline raster image.
+ */
+const removeActiveContent: CustomPlugin = {
+  name: 'removeActiveContent',
+  fn: () => ({
+    element: {
+      enter: (node, parentNode) => {
+        if (isActiveElement(node)) {
+          parentNode.children = parentNode.children.filter(
+            (child) => child !== node,
+          )
+          return
+        }
+        node.attributes = Object.fromEntries(
+          Object.entries(node.attributes).filter(
+            ([name, value]) =>
+              !isEventAttribute(name) &&
+              (!isHrefAttribute(name) || SAFE_HREF.test(value.trim())),
+          ),
+        )
+      },
+    },
+  }),
+}
+
 /**
  * Process the raw SVG markup to be a <symbol>.
  */
-function processIcon(markup = '') {
+export function processIcon(markup = '') {
   const optimized = optimize(markup, {
     plugins: [
+      'removeScripts',
       {
         name: 'inlineStyles',
         params: {
@@ -132,6 +205,7 @@ function processIcon(markup = '') {
       'removeUselessStrokeAndFill',
       'mergePaths',
       'removeDimensions',
+      removeActiveContent,
     ],
   }).data
   const { content, attributes } = extractSymbol(optimized)
@@ -160,15 +234,15 @@ type BuiltIcon = {
  * The result of this is cached in the data cache using the ID as the key.
  */
 async function getIcon(
-  id: string | undefined,
+  id: string,
   event: H3Event,
 ): Promise<BuiltIcon | undefined> {
-  if (!id || !config.backendUrl) {
+  if (!config.backendUrl) {
     return
   }
 
   const { value, addToCache } = await useDataCache<BuiltIcon>(
-    'api-icon-' + id,
+    'api-icon-sanitised-' + id,
     event,
   )
 
@@ -179,12 +253,12 @@ async function getIcon(
   const requestHeaders = getHeaders(event)
   const host = requestHeaders.host || ''
 
-  // Fetch the SVG markup.
+  // Fetch the SVG markup. Icons are public, so the visitor's cookie is not
+  // forwarded and the cached result never depends on who requested it.
   const url = `${config.backendUrl}/media/${id}/icon`
   const response = await $fetch.raw<Blob>(url, {
     headers: {
       host,
-      cookie: requestHeaders.cookie || '',
       referer: requestHeaders.referer || '',
     },
   })
@@ -212,28 +286,28 @@ async function getIcon(
 
 const EMPTY_RESPONSE = '<svg></svg>'
 
+const SECURITY_HEADERS = {
+  'content-security-policy':
+    "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+  'x-content-type-options': 'nosniff',
+}
+
 /**
  * Returns an icon media entity as a SVG sprite with the media's SVG as the
  * single <symbol>.
  */
 export default defineEventHandler(async (event) => {
-  try {
-    const routerParams = getRouterParams(event)
-    const paramsValue = routerParams?.params
-    let paramsStr: string | undefined
-    if (typeof paramsValue === 'string') {
-      paramsStr = paramsValue
-    } else if (Array.isArray(paramsValue)) {
-      paramsStr = paramsValue[0]
-    }
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    setHeader(event, name, value)
+  }
+  defaultContentType(event, 'image/svg+xml')
 
-    if (!paramsStr) {
+  try {
+    const id = parseIconId(getRouterParams(event, { decode: true }).params)
+    if (!id) {
+      setResponseStatus(event, 400)
       return EMPTY_RESPONSE
     }
-
-    const id = paramsStr.split('--')[0]
-
-    defaultContentType(event, 'image/svg+xml')
 
     const result = await getIcon(id, event)
     if (!result) {
