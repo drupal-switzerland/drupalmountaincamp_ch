@@ -66,9 +66,9 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
   }
 
   /**
-   * Rokka metadata needs its view permission.
+   * Rokka metadata can be viewed by everyone with the view permission.
    *
-   * The permission is not declared by any module, so only admin roles have it.
+   * Anonymous and authenticated have it, so images can render through rokka.
    */
   public function testRokkaMetadataNeedsPermission(): void {
     // Never saved: access checks don't need a stored entity.
@@ -77,13 +77,11 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
       'hash' => $this->randomMachineName(40),
     ]);
 
-    $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', $this->createUser([], NULL, TRUE))->isAllowed());
-    $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', $this->createUser())->isNeutral());
-    $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', new AnonymousUserSession())->isNeutral());
-
-    $this->assertTrue($entity->access('view', $this->createUser([], NULL, TRUE)));
-    $this->assertFalse($entity->access('view', $this->createUser()));
-    $this->assertFalse($entity->access('view', new AnonymousUserSession()));
+    foreach ([new AnonymousUserSession(), $this->createUser()] as $account) {
+      $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'view', $account)->isAllowed());
+      $this->assertTrue(blokkli_starterkit_rokka_metadata_access($entity, 'update', $account)->isNeutral());
+      $this->assertTrue($entity->access('view', $account));
+    }
   }
 
   /**
