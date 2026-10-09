@@ -86,11 +86,11 @@ export default defineNuxtPlugin(() => {
           options.params = {}
         }
 
-        // Add the build hash to every GraphQL request.
+        // Add the build ID (unique per Nuxt build) to every GraphQL request.
         // We do this so that after a deployment, if the user is using the
         // "new" version of the app, the request URL issued is now different
         // than the previous one and thus will not be served from cache.
-        options.params.__h = config.public.buildHash
+        options.params.__h = config.app.buildId
 
         // Add the current language to the URL
         options.params.__l = language.value

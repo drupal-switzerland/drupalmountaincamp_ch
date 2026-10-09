@@ -9,6 +9,5 @@ export const runtimeConfig: NuxtConfig['runtimeConfig'] = {
   public: {
     rokkaHost: '',
     imageHash: '',
-    buildHash: process.env.CI_COMMIT_SHORT_SHA || 'local',
   },
 }

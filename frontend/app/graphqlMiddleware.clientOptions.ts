@@ -11,7 +11,7 @@ export default defineGraphqlClientOptions<{
 
     return {
       language: language.value,
-      hash: config.public.buildHash,
+      hash: config.app.buildId,
       env: import.meta.server ? 'server' : 'client',
     }
   },
