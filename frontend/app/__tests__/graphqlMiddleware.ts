@@ -79,10 +79,10 @@ describe('The nuxt-graphql-middleware config', () => {
     expect(headers.get('set-cookie')).toEqual(['existing=1', 'SSESSabc=1'])
   })
 
-  test('Marks a response that sets cookies as uncacheable', () => {
+  test('Marks a response that sets cookies as uncacheable', async () => {
     const { event } = createEvent()
 
-    const result = graphqlMiddlewareConfig.onServerResponse!(
+    const result = await graphqlMiddlewareConfig.onServerResponse!(
       event,
       createResponse(['SSESSabc=1']),
     )
