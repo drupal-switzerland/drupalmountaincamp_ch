@@ -57,7 +57,7 @@
             <div v-if="videoDescription">
               {{ videoDescription }}
             </div>
-            <div v-if="source" class="mt-2 text-gray-900/60 md:mt-0">
+            <div v-if="source" class="mt-2 text-gray-600 md:mt-0">
               &copy; {{ source }}
             </div>
           </figcaption>
