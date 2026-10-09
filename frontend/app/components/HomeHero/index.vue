@@ -38,7 +38,7 @@
 
     <div class="bg-primary-100 text-primary-500">
       <div
-        class="container !my-0 grid gap-y-2 border-b border-primary-500 pb-4 xs:pb-8 md:grid-cols-[max-content_1fr_auto] md:items-center md:gap-y-0 md:pb-11"
+        class="container !my-0 grid gap-y-2 pb-8 pt-4 xs:pb-12 xs:pt-6 md:grid-cols-[max-content_1fr_auto] md:items-center md:gap-y-0 md:pb-16 md:pt-8"
       >
         <div class="flex flex-col gap-[6px] md:pr-8">
           <p class="label">

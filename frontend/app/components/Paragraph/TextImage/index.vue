@@ -1,6 +1,6 @@
 <template>
   <div v-if="isTopLevel" class="container" :class="spacingClassList">
-    <div class="grid items-center gap-8 md:grid-cols-2 lg:gap-16">
+    <div class="grid gap-8 md:grid-cols-2 md:items-start lg:gap-16">
       <div class="min-w-0">
         <h2
           v-if="title || isEditing"
