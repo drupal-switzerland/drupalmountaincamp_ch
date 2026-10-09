@@ -1,10 +1,13 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
-import { brand } from '../../tailwind.config'
+import { brand, colors } from '../../tailwind.config'
 
 const WHITE = '#FFFFFF'
 const AA_TEXT = 4.5
 const AA_LARGE_TEXT = 3
+const AA_NON_TEXT = 3
+// The colour loading-indicator.css gives the navigation loading bar.
+const LOADING_BAR = colors.primary[400]
 
 function relativeLuminance(hex: string): number {
   const channels = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
@@ -36,6 +39,10 @@ const pairs: [string, string, string, number][] = [
   ['ice text on navy', brand.ice, brand.navy, AA_TEXT],
   ['lilac text on navy', brand.lilac, brand.navy, AA_TEXT],
   ['sky large heading on white', brand.sky, WHITE, AA_LARGE_TEXT],
+  // Navigation loading bar (blue) over the event strip, header and menus.
+  ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
+  ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
+  ['loading bar on gray-50', LOADING_BAR, colors.gray[50], AA_NON_TEXT],
 ]
 
 describe('brand colour contrast', () => {

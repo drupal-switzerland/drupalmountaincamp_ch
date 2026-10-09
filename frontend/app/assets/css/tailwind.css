@@ -8,6 +8,7 @@
 @import './components/link.css';
 @import './components/button.css';
 @import './components/brand.css';
+@import './components/loading-indicator.css';
 
 @tailwind base;
 @tailwind components;
