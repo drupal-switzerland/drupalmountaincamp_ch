@@ -16,13 +16,11 @@
         <div class="flex gap-4 md:justify-end">
           <button @click="goPrev">
             <SpriteSymbol name="arrow-left" class="size-7 text-primary-500" />
-            <span class="sr-only">{{
-              $texts('slides.prev', 'Vorherige')
-            }}</span>
+            <span class="sr-only">{{ $texts('slides.prev', 'Previous') }}</span>
           </button>
           <button @click="goNext">
             <SpriteSymbol name="arrow-right" class="size-7 text-primary-500" />
-            <span class="sr-only">{{ $texts('slides.next', 'Nächste') }}</span>
+            <span class="sr-only">{{ $texts('slides.next', 'Next') }}</span>
           </button>
         </div>
       </div>

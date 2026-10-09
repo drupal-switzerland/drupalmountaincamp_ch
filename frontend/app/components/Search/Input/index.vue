@@ -30,7 +30,7 @@
     >
       <SpriteSymbol name="magnifyingglass" />
       <span class="sr-only md:not-sr-only">
-        {{ $texts('search.ctaButton', 'Suchen') }}
+        {{ $texts('search.ctaButton', 'Search') }}
       </span>
     </button>
   </div>

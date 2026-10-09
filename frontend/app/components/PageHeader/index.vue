@@ -48,7 +48,7 @@
           ref="menuToggle"
           type="button"
           class="flex size-11 items-center justify-center gap-3 leading-none md:hidden"
-          :aria-label="$texts('menu', 'Menü')"
+          :aria-label="$texts('menu', 'Menu')"
           :aria-expanded="isMenuOpen"
           aria-controls="global-menu"
           @click.prevent="toggleMenu"

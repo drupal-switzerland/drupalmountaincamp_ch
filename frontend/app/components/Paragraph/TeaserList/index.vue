@@ -42,11 +42,11 @@
 
     <nav v-if="isSliderDesktop" class="container mx-auto mt-6 hidden md:block">
       <div class="flex justify-end">
-        <button :aria-label="$texts('slides.prev', 'Vorherige')" @click="prev">
+        <button :aria-label="$texts('slides.prev', 'Previous')" @click="prev">
           <SpriteSymbol name="arrow-left" class="size-7 text-primary-500" />
         </button>
 
-        <button :aria-label="$texts('slides.next', 'Nächste')" @click="next">
+        <button :aria-label="$texts('slides.next', 'Next')" @click="next">
           <SpriteSymbol name="arrow-right" class="size-7 text-primary-500" />
         </button>
       </div>
