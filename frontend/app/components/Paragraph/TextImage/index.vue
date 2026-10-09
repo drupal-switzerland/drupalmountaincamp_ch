@@ -1,5 +1,39 @@
 <template>
-  <div class="sm:grid sm:grid-cols-12">
+  <div v-if="isTopLevel" class="container" :class="spacingClassList">
+    <div class="grid items-center gap-8 md:grid-cols-2 lg:gap-16">
+      <div class="min-w-0">
+        <h2
+          v-if="title || isEditing"
+          v-blokkli-editable:field_title
+          class="mb-4 text-3xl lg:text-4xl"
+        >
+          {{ title }}
+        </h2>
+        <div
+          v-if="text || isEditing"
+          ref="content"
+          v-blokkli-editable:field_text
+          class="ck-content hyphens-auto"
+          v-html="text"
+        />
+      </div>
+      <div
+        v-blokkli-droppable:field_image
+        class="min-w-0"
+        :class="{ 'md:order-first': options.imagePosition === 'left' }"
+      >
+        <MediaImage
+          v-if="image"
+          v-bind="image"
+          :image-style="pageImageStyle"
+          :loading="loading"
+          :preload="preload"
+          class="overflow-hidden rounded-[18px]"
+        />
+      </div>
+    </div>
+  </div>
+  <div v-else class="sm:grid sm:grid-cols-12">
     <div class="col-span-7">
       <div class="swiper-carousel-left relative z-50 origin-bottom-left">
         <ImageItem
@@ -49,8 +83,50 @@ const imageStyle = defineImageStyle({
   },
 })
 
-const { index, parentType } = defineBlokkli({
+// On a page: text beside the image, image left or right by option. Inside a
+// carousel the paragraph keeps its slide layout.
+const pageImageStyle = defineImageStyle({
+  type: 'sizes',
+  aspectRatio: 3 / 2,
+  sizes: {
+    xs: 640,
+    sm: 768,
+    md: 680,
+  },
+})
+
+const { index, parentType, options } = defineBlokkli({
   bundle: 'text_image',
+  globalOptions: ['spacing'],
+  options: {
+    imagePosition: {
+      type: 'radios',
+      label: 'Image position',
+      default: 'right',
+      options: {
+        left: 'Image left',
+        right: 'Image right',
+      },
+    },
+  },
+  editor: {
+    // Position and spacing only apply on a page, not inside a carousel.
+    determineVisibleOptions: (ctx) =>
+      ctx.parentType ? [] : ['imagePosition', 'spacing'],
+  },
+})
+
+const isEditing = import.meta.blokkliEditing
+const isTopLevel = computed(() => !parentType.value)
+
+const spacingClassList = computed(() => {
+  if (options.value.spacing === 'small') {
+    return ['py-6', 'lg:py-10']
+  }
+  if (options.value.spacing === 'large') {
+    return ['py-12', 'lg:py-20']
+  }
+  return []
 })
 
 const content = ref<HTMLElement | null>(null)

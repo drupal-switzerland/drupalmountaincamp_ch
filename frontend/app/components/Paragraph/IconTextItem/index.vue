@@ -46,22 +46,36 @@
 
   <article
     v-else-if="display === 'infoCards'"
-    class="gradient-border flex flex-col gap-3 rounded-[18px] p-6 md:p-8"
+    class="gradient-border flex flex-col overflow-hidden rounded-[18px]"
   >
-    <h3
-      v-if="title || isEditing"
-      v-blokkli-editable:field_title
-      class="text-2xl"
-    >
-      {{ title }}
-    </h3>
-    <div
-      v-if="text || isEditing"
-      ref="content"
-      v-blokkli-editable:field_text
-      class="ck-content hyphens-auto lg:hyphens-none"
-      v-html="text"
-    />
+    <!-- Optional photo across the top of the card. -->
+    <div v-if="image || isEditing" v-blokkli-droppable:field_image>
+      <MediaImage
+        v-if="image"
+        v-bind="image"
+        :image-style="cardImageStyle"
+        hide-caption
+      />
+    </div>
+    <div class="flex grow flex-col gap-3 p-6 md:p-8">
+      <h3
+        v-if="title || isEditing"
+        v-blokkli-editable:field_title
+        class="text-2xl"
+      >
+        {{ title }}
+      </h3>
+      <div
+        v-if="text || isEditing"
+        ref="content"
+        v-blokkli-editable:field_text
+        class="ck-content hyphens-auto lg:hyphens-none"
+        v-html="text"
+      />
+      <p v-if="image?.copyright" class="mt-auto text-sm text-gray-600">
+        &copy; {{ image.copyright }}
+      </p>
+    </div>
   </article>
 
   <div
@@ -100,6 +114,7 @@ import { dayNumber } from '~/helpers/programme'
 
 const props = defineProps<{
   icon: ParagraphIconTextItemFragment['icon']
+  image?: ParagraphIconTextItemFragment['image']
   text: ParagraphIconTextItemFragment['text']
   title: ParagraphIconTextItemFragment['title']
 }>()
@@ -115,6 +130,17 @@ const display = inject(
   ICON_TEXT_LIST_DISPLAY,
   computed<IconTextListDisplay>(() => 'list'),
 )
+
+// Info cards sit two to a row, so the photo never needs more than half the grid.
+const cardImageStyle = defineImageStyle({
+  type: 'sizes',
+  aspectRatio: 3 / 2,
+  sizes: {
+    xs: 640,
+    sm: 768,
+    md: 680,
+  },
+})
 
 const stopNumber = computed(() => dayNumber(props.title, index.value))
 
