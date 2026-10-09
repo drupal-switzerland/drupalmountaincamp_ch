@@ -11,7 +11,14 @@
       @click="removeMessage(i)"
     >
       <div v-html="message.message" />
-      <SpriteSymbol name="close" class="size-6" />
+      <button
+        type="button"
+        class="shrink-0"
+        :aria-label="$texts('messages.dismiss', 'Dismiss message')"
+        @click.stop="removeMessage(i)"
+      >
+        <SpriteSymbol name="close" class="block size-6" />
+      </button>
     </div>
   </div>
 </template>
@@ -20,6 +27,7 @@
 import type { DrupalMessageType } from '~/composables/useDrupalMessages'
 
 const { messages, removeMessage } = useDrupalMessages()
+const { $texts } = useEasyTexts()
 
 const classes: Record<DrupalMessageType, string> = {
   error: 'bg-error-100 text-error-800',
