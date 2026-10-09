@@ -14,6 +14,7 @@ use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * Tests the button to text paragraph conversion.
@@ -117,6 +118,22 @@ class ButtonToTextTest extends UnitTestCase {
   public function testUngeneratableLink(): void {
     $result = $this->convert('Click', NULL, new \InvalidArgumentException('Invalid URI'));
     $this->assertSame('<p>Click</p>', $result['field_text']['value']);
+  }
+
+  /**
+   * A removed route or missing route parameter leaves the label as text.
+   */
+  public function testRoutingError(): void {
+    $result = $this->convert('Old', NULL, new RouteNotFoundException('Route "foo" does not exist.'));
+    $this->assertSame('<p>Old</p>', $result['field_text']['value']);
+  }
+
+  /**
+   * A target without a URL (<nolink>, <button>) leaves the label as text.
+   */
+  public function testTargetWithoutUrl(): void {
+    $result = $this->convert('No link', '');
+    $this->assertSame('<p>No link</p>', $result['field_text']['value']);
   }
 
   /**
