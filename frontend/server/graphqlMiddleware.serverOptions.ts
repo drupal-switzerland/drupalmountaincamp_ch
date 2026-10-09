@@ -25,7 +25,7 @@ const HEADER_KEYS: string[] = [
 export default defineGraphqlServerOptions<{
   __cacheability?: GraphqlCacheability
 }>({
-  graphqlEndpoint(event: H3Event) {
+  graphqlEndpoint() {
     const config = useRuntimeConfig()
     return `${config.backendUrl}/graphql`
   },
@@ -52,7 +52,7 @@ export default defineGraphqlServerOptions<{
 
     return {}
   },
-  onServerResponse(event: H3Event, graphqlResponse: any) {
+  onServerResponse(event, graphqlResponse) {
     // Pass Drupal's cookies on to the client, one header per cookie:
     // headers.get('set-cookie') joins them into a single invalid header.
     const cookies: string[] = graphqlResponse.headers.getSetCookie()
