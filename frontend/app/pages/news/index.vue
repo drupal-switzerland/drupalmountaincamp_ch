@@ -3,17 +3,22 @@
     <PageHero :title="entity?.title || 'News'" />
 
     <div class="container">
-      <div
-        v-if="pressReleases.length"
-        ref="results"
-        tabindex="-1"
-        class="mx-auto max-w-3xl scroll-mt-28 space-y-10"
-      >
-        <NodePressReleaseTeaser
-          v-for="item in pressReleases"
-          :key="item.uuid"
-          v-bind="item"
-        />
+      <div ref="results" tabindex="-1" class="mx-auto max-w-3xl scroll-mt-28">
+        <p v-if="listFailed" class="text-lg">
+          {{
+            $texts(
+              'news.loadError',
+              'The news could not be loaded. Please try again later.',
+            )
+          }}
+        </p>
+        <div v-else class="space-y-10">
+          <NodePressReleaseTeaser
+            v-for="item in pressReleases"
+            :key="item.uuid"
+            v-bind="item"
+          />
+        </div>
       </div>
       <Pagination
         class="mt-12"
@@ -33,6 +38,8 @@ import type {
 import { parsePageParam, totalPages } from '~/helpers/pagination'
 
 const PAGE_SIZE = 10
+// The list offset is a GraphQL Int (32-bit signed).
+const MAX_OFFSET = 2_147_483_647
 
 defineOptions({
   name: 'PageNewsOverview',
@@ -40,29 +47,37 @@ defineOptions({
 
 definePageMeta({
   name: 'news-overview',
+  middleware: 'canonical-page-param',
 })
 
 const { $texts } = useEasyTexts()
 const nuxtRoute = useRoute()
 const currentPage = computed(() => parsePageParam(nuxtRoute.query.page))
+const isPageInRange = computed(
+  () => (currentPage.value - 1) * PAGE_SIZE <= MAX_OFFSET,
+)
 
 // Route data (title, breadcrumb, metatags) once; the list per page. Reactive
 // list key: ?page= changes reuse this component and only refetch the list.
-const [{ data: query }, { data: list }] = await Promise.all([
-  useAsyncData(nuxtRoute.path, () =>
-    useGraphqlQuery('newsOverview', { path: nuxtRoute.path }).then(
-      (v) => v.data,
+const [{ data: query }, { data: list, status: listStatus }] = await Promise.all(
+  [
+    useAsyncData(nuxtRoute.path, () =>
+      useGraphqlQuery('newsOverview', { path: nuxtRoute.path }).then(
+        (v) => v.data,
+      ),
     ),
-  ),
-  useAsyncData(
-    () => `news-list:${currentPage.value}`,
-    () =>
-      useGraphqlQuery('newsList', {
-        limit: PAGE_SIZE,
-        offset: (currentPage.value - 1) * PAGE_SIZE,
-      }).then((v) => v.data),
-  ),
-])
+    useAsyncData(
+      () => `news-list:${currentPage.value}`,
+      async () =>
+        isPageInRange.value
+          ? useGraphqlQuery('newsList', {
+              limit: PAGE_SIZE,
+              offset: (currentPage.value - 1) * PAGE_SIZE,
+            }).then((v) => v.data)
+          : null,
+    ),
+  ],
+)
 
 const { entity } = await useDrupalRoute<NodePageFragment>(query.value ?? null, {
   noError: true,
@@ -75,7 +90,9 @@ const pageCount = computed(() =>
 // Only a successfully loaded list can say a page doesn't exist; a failed
 // request must not turn into a 404.
 const isBeyondLastPage = computed(
-  () => !!list.value?.entityQuery && currentPage.value > pageCount.value,
+  () =>
+    !isPageInRange.value ||
+    (!!list.value?.entityQuery && currentPage.value > pageCount.value),
 )
 const notFound = { statusCode: 404, statusMessage: 'Page not found' }
 if (isBeyondLastPage.value) {
@@ -87,6 +104,23 @@ watch(isBeyondLastPage, (beyond) => {
     showError(notFound)
   }
 })
+
+// A request error or a response without the list (GraphQL errors).
+const listFailed = computed(
+  () =>
+    !isBeyondLastPage.value &&
+    (listStatus.value === 'error' ||
+      (listStatus.value === 'success' && !list.value?.entityQuery)),
+)
+// 503 and private, so neither the route cache (200 only) nor the CDN keeps
+// the error page.
+if (import.meta.server && listFailed.value) {
+  const event = useRequestEvent()
+  if (event) {
+    setResponseStatus(event, 503)
+  }
+  useCDNHeaders((helper) => helper.private(), event)
+}
 
 const pressReleases = computed(() => {
   const items = list.value?.entityQuery?.items ?? []

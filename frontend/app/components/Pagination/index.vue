@@ -13,7 +13,7 @@
           :aria-current="undefined"
           rel="prev"
           class="inline-flex min-h-11 items-center rounded-full border-2 border-primary-100 px-4 font-bold text-primary-500 hover:border-primary-400"
-          @click="emit('navigate')"
+          @click="onClick($event, currentPage - 1)"
         >
           {{ $texts('pagination.previous', 'Previous') }}
         </NuxtLink>
@@ -28,7 +28,7 @@
               ? 'border-primary-500 bg-primary-500 text-white'
               : 'border-primary-100 text-primary-500 hover:border-primary-400'
           "
-          @click="emit('navigate')"
+          @click="onClick($event, page)"
         >
           <span class="sr-only">{{ $texts('pagination.page', 'Page') }}</span>
           {{ page }}
@@ -40,7 +40,7 @@
           :aria-current="undefined"
           rel="next"
           class="inline-flex min-h-11 items-center rounded-full border-2 border-primary-100 px-4 font-bold text-primary-500 hover:border-primary-400"
-          @click="emit('navigate')"
+          @click="onClick($event, currentPage + 1)"
         >
           {{ $texts('pagination.next', 'Next') }}
         </NuxtLink>
@@ -51,6 +51,7 @@
 
 <script lang="ts" setup>
 import type { RouteLocationRaw } from 'vue-router'
+import { isSameTabClick, withPageParam } from '~/helpers/pagination'
 
 const props = defineProps<{
   currentPage: number
@@ -58,7 +59,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  /** A pagination link was activated. */
+  /** A pagination link navigates to another page in this tab. */
   navigate: []
 }>()
 
@@ -69,13 +70,13 @@ const pages = computed(() =>
   Array.from({ length: props.totalPages }, (_, i) => i + 1),
 )
 
-// Page 1 is the plain URL, so it has a single canonical address.
-function linkTo(page: number): RouteLocationRaw {
-  const query = { ...route.query }
-  delete query.page
-  if (page > 1) {
-    query.page = String(page)
+function onClick(event: MouseEvent, page: number) {
+  if (page !== props.currentPage && isSameTabClick(event)) {
+    emit('navigate')
   }
-  return { path: route.path, query }
+}
+
+function linkTo(page: number): RouteLocationRaw {
+  return { path: route.path, query: withPageParam(route.query, page) }
 }
 </script>

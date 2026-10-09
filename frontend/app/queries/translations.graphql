@@ -14,6 +14,7 @@ fragment easyTexts on TextsLoader {
   latestNews__title: getText(key: "title", context: "latestNews", default: "News")
   menu: getText(key: "menu", default: "Menu")
   more_information: getText(key: "more_information", default: "More information")
+  news__loadError: getText(key: "loadError", context: "news", default: "The news could not be loaded. Please try again later.")
   newTabHint: getText(key: "newTabHint", default: "opens in a new tab")
   pagination__label: getText(key: "label", context: "pagination", default: "Pagination")
   pagination__next: getText(key: "next", context: "pagination", default: "Next")
