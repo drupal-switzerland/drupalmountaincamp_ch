@@ -111,11 +111,6 @@ function blokkli_starterkit_entity_field_access(
   $field_name = $field_definition->getName();
   $entity = $items?->getEntity();
 
-  if ($field_name === 'status' && $operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
-    // Allow viewing the status field.
-    return AccessResult::allowedIf($account->hasPermission('view user status'));
-  }
-
   if ($entity instanceof UserInterface) {
     $isSameAccount = (int) $entity->id() === (int) $account->id();
 

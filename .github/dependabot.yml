@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: composer
+    directory: /drupal
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+
+  # Dependabot supports version updates for bun, not security updates or alerts.
+  - package-ecosystem: bun
+    directory: /frontend
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3

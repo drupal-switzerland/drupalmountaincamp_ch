@@ -51,7 +51,8 @@ class AddTeaserFromNodeId extends ParagraphMutationPluginBase {
    * @param string $hostFieldName
    *   The name of the host paragraph field where the paragraph will be added.
    * @param string|null $afterUuid
-   *   The UUID of the paragraph after which the new paragraph will be added. Can be null for adding at the start.
+   *   The UUID of the paragraph after which the new paragraph will be added.
+   *   Can be null for adding at the start.
    */
   public function execute(
     ParagraphMutationContextInterface $context,

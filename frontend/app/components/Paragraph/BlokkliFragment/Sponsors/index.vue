@@ -5,11 +5,8 @@
     <div class="container relative !my-0 pb-8 md:pb-12">
       <section
         :aria-labelledby="headingId"
-        class="gradient-border relative flex flex-col gap-8 rounded-3xl p-6 shadow-[0_30px_60px_-30px_rgba(18,40,95,0.6)] xs:p-10 lg:p-12"
+        class="gradient-border relative flex flex-col gap-8 rounded-3xl p-6 shadow-[0_30px_60px_-30px_rgba(18,40,95,0.6)] xs:p-10 lg:px-12 lg:py-16"
       >
-        <BrandSparkles
-          class="pointer-events-none absolute -top-9 right-10 hidden w-24 text-primary-300 md:block"
-        />
         <div
           class="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between"
         >
@@ -26,19 +23,24 @@
               <template v-else>{{ title }}</template>
             </h2>
           </div>
-          <VuepalLink
-            :to="SPONSORSHIP_PATH"
-            class="button is-filled w-full shrink-0 justify-center md:w-auto"
+          <div
+            class="flex w-full shrink-0 items-center gap-8 md:w-auto lg:gap-12"
           >
-            {{ $texts('sponsors.cta', 'Become a sponsor') }}
-          </VuepalLink>
+            <BrandSparkles class="hidden w-24 text-primary-300 md:block" />
+            <VuepalLink
+              :to="SPONSORSHIP_PATH"
+              class="button is-filled w-full justify-center md:w-auto"
+            >
+              {{ $texts('sponsors.cta', 'Become a sponsor') }}
+            </VuepalLink>
+          </div>
         </div>
         <div v-if="platinum.length" class="flex flex-col gap-3">
           <h3 :id="platinumId" class="label">
             {{ $texts('sponsors.platinum', 'Platinum') }}
           </h3>
           <ul :aria-labelledby="platinumId" class="grid gap-5 md:grid-cols-3">
-            <li v-for="sponsor in platinum" :key="sponsor.uuid">
+            <li v-for="sponsor in platinum" :key="sponsor.uuid" class="min-w-0">
               <SponsorTile
                 :sponsor
                 :box="LOGO_BOXES.card"
