@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import graphqlMiddlewareConfig from './../../server/graphqlMiddleware.serverOptions'
 import type { H3Event } from 'h3'
 
@@ -24,44 +24,77 @@ describe('The nuxt-graphql-middleware config', () => {
     expect(result.headers?.cookie).toEqual('my_cookie')
   })
 
-  test('Passes each cookie from Drupal as its own set-cookie header', () => {
-    const setHeader = vi.fn()
+  function createEvent(initialHeaders: Record<string, string | string[]> = {}) {
+    const headers = new Map(Object.entries(initialHeaders))
+    const url = '/api/graphql_query/route?__server=true'
     const event = {
+      path: url,
       node: {
-        req: { url: '/api/graphql_query/route', headers: {} },
-        res: { setHeader },
+        req: { url, headers: {} },
+        res: {
+          getHeader: (name: string) => headers.get(name),
+          setHeader: (name: string, value: string | string[]) =>
+            headers.set(name, value),
+        },
       },
     } as unknown as H3Event
+    return { event, headers }
+  }
 
+  function createResponse(cookies: string[]) {
     const response = new Response('{}', {
-      headers: [
-        ['set-cookie', 'SSESSabc=1; Path=/; HttpOnly'],
-        ['set-cookie', 'Drupal.visitor.lang=en; Path=/'],
-      ],
+      headers: cookies.map((cookie): [string, string] => [
+        'set-cookie',
+        cookie,
+      ]),
     })
-    Object.assign(response, { _data: { data: {} } })
+    return Object.assign(response, { _data: { data: {} } }) as never
+  }
 
-    graphqlMiddlewareConfig.onServerResponse!(event, response as never)
+  test('Passes each cookie from Drupal as its own set-cookie header', () => {
+    const { event, headers } = createEvent()
 
-    expect(setHeader).toHaveBeenCalledWith('set-cookie', [
+    graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      createResponse([
+        'SSESSabc=1; Path=/; HttpOnly',
+        'Drupal.visitor.lang=en; Path=/',
+      ]),
+    )
+
+    expect(headers.get('set-cookie')).toEqual([
       'SSESSabc=1; Path=/; HttpOnly',
       'Drupal.visitor.lang=en; Path=/',
     ])
   })
 
+  test('Keeps cookies already set on the response', () => {
+    const { event, headers } = createEvent({ 'set-cookie': 'existing=1' })
+
+    graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      createResponse(['SSESSabc=1']),
+    )
+
+    expect(headers.get('set-cookie')).toEqual(['existing=1', 'SSESSabc=1'])
+  })
+
+  test('Marks a response that sets cookies as uncacheable', () => {
+    const { event } = createEvent()
+
+    const result = graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      createResponse(['SSESSabc=1']),
+    )
+
+    expect(result.__cacheability?.isCacheable).toBe(false)
+  })
+
   test('Sets no cookie header when Drupal sends none', () => {
-    const setHeader = vi.fn()
-    const event = {
-      node: {
-        req: { url: '/api/graphql_query/route', headers: {} },
-        res: { setHeader },
-      },
-    } as unknown as H3Event
-    const response = new Response('{}')
-    Object.assign(response, { _data: { data: {} } })
+    const { event, headers } = createEvent()
 
-    graphqlMiddlewareConfig.onServerResponse!(event, response as never)
+    graphqlMiddlewareConfig.onServerResponse!(event, createResponse([]))
 
-    expect(setHeader).not.toHaveBeenCalledWith('set-cookie', expect.anything())
+    expect(headers.has('set-cookie')).toBe(false)
   })
 })

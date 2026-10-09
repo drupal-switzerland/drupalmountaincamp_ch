@@ -1,4 +1,10 @@
-import { getHeaders, getQuery, setResponseStatus, type H3Event } from 'h3'
+import {
+  appendResponseHeader,
+  getHeaders,
+  getQuery,
+  setResponseStatus,
+  type H3Event,
+} from 'h3'
 import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-options'
 import { extractCacheability } from './utils/cacheability'
 import type { GraphqlCacheability } from './helpers'
@@ -55,13 +61,18 @@ export default defineGraphqlServerOptions<{
   onServerResponse(event, graphqlResponse) {
     // Pass Drupal's cookies on to the client, one header per cookie:
     // headers.get('set-cookie') joins them into a single invalid header.
+    // Appended, so cookies already set on this response are kept.
     const cookies: string[] = graphqlResponse.headers.getSetCookie()
-
-    if (cookies.length) {
-      event.node.res.setHeader('set-cookie', cookies)
-    }
+    cookies.forEach((cookie) =>
+      appendResponseHeader(event, 'set-cookie', cookie),
+    )
 
     const cacheability = extractCacheability(graphqlResponse, event)
+
+    // A cached response would hand one visitor's cookies to everyone.
+    if (cookies.length) {
+      cacheability.isCacheable = false
+    }
 
     const hasMessages = !!(
       graphqlResponse._data?.data &&
