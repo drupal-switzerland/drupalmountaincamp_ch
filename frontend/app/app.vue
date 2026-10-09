@@ -14,7 +14,7 @@
       </div>
     </ClientOnly>
     <NuxtLayout>
-      <NuxtPage :page-key="route.path" />
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
