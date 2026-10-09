@@ -5,8 +5,8 @@ import type { BreadcrumbFragment } from '#graphql-operations'
  *
  * During client navigation the next page sets its breadcrumb links and hero
  * flag while the previous page is still visible. The layout and the page hero
- * read these copies instead, which follow once the next page has rendered
- * (`page:finish`, see plugins/pageChrome.client.ts). Before the first commit
+ * read these copies instead, which are updated when the next page has resolved
+ * (`page:finish`, see plugins/pageChrome.client.ts). Before the first update
  * (server rendering, hydration) they fall back to the values the page set.
  */
 function useCommitted() {

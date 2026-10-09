@@ -14,19 +14,13 @@
       </div>
     </ClientOnly>
     <NuxtLayout>
-      <NuxtPage :page-key="pageKey" />
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { RouteLocationNormalizedLoaded } from 'vue-router'
-
 const route = useRoute()
-
-// Keyed by the page's own route: `route` only updates after a page has
-// resolved, so as a key it never changed.
-const pageKey = (pageRoute: RouteLocationNormalizedLoaded) => pageRoute.path
 const drupalUser = useDrupalUser()
 const language = useCurrentLanguage()
 
