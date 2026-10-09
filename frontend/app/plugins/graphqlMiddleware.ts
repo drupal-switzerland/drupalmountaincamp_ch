@@ -1,6 +1,7 @@
 import { defineNuxtPlugin } from 'nuxt/app'
 import type { DrupalMessage } from '~/composables/useDrupalMessages'
 import type { GraphqlResponseTyped } from '#nuxt-graphql-middleware/response'
+import { getPageCacheability } from '~/helpers/graphqlCacheability'
 
 type GraphqlMessengerMessage = {
   type: string
@@ -39,12 +40,35 @@ export default defineNuxtPlugin(() => {
     return
   }
 
+  // A page rendered from a failed request must not be cached.
+  function markPageUncacheable() {
+    if (import.meta.server) {
+      useCDNHeaders((helper) => helper.private(), useRequestEvent())
+    }
+  }
+
   state.fetchOptions = {
     /**
      * Interceptor called whenever a GraphQL response arrives.
      */
     onResponse(result) {
       const data = result.response?._data
+
+      if (import.meta.server) {
+        const cacheability = getPageCacheability(data)
+        useCDNHeaders((helper) => {
+          if (!cacheability) {
+            helper.private()
+            return
+          }
+
+          helper
+            .public()
+            .setNumeric('maxAge', cacheability.maxAge)
+            .addTags(cacheability.tagsCdn)
+        }, useRequestEvent())
+      }
+
       if (!data) {
         return
       }
@@ -59,23 +83,10 @@ export default defineNuxtPlugin(() => {
           useCDNHeaders((v) => v.private())
         }
       })
-
-      if (import.meta.server) {
-        const event = useRequestEvent()
-
-        useCDNHeaders((helper) => {
-          if (!data.__cacheability?.isCacheable) {
-            helper.private()
-            return
-          }
-
-          helper
-            .public()
-            .setNumeric('maxAge', data.__cacheability.maxAge)
-            .addTags(data.__cacheability.tagsCdn)
-        }, event)
-      }
     },
+
+    onRequestError: markPageUncacheable,
+    onResponseError: markPageUncacheable,
 
     onRequest({ options, request }) {
       if (import.meta.server && import.meta.dev) {
@@ -86,11 +97,11 @@ export default defineNuxtPlugin(() => {
           options.params = {}
         }
 
-        // Add the build hash to every GraphQL request.
+        // Add the build ID (unique per Nuxt build) to every GraphQL request.
         // We do this so that after a deployment, if the user is using the
         // "new" version of the app, the request URL issued is now different
         // than the previous one and thus will not be served from cache.
-        options.params.__h = config.public.buildHash
+        options.params.__h = config.app.buildId
 
         // Add the current language to the URL
         options.params.__l = language.value

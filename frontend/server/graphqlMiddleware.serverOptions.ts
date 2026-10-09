@@ -1,4 +1,10 @@
-import { getHeaders, type H3Event } from 'h3'
+import {
+  appendResponseHeader,
+  getHeaders,
+  getQuery,
+  setResponseStatus,
+  type H3Event,
+} from 'h3'
 import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-options'
 import { extractCacheability } from './utils/cacheability'
 import type { GraphqlCacheability } from './helpers'
@@ -25,7 +31,7 @@ const HEADER_KEYS: string[] = [
 export default defineGraphqlServerOptions<{
   __cacheability?: GraphqlCacheability
 }>({
-  graphqlEndpoint(event: H3Event) {
+  graphqlEndpoint() {
     const config = useRuntimeConfig()
     return `${config.backendUrl}/graphql`
   },
@@ -52,15 +58,24 @@ export default defineGraphqlServerOptions<{
 
     return {}
   },
-  onServerResponse(event: H3Event, graphqlResponse: any) {
-    // Pass the set-cookie header from the GraphQL response to the client.
-    const setCookie = graphqlResponse.headers.get('set-cookie')
-
-    if (setCookie) {
-      event.node.res.setHeader('set-cookie', setCookie)
-    }
+  onServerResponse(event, graphqlResponse) {
+    // Pass Drupal's cookies on to the browser, one header per cookie:
+    // headers.get('set-cookie') joins them into a single invalid header.
+    // Appended, so cookies already set on this response are kept. Only
+    // browser requests get them: during SSR this event is an internal
+    // sub-request whose headers don't reach the page response.
+    const cookies: string[] = graphqlResponse.headers.getSetCookie()
+    cookies.forEach((cookie) =>
+      appendResponseHeader(event, 'set-cookie', cookie),
+    )
 
     const cacheability = extractCacheability(graphqlResponse, event)
+
+    // Drupal set a cookie, so a page rendered from this response may be
+    // specific to this visitor. Only affects SSR (__cacheability below).
+    if (cookies.length) {
+      cacheability.isCacheable = false
+    }
 
     const hasMessages = !!(
       graphqlResponse._data?.data &&
