@@ -6,10 +6,13 @@ namespace Drupal\blokkli_starterkit\Plugin\ParagraphsBlokkli\Conversion;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\link\LinkItemInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
 use Drupal\paragraphs_blokkli_conversion\ParagraphConversionPluginBase;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
 
 /**
@@ -22,7 +25,28 @@ use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
  *   target_bundle = "text",
  * )
  */
-class ButtonToText extends ParagraphConversionPluginBase {
+class ButtonToText extends ParagraphConversionPluginBase implements ContainerFactoryPluginInterface {
+
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected LoggerInterface $logger,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('logger.factory')->get('blokkli_starterkit'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -36,10 +60,15 @@ class ButtonToText extends ParagraphConversionPluginBase {
       try {
         $markup = $this->getLinkMarkup($link, $label) ?? $markup;
       }
-      catch (\InvalidArgumentException | RoutingException) {
+      catch (\InvalidArgumentException | RoutingException $e) {
         // A stored link Drupal can't generate a URL for (unsupported scheme,
         // removed route, missing route parameter): keep the label as text
         // instead of failing the conversion.
+        $this->logger->warning('Button to text: kept the label of button @uuid as text, its link @uri has no URL: @message', [
+          '@uuid' => $paragraph->uuid(),
+          '@uri' => $link->getValue()['uri'] ?? '',
+          '@message' => $e->getMessage(),
+        ]);
       }
     }
 
@@ -58,31 +87,24 @@ class ButtonToText extends ParagraphConversionPluginBase {
    * editor adds in CKEditor: basic_html has no linkit filter and pathologic
    * doesn't resolve /node/N to its alias. Cache metadata is collected instead
    * of bubbled, since this runs inside a GraphQL mutation. Label and URL are
-   * escaped; dangerous protocols such as javascript: are removed. Of the
-   * attributes the button's link widget offers, only target is allowed in
-   * basic_html (title and aria-label aren't), and only "_blank" is kept.
+   * escaped; dangerous protocols such as javascript: are removed. Link
+   * attributes such as target aren't carried over: the button never rendered
+   * them.
    *
    * @return string|null
    *   The markup, or NULL when the target has no URL (<nolink>, <button>).
    */
   private function getLinkMarkup(LinkItemInterface $link, string $label): ?string {
-    $url = $link->getUrl();
     $href = UrlHelper::stripDangerousProtocols(
-      $url->toString(TRUE)->getGeneratedUrl()
+      $link->getUrl()->toString(TRUE)->getGeneratedUrl()
     );
     if ($href === '') {
       return NULL;
     }
 
-    $attributes = $url->getOption('attributes');
-    $target = is_array($attributes) && ($attributes['target'] ?? NULL) === '_blank'
-      ? ' target="_blank"'
-      : '';
-
     return sprintf(
-      '<p><a href="%s"%s>%s</a></p>',
+      '<p><a href="%s">%s</a></p>',
       Html::escape($href),
-      $target,
       Html::escape($label !== '' ? $label : $href),
     );
   }

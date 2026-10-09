@@ -14,6 +14,7 @@ use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -26,7 +27,7 @@ class ButtonToTextTest extends UnitTestCase {
   /**
    * Converts a button with the given label and link (NULL: no link).
    */
-  private function convert(string $label, ?string $generatedUrl, ?\Throwable $urlError = NULL, array $linkAttributes = []): array {
+  private function convert(string $label, ?string $generatedUrl, ?\Throwable $urlError = NULL, array $linkAttributes = [], ?LoggerInterface $logger = NULL): array {
     $labelField = $this->createMock(FieldItemListInterface::class);
     $labelField->method('__get')->with('value')->willReturn($label);
 
@@ -44,6 +45,7 @@ class ButtonToTextTest extends UnitTestCase {
       $linkItem = $this->createMock(LinkItemInterface::class);
       $linkItem->method('isEmpty')->willReturn(FALSE);
       $linkItem->method('getUrl')->willReturn($url);
+      $linkItem->method('getValue')->willReturn(['uri' => 'internal:/old']);
     }
     $linkField = $this->createMock(FieldItemListInterface::class);
     $linkField->method('first')->willReturn($linkItem);
@@ -53,14 +55,31 @@ class ButtonToTextTest extends UnitTestCase {
       ['field_label', $labelField],
       ['field_link', $linkField],
     ]);
+    $paragraph->method('uuid')->willReturn('button-uuid');
 
-    $plugin = new ButtonToText([], 'button_to_text', []);
+    $plugin = new ButtonToText([], 'button_to_text', [], $logger ?? $this->createMock(LoggerInterface::class));
     $result = $plugin->convert(
       $paragraph,
       $this->createMock(ParagraphMutationContextInterface::class),
     );
     $this->assertIsArray($result);
     return $result;
+  }
+
+  /**
+   * A logger that expects one warning naming the button, link and error.
+   */
+  private function expectWarning(string $message): LoggerInterface {
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger->expects($this->once())->method('warning')->with(
+      $this->anything(),
+      [
+        '@uuid' => 'button-uuid',
+        '@uri' => 'internal:/old',
+        '@message' => $message,
+      ],
+    );
+    return $logger;
   }
 
   /**
@@ -84,26 +103,15 @@ class ButtonToTextTest extends UnitTestCase {
   }
 
   /**
-   * A link that opens in a new tab keeps doing so.
+   * Link attributes aren't carried over: the button never rendered them.
    */
-  public function testNewTab(): void {
+  public function testLinkAttributesDropped(): void {
     $result = $this->convert('Tickets', 'https://example.com/', NULL, [
       'target' => '_blank',
       'title' => 'Buy tickets',
     ]);
     $this->assertSame(
-      '<p><a href="https://example.com/" target="_blank">Tickets</a></p>',
-      $result['field_text']['value'],
-    );
-  }
-
-  /**
-   * Only target="_blank" is kept; other values can't inject markup.
-   */
-  public function testOtherTarget(): void {
-    $result = $this->convert('Tickets', '/tickets', NULL, ['target' => '_self" onclick="x']);
-    $this->assertSame(
-      '<p><a href="/tickets">Tickets</a></p>',
+      '<p><a href="https://example.com/">Tickets</a></p>',
       $result['field_text']['value'],
     );
   }
@@ -142,7 +150,7 @@ class ButtonToTextTest extends UnitTestCase {
    * A link Drupal can't generate a URL for leaves the label as text.
    */
   public function testUngeneratableLink(): void {
-    $result = $this->convert('Click', NULL, new \InvalidArgumentException('Invalid URI'));
+    $result = $this->convert('Click', NULL, new \InvalidArgumentException('Invalid URI'), [], $this->expectWarning('Invalid URI'));
     $this->assertSame('<p>Click</p>', $result['field_text']['value']);
   }
 
@@ -150,7 +158,7 @@ class ButtonToTextTest extends UnitTestCase {
    * A removed route or missing route parameter leaves the label as text.
    */
   public function testRoutingError(): void {
-    $result = $this->convert('Old', NULL, new RouteNotFoundException('Route "foo" does not exist.'));
+    $result = $this->convert('Old', NULL, new RouteNotFoundException('Route "foo" does not exist.'), [], $this->expectWarning('Route "foo" does not exist.'));
     $this->assertSame('<p>Old</p>', $result['field_text']['value']);
   }
 
