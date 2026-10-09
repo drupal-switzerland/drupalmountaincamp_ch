@@ -92,7 +92,9 @@ export default defineNuxtConfig({
   },
 
   rokka: {
-    host: '',
+    // Overridable per environment with NUXT_PUBLIC_ROKKA_HOST; an empty value
+    // renders every image from the Drupal derivatives.
+    host: 'mountaincamp.rokka.io',
     viewports: {
       xs: 640,
       sm: 768,

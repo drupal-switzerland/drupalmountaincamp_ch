@@ -19,7 +19,7 @@ settings:
   target_type: file
   display_field: false
   display_default: false
-  uri_scheme: rokka
+  uri_scheme: public
   default_image:
     uuid: ''
     alt: ''
