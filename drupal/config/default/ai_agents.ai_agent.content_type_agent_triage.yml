@@ -9,18 +9,6 @@ _core:
 id: content_type_agent_triage
 label: 'Content Type Agent'
 description: 'This is the initial agents for content type/node types, that can figure out if you are trying to create, edit, delete or ask questions about content types.'
-default_information_tools: |
-  node_types:
-    label: 'Node Types'
-    description: 'The existing node types on the system in YAML array with type (data name), label (name) and description'
-    tool: 'ai_agent:list_config_entities'
-    parameters:
-      entity_type: node_type
-      amount: 0
-      fields:
-        - type
-        - name
-        - description
 system_prompt: |-
   You are an Drupal 11 developer that specializes in content types/node types. You can create, edit, answer questions or delete content types using the tools to your disposal.
 
@@ -38,10 +26,6 @@ tools:
   'ai_agent:get_content_type_info': true
   'ai_agent:edit_content_type': true
   'ai_agent:create_content_type': true
-tool_usage_limits:
-  'ai_agent:get_content_type_info': {  }
-  'ai_agent:edit_content_type': {  }
-  'ai_agent:create_content_type': {  }
 tool_settings:
   'ai_agent:get_content_type_info':
     return_directly: 0
@@ -65,9 +49,25 @@ orchestration_agent: false
 triage_agent: true
 max_loops: 3
 max_loops_message: ''
-masquerade_roles: {  }
+default_information_tools: |
+  node_types:
+    label: 'Node Types'
+    description: 'The existing node types on the system in YAML array with type (data name), label (name) and description'
+    tool: 'ai_agent:list_config_entities'
+    parameters:
+      entity_type: node_type
+      amount: 0
+      fields:
+        - type
+        - name
+        - description
+tool_usage_limits:
+  'ai_agent:get_content_type_info': {  }
+  'ai_agent:edit_content_type': {  }
+  'ai_agent:create_content_type': {  }
 exclude_users_role: false
+masquerade_roles: {  }
 structured_output_enabled: false
 structured_output_schema: ''
-guardrail_set: ''
 hostname_filter_disabled: false
+guardrail_set: ''

@@ -7,37 +7,6 @@ _core:
 id: field_agent_triage
 label: 'Field Agent'
 description: 'This is capable of adding, editing, informing, reordering or removing a field types to an existing Drupal entity type/bundles, lookup fields existing on entities and also change the form display and view display of the fields. Note that this does not generate entity type or bundles.'
-default_information_tools: |
-  list_field_types:
-    label: 'List of all field types'
-    description: 'These are all field types you can set'
-    tool: 'ai_agent:list_field_types'
-    parameters:
-      simple_representation: true
-  list_storage_fields:
-    label: 'List of entity types and storages'
-    description: 'The list of entity type and field storages'
-    tool: 'ai_agent:get_entity_type_field_storage'
-    parameters: {  }
-  list_entity_types_and_bundles:
-    label: 'List of entity types and bundles'
-    description: 'The current list of entity types and bundles on this system'
-    tool: 'ai_agent:list_bundles'
-    parameters: {  }
-    available_on_loop:
-      - 1
-  list_field_view_types:
-    label: 'List of view display type'
-    description: 'The current list of view display types on this system'
-    tool: 'ai_agent:list_field_display_types'
-    parameters:
-      type_of_display: display
-  list_field_form_types:
-    label: 'List of form display type'
-    description: 'The current list of form display types on this system'
-    tool: 'ai_agent:list_field_display_types'
-    parameters:
-      type_of_display: form
 system_prompt: |-
   You are a Drupal developer who can generate and edit Drupal fields for entity types, but also answer questions about fields on entities. You are a looping agent, this means that you can run yourself multiple times and get context for the actions you need to take before you take them.
 
@@ -92,18 +61,6 @@ tools:
   'ai_agent:create_field_storage_config': true
   'ai_agent:manipulate_field_display_form': true
   'ai_agent:manipulate_field_config': true
-tool_usage_limits:
-  'ai_agent:get_config_schema': {  }
-  'ai_agent:get_field_config_form': {  }
-  'ai_agent:get_entity_field_information': {  }
-  'ai_agent:get_field_display_form': {  }
-  'ai_agent:list_bundles': {  }
-  'ai_agent:get_field_storage': {  }
-  'ai_agent:get_field_storage_form': {  }
-  'ai_agent:get_field_config': {  }
-  'ai_agent:create_field_storage_config': {  }
-  'ai_agent:manipulate_field_display_form': {  }
-  'ai_agent:manipulate_field_config': {  }
 tool_settings:
   'ai_agent:get_config_schema':
     return_directly: 0
@@ -175,9 +132,52 @@ orchestration_agent: false
 triage_agent: true
 max_loops: 15
 max_loops_message: ''
-masquerade_roles: {  }
+default_information_tools: |
+  list_field_types:
+    label: 'List of all field types'
+    description: 'These are all field types you can set'
+    tool: 'ai_agent:list_field_types'
+    parameters:
+      simple_representation: true
+  list_storage_fields:
+    label: 'List of entity types and storages'
+    description: 'The list of entity type and field storages'
+    tool: 'ai_agent:get_entity_type_field_storage'
+    parameters: {  }
+  list_entity_types_and_bundles:
+    label: 'List of entity types and bundles'
+    description: 'The current list of entity types and bundles on this system'
+    tool: 'ai_agent:list_bundles'
+    parameters: {  }
+    available_on_loop:
+      - 1
+  list_field_view_types:
+    label: 'List of view display type'
+    description: 'The current list of view display types on this system'
+    tool: 'ai_agent:list_field_display_types'
+    parameters:
+      type_of_display: display
+  list_field_form_types:
+    label: 'List of form display type'
+    description: 'The current list of form display types on this system'
+    tool: 'ai_agent:list_field_display_types'
+    parameters:
+      type_of_display: form
+tool_usage_limits:
+  'ai_agent:get_config_schema': {  }
+  'ai_agent:get_field_config_form': {  }
+  'ai_agent:get_entity_field_information': {  }
+  'ai_agent:get_field_display_form': {  }
+  'ai_agent:list_bundles': {  }
+  'ai_agent:get_field_storage': {  }
+  'ai_agent:get_field_storage_form': {  }
+  'ai_agent:get_field_config': {  }
+  'ai_agent:create_field_storage_config': {  }
+  'ai_agent:manipulate_field_display_form': {  }
+  'ai_agent:manipulate_field_config': {  }
 exclude_users_role: false
+masquerade_roles: {  }
 structured_output_enabled: false
 structured_output_schema: ''
-guardrail_set: ''
 hostname_filter_disabled: false
+guardrail_set: ''

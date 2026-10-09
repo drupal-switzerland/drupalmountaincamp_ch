@@ -7,18 +7,6 @@ _core:
 id: taxonomy_agent_config
 label: 'Taxonomy Agent'
 description: 'The taxonomy agent can generate and edit vocabularies, as well as create and edit taxonomy terms. It can also answer questions, and give suggestions on what taxonomy terms to create from a general question. Please do ask it multiple instructions at once, it can handle it.'
-default_information_tools: |
-  vocabularies:
-    label: Vocabularies
-    description: 'The existing Vocabularies on the system'
-    tool: 'ai_agent:list_config_entities'
-    parameters:
-      entity_type: taxonomy_vocabulary
-      amount: 0
-      fields:
-        - vid
-        - name
-        - description
 system_prompt: |-
   You are an Drupal developer agent, that is specialized on creating and editing vocabularies and taxonomies - you also have the possibility to answer questions by searching among the existing vocabularies and taxonomies. Only do answer questions around this, any other question you should not answer.
 
@@ -44,17 +32,6 @@ tools:
   'ai_agent:get_current_content_entity_values': true
   'ai_agent:modify_taxonomy_term': true
   'ai_agent:modify_vocabulary': true
-tool_usage_limits:
-  'ai_agent:get_field_values_and_context':
-    entity_type:
-      action: only_allow
-      values:
-        - taxonomy_term
-      hide_property: 0
-  'ai_agent:list_taxonomy_term': {  }
-  'ai_agent:get_current_content_entity_values': {  }
-  'ai_agent:modify_taxonomy_term': {  }
-  'ai_agent:modify_vocabulary': {  }
 tool_settings:
   'ai_agent:get_field_values_and_context':
     return_directly: 0
@@ -90,9 +67,32 @@ orchestration_agent: false
 triage_agent: true
 max_loops: 10
 max_loops_message: ''
-masquerade_roles: {  }
+default_information_tools: |
+  vocabularies:
+    label: Vocabularies
+    description: 'The existing Vocabularies on the system'
+    tool: 'ai_agent:list_config_entities'
+    parameters:
+      entity_type: taxonomy_vocabulary
+      amount: 0
+      fields:
+        - vid
+        - name
+        - description
+tool_usage_limits:
+  'ai_agent:get_field_values_and_context':
+    entity_type:
+      action: only_allow
+      values:
+        - taxonomy_term
+      hide_property: 0
+  'ai_agent:list_taxonomy_term': {  }
+  'ai_agent:get_current_content_entity_values': {  }
+  'ai_agent:modify_taxonomy_term': {  }
+  'ai_agent:modify_vocabulary': {  }
 exclude_users_role: false
+masquerade_roles: {  }
 structured_output_enabled: false
 structured_output_schema: ''
-guardrail_set: ''
 hostname_filter_disabled: false
+guardrail_set: ''
