@@ -32,6 +32,40 @@ describe('replaceColors', () => {
   it('handles missing markup', () => {
     expect(replaceColors()).toBe('')
   })
+
+  it.each([
+    ["<path fill='none'/>", "<path fill='none'/>"],
+    ['<path fill="nonzero"/>', '<path fill="currentColor"/>'],
+    ['<path fill="none2"/>', '<path fill="none2"/>'],
+    ['<path fill=""/>', '<path fill="currentColor"/>'],
+    ['<path fill="a\'b"/>', '<path fill="currentColor"/>'],
+    ['<path\n  fill="red"/>', '<path fill="currentColor"/>'],
+    ['<path fill=red/>', '<path fill=red/>'],
+    ['<path fill="re\nd"/>', '<path fill="re\nd"/>'],
+    ['<path fill-rule="evenodd"/>', '<path fill-rule="evenodd"/>'],
+    ['<path data-fill="red"/>', '<path data- fill="currentColor"/>'],
+    ['<path xfill="red"/>', '<path xfill="red"/>'],
+    ['<fill="red"/>', '< fill="currentColor"/>'],
+    ['</g fill="red">', '</g fill="red">'],
+    ['<g>x fill="red"</g>', '<g>x fill="red"</g>'],
+    ['<a fill="x>" fill="red">', '<a fill="currentColor" fill="red">'],
+    ['p fill="<b" fill="red">', 'p fill="<b" fill="currentColor">'],
+    [
+      '<a fill="x>" stroke="red">',
+      '<a fill="currentColor" stroke="currentColor">',
+    ],
+  ])('replaces colours in %j', (markup, expected) => {
+    expect(replaceColors(markup)).toBe(expected)
+  })
+
+  it.each([
+    ["<path stroke='none'/>", "<path stroke='none'/>"],
+    ["<path stroke='#000'/>", '<path stroke="currentColor"/>'],
+    ['<path stroke-width="2"/>', '<path stroke-width="2"/>'],
+    ['<path\tstroke="red"/>', '<path stroke="currentColor"/>'],
+  ])('replaces stroke colours in %j', (markup, expected) => {
+    expect(replaceColors(markup)).toBe(expected)
+  })
 })
 
 describe('extractSymbol', () => {
@@ -48,10 +82,36 @@ describe('extractSymbol', () => {
     expect(result.content).toBe('\n<path d="M0 0"/>\n')
   })
 
-  it.each([undefined, '', '<div>not an svg</div>'])(
-    'returns an empty symbol for %j',
-    (source) => {
-      expect(extractSymbol(source)).toEqual({ attributes: {}, content: '' })
-    },
-  )
+  it('reads single quoted attributes and multi-line opening tags', () => {
+    const result = extractSymbol(
+      '<SVG\n  viewBox=\'0 0 8 8\'\n  data-x="1">\n<g/></SVG>',
+    )
+
+    expect(result.attributes).toEqual({ viewBox: '0 0 8 8', 'data-x': '1' })
+    expect(result.content).toBe('\n<g/>')
+  })
+
+  it('stops the content at the first closing svg tag', () => {
+    expect(extractSymbol('x<svg a="1"><svg b="2"></svg><p/></svg>')).toEqual({
+      attributes: { a: '1' },
+      content: '<svg b="2">',
+    })
+  })
+
+  it('reads an svg without attributes or content', () => {
+    expect(extractSymbol('<svg></svg>')).toEqual({
+      attributes: {},
+      content: '',
+    })
+  })
+
+  it.each([
+    undefined,
+    '',
+    '<div>not an svg</div>',
+    '<svg viewBox="0 0 1 1">',
+    '<svg</svg>',
+  ])('returns an empty symbol for %j', (source) => {
+    expect(extractSymbol(source)).toEqual({ attributes: {}, content: '' })
+  })
 })

@@ -81,7 +81,6 @@ function toggle() {
     isExpanding = true
     isShrinking = false
     isOpen.value = true
-    // eslint-disable-next-line sonarjs/no-duplicate-string
     detailsEl.value.classList.add('overflow-hidden')
     detailsEl.value.style.height = `${summaryHeight}px`
     detailsEl.value.open = true

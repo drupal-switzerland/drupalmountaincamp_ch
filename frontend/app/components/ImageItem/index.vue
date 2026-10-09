@@ -33,6 +33,7 @@ import type { DefineImageStyleConfig } from '#rokka/types'
 import type { ImageItemFragment } from '#graphql-operations'
 import { RokkaImage } from '#components'
 import { canRenderWithRokka } from '~/helpers/rokka'
+import { SCREENS } from '~/tailwind/screens'
 
 defineOptions({
   name: 'ImageItem',
@@ -88,17 +89,21 @@ const srcset = computed(() => {
     .join(', ')
 })
 
+function configuredWidths(conf: DefineImageStyleConfig | undefined): number[] {
+  if (conf?.type === 'sizes') {
+    return Object.values(conf.sizes)
+  }
+  if (conf?.type === 'single') {
+    return [conf.width]
+  }
+  return []
+}
+
 const sizes = computed(() => {
   // The layout containers cap out at the largest configured size (or the
   // 1380px container width) — below that, assume the image spans the viewport.
-  const conf = styleConfig.value
-  const widths =
-    conf?.type === 'sizes'
-      ? Object.values(conf.sizes)
-      : conf?.type === 'single'
-        ? [conf.width]
-        : []
-  const max = widths.length ? Math.max(...widths) : 1380
+  const widths = configuredWidths(styleConfig.value)
+  const max = widths.length ? Math.max(...widths) : SCREENS.xl
   return `(min-width: ${max}px) ${max}px, 100vw`
 })
 

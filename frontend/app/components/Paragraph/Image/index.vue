@@ -17,6 +17,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphImageFragment } from '#graphql-operations'
+import { SCREENS } from '~/tailwind/screens'
 
 defineOptions({
   name: 'ParagraphImage',
@@ -49,8 +50,8 @@ const bigGrid = defineImageStyle({
   sizes: {
     xs: 770,
     sm: 984,
-    md: 1380,
-    lg: 1380,
+    md: SCREENS.xl,
+    lg: SCREENS.xl,
   },
 })
 

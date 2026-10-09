@@ -11,16 +11,57 @@ import { MAX_AGE } from '../../helpers'
 
 const config = useRuntimeConfig()
 
+const TAG_START = /<(?=\w)/g
+const TAG_BOUNDARY_OR_FILL = /[<>]|(?<!\s)\s*\bfill=(["'])(?!none).*?\1/g
+const TAG_BOUNDARY_OR_STROKE = /[<>]|(?<!\s)\s*\bstroke=(["'])(?!none).*?\1/g
+
+function lastTagBoundary(text: string) {
+  return Math.max(text.lastIndexOf('<'), text.lastIndexOf('>'))
+}
+
+/**
+ * Replaces attribute matches inside opening tags: after a "<" followed by a
+ * word character, with no "<" or ">" in between. A quoted value may contain
+ * "<" or ">", which then decides whether the scan is still inside a tag.
+ */
+function replaceInOpeningTags(
+  markup: string,
+  boundaryOrAttribute: RegExp,
+  replacement: string,
+) {
+  let output = ''
+  let copiedUpTo = 0
+  TAG_START.lastIndex = 0
+
+  while (TAG_START.exec(markup)) {
+    boundaryOrAttribute.lastIndex = TAG_START.lastIndex
+    let match = boundaryOrAttribute.exec(markup)
+    while (match && lastTagBoundary(match[0]) === -1) {
+      output += markup.slice(copiedUpTo, match.index) + replacement
+      copiedUpTo = boundaryOrAttribute.lastIndex
+      match = boundaryOrAttribute.exec(markup)
+    }
+
+    if (!match) {
+      break
+    }
+    const isAttribute = match[0].length > 1
+    if (isAttribute) {
+      output += markup.slice(copiedUpTo, match.index) + replacement
+      copiedUpTo = boundaryOrAttribute.lastIndex
+    }
+    TAG_START.lastIndex = match.index + lastTagBoundary(match[0])
+  }
+
+  return output + markup.slice(copiedUpTo)
+}
+
 export function replaceColors(markup = '') {
-  return markup
-    .replaceAll(
-      /(?<=<\b[^<>]*)\s*\bfill=(["'](?!none)).*?\1/g,
-      ` fill="currentColor"`,
-    )
-    .replaceAll(
-      /(?<=<\b[^<>]*)\s*\bstroke=(["'](?!none)).*?\1/g,
-      ` stroke="currentColor"`,
-    )
+  return replaceInOpeningTags(
+    replaceInOpeningTags(markup, TAG_BOUNDARY_OR_FILL, ' fill="currentColor"'),
+    TAG_BOUNDARY_OR_STROKE,
+    ' stroke="currentColor"',
+  )
 }
 
 type ParsedSymbol = {
@@ -28,9 +69,24 @@ type ParsedSymbol = {
   content: string
 }
 
+function splitSvg(source: string) {
+  const openingTag = /<svg([^>]*)>/i.exec(source)
+  if (!openingTag) {
+    return {}
+  }
+  const rest = source.slice(openingTag.index + openingTag[0].length)
+  const closingTagIndex = rest.search(/<\/svg>/i)
+  if (closingTagIndex === -1) {
+    return {}
+  }
+  return {
+    parsedAttributes: openingTag[1],
+    content: rest.slice(0, closingTagIndex),
+  }
+}
+
 export function extractSymbol(source = ''): ParsedSymbol {
-  const [, parsedAttributes, content] =
-    source.match(/<svg(.*?)>(.*?)<\/svg>/is) || []
+  const { parsedAttributes, content } = splitSvg(source)
   const matches = (parsedAttributes || '').match(
     /([\w-:]+)(=)?("[^<>"]*"|'[^<>']*'|[\w-:]+)/g,
   )
@@ -54,8 +110,6 @@ export function extractSymbol(source = ''): ParsedSymbol {
 
 /**
  * Process the raw SVG markup to be a <symbol>.
- *
- * @TODO: Needs a more reliable solution.
  */
 function processIcon(markup = '') {
   const optimized = optimize(markup, {
@@ -166,12 +220,12 @@ export default defineEventHandler(async (event) => {
   try {
     const routerParams = getRouterParams(event)
     const paramsValue = routerParams?.params
-    const paramsStr =
-      typeof paramsValue === 'string'
-        ? paramsValue
-        : Array.isArray(paramsValue)
-          ? paramsValue[0]
-          : undefined
+    let paramsStr: string | undefined
+    if (typeof paramsValue === 'string') {
+      paramsStr = paramsValue
+    } else if (Array.isArray(paramsValue)) {
+      paramsStr = paramsValue[0]
+    }
 
     if (!paramsStr) {
       return EMPTY_RESPONSE
