@@ -1,0 +1,3 @@
+view rokka metadata entities:
+  title: 'View rokka metadata'
+  description: 'Read the rokka hash and metadata of images, which the frontend needs to render them through rokka.'

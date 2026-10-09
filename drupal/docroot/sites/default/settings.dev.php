@@ -22,8 +22,6 @@ if (getenv('LAGOON')) {
   $settings['cache']['default'] = 'cache.backend.memcache';
 }
 
-$config['rokka.settings']['organization_name'] = 'mountaincamp-develop';
-
 // Set this temporarily to TRUE to import ignored config such as webforms.
 $settings['config_ignore_deactivate'] = FALSE;
 

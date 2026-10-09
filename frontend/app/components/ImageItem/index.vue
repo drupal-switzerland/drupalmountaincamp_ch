@@ -1,6 +1,6 @@
 <template>
   <RokkaImage
-    v-if="file?.rokka?.hash"
+    v-if="file?.rokka?.hash && useRokka"
     :alt="alt"
     :title="title"
     :hash="file.rokka.hash"
@@ -10,11 +10,8 @@
     :source-width="file.rokka.sourceWidth"
     :source-height="file.rokka.sourceHeight"
     :class="imgClass"
-    :host="appConfig.rokkaHost"
     :file-name="file?.label"
   />
-  <!-- ponytail: no rokka account on this project — serve Drupal image style
-  derivatives as a srcset instead. Swap back to rokka-only if an org is set up. -->
   <img
     v-else-if="localSrc"
     :src="localSrc"
@@ -35,6 +32,7 @@
 import type { DefineImageStyleConfig } from '#rokka/types'
 import type { ImageItemFragment } from '#graphql-operations'
 import { RokkaImage } from '#components'
+import { canRenderWithRokka } from '~/helpers/rokka'
 
 defineOptions({
   name: 'ImageItem',
@@ -69,7 +67,11 @@ const props = withDefaults(
   },
 )
 
-const appConfig = useAppConfig()
+const rokkaHost = useRuntimeConfig().public.rokkaHost
+
+const useRokka = computed(() =>
+  canRenderWithRokka(props.file?.rokka?.hash, rokkaHost),
+)
 
 const styleConfig = computed(() =>
   typeof props.imageStyle === 'object' ? props.imageStyle : undefined,

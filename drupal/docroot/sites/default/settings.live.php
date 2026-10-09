@@ -21,9 +21,6 @@ $settings['memcache']['bins'] = ['default' => 'default'];
 $settings['memcache']['key_prefix'] = 'live_';
 $settings['cache']['default'] = 'cache.backend.memcache';
 
-## Rokka settings
-$config['rokka.settings']['organization_name'] = 'sv';
-
 // Set this temporarily to TRUE to import ignored config such as webforms.
 $settings['config_ignore_deactivate'] = FALSE;
 
