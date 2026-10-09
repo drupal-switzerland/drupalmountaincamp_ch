@@ -34,3 +34,7 @@ cli/
 
 # Local Netlify folder
 .netlify
+
+# ddev regenerates its traefik certs and router config per project on start.
+.ddev/traefik/certs/
+.ddev/traefik/config/
