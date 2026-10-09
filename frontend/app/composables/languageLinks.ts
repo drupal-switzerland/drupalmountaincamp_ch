@@ -6,8 +6,6 @@ import type {
 export function setLanguageLinksFromFragment(
   links: LanguageSwitchLinkFragment[],
 ) {
-  const route = useRoute()
-
   definePageLanguageLinks(
     links.reduce<Record<string, string>>((acc, v) => {
       if (v.language.id && v.url.path) {
@@ -25,6 +23,5 @@ export function setLanguageLinksFromRoute(
     setLanguageLinksFromFragment(query.route.languageSwitchLinks)
     return
   }
-  const route = useRoute()
   definePageLanguageLinks({} as Record<string, string>)
 }
