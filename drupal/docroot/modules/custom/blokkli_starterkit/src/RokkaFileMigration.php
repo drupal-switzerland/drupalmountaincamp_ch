@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\blokkli_starterkit;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\file\FileInterface;
 use Drupal\rokka\Entity\RokkaMetadataInterface;
 use GuzzleHttp\ClientInterface;
@@ -26,7 +28,11 @@ final class RokkaFileMigration implements ContainerInjectionInterface {
 
   public const CDN_HOST = 'https://mountaincamp.rokka.io';
 
+  public const CRON_LAST_RUN_KEY = 'blokkli_starterkit.rokka_migration_last_run';
+
   private const TIMEOUT_SECONDS = 30;
+
+  private const CRON_INTERVAL_SECONDS = 86400;
 
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
@@ -34,6 +40,8 @@ final class RokkaFileMigration implements ContainerInjectionInterface {
     private readonly FileSystemInterface $fileSystem,
     private readonly MimeTypeGuesserInterface $mimeTypeGuesser,
     private readonly LoggerInterface $logger,
+    private readonly StateInterface $state,
+    private readonly TimeInterface $time,
   ) {}
 
   /**
@@ -46,7 +54,25 @@ final class RokkaFileMigration implements ContainerInjectionInterface {
       $container->get('file_system'),
       $container->get('file.mime_type.guesser'),
       $container->get('logger.factory')->get('blokkli_starterkit'),
+      $container->get('state'),
+      $container->get('datetime.time'),
     );
+  }
+
+  /**
+   * Retries files the deploy couldn't move, at most once a day.
+   */
+  public function retryOnCron(): void {
+    if (!$this->findRokkaFileIds()) {
+      return;
+    }
+    $now = $this->time->getRequestTime();
+    $lastRun = (int) $this->state->get(self::CRON_LAST_RUN_KEY, 0);
+    if ($now - $lastRun < self::CRON_INTERVAL_SECONDS) {
+      return;
+    }
+    $this->state->set(self::CRON_LAST_RUN_KEY, $now);
+    $this->moveAll();
   }
 
   /**
@@ -56,14 +82,10 @@ final class RokkaFileMigration implements ContainerInjectionInterface {
    *   A summary of moved and failed files.
    */
   public function moveAll(): string {
-    $fileStorage = $this->entityTypeManager->getStorage('file');
-    $fids = $fileStorage->getQuery()
-      ->accessCheck(FALSE)
-      ->condition('uri', 'rokka://', 'STARTS_WITH')
-      ->execute();
+    $fids = $this->findRokkaFileIds();
 
     $failed = [];
-    foreach ($fileStorage->loadMultiple($fids) as $file) {
+    foreach ($this->entityTypeManager->getStorage('file')->loadMultiple($fids) as $file) {
       assert($file instanceof FileInterface);
       $error = $this->move($file);
       if ($error !== NULL) {
@@ -78,6 +100,19 @@ final class RokkaFileMigration implements ContainerInjectionInterface {
     $total = count($fids);
     $summary = sprintf('Moved %d of %d rokka files to public://.', $total - count($failed), $total);
     return $failed ? $summary . ' Failed: ' . implode('; ', $failed) : $summary;
+  }
+
+  /**
+   * Returns the IDs of files still stored on rokka://.
+   *
+   * @return int[]|string[]
+   *   The file IDs.
+   */
+  private function findRokkaFileIds(): array {
+    return $this->entityTypeManager->getStorage('file')->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('uri', 'rokka://', 'STARTS_WITH')
+      ->execute();
   }
 
   /**

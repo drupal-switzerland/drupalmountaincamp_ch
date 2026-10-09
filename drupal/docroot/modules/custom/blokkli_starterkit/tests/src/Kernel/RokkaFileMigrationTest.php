@@ -143,6 +143,50 @@ class RokkaFileMigrationTest extends KernelTestBase {
   }
 
   /**
+   * Cron does nothing when no rokka files are left.
+   */
+  public function testCronSkipsWithoutRokkaFiles(): void {
+    $this->mockCdn();
+
+    blokkli_starterkit_cron();
+
+    $this->assertSame([], $this->requests);
+    $this->assertNull(\Drupal::state()->get(RokkaFileMigration::CRON_LAST_RUN_KEY));
+  }
+
+  /**
+   * Cron retries rokka files once the last run is a day old.
+   */
+  public function testCronRetriesAfterOneDay(): void {
+    $file = $this->createRokkaFile('rokka://media/icons/icon.svg', 'abc123');
+    $now = \Drupal::time()->getRequestTime();
+    \Drupal::state()->set(RokkaFileMigration::CRON_LAST_RUN_KEY, $now - 86400);
+    $this->mockCdn(new Response(200, ['Content-Type' => 'image/svg+xml'], self::SVG));
+
+    blokkli_starterkit_cron();
+
+    $this->assertCount(1, $this->requests);
+    $this->assertSame('public://media/icons/icon.svg', $this->reload($file)->getFileUri());
+    $this->assertSame($now, \Drupal::state()->get(RokkaFileMigration::CRON_LAST_RUN_KEY));
+  }
+
+  /**
+   * Cron skips rokka files within a day of the last run.
+   */
+  public function testCronSkipsWithinOneDay(): void {
+    $file = $this->createRokkaFile('rokka://media/icons/icon.svg', 'abc123');
+    $lastRun = \Drupal::time()->getRequestTime() - 3600;
+    \Drupal::state()->set(RokkaFileMigration::CRON_LAST_RUN_KEY, $lastRun);
+    $this->mockCdn();
+
+    blokkli_starterkit_cron();
+
+    $this->assertSame([], $this->requests);
+    $this->assertSame('rokka://media/icons/icon.svg', $this->reload($file)->getFileUri());
+    $this->assertSame($lastRun, \Drupal::state()->get(RokkaFileMigration::CRON_LAST_RUN_KEY));
+  }
+
+  /**
    * Creates a file entity.
    */
   private function createFile(string $uri): FileInterface {
