@@ -1,6 +1,26 @@
 <template>
+  <li v-if="display === 'timeline'" class="week-stop">
+    <span class="week-stop-node" aria-hidden="true">{{ stopNumber }}</span>
+    <p class="label">{{ dayLabel }}</p>
+    <h3
+      v-if="title || isEditing"
+      v-blokkli-editable:field_title
+      class="text-2xl"
+    >
+      {{ title }}
+    </h3>
+    <!-- A second "Label" paragraph in the text starts a lane, e.g. Social. -->
+    <div
+      v-if="text || isEditing"
+      ref="content"
+      v-blokkli-editable:field_text
+      class="ck-content is-small week-stop-text"
+      v-html="text"
+    />
+  </li>
+
   <article
-    v-if="display === 'dayCards'"
+    v-else-if="display === 'dayCards'"
     class="day-card gradient-border relative flex flex-col overflow-hidden rounded-[18px]"
   >
     <div
@@ -76,6 +96,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphIconTextItemFragment } from '#graphql-operations'
+import { dayNumber } from '~/helpers/programme'
 
 const props = defineProps<{
   icon: ParagraphIconTextItemFragment['icon']
@@ -94,6 +115,8 @@ const display = inject(
   ICON_TEXT_LIST_DISPLAY,
   computed<IconTextListDisplay>(() => 'list'),
 )
+
+const stopNumber = computed(() => dayNumber(props.title, index.value))
 
 const dayLabel = computed(
   () => `${$texts('iconText.day', 'Day')} ${index.value + 1}`,

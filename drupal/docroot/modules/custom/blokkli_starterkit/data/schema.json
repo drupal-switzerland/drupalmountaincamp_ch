@@ -51,6 +51,11 @@
           "label": {
             "en": "List"
           }
+        },
+        "timeline": {
+          "label": {
+            "en": "Week timeline"
+          }
         }
       },
       "type": "radios"
