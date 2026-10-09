@@ -112,14 +112,12 @@ const listFailed = computed(
     (listStatus.value === 'error' ||
       (listStatus.value === 'success' && !list.value?.entityQuery)),
 )
-// 503 and private, so neither the route cache (200 only) nor the CDN keeps
-// the error page.
+// The GraphQL plugin already marks the page private for the CDN.
 if (import.meta.server && listFailed.value) {
   const event = useRequestEvent()
   if (event) {
     setResponseStatus(event, 503)
   }
-  useCDNHeaders((helper) => helper.private(), event)
 }
 
 const pressReleases = computed(() => {
