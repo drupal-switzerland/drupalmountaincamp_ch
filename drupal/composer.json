@@ -8,10 +8,6 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
-        "asset-packagist": {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        },
         "anchor-link": {
             "type": "package",
             "package": {
@@ -23,6 +19,18 @@
                     "type": "tar"
                 }
             }
+        },
+        "chosen": {
+            "type": "package",
+            "package": {
+                "name": "harvesthq/chosen",
+                "version": "1.8.7",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/harvesthq/bower-chosen/archive/refs/tags/v1.8.7.zip",
+                    "type": "zip"
+                }
+            }
         }
     },
     "require": {
@@ -32,7 +40,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "amazeeio/drupal_integrations": "*",
-        "bower-asset/chosen": "^1.8",
+        "composer/installers": "^2.3",
         "cweagans/composer-patches": "^2.0",
         "drupal/address": "^2.0",
         "drupal/admin_toolbar": "~3.0",
@@ -126,17 +134,16 @@
         "drupal/webform": "^6.3",
         "drush/drush": "^13",
         "elasticsearch/elasticsearch": "^9.3",
+        "harvesthq/chosen": "^1.8",
         "loophp/phposinfo": "^1.8",
         "mglaman/composer-drupal-lenient": "^2.0",
         "northernco/ckeditor5-anchor-drupal": "^0.5.0",
-        "oomphinc/composer-installers-extender": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "rokka/client-cli": "^1.8",
         "ronanguilloux/isocodes": "^2.3",
         "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
-        "composer/installers": "^1 || ^2",
         "drupal/core-dev": "^11",
         "palantirnet/drupal-rector": "^1.1",
         "php-parallel-lint/php-parallel-lint": "^1.2",
@@ -155,7 +162,6 @@
             "drupalspoons/composer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
             "mglaman/composer-drupalse-lenient": true,
-            "oomphinc/composer-installers-extender": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
             "tbachert/spi": true,
@@ -204,9 +210,7 @@
                 "type:drupal-custom-theme"
             ],
             "docroot/libraries/{$name}": [
-                "type:drupal-library",
-                "type:bower-asset",
-                "type:npm-asset"
+                "type:drupal-library"
             ],
             "drush/Commands/contrib/{$name}": [
                 "type:drupal-drush"
@@ -249,10 +253,6 @@
             "drupal/core": "-p2"
         },
         "enable-patching": true,
-        "installer-types": [
-            "bower-asset",
-            "npm-asset"
-        ],
         "patches": {
         },
         "drupal-lenient": {
