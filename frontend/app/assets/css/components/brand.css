@@ -150,6 +150,39 @@
     }
   }
 
+  /* The snow carries on: the hero bar's ice continues behind the first
+     homepage blocks and fades to white, instead of a hard cut after the hero. */
+  .home-blocks {
+    /* Keeps the first block's top margin inside, so no white gap shows. */
+    display: flow-root;
+    background: linear-gradient(
+        theme(colors.brand.ice) 0,
+        theme(colors.brand.tint) 360px,
+        theme(colors.white) 640px
+      )
+      no-repeat;
+  }
+
+  /* Homepage sponsor card across the edge of the band above it. It only
+     overlaps the bands listed here, by less than their smallest bottom
+     padding, so it never covers content: week timeline and news 64px (96px
+     from lg), theme band 72px (112px), navy text band 64px. After any other
+     block, or as the first block, it sits in the normal flow. */
+  .sponsor-overlap {
+    --sponsor-overlap: 48px;
+  }
+
+  :is(.week-band, .news-band, .theme-band, .navy-band) + .sponsor-overlap {
+    @apply relative z-[1];
+    margin-top: calc(-1 * var(--sponsor-overlap));
+  }
+
+  @screen lg {
+    :is(.week-band, .news-band, .theme-band) + .sponsor-overlap {
+      --sponsor-overlap: 72px;
+    }
+  }
+
   /* Small uppercase label above a heading (also the CKEditor "Label" style). */
   .label {
     @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;

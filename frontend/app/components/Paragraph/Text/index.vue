@@ -104,7 +104,7 @@ useScrollableTables(content, {
 
 const bandClassList = computed(() => {
   if (background.value === 'navy') {
-    return ['on-dark', 'brand-hero', 'text-white', 'pb-8']
+    return ['navy-band', 'on-dark', 'brand-hero', 'text-white', 'pb-8']
   }
   if (background.value === 'themeBand') {
     return ['theme-band', 'py-10', 'lg:py-20']

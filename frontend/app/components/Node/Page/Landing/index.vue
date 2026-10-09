@@ -47,6 +47,7 @@
           :list="paragraphs"
           name="field_paragraphs"
           :allowed-fragments="PAGE_FRAGMENTS"
+          :class="{ 'home-blocks': isFront }"
         />
       </div>
     </div>
