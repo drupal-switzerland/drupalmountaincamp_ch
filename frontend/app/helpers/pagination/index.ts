@@ -29,6 +29,15 @@ export function withPageParam(
   return result
 }
 
+/**
+ * The canonical query for a URL's `?page=` value, or null when the query is
+ * already canonical.
+ */
+export function canonicalPageQuery(query: LocationQuery): LocationQuery | null {
+  const canonical = withPageParam(query, parsePageParam(query.page))
+  return canonical.page === query.page ? null : canonical
+}
+
 export function totalPages(total: number, pageSize: number): number {
   return Math.max(1, Math.ceil(total / pageSize))
 }

@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
+import type { LocationQuery } from 'vue-router'
 import {
+  canonicalPageQuery,
   isSameTabClick,
   parsePageParam,
   totalPages,
@@ -79,5 +81,35 @@ describe('withPageParam', () => {
     const query = { page: '2' }
     withPageParam(query, 1)
     expect(query).toEqual({ page: '2' })
+  })
+})
+
+describe('canonicalPageQuery', () => {
+  it.each<LocationQuery>([
+    {},
+    { page: '2' },
+    { page: '99' },
+    { a: 'x', page: '3' },
+  ])('keeps canonical %j', (query) => {
+    expect(canonicalPageQuery(query)).toBeNull()
+  })
+
+  it.each([
+    [{ page: '1' }, {}],
+    [{ page: '02' }, { page: '2' }],
+    [{ page: 'abc' }, {}],
+    [{ page: '' }, {}],
+    [{ page: null }, {}],
+    [{ page: ['2', '3'] }, { page: '2' }],
+    [{ page: '99999999999999999999' }, {}],
+    [{ a: 'x', page: '1' }, { a: 'x' }],
+  ])('redirects %j to %j', (query, expected) => {
+    expect(canonicalPageQuery(query)).toEqual(expected)
+  })
+
+  it('redirects to a canonical query (no redirect loop)', () => {
+    const redirect = canonicalPageQuery({ page: ['02', 'x'] })
+    expect(redirect).not.toBeNull()
+    expect(canonicalPageQuery(redirect!)).toBeNull()
   })
 })
