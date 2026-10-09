@@ -1,5 +1,6 @@
 <template>
   <div class="bk-main-canvas relative">
+    <NuxtLoadingIndicator :throttle="150" :height="3" :color="false" />
     <ClientOnly>
       <div
         v-if="drupalUser.accessToolbar && !isEditing"

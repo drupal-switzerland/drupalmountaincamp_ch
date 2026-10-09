@@ -1,0 +1,13 @@
+/* NuxtLoadingIndicator styles itself inline; !important themes it, including
+   its error state, and stops its transitions for reduced motion. Outside
+   @layer, since Tailwind drops layered rules for classes it doesn't find in
+   the app's own templates. */
+.nuxt-loading-indicator {
+  background: theme('colors.primary.400') !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nuxt-loading-indicator {
+    transition: none !important;
+  }
+}
