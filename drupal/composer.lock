@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17c36883335ef90adffb4d0a1c10910d",
+    "content-hash": "b6fef32459b28457d1b75361bb6c08dd",
     "packages": [
         {
             "name": "amazeeio/drupal_integrations",
@@ -11301,15 +11301,6 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
             "time": "2026-09-13T18:51:52+00:00"
-        },
-        {
-            "name": "northernco/ckeditor5-anchor-drupal",
-            "version": "0.5.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/@northernco/ckeditor5-anchor-drupal/-/ckeditor5-anchor-drupal-0.5.0.tgz"
-            },
-            "type": "drupal-library"
         },
         {
             "name": "nyholm/psr7",

@@ -8,18 +8,6 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
-        "anchor-link": {
-            "type": "package",
-            "package": {
-                "name": "northernco/ckeditor5-anchor-drupal",
-                "version": "0.5.0",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://registry.npmjs.org/@northernco/ckeditor5-anchor-drupal/-/ckeditor5-anchor-drupal-0.5.0.tgz",
-                    "type": "tar"
-                }
-            }
-        },
         "chosen": {
             "type": "package",
             "package": {
@@ -137,7 +125,6 @@
         "harvesthq/chosen": "^1.8",
         "loophp/phposinfo": "^1.8",
         "mglaman/composer-drupal-lenient": "^2.0",
-        "northernco/ckeditor5-anchor-drupal": "^0.5.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "rokka/client-cli": "^1.8",
         "ronanguilloux/isocodes": "^2.3",
