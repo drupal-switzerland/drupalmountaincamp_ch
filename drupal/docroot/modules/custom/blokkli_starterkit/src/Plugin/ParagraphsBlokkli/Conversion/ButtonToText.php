@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\blokkli_starterkit\Plugin\ParagraphsBlokkli\Conversion;
 
-use Drupal\Core\Url;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\link\LinkItemInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
@@ -26,58 +27,46 @@ class ButtonToText extends ParagraphConversionPluginBase {
    * {@inheritdoc}
    */
   public function convert(ParagraphInterface $paragraph, ParagraphMutationContextInterface $context): ?array {
+    $label = (string) $paragraph->get('field_label')->value;
     $link = $paragraph->get('field_link')->first();
-    $title = $paragraph->get('field_title')->first()?->value;
-    $text = '';
 
-    if ($link instanceof LinkItemInterface) {
-      $url = $link->getUrl();
-      $text = $this->getLinkMarkup($url, $title);
+    $markup = '<p>' . Html::escape($label) . '</p>';
+    if ($link instanceof LinkItemInterface && !$link->isEmpty()) {
+      try {
+        $markup = $this->getLinkMarkup($link, $label);
+      }
+      catch (\InvalidArgumentException) {
+        // A stored URI Drupal can't generate a URL for (e.g. an unsupported
+        // scheme): keep the label as text instead of failing the conversion.
+      }
     }
 
     return [
-      'paragraphs_text' => [
-        'value' => $text,
+      'field_text' => [
+        'value' => $markup,
         'format' => 'basic_html',
       ],
     ];
   }
 
   /**
-   * Get the <a> tag for the given URL and title.
+   * Builds a paragraph with a link to the button's target.
    *
-   * @param Url $url
-   *   The Url.
-   * @param string|null $title
-   *   The link title.
-   *
-   * @return string|null
-   *   The markup.
+   * The URL is generated (path alias for internal links) and collected
+   * without bubbling cache metadata, since this runs inside a GraphQL mutation.
+   * Label and URL are escaped; dangerous protocols such as javascript: are
+   * removed.
    */
-  private function getLinkMarkup(Url $url, string|null $title): string|null {
-    if ($url) {
-      if ($url->isExternal()) {
-        $path = $url->toString();
-        return sprintf('<a href="%s">%s</a>', $path, $title ?? $path);
-      }
-      elseif ($url->isRouted()) {
-        $options = $url->getOptions();
-        $href = $options['href'] ?? $url->getInternalPath();
-        $type = $options['data-entity-type'] ?? '';
-        $uuid = $options['data-entity-uuid'] ?? '';
-        $substitution = $options['data-entity-substitution'] ?? '';
+  private function getLinkMarkup(LinkItemInterface $link, string $label): string {
+    $href = UrlHelper::stripDangerousProtocols(
+      $link->getUrl()->toString(TRUE)->getGeneratedUrl()
+    );
 
-        return sprintf(
-          '<p><a href="%s" data-entity-type="%s" data-entity-uuid="%s" data-entity-substitution="%s">%s</a></p>',
-          $href,
-          $type,
-          $uuid,
-          $substitution,
-          $title ?? $href
-        );
-      }
-    }
-    return NULL;
+    return sprintf(
+      '<p><a href="%s">%s</a></p>',
+      Html::escape($href),
+      Html::escape($label !== '' ? $label : $href),
+    );
   }
 
 }
