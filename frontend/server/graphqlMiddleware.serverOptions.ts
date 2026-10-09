@@ -10,11 +10,10 @@ import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-optio
 import type { FetchError } from 'ofetch'
 import { extractCacheability } from './utils/cacheability'
 import {
-  backendRetryAfterSeconds,
-  backendUnavailableSignal,
-  markBackendUnavailable,
-} from './utils/backendAvailability'
-import { BACKEND_FETCH_TIMEOUT_MS, type GraphqlCacheability } from './helpers'
+  BACKEND_FETCH_TIMEOUT_MS,
+  BACKEND_RETRY_AFTER_SECONDS,
+  type GraphqlCacheability,
+} from './helpers'
 
 const HEADER_KEYS: string[] = [
   'x-forwarded-for',
@@ -61,14 +60,10 @@ export default defineGraphqlServerOptions<{
       return {
         headers,
         timeout: BACKEND_FETCH_TIMEOUT_MS,
-        signal: backendUnavailableSignal(),
       }
     }
 
-    return {
-      timeout: BACKEND_FETCH_TIMEOUT_MS,
-      signal: backendUnavailableSignal(),
-    }
+    return { timeout: BACKEND_FETCH_TIMEOUT_MS }
   },
   onServerResponse(event, graphqlResponse) {
     // Pass Drupal's cookies on to the browser, one header per cookie:
@@ -121,10 +116,8 @@ export default defineGraphqlServerOptions<{
       return
     }
 
-    // No response: Drupal was unreachable or timed out. Fail fast for a while
-    // so the next requests don't each wait for the timeout too.
-    markBackendUnavailable()
+    // No response: Drupal was unreachable or timed out.
     setResponseStatus(event, 503)
-    setResponseHeader(event, 'retry-after', backendRetryAfterSeconds())
+    setResponseHeader(event, 'retry-after', BACKEND_RETRY_AFTER_SECONDS)
   },
 })

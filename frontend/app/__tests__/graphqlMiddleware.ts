@@ -1,18 +1,13 @@
-import { beforeEach, describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import graphqlMiddlewareConfig from './../../server/graphqlMiddleware.serverOptions'
 import type { H3Event } from 'h3'
 import { FetchError } from 'ofetch'
 import {
   BACKEND_FETCH_TIMEOUT_MS,
-  BACKEND_RETRY_AFTER_MS,
+  BACKEND_RETRY_AFTER_SECONDS,
 } from './../../server/helpers'
-import { resetBackendAvailability } from './../../server/utils/backendAvailability'
 
 describe('The nuxt-graphql-middleware config', () => {
-  beforeEach(() => {
-    resetBackendAvailability()
-  })
-
   test('Passes appropriate incoming headers', async () => {
     expect(graphqlMiddlewareConfig.serverFetchOptions).toBeDefined()
 
@@ -149,17 +144,8 @@ describe('The nuxt-graphql-middleware config', () => {
   test('Answers 503 with Retry-After when Drupal gives no response', () => {
     expect(respondToError(new FetchError('timeout'))).toEqual({
       status: 503,
-      retryAfter: BACKEND_RETRY_AFTER_MS / 1000,
+      retryAfter: BACKEND_RETRY_AFTER_SECONDS,
     })
-  })
-
-  test('Fails the next request at once after Drupal gave no response', async () => {
-    respondToError(new FetchError('timeout'))
-    const options = await graphqlMiddlewareConfig.serverFetchOptions!(
-      undefined as unknown as H3Event,
-    )
-
-    expect(options.signal?.aborted).toBe(true)
   })
 
   test('Answers 500 when Drupal responds with an error', () => {

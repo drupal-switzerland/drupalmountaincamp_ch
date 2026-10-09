@@ -33,13 +33,11 @@ export type ValidInterval = keyof typeof INTERVALS | 'midnight'
 /**
  * Upper bound for one request from Nuxt to Drupal. An unresponsive backend
  * otherwise holds every page render for the OS connect timeout (~20s per
- * request, several requests per page) before the error page shows.
+ * request, several requests per page) before the error page shows. The
+ * slowest real request measured locally after a full cache clear was 1.2s
+ * (initData), so this leaves wide headroom.
  */
 export const BACKEND_FETCH_TIMEOUT_MS = 10_000
 
-/**
- * After Drupal gives no response, requests fail at once for this long instead
- * of each waiting for the timeout again. A page makes several requests, so
- * without this an unresponsive backend still costs one timeout per request.
- */
-export const BACKEND_RETRY_AFTER_MS = 30_000
+/** Retry-After hint, in seconds, on a 503 when Drupal gave no response. */
+export const BACKEND_RETRY_AFTER_SECONDS = 30

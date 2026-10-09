@@ -8,7 +8,6 @@ import {
 import type { H3Event } from 'h3'
 import { optimize } from 'svgo'
 import { BACKEND_FETCH_TIMEOUT_MS, MAX_AGE } from '../../helpers'
-import { backendUnavailableSignal } from '../../utils/backendAvailability'
 
 const config = useRuntimeConfig()
 
@@ -130,7 +129,6 @@ async function getIcon(
   const url = `${config.backendUrl}/media/${id}/icon`
   const response = await $fetch.raw<Blob>(url, {
     timeout: BACKEND_FETCH_TIMEOUT_MS,
-    signal: backendUnavailableSignal(),
     headers: {
       host,
       cookie: requestHeaders.cookie || '',
