@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import type { LocationQuery } from 'vue-router'
 import {
   canonicalPageQuery,
+  getListPageState,
   isSameTabClick,
   parsePageParam,
   totalPages,
@@ -111,5 +112,53 @@ describe('canonicalPageQuery', () => {
     const redirect = canonicalPageQuery({ page: ['02', 'x'] })
     expect(redirect).not.toBeNull()
     expect(canonicalPageQuery(redirect!)).toBeNull()
+  })
+})
+
+describe('getListPageState', () => {
+  const loaded = {
+    page: 2,
+    pageSize: 10,
+    status: 'success',
+    total: 16,
+  } as const
+
+  it('is ok for a page within the list', () => {
+    expect(getListPageState(loaded)).toBe('ok')
+  })
+
+  it('is notFound beyond the last page', () => {
+    expect(getListPageState({ ...loaded, page: 3 })).toBe('notFound')
+  })
+
+  it('treats page 1 of an empty list as ok', () => {
+    expect(getListPageState({ ...loaded, page: 1, total: 0 })).toBe('ok')
+  })
+
+  it('is notFound when the offset exceeds a GraphQL Int, without a list', () => {
+    expect(
+      getListPageState({
+        ...loaded,
+        page: 214_748_366,
+        status: 'idle',
+        total: null,
+      }),
+    ).toBe('notFound')
+    expect(
+      getListPageState({ ...loaded, page: 214_748_365, total: null }),
+    ).toBe('failed')
+  })
+
+  it('is failed, not notFound, for a failed request or a missing list', () => {
+    expect(getListPageState({ ...loaded, page: 99, status: 'error' })).toBe(
+      'failed',
+    )
+    expect(getListPageState({ ...loaded, page: 99, total: null })).toBe(
+      'failed',
+    )
+  })
+
+  it.each(['idle', 'pending'] as const)('is pending while %s', (status) => {
+    expect(getListPageState({ ...loaded, page: 99, status })).toBe('pending')
   })
 })

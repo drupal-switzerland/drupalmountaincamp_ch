@@ -9,7 +9,10 @@ query newsList($limit: Int!, $offset: Int!) {
         { field: "status", value: ["1"] }
       ]
     }
-    sort: [{ field: "field_date", direction: DESC }]
+    sort: [
+      { field: "field_date", direction: DESC }
+      { field: "nid", direction: DESC }
+    ]
   ) {
     total
     items {

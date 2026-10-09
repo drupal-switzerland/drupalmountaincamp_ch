@@ -35,11 +35,14 @@ import type {
   NodePressReleaseTeaserFragment,
   NodePageFragment,
 } from '#graphql-operations'
-import { parsePageParam, totalPages } from '~/helpers/pagination'
+import {
+  getListPageState,
+  isOffsetInRange,
+  parsePageParam,
+  totalPages,
+} from '~/helpers/pagination'
 
 const PAGE_SIZE = 10
-// The list offset is a GraphQL Int (32-bit signed).
-const MAX_OFFSET = 2_147_483_647
 
 defineOptions({
   name: 'PageNewsOverview',
@@ -53,9 +56,6 @@ definePageMeta({
 const { $texts } = useEasyTexts()
 const nuxtRoute = useRoute()
 const currentPage = computed(() => parsePageParam(nuxtRoute.query.page))
-const isPageInRange = computed(
-  () => (currentPage.value - 1) * PAGE_SIZE <= MAX_OFFSET,
-)
 
 // Route data (title, breadcrumb, metatags) once; the list per page. Reactive
 // list key: ?page= changes reuse this component and only refetch the list.
@@ -63,17 +63,17 @@ const [{ data: query }, { data: list, status: listStatus }] = await Promise.all(
   [
     useAsyncData(nuxtRoute.path, () =>
       useGraphqlQuery('newsOverview', { path: nuxtRoute.path }).then(
-        (v) => v.data,
+        (v) => v.data ?? null,
       ),
     ),
     useAsyncData(
       () => `news-list:${currentPage.value}`,
       async () =>
-        isPageInRange.value
+        isOffsetInRange(currentPage.value, PAGE_SIZE)
           ? useGraphqlQuery('newsList', {
               limit: PAGE_SIZE,
               offset: (currentPage.value - 1) * PAGE_SIZE,
-            }).then((v) => v.data)
+            }).then((v) => v.data ?? null)
           : null,
     ),
   ],
@@ -87,13 +87,16 @@ const pageCount = computed(() =>
   totalPages(list.value?.entityQuery?.total ?? 0, PAGE_SIZE),
 )
 
-// Only a successfully loaded list can say a page doesn't exist; a failed
-// request must not turn into a 404.
-const isBeyondLastPage = computed(
-  () =>
-    !isPageInRange.value ||
-    (!!list.value?.entityQuery && currentPage.value > pageCount.value),
-)
+const pageState = computed(() => {
+  const entityQuery = list.value?.entityQuery
+  return getListPageState({
+    page: currentPage.value,
+    pageSize: PAGE_SIZE,
+    status: listStatus.value,
+    total: entityQuery ? (entityQuery.total ?? 0) : null,
+  })
+})
+const isBeyondLastPage = computed(() => pageState.value === 'notFound')
 const notFound = { statusCode: 404, statusMessage: 'Page not found' }
 if (isBeyondLastPage.value) {
   throw createError({ ...notFound, fatal: true })
@@ -105,13 +108,7 @@ watch(isBeyondLastPage, (beyond) => {
   }
 })
 
-// A request error or a response without the list (GraphQL errors).
-const listFailed = computed(
-  () =>
-    !isBeyondLastPage.value &&
-    (listStatus.value === 'error' ||
-      (listStatus.value === 'success' && !list.value?.entityQuery)),
-)
+const listFailed = computed(() => pageState.value === 'failed')
 // The GraphQL plugin already marks the page private for the CDN.
 if (import.meta.server && listFailed.value) {
   const event = useRequestEvent()

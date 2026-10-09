@@ -1,5 +1,8 @@
 import type { LocationQuery } from 'vue-router'
 
+// List offsets are GraphQL Ints (32-bit signed).
+const MAX_OFFSET = 2_147_483_647
+
 /**
  * Page number from a `?page=` query value: a positive integer, 1 otherwise
  * (missing, empty, negative, zero, decimal or non-numeric).
@@ -60,4 +63,38 @@ export function isSameTabClick(
     !event.shiftKey &&
     !event.altKey
   )
+}
+
+export function isOffsetInRange(page: number, pageSize: number): boolean {
+  return (page - 1) * pageSize <= MAX_OFFSET
+}
+
+export type ListPageState = 'pending' | 'ok' | 'notFound' | 'failed'
+
+/**
+ * State of one page of a paginated list. Only a loaded list can say a page
+ * doesn't exist: a failed request is never a 404.
+ */
+export function getListPageState(input: {
+  page: number
+  pageSize: number
+  status: 'idle' | 'pending' | 'success' | 'error'
+  // Null when the response has no list (GraphQL errors).
+  total: number | null
+}): ListPageState {
+  if (!isOffsetInRange(input.page, input.pageSize)) {
+    return 'notFound'
+  }
+  if (input.status === 'error') {
+    return 'failed'
+  }
+  if (input.status !== 'success') {
+    return 'pending'
+  }
+  if (input.total === null) {
+    return 'failed'
+  }
+  return input.page > totalPages(input.total, input.pageSize)
+    ? 'notFound'
+    : 'ok'
 }
