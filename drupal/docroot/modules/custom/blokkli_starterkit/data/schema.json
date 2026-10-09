@@ -51,6 +51,11 @@
           "label": {
             "en": "List"
           }
+        },
+        "timeline": {
+          "label": {
+            "en": "Week timeline"
+          }
         }
       },
       "type": "radios"
@@ -299,7 +304,12 @@
         },
         "theme": {
           "label": {
-            "en": "Theme band"
+            "en": "Theme card"
+          }
+        },
+        "themeBand": {
+          "label": {
+            "en": "Theme band, full width"
           }
         }
       },

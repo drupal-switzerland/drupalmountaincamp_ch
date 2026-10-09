@@ -2,24 +2,34 @@
   <div class="container">
     <section
       :aria-labelledby="headingId"
-      class="gradient-border is-light relative flex flex-col gap-7 rounded-[18px] p-6 shadow-lg md:p-11"
+      class="brand-hero on-dark relative flex flex-col gap-8 overflow-hidden rounded-3xl p-6 text-white xs:p-10 lg:p-14"
     >
       <BrandSparkles
-        class="pointer-events-none absolute right-6 top-6 hidden w-28 text-primary-300 md:block lg:w-32"
+        class="pointer-events-none absolute right-10 top-10 hidden w-28 text-white md:block lg:right-14 lg:top-12"
       />
-      <div class="flex flex-col gap-2 md:pr-36">
-        <p class="label">{{ $texts('sponsors.label', 'Sponsors 2027') }}</p>
-        <h2 :id="headingId" class="text-3xl md:text-5xl">
-          <template v-if="titleParts">
-            {{ titleParts.before
-            }}<span class="text-primary-400">{{ titleParts.highlight }}</span
-            >{{ titleParts.after }}
-          </template>
-          <template v-else>{{ title }}</template>
-        </h2>
+      <div
+        class="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between md:pr-40"
+      >
+        <div class="flex flex-col gap-2">
+          <p class="label">{{ $texts('sponsors.label', 'Sponsors 2027') }}</p>
+          <h2 :id="headingId" class="text-3xl md:text-5xl">
+            <template v-if="titleParts">
+              {{ titleParts.before
+              }}<span class="text-primary-300">{{ titleParts.highlight }}</span
+              >{{ titleParts.after }}
+            </template>
+            <template v-else>{{ title }}</template>
+          </h2>
+        </div>
+        <VuepalLink
+          :to="SPONSORSHIP_PATH"
+          class="button shrink-0 border-white bg-white text-primary-500 hover:border-primary-100 hover:bg-primary-100 hover:text-primary-500"
+        >
+          {{ $texts('sponsors.cta', 'Become a sponsor') }}
+        </VuepalLink>
       </div>
       <div v-if="platinum.length" class="flex flex-col gap-3">
-        <h3 :id="platinumId" class="label text-primary-500">
+        <h3 :id="platinumId" class="label">
           {{ $texts('sponsors.platinum', 'Platinum') }}
         </h3>
         <ul :aria-labelledby="platinumId" class="grid gap-5 md:grid-cols-3">
@@ -31,11 +41,17 @@
               :described-by="newTabHintId"
             />
           </li>
+          <!-- Unsold spots stay visible as an invitation until all are taken. -->
+          <li v-for="spot in openSpots" :key="`open-${spot}`">
+            <VuepalLink
+              :to="SPONSORSHIP_PATH"
+              class="flex h-[140px] items-center justify-center rounded-xl border-2 border-dashed border-primary-100 px-4 text-center font-bold text-white transition-colors hover:bg-white/10 motion-reduce:transition-none"
+            >
+              {{ $texts('sponsors.openSpot', 'Platinum spot available') }}
+            </VuepalLink>
+          </li>
         </ul>
       </div>
-      <VuepalLink :to="SPONSORSHIP_PATH" class="button is-filled self-start">
-        {{ $texts('sponsors.cta', 'Become a sponsor') }}
-      </VuepalLink>
     </section>
     <span :id="newTabHintId" hidden>
       {{ $texts('newTabHint', 'opens in a new tab') }}
@@ -65,6 +81,9 @@ const newTabHintId = useId()
 
 const { currentByTier } = await useSponsors()
 const platinum = computed(() => currentByTier.value.platinum ?? [])
+const openSpots = computed(() =>
+  Math.max(0, PLATINUM_SPOTS - platinum.value.length),
+)
 
 // Once every Platinum spot is sold the pitch turns into a thank-you.
 const title = computed(() =>

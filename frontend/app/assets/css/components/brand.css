@@ -103,6 +103,53 @@
     );
   }
 
+  /* The one oversized call to action: Get tickets in the hero bar and footer. */
+  .ticket-button {
+    @apply inline-flex min-h-14 items-center justify-center gap-[10px] rounded-full bg-primary-500 px-9 text-lg font-bold text-white transition-colors duration-250 hover:bg-primary-400 motion-reduce:transition-none;
+    box-shadow:
+      0 0 0 5px rgb(0 156 222 / 0.35),
+      0 12px 24px -12px rgb(18 40 95 / 0.6);
+
+    .on-dark & {
+      @apply bg-white text-primary-500 hover:bg-primary-100;
+      box-shadow: 0 0 0 5px rgb(0 156 222 / 0.45);
+    }
+  }
+
+  /* Hero buttons sit side by side on phones so the whole hero fits one screen. */
+  @media (max-width: theme('screens.xs')) {
+    .home-hero-lead p:has(> .button) {
+      @apply grid grid-cols-2 gap-[10px];
+
+      .button {
+        @apply m-0 justify-center px-3 text-sm;
+      }
+    }
+  }
+
+  /* Text paragraph "Theme band, full width": the conference theme as a statement. */
+  .theme-band {
+    background: linear-gradient(
+      110deg,
+      theme(colors.brand.ice),
+      theme(colors.brand.lilac)
+    );
+
+    .ck-content h2 {
+      @apply text-4xl leading-none md:text-6xl lg:text-7xl xl:text-8xl;
+    }
+
+    .label {
+      @apply text-primary-500;
+    }
+
+    /* Sky and blue fail on lilac; navy is the only text colour here. */
+    .ck-content .highlight,
+    .ck-content a:not(.button) {
+      @apply text-primary-500;
+    }
+  }
+
   /* Small uppercase label above a heading (also the CKEditor "Label" style). */
   .label {
     @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;

@@ -1,0 +1,129 @@
+@tailwind components;
+
+/* Icon Text List "Week timeline": stops on one line through the week. Phones
+   get a vertical line on the left; from md the line runs across the top. */
+@layer components {
+  .week-timeline {
+    --node: 44px;
+    --rail: calc(var(--node) / 2);
+    @apply relative grid gap-10 pl-[calc(var(--node)+16px)];
+
+    &::before {
+      content: '';
+      @apply absolute bottom-0 top-0 w-0.5 bg-primary-300;
+      left: calc(var(--rail) - 1px);
+    }
+
+    @screen md {
+      --node: 58px;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 3fr);
+      @apply gap-8 pl-0;
+
+      &::before {
+        @apply left-0 right-0 h-0.5 w-auto;
+        top: calc(var(--rail) - 1px);
+        bottom: auto;
+        background: linear-gradient(
+          90deg,
+          rgb(204 237 249 / 0.4) 0 22%,
+          theme(colors.brand.sky) 22% 100%
+        );
+      }
+    }
+  }
+
+  .week-timeline-days {
+    @apply m-0 grid list-none gap-10 p-0;
+
+    @screen md {
+      @apply grid-cols-3 gap-8;
+    }
+
+    /* No intro text: the days take the whole row. */
+    &:only-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .week-stop {
+    @apply relative flex flex-col gap-2;
+
+    @screen md {
+      padding-top: calc(var(--node) + 22px);
+    }
+
+    .label {
+      @apply m-0;
+    }
+  }
+
+  .week-stop-node {
+    @apply absolute grid place-items-center rounded-full bg-primary-300 font-heading font-bold text-primary-500;
+    width: var(--node);
+    height: var(--node);
+    top: -6px;
+    left: calc(-1 * (var(--node) + 16px));
+    font-size: calc(var(--node) / 2);
+    box-shadow: 0 0 0 6px theme(colors.brand.navy);
+
+    @screen md {
+      @apply left-0 top-0;
+    }
+
+    .is-start > & {
+      @apply border-2 border-dashed border-primary-100 bg-primary-500;
+      --start: 20px;
+      width: var(--start);
+      height: var(--start);
+      top: 2px;
+      left: calc(-1 * (var(--node) + 16px) + var(--rail) - var(--start) / 2);
+
+      @screen md {
+        top: calc(var(--rail) - var(--start) / 2);
+        left: 0;
+      }
+    }
+  }
+
+  .week-stop-text {
+    @apply flex grow flex-col text-primary-100;
+
+    ul,
+    ol {
+      @apply mb-0 grid gap-[6px];
+    }
+
+    @screen md {
+      > ul:has(+ p.label),
+      > ol:has(+ p.label) {
+        @apply mb-6;
+      }
+    }
+
+    p {
+      @apply m-0;
+    }
+
+    /* A later Label starts a lane (e.g. Social), pushed to the bottom so the
+       lanes line up across days in the md row. */
+    > p.label:not(:first-child) {
+      @apply mb-0 mt-6 border-t border-dashed border-primary-100/40 pt-4 text-brand-lilac;
+
+      @screen md {
+        margin-top: auto;
+      }
+    }
+
+    /* Room for two lines in every lane keeps the lane tops level too. */
+    > p.label:not(:first-child) + ul,
+    > p.label:not(:first-child) + ol {
+      @apply mt-2 font-medium text-white;
+      min-height: 3em;
+      min-height: 2lh;
+    }
+
+    > p.label:first-child {
+      @apply mb-2 mt-0;
+    }
+  }
+}

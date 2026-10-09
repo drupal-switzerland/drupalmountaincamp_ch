@@ -1,5 +1,40 @@
 <template>
-  <div class="grid-container" :class="paragraphClassList">
+  <section
+    v-if="display === 'timeline'"
+    class="on-dark bg-primary-500 py-16 text-white lg:py-24"
+    :aria-labelledby="title ? headingId : undefined"
+  >
+    <!-- Week timeline: a full-width navy band. The intro text is the opening
+         stop (e.g. the pre-conference), the items are the numbered days. -->
+    <div class="container !my-0">
+      <h2
+        v-if="title || isEditing"
+        :id="headingId"
+        v-blokkli-editable:field_title
+        class="mb-10 text-3xl lg:mb-14 lg:text-5xl"
+      >
+        {{ title }}
+      </h2>
+      <div class="week-timeline">
+        <div v-if="text || isEditing" class="week-stop is-start">
+          <span class="week-stop-node" aria-hidden="true" />
+          <div
+            ref="content"
+            v-blokkli-editable:field_text
+            class="ck-content is-small week-stop-text"
+            v-html="text"
+          />
+        </div>
+        <BlokkliField
+          :list="paragraphs"
+          name="field_content"
+          tag="ol"
+          class="week-timeline-days"
+        />
+      </div>
+    </div>
+  </section>
+  <div v-else class="grid-container" :class="paragraphClassList">
     <div class="col-span-4 sm:col-span-6 md:col-span-8 lg:col-span-12">
       <h2
         v-if="title || isEditing"
@@ -34,6 +69,7 @@ const props = defineProps<{
 }>()
 
 const isEditing = import.meta.blokkliEditing
+const headingId = useId()
 const { options } = defineBlokkli({
   bundle: 'icon_text_list',
   propsFieldMapping: {
@@ -55,6 +91,7 @@ const { options } = defineBlokkli({
         list: 'List',
         dayCards: 'Day cards',
         infoCards: 'Info cards',
+        timeline: 'Week timeline',
       },
     },
   },
