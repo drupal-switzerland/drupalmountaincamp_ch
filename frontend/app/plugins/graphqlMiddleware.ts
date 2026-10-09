@@ -1,6 +1,7 @@
 import { defineNuxtPlugin } from 'nuxt/app'
 import type { DrupalMessage } from '~/composables/useDrupalMessages'
 import type { GraphqlResponseTyped } from '#nuxt-graphql-middleware/response'
+import { getPageCacheability } from '~/helpers/graphqlCacheability'
 
 type GraphqlMessengerMessage = {
   type: string
@@ -39,7 +40,7 @@ export default defineNuxtPlugin(() => {
     return
   }
 
-  // A page rendered from a failed or incomplete query must not be cached.
+  // A page rendered from a failed request must not be cached.
   function markPageUncacheable() {
     if (import.meta.server) {
       useCDNHeaders((helper) => helper.private(), useRequestEvent())
@@ -52,13 +53,24 @@ export default defineNuxtPlugin(() => {
      */
     onResponse(result) {
       const data = result.response?._data
-      if (!data) {
-        markPageUncacheable()
-        return
+
+      if (import.meta.server) {
+        const cacheability = getPageCacheability(data)
+        useCDNHeaders((helper) => {
+          if (!cacheability) {
+            helper.private()
+            return
+          }
+
+          helper
+            .public()
+            .setNumeric('maxAge', cacheability.maxAge)
+            .addTags(cacheability.tagsCdn)
+        }, useRequestEvent())
       }
 
-      if (data.errors?.length) {
-        markPageUncacheable()
+      if (!data) {
+        return
       }
 
       // Extract drupal messages from every GraphQL response.
@@ -71,22 +83,6 @@ export default defineNuxtPlugin(() => {
           useCDNHeaders((v) => v.private())
         }
       })
-
-      if (import.meta.server) {
-        const event = useRequestEvent()
-
-        useCDNHeaders((helper) => {
-          if (!data.__cacheability?.isCacheable) {
-            helper.private()
-            return
-          }
-
-          helper
-            .public()
-            .setNumeric('maxAge', data.__cacheability.maxAge)
-            .addTags(data.__cacheability.tagsCdn)
-        }, event)
-      }
     },
 
     onRequestError: markPageUncacheable,

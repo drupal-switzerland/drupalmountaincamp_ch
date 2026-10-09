@@ -71,7 +71,8 @@ export default defineGraphqlServerOptions<{
 
     const cacheability = extractCacheability(graphqlResponse, event)
 
-    // A cached response would hand one visitor's cookies to everyone.
+    // Drupal set a cookie, so a page rendered from this response may be
+    // specific to this visitor. Only affects SSR (__cacheability below).
     if (cookies.length) {
       cacheability.isCacheable = false
     }

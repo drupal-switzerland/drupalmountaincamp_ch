@@ -43,10 +43,11 @@ describe('The nuxt-graphql-middleware config', () => {
 
   function createResponse(cookies: string[]) {
     const response = new Response('{}', {
-      headers: cookies.map((cookie): [string, string] => [
-        'set-cookie',
-        cookie,
-      ]),
+      headers: [
+        // Drupal marks the response cacheable for an hour.
+        ['x-nuxt-expires', '3600'],
+        ...cookies.map((cookie): [string, string] => ['set-cookie', cookie]),
+      ],
     })
     return Object.assign(response, { _data: { data: {} } }) as never
   }
@@ -88,6 +89,17 @@ describe('The nuxt-graphql-middleware config', () => {
     )
 
     expect(result.__cacheability?.isCacheable).toBe(false)
+  })
+
+  test('Keeps a cacheable response without cookies cacheable', async () => {
+    const { event } = createEvent()
+
+    const result = await graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      createResponse([]),
+    )
+
+    expect(result.__cacheability?.isCacheable).toBe(true)
   })
 
   test('Sets no cookie header when Drupal sends none', () => {
