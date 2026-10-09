@@ -19,6 +19,7 @@
         class="mt-12"
         :current-page="currentPage"
         :total-pages="pageCount"
+        @navigate="focusResultsOnLoad = true"
       />
     </div>
   </div>
@@ -45,48 +46,67 @@ const { $texts } = useEasyTexts()
 const nuxtRoute = useRoute()
 const currentPage = computed(() => parsePageParam(nuxtRoute.query.page))
 
-// Reactive key: ?page= changes reuse this component and refetch.
-const { data: query } = await useAsyncData(
-  () => `${nuxtRoute.path}?page=${currentPage.value}`,
-  () =>
-    useGraphqlQuery('newsOverview', {
-      path: nuxtRoute.path,
-      limit: PAGE_SIZE,
-      offset: (currentPage.value - 1) * PAGE_SIZE,
-    }).then((v) => v.data),
-)
+// Route data (title, breadcrumb, metatags) once; the list per page. Reactive
+// list key: ?page= changes reuse this component and only refetch the list.
+const [{ data: query }, { data: list }] = await Promise.all([
+  useAsyncData(nuxtRoute.path, () =>
+    useGraphqlQuery('newsOverview', { path: nuxtRoute.path }).then(
+      (v) => v.data,
+    ),
+  ),
+  useAsyncData(
+    () => `news-list:${currentPage.value}`,
+    () =>
+      useGraphqlQuery('newsList', {
+        limit: PAGE_SIZE,
+        offset: (currentPage.value - 1) * PAGE_SIZE,
+      }).then((v) => v.data),
+  ),
+])
 
 const { entity } = await useDrupalRoute<NodePageFragment>(query.value ?? null, {
   noError: true,
 })
 
 const pageCount = computed(() =>
-  totalPages(query.value?.entityQuery?.total ?? 0, PAGE_SIZE),
+  totalPages(list.value?.entityQuery?.total ?? 0, PAGE_SIZE),
 )
 
-if (currentPage.value > pageCount.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page not found' })
+// Only a successfully loaded list can say a page doesn't exist; a failed
+// request must not turn into a 404.
+const isBeyondLastPage = computed(
+  () => !!list.value?.entityQuery && currentPage.value > pageCount.value,
+)
+const notFound = { statusCode: 404, statusMessage: 'Page not found' }
+if (isBeyondLastPage.value) {
+  throw createError({ ...notFound, fatal: true })
 }
 // The component is reused for ?page= changes during client navigation.
-watch([currentPage, pageCount], ([page, count]) => {
-  if (page > count) {
-    showError({ statusCode: 404, statusMessage: 'Page not found' })
+watch(isBeyondLastPage, (beyond) => {
+  if (beyond) {
+    showError(notFound)
   }
 })
 
-// The router doesn't scroll on query-only changes: bring the new results into
-// view and move focus there, so keyboard and screen reader users continue at
-// the list instead of the pagination link they activated.
+const pressReleases = computed(() => {
+  const items = list.value?.entityQuery?.items ?? []
+  return items.filter((item): item is NodePressReleaseTeaserFragment => !!item)
+})
+
+// After a pagination link (not Back/Forward or other links to /news), bring
+// the new results into view and move focus there, so keyboard and screen
+// reader users continue at the list. The router doesn't scroll on
+// query-only changes.
 const results = ref<HTMLElement | null>(null)
-watch(currentPage, async () => {
+const focusResultsOnLoad = ref(false)
+watch(pressReleases, async () => {
+  if (!focusResultsOnLoad.value) {
+    return
+  }
+  focusResultsOnLoad.value = false
   await nextTick()
   results.value?.scrollIntoView({ block: 'start' })
   results.value?.focus({ preventScroll: true })
-})
-
-const pressReleases = computed(() => {
-  const items = query.value?.entityQuery?.items ?? []
-  return items.filter((item): item is NodePressReleaseTeaserFragment => !!item)
 })
 
 // The overview has no Drupal metatags of its own; same pattern as node pages.

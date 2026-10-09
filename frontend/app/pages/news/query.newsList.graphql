@@ -1,0 +1,21 @@
+query newsList($limit: Int!, $offset: Int!) {
+  entityQuery(
+    entityType: NODE
+    limit: $limit
+    offset: $offset
+    filter: {
+      conditions: [
+        { field: "type", value: ["press_release"] }
+        { field: "status", value: ["1"] }
+      ]
+    }
+    sort: [{ field: "field_date", direction: DESC }]
+  ) {
+    total
+    items {
+      ... on NodePressRelease {
+        ...nodePressReleaseTeaser
+      }
+    }
+  }
+}

@@ -13,6 +13,7 @@
           :aria-current="undefined"
           rel="prev"
           class="inline-flex min-h-11 items-center rounded-full border-2 border-primary-100 px-4 font-bold text-primary-500 hover:border-primary-400"
+          @click="emit('navigate')"
         >
           {{ $texts('pagination.previous', 'Previous') }}
         </NuxtLink>
@@ -27,6 +28,7 @@
               ? 'border-primary-500 bg-primary-500 text-white'
               : 'border-primary-100 text-primary-500 hover:border-primary-400'
           "
+          @click="emit('navigate')"
         >
           <span class="sr-only">{{ $texts('pagination.page', 'Page') }}</span>
           {{ page }}
@@ -38,6 +40,7 @@
           :aria-current="undefined"
           rel="next"
           class="inline-flex min-h-11 items-center rounded-full border-2 border-primary-100 px-4 font-bold text-primary-500 hover:border-primary-400"
+          @click="emit('navigate')"
         >
           {{ $texts('pagination.next', 'Next') }}
         </NuxtLink>
@@ -52,6 +55,11 @@ import type { RouteLocationRaw } from 'vue-router'
 const props = defineProps<{
   currentPage: number
   totalPages: number
+}>()
+
+const emit = defineEmits<{
+  /** A pagination link was activated. */
+  navigate: []
 }>()
 
 const { $texts } = useEasyTexts()
