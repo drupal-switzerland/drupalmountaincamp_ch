@@ -159,9 +159,8 @@ export default defineNuxtConfig({
 
   hooks: {
     'vite:extend'({ config }) {
-      if (config.server && config.server.hmr) {
-        // @ts-ignore
-        config.server.hmr.protocol = 'wss'
+      if (config.server?.hmr && typeof config.server.ws === 'object') {
+        config.server.ws.protocol = 'wss'
       }
     },
   },
