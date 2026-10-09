@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 /**
- * Implements hook_views_data().
+ * Implements hook_views_data_alter().
  */
 function blokkli_starterkit_views_data_alter(array &$data) {
   $translation_links_field = [
