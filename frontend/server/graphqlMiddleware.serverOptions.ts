@@ -59,9 +59,11 @@ export default defineGraphqlServerOptions<{
     return {}
   },
   onServerResponse(event, graphqlResponse) {
-    // Pass Drupal's cookies on to the client, one header per cookie:
+    // Pass Drupal's cookies on to the browser, one header per cookie:
     // headers.get('set-cookie') joins them into a single invalid header.
-    // Appended, so cookies already set on this response are kept.
+    // Appended, so cookies already set on this response are kept. Only
+    // browser requests get them: during SSR this event is an internal
+    // sub-request whose headers don't reach the page response.
     const cookies: string[] = graphqlResponse.headers.getSetCookie()
     cookies.forEach((cookie) =>
       appendResponseHeader(event, 'set-cookie', cookie),
