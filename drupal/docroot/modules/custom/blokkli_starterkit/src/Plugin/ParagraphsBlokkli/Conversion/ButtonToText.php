@@ -58,22 +58,31 @@ class ButtonToText extends ParagraphConversionPluginBase {
    * editor adds in CKEditor: basic_html has no linkit filter and pathologic
    * doesn't resolve /node/N to its alias. Cache metadata is collected instead
    * of bubbled, since this runs inside a GraphQL mutation. Label and URL are
-   * escaped; dangerous protocols such as javascript: are removed.
+   * escaped; dangerous protocols such as javascript: are removed. Of the
+   * button's link attributes only target="_blank" is kept: the others aren't
+   * allowed in basic_html.
    *
    * @return string|null
    *   The markup, or NULL when the target has no URL (<nolink>, <button>).
    */
   private function getLinkMarkup(LinkItemInterface $link, string $label): ?string {
+    $url = $link->getUrl();
     $href = UrlHelper::stripDangerousProtocols(
-      $link->getUrl()->toString(TRUE)->getGeneratedUrl()
+      $url->toString(TRUE)->getGeneratedUrl()
     );
     if ($href === '') {
       return NULL;
     }
 
+    $attributes = $url->getOption('attributes');
+    $target = is_array($attributes) && ($attributes['target'] ?? NULL) === '_blank'
+      ? ' target="_blank"'
+      : '';
+
     return sprintf(
-      '<p><a href="%s">%s</a></p>',
+      '<p><a href="%s"%s>%s</a></p>',
       Html::escape($href),
+      $target,
       Html::escape($label !== '' ? $label : $href),
     );
   }

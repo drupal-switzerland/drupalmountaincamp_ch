@@ -26,13 +26,14 @@ class ButtonToTextTest extends UnitTestCase {
   /**
    * Converts a button with the given label and link (NULL: no link).
    */
-  private function convert(string $label, ?string $generatedUrl, ?\Throwable $urlError = NULL): array {
+  private function convert(string $label, ?string $generatedUrl, ?\Throwable $urlError = NULL, array $linkAttributes = []): array {
     $labelField = $this->createMock(FieldItemListInterface::class);
     $labelField->method('__get')->with('value')->willReturn($label);
 
     $linkItem = NULL;
     if ($generatedUrl !== NULL || $urlError !== NULL) {
       $url = $this->createMock(Url::class);
+      $url->method('getOption')->with('attributes')->willReturn($linkAttributes);
       if ($urlError !== NULL) {
         $url->method('toString')->willThrowException($urlError);
       }
@@ -78,6 +79,31 @@ class ButtonToTextTest extends UnitTestCase {
     $result = $this->convert('Plan your stay', '/davos');
     $this->assertSame(
       '<p><a href="/davos">Plan your stay</a></p>',
+      $result['field_text']['value'],
+    );
+  }
+
+  /**
+   * A link that opens in a new tab keeps doing so.
+   */
+  public function testNewTab(): void {
+    $result = $this->convert('Tickets', 'https://example.com/', NULL, [
+      'target' => '_blank',
+      'title' => 'Buy tickets',
+    ]);
+    $this->assertSame(
+      '<p><a href="https://example.com/" target="_blank">Tickets</a></p>',
+      $result['field_text']['value'],
+    );
+  }
+
+  /**
+   * Only target="_blank" is kept; other values can't inject markup.
+   */
+  public function testOtherTarget(): void {
+    $result = $this->convert('Tickets', '/tickets', NULL, ['target' => '_self" onclick="x']);
+    $this->assertSame(
+      '<p><a href="/tickets">Tickets</a></p>',
       $result['field_text']['value'],
     );
   }
