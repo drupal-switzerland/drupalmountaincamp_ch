@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@blokkli/editor": "^2.0.0-alpha.73",
-    "@elastic/elasticsearch": "^9.5.1",
     "@formkit/addons": "^2.1.2",
     "@formkit/icons": "^2.1.2",
     "@formkit/inputs": "^2.1.2",
