@@ -82,14 +82,14 @@ abstract class BlokkliStarterkitGraphQlExistingSiteTestBase extends BlokkliStart
   /**
    * {@inheritdoc}
    */
-  protected function defaultCacheMaxAge() {
+  protected function defaultCacheMaxAge(): int {
     return Cache::PERMANENT;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function defaultCacheTags() {
+  protected function defaultCacheTags(): array {
     return Cache::mergeTags([
       'graphql_response',
     ], $this->server->getCacheTags());
@@ -98,7 +98,7 @@ abstract class BlokkliStarterkitGraphQlExistingSiteTestBase extends BlokkliStart
   /**
    * {@inheritdoc}
    */
-  protected function defaultCacheContexts() {
+  protected function defaultCacheContexts(): array {
     return [
       'user.permissions',
       'languages:language_interface',

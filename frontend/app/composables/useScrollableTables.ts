@@ -55,7 +55,7 @@ function unsetScrollable(scroller: HTMLElement) {
 export default function (root: Ref<HTMLElement | null>, options: Options) {
   const { $texts } = useEasyTexts()
   const fallbackLabel = computed(() =>
-    $texts('scrollableTable', 'Scrollbare Tabelle'),
+    $texts('scrollableTable', 'Scrollable table'),
   )
 
   let lastColumnWidth = -1

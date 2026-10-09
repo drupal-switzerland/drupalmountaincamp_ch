@@ -32,7 +32,7 @@ export const brand = {
   tint: '#F0F8FF',
 } as const
 
-const colors = {
+export const colors = {
   brand,
   // Kept as a scale because components reference primary-* by role:
   // 500 text and fills, 400 small accent text, 300 borders and decoration.
