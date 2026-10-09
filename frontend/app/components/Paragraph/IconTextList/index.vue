@@ -1,7 +1,7 @@
 <template>
   <section
     v-if="display === 'timeline'"
-    class="on-dark bg-primary-500 py-16 text-white lg:py-24"
+    class="week-band on-dark bg-primary-500 py-16 text-white lg:py-24"
     :aria-labelledby="title ? headingId : undefined"
   >
     <!-- Week timeline: a full-width navy band. The intro text is the opening

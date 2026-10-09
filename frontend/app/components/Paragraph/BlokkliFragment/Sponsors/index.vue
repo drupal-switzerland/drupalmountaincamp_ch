@@ -1,7 +1,7 @@
 <template>
-  <div class="sponsor-edge">
-    <!-- The card sits across a navy edge: the top of this block is navy, so it
-         continues the band above it (the programme on the homepage). -->
+  <div :class="{ 'sponsor-overlap': !isEditing }">
+    <!-- After a coloured band the card is pulled up across its bottom edge
+         (brand.css); after anything else it sits in the flow. -->
     <div class="container relative !my-0 pb-8 md:pb-12">
       <section
         :aria-labelledby="headingId"
@@ -81,6 +81,7 @@ defineBlokkliFragment({
 })
 
 const { $texts } = useEasyTexts()
+const isEditing = import.meta.blokkliEditing
 const headingId = useId()
 const platinumId = useId()
 const newTabHintId = useId()

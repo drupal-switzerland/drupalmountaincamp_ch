@@ -163,17 +163,23 @@
       no-repeat;
   }
 
-  /* Homepage sponsor card: the top of the block is navy, so the card sits
-     across the edge of the navy band above it. */
-  .sponsor-edge {
-    --edge: 72px;
-    background: linear-gradient(
-      theme(colors.brand.navy) var(--edge),
-      transparent var(--edge)
-    );
+  /* Homepage sponsor card across the edge of the band above it. It only
+     overlaps the bands listed here, by less than their smallest bottom
+     padding, so it never covers content: week timeline and news 64px (96px
+     from lg), theme band 72px (112px), navy text band 64px. After any other
+     block, or as the first block, it sits in the normal flow. */
+  .sponsor-overlap {
+    --sponsor-overlap: 48px;
+  }
 
-    @screen md {
-      --edge: 120px;
+  :is(.week-band, .news-band, .theme-band, .navy-band) + .sponsor-overlap {
+    @apply relative z-[1];
+    margin-top: calc(-1 * var(--sponsor-overlap));
+  }
+
+  @screen lg {
+    :is(.week-band, .news-band, .theme-band) + .sponsor-overlap {
+      --sponsor-overlap: 72px;
     }
   }
 
