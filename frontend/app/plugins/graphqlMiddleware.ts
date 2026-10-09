@@ -39,6 +39,13 @@ export default defineNuxtPlugin(() => {
     return
   }
 
+  // A page rendered from a failed or incomplete query must not be cached.
+  function markPageUncacheable() {
+    if (import.meta.server) {
+      useCDNHeaders((helper) => helper.private(), useRequestEvent())
+    }
+  }
+
   state.fetchOptions = {
     /**
      * Interceptor called whenever a GraphQL response arrives.
@@ -46,7 +53,12 @@ export default defineNuxtPlugin(() => {
     onResponse(result) {
       const data = result.response?._data
       if (!data) {
+        markPageUncacheable()
         return
+      }
+
+      if (data.errors?.length) {
+        markPageUncacheable()
       }
 
       // Extract drupal messages from every GraphQL response.
@@ -76,6 +88,9 @@ export default defineNuxtPlugin(() => {
         }, event)
       }
     },
+
+    onRequestError: markPageUncacheable,
+    onResponseError: markPageUncacheable,
 
     onRequest({ options, request }) {
       if (import.meta.server && import.meta.dev) {
