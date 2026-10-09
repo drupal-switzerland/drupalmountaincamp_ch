@@ -16,7 +16,7 @@
     </h3>
     <div v-if="text" class="mb-5 grow px-5" v-html="text" />
     <p class="mb-5 inline-flex px-5 font-bold">
-      {{ $texts('more_information', 'Mehr Informationen') }}
+      {{ $texts('more_information', 'More information') }}
 
       <SpriteSymbol
         name="arrow-right"

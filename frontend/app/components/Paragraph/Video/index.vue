@@ -22,7 +22,7 @@
           <button
             v-if="!isPlaying"
             class="relative flex aspect-video w-full cursor-pointer items-center justify-center lg:px-0"
-            :aria-label="$texts('video.load', 'Video laden')"
+            :aria-label="$texts('video.load', 'Load video')"
             @click.prevent="isPlaying = true"
           >
             <ImageItem
