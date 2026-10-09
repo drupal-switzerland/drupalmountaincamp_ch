@@ -1,6 +1,6 @@
 <template>
   <label for="searchterm" class="sr-only">
-    {{ $texts('search.searchFieldLabel', 'Suchbegriff') }}
+    {{ $texts('search.searchFieldLabel', 'Search term') }}
   </label>
   <div v-click-away="clickAway" class="relative" role="search">
     <input
@@ -16,7 +16,7 @@
       aria-owns="searchterm-suggestions"
       aria-label="Search input"
       :placeholder="
-        $texts('search.searchFieldPlaceholder', 'Suchbegriff eingeben')
+        $texts('search.searchFieldPlaceholder', 'Enter a search term')
       "
       @focus="isFocused = true"
       @search="updateSearchTerm"
