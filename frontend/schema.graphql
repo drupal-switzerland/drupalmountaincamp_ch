@@ -4354,6 +4354,16 @@ type ParagraphIconTextItem implements Entity & EntityRevisionable & EntityTransl
   """{field: field_icon} """
   fieldIconRawField: FieldItemListEntityReference
 
+  """
+  {value} {field: field_image} Optional photo shown above the card in the Info cards display.
+  """
+  fieldImage: MediaImage
+
+  """
+  {field: field_image} Optional photo shown above the card in the Info cards display.
+  """
+  fieldImageRawField: FieldItemListEntityReference
+
   """{value} {field: field_text} """
   fieldText: String
 

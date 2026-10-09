@@ -14,8 +14,10 @@ dependencies:
     - paragraphs.paragraphs_type.iframe
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.quote
+    - paragraphs.paragraphs_type.sponsor_list
     - paragraphs.paragraphs_type.teaser_list
     - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.text_image
     - paragraphs.paragraphs_type.video
   module:
     - entity_reference_revisions
@@ -50,6 +52,7 @@ settings:
       teaser_list: teaser_list
       video: video
       sponsor_list: sponsor_list
+      text_image: text_image
     negate: 0
     target_bundles_drag_drop:
       accordeon:
@@ -99,7 +102,7 @@ settings:
         enabled: true
       text_image:
         weight: 30
-        enabled: false
+        enabled: true
       video:
         weight: 16
         enabled: true

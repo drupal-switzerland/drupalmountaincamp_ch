@@ -363,7 +363,55 @@
       "type": "radios"
     }
   },
-  "text_image": {},
+  "text_image": {
+    "imagePosition": {
+      "default": "right",
+      "label": {
+        "en": "Image position"
+      },
+      "options": {
+        "left": {
+          "label": {
+            "en": "Image left"
+          }
+        },
+        "right": {
+          "label": {
+            "en": "Image right"
+          }
+        }
+      },
+      "type": "radios"
+    },
+    "spacing": {
+      "default": "none",
+      "displayAs": "icons",
+      "label": {
+        "en": "Spacing"
+      },
+      "options": {
+        "large": {
+          "icon": "bk_mdi_density_large",
+          "label": {
+            "en": "large spacing"
+          }
+        },
+        "none": {
+          "icon": "bk_mdi_density_small",
+          "label": {
+            "en": "no spacing"
+          }
+        },
+        "small": {
+          "icon": "bk_mdi_density_medium",
+          "label": {
+            "en": "small spacing"
+          }
+        }
+      },
+      "type": "radios"
+    }
+  },
   "video": {
     "format": {
       "default": "full",
