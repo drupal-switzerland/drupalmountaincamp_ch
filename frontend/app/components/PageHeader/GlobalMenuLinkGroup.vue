@@ -55,7 +55,7 @@
         v-if="subtreeOpen && isLessThanMd"
         ref="backButton"
         type="button"
-        class="pointer-events-auto -mt-10 block px-4 py-2"
+        class="pointer-events-auto block px-4 py-2"
         :aria-label="$texts('menu.back', 'Back')"
         @click="closeAndFocusToggle"
       >
@@ -63,7 +63,7 @@
       </button>
       <ul
         v-if="link.subtree"
-        class="pointer-events-auto ml-10 h-full pt-20 md:ml-0 md:pt-0"
+        class="pointer-events-auto ml-10 h-full pt-9 md:ml-0 md:pt-0"
       >
         <li
           v-for="(subLink, j) in link.subtree"
