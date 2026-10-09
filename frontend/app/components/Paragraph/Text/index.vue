@@ -51,7 +51,8 @@ const { options, parentType } = defineBlokkli({
       options: {
         none: 'None',
         light: 'Light card',
-        theme: 'Theme band',
+        theme: 'Theme card',
+        themeBand: 'Theme band, full width',
         navy: 'Navy band',
       },
     },
@@ -95,16 +96,21 @@ const alignment = computed(() =>
 
 useScrollableTables(content, {
   breakout: () =>
-    isTopLevel.value && ['none', 'navy'].includes(background.value),
+    isTopLevel.value &&
+    ['none', 'navy', 'themeBand'].includes(background.value),
   enabled: !import.meta.blokkliEditing,
   content: () => props.text,
 })
 
-const bandClassList = computed(() =>
-  background.value === 'navy'
-    ? ['on-dark', 'brand-hero', 'text-white', 'pb-8']
-    : [],
-)
+const bandClassList = computed(() => {
+  if (background.value === 'navy') {
+    return ['on-dark', 'brand-hero', 'text-white', 'pb-8']
+  }
+  if (background.value === 'themeBand') {
+    return ['theme-band', 'py-10', 'lg:py-20']
+  }
+  return []
+})
 
 const columnClassList = computed(() => {
   if (!isTopLevel.value) {

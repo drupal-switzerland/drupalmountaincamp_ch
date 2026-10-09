@@ -127,6 +127,29 @@
     }
   }
 
+  /* Text paragraph "Theme band, full width": the conference theme as a statement. */
+  .theme-band {
+    background: linear-gradient(
+      110deg,
+      theme(colors.brand.ice),
+      theme(colors.brand.lilac)
+    );
+
+    .ck-content h2 {
+      @apply text-4xl leading-none md:text-6xl lg:text-7xl xl:text-8xl;
+    }
+
+    .label {
+      @apply text-primary-500;
+    }
+
+    /* Sky and blue fail on lilac; navy is the only text colour here. */
+    .ck-content .highlight,
+    .ck-content a:not(.button) {
+      @apply text-primary-500;
+    }
+  }
+
   /* Small uppercase label above a heading (also the CKEditor "Label" style). */
   .label {
     @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;
