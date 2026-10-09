@@ -16,7 +16,7 @@
       <BrandSparkles class="w-24 text-white" />
     </div>
     <div class="flex flex-col gap-2 p-5">
-      <p v-if="date" class="font-semibold text-sm text-primary-400">
+      <p v-if="date" class="text-sm font-medium text-primary-400">
         {{ date.formatted }}
       </p>
       <component

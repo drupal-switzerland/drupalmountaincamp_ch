@@ -72,7 +72,7 @@ export default withNuxt([
         'error',
         {
           callees: ['twMerge'],
-          cssFiles: ['./assets/css/**/*.css'],
+          cssFiles: ['./app/assets/css/**/*.css'],
           whitelist: [
             'bk-main-canvas',
             'close-launcher',
