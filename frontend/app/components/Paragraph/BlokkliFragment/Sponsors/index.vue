@@ -1,58 +1,64 @@
 <template>
-  <div class="container">
-    <section
-      :aria-labelledby="headingId"
-      class="brand-hero on-dark relative flex flex-col gap-8 overflow-hidden rounded-3xl p-6 text-white xs:p-10 lg:p-14"
-    >
-      <BrandSparkles
-        class="pointer-events-none absolute right-10 top-10 hidden w-28 text-white md:block lg:right-14 lg:top-12"
-      />
-      <div
-        class="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between md:pr-40"
+  <div class="sponsor-edge">
+    <!-- The card sits across a navy edge: the top of this block is navy, so it
+         continues the band above it (the programme on the homepage). -->
+    <div class="container relative !my-0 pb-8 md:pb-12">
+      <section
+        :aria-labelledby="headingId"
+        class="gradient-border relative flex flex-col gap-8 rounded-3xl p-6 shadow-[0_30px_60px_-30px_rgba(18,40,95,0.6)] xs:p-10 lg:p-12"
       >
-        <div class="flex flex-col gap-2">
-          <p class="label">{{ $texts('sponsors.label', 'Sponsors 2027') }}</p>
-          <h2 :id="headingId" class="text-3xl md:text-5xl">
-            <template v-if="titleParts">
-              {{ titleParts.before
-              }}<span class="text-primary-300">{{ titleParts.highlight }}</span
-              >{{ titleParts.after }}
-            </template>
-            <template v-else>{{ title }}</template>
-          </h2>
-        </div>
-        <VuepalLink
-          :to="SPONSORSHIP_PATH"
-          class="button shrink-0 border-white bg-white text-primary-500 hover:border-primary-100 hover:bg-primary-100 hover:text-primary-500"
+        <BrandSparkles
+          class="pointer-events-none absolute -top-9 right-10 hidden w-24 text-primary-300 md:block"
+        />
+        <div
+          class="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between"
         >
-          {{ $texts('sponsors.cta', 'Become a sponsor') }}
-        </VuepalLink>
-      </div>
-      <div v-if="platinum.length" class="flex flex-col gap-3">
-        <h3 :id="platinumId" class="label">
-          {{ $texts('sponsors.platinum', 'Platinum') }}
-        </h3>
-        <ul :aria-labelledby="platinumId" class="grid gap-5 md:grid-cols-3">
-          <li v-for="sponsor in platinum" :key="sponsor.uuid">
-            <SponsorTile
-              :sponsor
-              :box="LOGO_BOXES.card"
-              tile-class="h-[140px] shadow-md"
-              :described-by="newTabHintId"
-            />
-          </li>
-          <!-- Unsold spots stay visible as an invitation until all are taken. -->
-          <li v-for="spot in openSpots" :key="`open-${spot}`">
-            <VuepalLink
-              :to="SPONSORSHIP_PATH"
-              class="flex h-[140px] items-center justify-center rounded-xl border-2 border-dashed border-primary-100 px-4 text-center font-bold text-white transition-colors hover:bg-white/10 motion-reduce:transition-none"
-            >
-              {{ $texts('sponsors.openSpot', 'Platinum spot available') }}
-            </VuepalLink>
-          </li>
-        </ul>
-      </div>
-    </section>
+          <div class="flex flex-col gap-2">
+            <p class="label">{{ $texts('sponsors.label', 'Sponsors 2027') }}</p>
+            <h2 :id="headingId" class="text-3xl md:text-5xl">
+              <template v-if="titleParts">
+                {{ titleParts.before
+                }}<span class="text-primary-400">{{
+                  titleParts.highlight
+                }}</span
+                >{{ titleParts.after }}
+              </template>
+              <template v-else>{{ title }}</template>
+            </h2>
+          </div>
+          <VuepalLink
+            :to="SPONSORSHIP_PATH"
+            class="button is-filled w-full shrink-0 justify-center md:w-auto"
+          >
+            {{ $texts('sponsors.cta', 'Become a sponsor') }}
+          </VuepalLink>
+        </div>
+        <div v-if="platinum.length" class="flex flex-col gap-3">
+          <h3 :id="platinumId" class="label">
+            {{ $texts('sponsors.platinum', 'Platinum') }}
+          </h3>
+          <ul :aria-labelledby="platinumId" class="grid gap-5 md:grid-cols-3">
+            <li v-for="sponsor in platinum" :key="sponsor.uuid">
+              <SponsorTile
+                :sponsor
+                :box="LOGO_BOXES.card"
+                tile-class="h-[140px]"
+                :described-by="newTabHintId"
+              />
+            </li>
+            <!-- Unsold spots stay visible as an invitation until all are taken. -->
+            <li v-for="spot in openSpots" :key="`open-${spot}`">
+              <VuepalLink
+                :to="SPONSORSHIP_PATH"
+                class="flex h-[140px] items-center justify-center rounded-xl border-2 border-dashed border-primary-400 px-4 text-center font-bold text-primary-400 transition-colors hover:bg-primary-50 motion-reduce:transition-none"
+              >
+                {{ $texts('sponsors.openSpot', 'Platinum spot available') }}
+              </VuepalLink>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
     <span :id="newTabHintId" hidden>
       {{ $texts('newTabHint', 'opens in a new tab') }}
     </span>

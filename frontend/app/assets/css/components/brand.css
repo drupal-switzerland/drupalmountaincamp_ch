@@ -150,6 +150,20 @@
     }
   }
 
+  /* Homepage sponsor card: the top of the block is navy, so the card sits
+     across the edge of the navy band above it. */
+  .sponsor-edge {
+    --edge: 72px;
+    background: linear-gradient(
+      theme(colors.brand.navy) var(--edge),
+      transparent var(--edge)
+    );
+
+    @screen md {
+      --edge: 120px;
+    }
+  }
+
   /* Small uppercase label above a heading (also the CKEditor "Label" style). */
   .label {
     @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;
