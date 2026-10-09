@@ -59,8 +59,8 @@ class ButtonToText extends ParagraphConversionPluginBase {
    * doesn't resolve /node/N to its alias. Cache metadata is collected instead
    * of bubbled, since this runs inside a GraphQL mutation. Label and URL are
    * escaped; dangerous protocols such as javascript: are removed. Of the
-   * button's link attributes only target="_blank" is kept: the others aren't
-   * allowed in basic_html.
+   * attributes the button's link widget offers, only target is allowed in
+   * basic_html (title and aria-label aren't), and only "_blank" is kept.
    *
    * @return string|null
    *   The markup, or NULL when the target has no URL (<nolink>, <button>).
