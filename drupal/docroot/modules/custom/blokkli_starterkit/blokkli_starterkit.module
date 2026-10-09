@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\blokkli_starterkit\RokkaFileMigration;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityInterface;
@@ -185,4 +186,13 @@ function blokkli_starterkit_paragraphs_type_access(EntityInterface $entity, $ope
     return AccessResult::allowedIf($account->isAuthenticated());
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Retries rokka:// files that the deploy's post update couldn't move.
+ */
+function blokkli_starterkit_cron() {
+  \Drupal::classResolver(RokkaFileMigration::class)->retryOnCron();
 }
