@@ -69,13 +69,9 @@
 
 <script setup lang="ts">
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
-import { TICKETS_PATH } from '~/helpers/navigation'
 
 const route = useRoute()
-const data = await useInitData()
-const ticketsLink = computed(() =>
-  data.value.mainMenuLinks.find((link) => link.link.url?.path === TICKETS_PATH),
-)
+const ticketsLink = await useTicketsLink()
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
 const container = ref<HTMLElement | null>(null)

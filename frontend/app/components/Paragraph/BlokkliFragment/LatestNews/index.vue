@@ -2,9 +2,9 @@
   <section
     v-if="pressReleases.length"
     :aria-labelledby="headingId"
-    class="container"
+    class="bg-primary-100 py-16 lg:py-24"
   >
-    <div class="flex flex-col gap-10">
+    <div class="container !my-0 flex flex-col gap-10">
       <div class="flex flex-wrap items-baseline justify-between gap-4">
         <h2 :id="headingId" class="text-3xl lg:text-4xl">
           {{ $texts('latestNews.title', 'News') }}

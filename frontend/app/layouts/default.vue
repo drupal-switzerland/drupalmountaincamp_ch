@@ -1,6 +1,7 @@
 <template>
   <div>
-    <PageHeaderEventStrip />
+    <!-- The homepage hero bar shows the same dates and venue. -->
+    <PageHeaderEventStrip v-if="route.name !== 'home'" />
     <PageHeader
       @menu:open="menuOpen"
       @menu:close:start="menuCloseStart"

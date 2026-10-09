@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TICKETS_PATH, isActivePath } from '~/helpers/navigation'
+import { isActivePath } from '~/helpers/navigation'
 
 const data = await useInitData()
 const menuLinks = data.value.mainMenuLinks
@@ -54,9 +54,7 @@ const route = useRoute()
 
 // Tickets is rendered as the call-to-action button at the end, wherever
 // editors place it in the Drupal menu.
-const ticketsLink = computed(() =>
-  menuLinks.find((link) => link.link.url?.path === TICKETS_PATH),
-)
+const ticketsLink = await useTicketsLink()
 
 const items = computed(() =>
   menuLinks

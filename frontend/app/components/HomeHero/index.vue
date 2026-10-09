@@ -1,42 +1,87 @@
 <template>
-  <div>
-    <section
-      aria-labelledby="home-hero-title"
-      class="brand-hero on-dark relative overflow-hidden text-white"
-    >
-      <BrandSparkles
-        class="pointer-events-none absolute right-4 top-5 w-24 text-white sm:right-8 md:top-10 md:w-36 lg:right-[7vw] lg:w-40"
-      />
-      <div class="container relative flex flex-col gap-6 pb-40 pt-12 md:pt-20">
+  <section aria-labelledby="home-hero-title" class="relative">
+    <div class="brand-hero on-dark overflow-hidden text-white">
+      <div
+        class="container relative z-[1] !my-0 flex flex-col gap-3 pt-6 xs:gap-6 xs:pt-12 md:pt-20"
+      >
         <p
           class="label self-start rounded-full border-2 border-primary-100 px-4 py-1"
         >
           {{ $texts('hero.badge', '10 years of community') }}
         </p>
-        <h1
-          id="home-hero-title"
-          v-blokkli-editable:title
-          class="max-w-4xl text-5xl leading-none md:text-7xl lg:text-8xl"
-        >
-          {{ titleParts.name }}
-          <span v-if="titleParts.year" class="text-primary-300">
-            {{ titleParts.year }}
-          </span>
-        </h1>
+        <!-- The plus marks share the title's row so they line up with it at every width. -->
+        <div class="flex items-center justify-between gap-4 md:gap-10">
+          <h1
+            id="home-hero-title"
+            v-blokkli-editable:title
+            class="text-[2.5rem] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
+          >
+            {{ titleParts.name }}
+            <span v-if="titleParts.year" class="text-primary-300">
+              {{ titleParts.year }}
+            </span>
+          </h1>
+          <BrandSparkles
+            class="w-14 shrink-0 text-white xs:w-24 md:w-36 lg:w-40"
+          />
+        </div>
         <!-- Rich text so editors can add Button / Button (outline) links. -->
         <div
           v-if="lead"
           v-blokkli-editable:field_lead
-          class="ck-content is-small max-w-2xl text-xl md:text-2xl"
+          class="ck-content is-small home-hero-lead max-w-2xl text-base md:text-2xl"
           v-html="lead"
         />
       </div>
-      <div class="brand-strip" aria-hidden="true" />
-    </section>
-    <div class="relative -mt-24 px-outer">
-      <EventEditionCard />
+      <BrandRidge mirrored class="mt-[-6px] xs:mt-[max(-190px,-14.8vw)]" />
     </div>
-  </div>
+
+    <div class="bg-primary-100 text-primary-500">
+      <div
+        class="container !my-0 grid gap-y-2 pb-4 xs:pb-8 md:grid-cols-[max-content_1fr_auto] md:items-center md:gap-y-0 md:pb-11"
+      >
+        <div class="flex flex-col gap-[6px] md:pr-8">
+          <p class="label">
+            {{ $texts('edition.label', '10th anniversary gathering') }}
+          </p>
+          <h2 class="text-[1.375rem] leading-tight md:text-[1.625rem]">
+            {{ $texts('edition.title', 'Join us for our 6th edition') }}
+          </h2>
+        </div>
+        <dl
+          class="grid grid-cols-2 border-t border-primary-500 md:flex md:border-t-0"
+        >
+          <div
+            class="flex flex-col gap-1 py-2 pr-4 md:border-l md:border-primary-500 md:px-8 md:py-1"
+          >
+            <dt class="label">{{ $texts('edition.whenLabel', 'When') }}</dt>
+            <dd class="font-medium md:text-lg">
+              {{ $texts('edition.dates', 'March 2–4, 2027') }}
+            </dd>
+          </div>
+          <div
+            class="flex flex-col gap-1 border-l border-primary-500 py-2 pl-4 md:px-8 md:py-1"
+          >
+            <dt class="label">{{ $texts('edition.whereLabel', 'Where') }}</dt>
+            <dd class="font-medium md:text-lg">
+              {{
+                $texts('edition.venue', 'Davos Congress Centre, Switzerland')
+              }}
+            </dd>
+          </div>
+        </dl>
+        <VuepalLink
+          v-if="ticketsLink"
+          :to="ticketsLink.link.url?.path"
+          class="ticket-button mt-1 min-h-[52px] xs:min-h-14"
+        >
+          {{ $texts('edition.tickets', 'Get tickets') }}
+          <span aria-hidden="true">→</span>
+        </VuepalLink>
+      </div>
+    </div>
+    <div class="brand-strip" aria-hidden="true" />
+  </section>
 </template>
 
 <script lang="ts" setup>
@@ -46,6 +91,7 @@ const props = defineProps<{
 }>()
 
 const { $texts } = useEasyTexts()
+const ticketsLink = await useTicketsLink()
 
 // "Mountain Camp 2027" renders the trailing year in the accent colour.
 const titleParts = computed(() => {

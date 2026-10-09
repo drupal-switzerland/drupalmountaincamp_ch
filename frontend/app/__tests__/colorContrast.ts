@@ -39,6 +39,13 @@ const pairs: [string, string, string, number][] = [
   ['ice text on navy', brand.ice, brand.navy, AA_TEXT],
   ['lilac text on navy', brand.lilac, brand.navy, AA_TEXT],
   ['sky large heading on white', brand.sky, WHITE, AA_LARGE_TEXT],
+  // Week timeline: day numbers on sky stops, the rail and the dashed start.
+  ['navy day number on sky', brand.navy, brand.sky, AA_LARGE_TEXT],
+  ['sky timeline rail on navy', brand.sky, brand.navy, AA_NON_TEXT],
+  ['ice start stop on navy', brand.ice, brand.navy, AA_NON_TEXT],
+  // Get tickets: navy pill on the ice hero bar, white pill on navy.
+  ['navy ticket button on ice', brand.navy, brand.ice, AA_NON_TEXT],
+  ['white ticket button on navy', WHITE, brand.navy, AA_NON_TEXT],
   // Navigation loading bar (blue) over the event strip, header and menus.
   ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
   ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
