@@ -1,7 +1,6 @@
 import type { FetchResponse } from 'ofetch'
 import type { H3Event } from 'h3'
-import crypto from 'crypto'
-import { INTERVALS, MAX_AGE, type ValidInterval } from '../helpers'
+import { MAX_AGE } from '../helpers'
 
 function extractCacheTags(
   response: FetchResponse<unknown>,
@@ -69,70 +68,4 @@ export function extractCacheability(
     tagsCdn: tagsCdn.length ? tagsCdn : tagsDrupal,
     tagsDrupal,
   }
-}
-
-/**
- * Determine the number of seconds until the next given interval.
- *
- * Useful to calculate a max age for responses that should invalidate at the
- * same time, no matter when they were put in cache.
- *
- * For example, when pasing '5min' and the current time is 12:04:00, the
- * method will return 60.
- */
-export function getSecondsUntilNextInterval(key: ValidInterval): number {
-  const now = new Date()
-
-  // Special handling for the midnight case.
-  if (key === 'midnight') {
-    now.setHours(24, 0, 0, 0)
-    return Math.floor((now.getTime() - Date.now()) / 1000)
-  }
-
-  // Get the current timestamp in milliseconds
-  const msSinceHourStart =
-    now.getMinutes() * 60 * 1000 +
-    now.getSeconds() * 1000 +
-    now.getMilliseconds()
-
-  const interval = INTERVALS[key]
-
-  // Calculate the interval in milliseconds.
-  const intervalMs = interval * 1000
-
-  // Calculate the remaining milliseconds until the next interval.
-  const millisecondsUntilNextInterval =
-    intervalMs - (msSinceHourStart % intervalMs)
-
-  // Convert milliseconds to seconds.
-  return Math.floor(millisecondsUntilNextInterval / 1000)
-}
-
-/**
- * Convert the given cache tag or cache tags to its hashed version.
- *
- * Because our responses can contain a lot of cache tags, in order to avoid
- * headers that are too large, the fastly Drupal module will hash the cache
- * tags to a fixed length.
- *
- * In some cases, when directly building responses in the Nuxt app that have
- * to manually define cache tags, we need to "recreate" the same behaviour
- * as Drupal, so that when Drupal invalidates the hashed cache tags, our
- * custom responses also get invalidated.
- *
- * IMPORTANT: It is crucial that the logic for this method is in-sync with
- * Drupal or else responses are not properly invalidated. In particular, the
- * length of the hashed cache tag is configurable in Drupal.
- */
-export function buildFastlyCacheTags(input: string | string[]): string[] {
-  const tags = typeof input === 'string' ? [input] : input
-  const siteId = useRuntimeConfig().fastlySiteId
-
-  return tags.map(function (tag) {
-    return crypto
-      .createHash('md5')
-      .update(siteId + ':' + tag)
-      .digest('base64')
-      .substring(0, 6)
-  })
 }
