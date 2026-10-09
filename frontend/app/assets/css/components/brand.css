@@ -150,6 +150,19 @@
     }
   }
 
+  /* The snow carries on: the hero bar's ice continues behind the first
+     homepage blocks and fades to white, instead of a hard cut after the hero. */
+  .home-blocks {
+    /* Keeps the first block's top margin inside, so no white gap shows. */
+    display: flow-root;
+    background: linear-gradient(
+        theme(colors.brand.ice) 0,
+        theme(colors.brand.tint) 360px,
+        theme(colors.white) 640px
+      )
+      no-repeat;
+  }
+
   /* Homepage sponsor card: the top of the block is navy, so the card sits
      across the edge of the navy band above it. */
   .sponsor-edge {
