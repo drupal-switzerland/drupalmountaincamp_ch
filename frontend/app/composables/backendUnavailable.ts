@@ -1,3 +1,6 @@
+import { setResponseHeader } from 'h3'
+import { retryAfterSeconds } from '~/helpers/backendUnavailable'
+
 /** Read and write access to the "Drupal unavailable" flag of one render. */
 export type BackendUnavailableFlag = { value: boolean }
 
@@ -23,5 +26,17 @@ export function useBackendUnavailable(): BackendUnavailableFlag {
         local = unavailable
       }
     },
+  }
+}
+
+/**
+ * Sends Retry-After with a 503 a page sets itself instead of throwing (the
+ * news list). Thrown 503s get it from server/plugins/retryAfter.ts.
+ */
+export function useRetryAfterHeader(statusCode: number | undefined) {
+  const retryAfter = retryAfterSeconds(statusCode)
+  const event = useRequestEvent()
+  if (retryAfter && event) {
+    setResponseHeader(event, 'retry-after', retryAfter)
   }
 }

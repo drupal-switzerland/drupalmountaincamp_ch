@@ -39,8 +39,8 @@ export const BACKEND_QUERY_TIMEOUT_MS = 15_000
  */
 export const BACKEND_WRITE_TIMEOUT_MS = 120_000
 
-/** Retry-After hint, in seconds, on a 503 when Drupal is unavailable. */
-export const BACKEND_RETRY_AFTER_SECONDS = 30
+// One value for the API route's 503 and the page-level one.
+export { BACKEND_RETRY_AFTER_SECONDS } from '../../app/helpers/backendUnavailable'
 
 /**
  * Upstream statuses that mean Drupal itself didn't answer: nginx sits between

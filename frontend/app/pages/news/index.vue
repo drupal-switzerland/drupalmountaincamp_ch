@@ -44,6 +44,7 @@ import {
   parsePageParam,
   totalPages,
 } from '~/helpers/pagination'
+import { BACKEND_UNAVAILABLE_STATUS } from '~/helpers/backendUnavailable'
 import { SITE_NAME, shareMeta } from '~/helpers/site'
 
 const PAGE_SIZE = 10
@@ -117,8 +118,9 @@ const listFailed = computed(() => pageState.value === 'failed')
 if (import.meta.server && listFailed.value) {
   const event = useRequestEvent()
   if (event) {
-    setResponseStatus(event, 503)
+    setResponseStatus(event, BACKEND_UNAVAILABLE_STATUS)
   }
+  useRetryAfterHeader(BACKEND_UNAVAILABLE_STATUS)
 }
 
 const pressReleases = computed(() => {
