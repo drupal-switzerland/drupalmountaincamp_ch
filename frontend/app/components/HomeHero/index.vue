@@ -31,7 +31,9 @@
         <span class="home-hero-rise" aria-hidden="true" />
         <span class="home-hero-horizon" aria-hidden="true" />
         <!-- Flex, so the lead's top margin stays inside and the blue starts at the title. -->
-        <div class="container !my-0 flex flex-col pb-[var(--home-hero-pad)]">
+        <div
+          class="home-hero-body container !my-0 flex flex-col pb-[var(--home-hero-pad)]"
+        >
           <!-- Rich text so editors can add Button / Button (outline) links. -->
           <div
             v-if="lead"

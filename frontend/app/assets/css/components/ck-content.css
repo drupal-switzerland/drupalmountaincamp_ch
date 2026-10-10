@@ -1,5 +1,4 @@
 @import './link.css';
-@tailwind components;
 
 @layer components {
   .ck-content {

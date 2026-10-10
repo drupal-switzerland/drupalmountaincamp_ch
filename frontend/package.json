@@ -28,8 +28,6 @@
     "@formkit/icons": "^2.1.2",
     "@formkit/inputs": "^2.1.2",
     "@formkit/nuxt": "^2.1.2",
-    "@iframe-resizer/child": "^5.5.9",
-    "@iframe-resizer/vue": "^5.5.9",
     "@lunarisapp/readability": "^1.1.1",
     "@nuxt/fonts": "^0.14.0",
     "@rokka-io/nuxt": "^1.0.2",
@@ -54,7 +52,6 @@
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/test-utils": "^4.3.3",
     "@nuxtjs/tailwindcss": "^6.14.0",
-    "@types/iframe-resizer": "^4.0.0",
     "@vitest/coverage-v8": "5.0.3",
     "@vue/test-utils": "^2.4.2",
     "eslint-plugin-depend": "^1.5.0",
@@ -71,7 +68,7 @@
     "sass": "^1.105.1",
     "vitest": "^5.0.3",
     "vue": "^3.5.43",
-    "vue-router": "^5.3.1",
-    "vue-tsc": "^3.3.11"
+    "vue-router": "^5.4.0",
+    "vue-tsc": "^3.3.12"
   }
 }

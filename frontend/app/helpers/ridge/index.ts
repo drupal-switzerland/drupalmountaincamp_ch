@@ -17,6 +17,9 @@ export const RIDGE_NARROW_HEIGHT = 'max(72px, 20vw)'
 /** The lowest point of the skyline inside the box (its y). */
 export const RIDGE_DEEPEST_VALLEY = 431
 
+/** The top of the tall peak's outline (its y): the summit at 178 less half the 10-unit stroke. */
+export const RIDGE_SUMMIT_TOP = 173
+
 /** Shaded faces below the main summits, filled with a fading ice gradient. */
 export const RIDGE_FACES = [
   '162,178 130,192 122,214 94,252 62,268 46,316 14,340 8,400 -20,450 -20,560 250,560',

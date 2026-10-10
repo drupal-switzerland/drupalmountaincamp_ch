@@ -1,8 +1,9 @@
 <template>
   <div :class="paragraphClassList">
-    <IframeResizer
-      license="GPLv3"
+    <iframe
       :src="src"
+      :title="$texts('iframe.title', 'Embedded content')"
+      loading="lazy"
       :class="{ 'pointer-events-none': isEditing }"
       class="w-full"
     />
@@ -10,11 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import IframeResizer from '@iframe-resizer/vue/iframe-resizer.vue'
-import '@iframe-resizer/child'
 import type { ParagraphIframeFragment } from '#graphql-operations'
 
 const isEditing = import.meta.blokkliEditing
+const { $texts } = useEasyTexts()
 const { options } = defineBlokkli({
   bundle: 'iframe',
   globalOptions: ['spacing'],

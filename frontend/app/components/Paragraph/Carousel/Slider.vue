@@ -1,6 +1,6 @@
 <template>
   <div
-    class="2xl:!w-[70%] 2xl:!max-w-[1920px] container relative w-4/5 transition sm:w-full"
+    class="2xl:!w-[70%] 2xl:!max-w-[1920px] container relative w-4/5 transition sm:w-full xl:w-[theme(screens.xl)]"
     data-allow-mismatch
     :class="{
       'opacity-0': !isLoaded,
