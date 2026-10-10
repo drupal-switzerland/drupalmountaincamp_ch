@@ -353,6 +353,17 @@ async function getIcon(
 
 const EMPTY_RESPONSE = '<svg></svg>'
 
+/**
+ * The answer when there is no icon to send. Marked as not cacheable for the
+ * browser and the CDN. Only for responses without an icon: once the CDN
+ * helper is private, it can't be made public again.
+ */
+function emptyUncacheableIcon(event: H3Event) {
+  setHeader(event, 'cache-control', 'no-store')
+  useCDNHeaders((v) => v.private(), event)
+  return EMPTY_RESPONSE
+}
+
 const SECURITY_HEADERS = {
   'content-security-policy':
     "default-src 'none'; style-src 'unsafe-inline'; sandbox",
@@ -373,13 +384,13 @@ export default defineEventHandler(async (event) => {
     const id = parseIconId(getRouterParams(event, { decode: true }).params)
     if (!id) {
       setResponseStatus(event, 400)
-      return EMPTY_RESPONSE
+      return emptyUncacheableIcon(event)
     }
 
     const result = await getIcon(id, event)
     if (!result) {
       console.log('Failed to load icon from Drupal: ' + id)
-      return EMPTY_RESPONSE
+      return emptyUncacheableIcon(event)
     }
 
     useCDNHeaders((v) => {
@@ -402,6 +413,6 @@ export default defineEventHandler(async (event) => {
     console.log(e)
     console.log('Failed to load icon from Drupal.', e)
     // We don't want to return a message here, only an empty response.
-    return EMPTY_RESPONSE
+    return emptyUncacheableIcon(event)
   }
 })

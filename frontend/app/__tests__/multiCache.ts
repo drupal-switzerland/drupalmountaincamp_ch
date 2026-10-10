@@ -32,6 +32,19 @@ describe('multi cache: enabled for a request', () => {
     expect(isCacheEnabledForRequest(createEvent('/', cookie))).toBe(false)
   })
 
+  it('is off for the session cookie Drupal sets over plain HTTP', () => {
+    const cookie = 'SESS0123456789abcdef0123456789abcdef=session-id'
+
+    expect(isCacheEnabledForRequest(createEvent('/', cookie))).toBe(false)
+  })
+
+  it.each([
+    ['in the value of another cookie', 'ref=SSESSabc; theme=dark'],
+    ['inside the name of another cookie', 'XSSESSION=1; MYSESS1=2'],
+  ])('stays on when "SSESS" only appears %s', (_label, cookie) => {
+    expect(isCacheEnabledForRequest(createEvent('/', cookie))).toBe(true)
+  })
+
   it('is on for a visitor without cookies', () => {
     expect(isCacheEnabledForRequest(createEvent('/'))).toBe(true)
   })
@@ -57,11 +70,21 @@ describe('multi cache: route cache key', () => {
     expect(key('/news?page=2')).not.toBe(key('/news'))
   })
 
-  it('never shares an entry between a visitor with cookies and one without', () => {
-    expect(key('/news', SESSION_COOKIE)).not.toBe(key('/news'))
+  it.each([
+    ['/news/page=2', '/news?page=2'],
+    ['/a/b', '/a?b'],
+    ['/a?b=1&c=2', '/a?b=1/c=2'],
+    ['/a__b', '/a/b'],
+  ])('differs between %s and %s', (first, second) => {
+    expect(key(first)).not.toBe(key(second))
   })
 
-  it('never shares an entry between two different cookies', () => {
-    expect(key('/news', 'SSESSa=one')).not.toBe(key('/news', 'SSESSa=two'))
+  it('is the same whatever other cookies a visitor sends', () => {
+    expect(key('/news', 'consent=1; theme=dark')).toBe(key('/news'))
+    expect(key('/news', 'consent=1')).toBe(key('/news', 'consent=0'))
+  })
+
+  it('holds no cookie value', () => {
+    expect(key('/news', 'consent=secret-value')).not.toContain('secret-value')
   })
 })

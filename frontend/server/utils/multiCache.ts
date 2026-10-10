@@ -1,19 +1,19 @@
-import { getHeaders, type H3Event } from 'h3'
+import type { H3Event } from 'h3'
+import { hasDrupalSessionCookie } from '../../app/helpers/drupalSession'
 
 /** Caching is off for a request that carries a Drupal session cookie. */
 export function isCacheEnabledForRequest(event: H3Event): boolean {
-  const hasSession = (event.node.req.headers.cookie || '').includes('SSESS')
-  return !hasSession
+  return !hasDrupalSessionCookie(event.node.req.headers.cookie)
 }
 
-/** The route cache key of a request: its path and its Cookie header. */
+/**
+ * The route cache key of a request: its path with the query string.
+ * Cookies are not part of it. A request with a Drupal session never reaches
+ * the route cache (isCacheEnabledForRequest), so the entries are shared by
+ * everyone else; a route that varies by another cookie must opt out of the
+ * route cache.
+ */
 export function buildRouteCacheKey(event: H3Event): string {
-  const path = (event.path || '')
-    .replaceAll('/', '__')
-    .replaceAll('?', '__')
-    .replaceAll('&', '__')
-
-  const headers = getHeaders(event)
-  const cookie = headers.cookie || 'anonymous'
-  return path + cookie
+  // Percent-encoded, so two different URLs never share a key.
+  return encodeURIComponent(event.path || '')
 }

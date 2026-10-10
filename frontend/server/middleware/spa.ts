@@ -1,3 +1,5 @@
+import { hasDrupalSessionCookie } from '../../app/helpers/drupalSession'
+
 /**
  * Enable SPA mode for logged in users.
  *
@@ -26,7 +28,7 @@ export default defineEventHandler((event) => {
 
   // Check if a Drupal session cookie is present. If yes, set the magic header
   // to enable SPA mode.
-  const hasSession = cookie.includes('SSESS')
+  const hasSession = hasDrupalSessionCookie(cookie)
   if (
     event.path.includes('blokkliEditing') ||
     event.path.includes('blokkliPreview') ||
