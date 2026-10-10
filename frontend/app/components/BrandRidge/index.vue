@@ -104,8 +104,10 @@ const MIRROR = 'translate(1920,0) scale(-1,1)'
 // SVG ids must be unique per instance and safe inside url(#…).
 const uid = useId().replace(/[^a-zA-Z0-9-]/g, '-')
 
-// Wide screens show the whole range; phones crop a taller slice around the
-// tall peak so it doesn't shrink to a sliver.
+// Wide screens show the whole drawing; phones crop the empty sky above the
+// ridge. "slice" scales the drawing to the width and keeps its bottom edge,
+// so the crop's height follows the width: 20vw shows the lower 384 of 540
+// units, which holds the summit (y 178) and its stroke at every width.
 const crops = computed(() => [
   {
     key: 'wide',
@@ -115,7 +117,7 @@ const crops = computed(() => [
   {
     key: 'narrow',
     aspect: props.mirrored ? 'xMaxYMax slice' : 'xMinYMax slice',
-    class: 'block h-[72px] xs:hidden',
+    class: 'block h-[max(72px,20vw)] xs:hidden',
   },
 ])
 
