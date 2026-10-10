@@ -34,7 +34,6 @@ const HEADER_KEYS: string[] = [
   'user-agent',
   'user-agent-https',
   'cookie',
-  'authorization',
 ]
 
 export default defineGraphqlServerOptions<{
