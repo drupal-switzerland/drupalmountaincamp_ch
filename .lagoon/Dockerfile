@@ -8,8 +8,9 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Stage 2: Frontend build
 FROM uselagoon/node-24-builder:26.9.0 AS frontend-builder
-# Install bun
-RUN npm install -g bun@latest
+# Same bun version as CI (.github/workflows/frontend-tests.yml); bump both
+# together.
+RUN npm install -g bun@1.4.2
 ENV PATH="/root/.bun/bin:${PATH}"
 
 COPY frontend /app/frontend
@@ -19,7 +20,8 @@ RUN mkdir -p /app/drupal/docroot/themes/custom/blokkli_starterkit/css
 # Copy the module files from the drupal-builder stage.
 COPY --from=drupal-builder /app/drupal/docroot/modules/custom/blokkli_starterkit /app/drupal/docroot/modules/custom/blokkli_starterkit
 WORKDIR /app/frontend
-RUN bun install
+# Fails the build when bun.lock does not match package.json.
+RUN bun install --frozen-lockfile
 # This will also run the 'styles' script which writes to /app/drupal/docroot/...
 RUN bun run build
 
