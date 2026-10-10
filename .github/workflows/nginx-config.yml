@@ -1,0 +1,33 @@
+name: nginx config
+
+on:
+  pull_request:
+    branches: [prod]
+    paths:
+      - '.lagoon/**'
+      - '.github/workflows/nginx-config.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nginx-config-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  nginx-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Lagoon provides basic_auth.conf at runtime and resolves the frontend
+      # service, so the test stands in an empty file and a host entry.
+      - run: |
+          touch "$RUNNER_TEMP/basic_auth.conf"
+          docker run --rm --add-host frontend:127.0.0.1 \
+            -v "$PWD/.lagoon/nginx-lagoon.conf:/etc/nginx/conf.d/app.conf:ro" \
+            -v "$RUNNER_TEMP/basic_auth.conf:/etc/nginx/conf.d/basic_auth.conf:ro" \
+            uselagoon/nginx-drupal:latest nginx -t
