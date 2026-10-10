@@ -44,7 +44,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: canonicalPageUrl(useRequestURL().origin, '/', 1),
+      href: canonicalPageUrl(useSiteOrigin().value, '/', 1),
     },
   ],
 })

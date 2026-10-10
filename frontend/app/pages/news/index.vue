@@ -140,7 +140,7 @@ watch(pressReleases, async () => {
 })
 
 // The overview has no Drupal metatags of its own; same pattern as node pages.
-const requestOrigin = useRequestURL().origin
+const origin = useSiteOrigin()
 useHead({
   title: () => {
     const title = unref(entity)?.title || 'News'
@@ -154,7 +154,7 @@ useHead({
     {
       rel: 'canonical',
       href: () =>
-        canonicalPageUrl(requestOrigin, nuxtRoute.path, currentPage.value),
+        canonicalPageUrl(origin.value, nuxtRoute.path, currentPage.value),
     },
   ],
   meta: [
