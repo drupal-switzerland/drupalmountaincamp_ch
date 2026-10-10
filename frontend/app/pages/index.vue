@@ -4,6 +4,7 @@
 
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
+import { buildEventSchema } from '~/helpers/eventSchema'
 import { canonicalPageUrl } from '~/helpers/pagination'
 import { SITE_TITLE } from '~/helpers/site'
 
@@ -37,14 +38,24 @@ const { entity: node } = await useDrupalRoute<NodePageFragment>(
 )
 
 // Drupal's node title pattern would repeat the brand ("… | Mountain Camp"),
-// and its canonical points to the /home alias, which redirects to "/".
-// Unhead keeps one canonical link, so this replaces Drupal's.
+// and its canonical and og:url point to the /home alias, which redirects to
+// "/". Unhead keeps one canonical link, so this replaces Drupal's.
+const homeUrl = canonicalPageUrl(useSiteOrigin().value, '/', 1)
+useSeoMeta({ ogUrl: homeUrl })
+
 useHead({
   title: SITE_TITLE,
   link: [
     {
       rel: 'canonical',
-      href: canonicalPageUrl(useSiteOrigin().value, '/', 1),
+      href: homeUrl,
+    },
+  ],
+  script: [
+    {
+      key: 'event-schema',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildEventSchema()),
     },
   ],
 })
