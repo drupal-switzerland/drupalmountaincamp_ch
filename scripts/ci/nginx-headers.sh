@@ -16,7 +16,13 @@ fi
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CONFIG="$(realpath "${1:-$ROOT_DIR/.lagoon/nginx-lagoon.conf}")"
 
-NGINX_IMAGE="uselagoon/nginx-drupal:latest"
+# The image the Dockerfile builds the nginx service from, so this check runs
+# against the release that gets deployed.
+NGINX_IMAGE="$(awk '$1 == "FROM" && $2 ~ /^uselagoon\/nginx-drupal:/ { print $2 }' "$ROOT_DIR/.lagoon/Dockerfile")"
+if [[ -z "$NGINX_IMAGE" ]]; then
+  echo "No uselagoon/nginx-drupal image found in .lagoon/Dockerfile" >&2
+  exit 1
+fi
 PHP_IMAGE="php:8.3-fpm-alpine"
 FRONTEND_IMAGE="nginx:alpine"
 PUBLIC_HOST="drupalmountaincamp.ch"
