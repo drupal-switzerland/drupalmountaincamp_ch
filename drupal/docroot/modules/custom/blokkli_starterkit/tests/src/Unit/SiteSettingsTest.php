@@ -250,11 +250,11 @@ class SiteSettingsTest extends UnitTestCase {
   }
 
   /**
-   * Without APP_ENV no per-environment settings file is loaded.
+   * APP_ENV selects no settings file: none exists for any environment.
    */
-  public function testNoEnvironmentFileWithoutAppEnv(): void {
-    $this->assertArrayNotHasKey('environment_indicator.indicator', $this->loadSettings(self::LAGOON)['config']);
-    $this->assertSame('MOUNTAINCAMP LIVE', $this->loadSettings(['APP_ENV' => 'live'])['config']['environment_indicator.indicator']['name']);
+  public function testAppEnvLoadsNoEnvironmentFile(): void {
+    $this->assertSame($this->loadSettings(self::LAGOON), $this->loadSettings(['APP_ENV' => 'live'] + self::LAGOON));
+    $this->assertSame($this->loadSettings(self::LAGOON), $this->loadSettings(['APP_ENV' => 'dev'] + self::LAGOON));
   }
 
 }
