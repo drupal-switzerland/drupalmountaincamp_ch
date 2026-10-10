@@ -167,6 +167,20 @@
     }
   }
 
+  /* The box under the title row. Without a lead it is only its padding, and
+     the wide ridge, which reaches up by --home-hero-overlap, would lift its
+     tall peak over the plus marks. This keeps the peak's top a gap below the
+     title row; with a lead the box is taller than this anyway. */
+  @screen xs {
+    .home-hero-body {
+      --home-hero-peak-gap: theme(spacing.4);
+      min-height: calc(
+        var(--home-hero-overlap) - var(--ridge-summit-wide) +
+          var(--home-hero-peak-gap)
+      );
+    }
+  }
+
   /* Both layers sit under the ridge and the text, in the box under the title
      row, so the blue starts there however the title wraps. */
   .home-hero-rise,
