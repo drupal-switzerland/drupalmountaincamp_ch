@@ -52,4 +52,5 @@ fragment easyTexts on TextsLoader {
   sponsors__titleHighlight: getText(key: "titleHighlight", context: "sponsors", default: "top")
   sponsors__titleThanks: getText(key: "titleThanks", context: "sponsors", default: "Thank you for taking us to the top")
   video__load: getText(key: "load", context: "video", default: "Load video")
+  video__player: getText(key: "player", context: "video", default: "Video")
 }

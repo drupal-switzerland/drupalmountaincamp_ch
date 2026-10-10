@@ -36,4 +36,12 @@ describe('skip link', () => {
 
     expect(main.attributes('tabindex')).toBe('-1')
   })
+
+  it('is removed while the phone menu makes main inert', async () => {
+    useMainMenuOpen().value = true
+    const wrapper = await mountLayout()
+
+    expect(wrapper.find('a[href="#main-content"]').exists()).toBe(false)
+    useMainMenuOpen().value = false
+  })
 })

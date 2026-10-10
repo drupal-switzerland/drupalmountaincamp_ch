@@ -1,6 +1,8 @@
 <template>
   <div>
+    <!-- Hidden while the phone menu is open: main is inert then. -->
     <a
+      v-if="!isMainMenuOpen"
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-white focus:px-6 focus:py-3 focus:font-bold focus:text-primary-500 focus:shadow-lg"
     >
@@ -25,7 +27,12 @@
       </NuxtPageDependency>
 
       <!-- tabindex lets the skip link move focus here, not only scroll. -->
-      <main id="main-content" tabindex="-1" class="page-content outline-none">
+      <!-- scroll-mt keeps main's top below the sticky header. -->
+      <main
+        id="main-content"
+        tabindex="-1"
+        class="page-content scroll-mt-12 outline-none md:scroll-mt-20"
+      >
         <ClientOnly>
           <DrupalMessages v-if="!isEditing" />
         </ClientOnly>
