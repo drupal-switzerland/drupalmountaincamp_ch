@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { execFileSync } from 'node:child_process'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 type RouteRule = {
@@ -16,6 +17,7 @@ type MultiCacheConfig = {
 
 let routeRules: Record<string, RouteRule>
 let multiCache: MultiCacheConfig
+let postcssPlugins: Record<string, unknown>
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -24,9 +26,11 @@ beforeAll(async () => {
   const config = (await import('../../nuxt.config')).default as {
     routeRules: Record<string, RouteRule>
     multiCache: MultiCacheConfig
+    postcss: { plugins: Record<string, unknown> }
   }
   routeRules = config.routeRules
   multiCache = config.multiCache
+  postcssPlugins = config.postcss.plugins
   vi.unstubAllGlobals()
 })
 
@@ -81,5 +85,37 @@ describe('multi cache config', () => {
   it('has no cache API token in the build', () => {
     expect(multiCache.api.enabled).toBe(true)
     expect(multiCache.api.authorization).toBe('')
+  })
+})
+
+describe('PostCSS plugins', () => {
+  // Nuxt loads each plugin with an ES module import. Node resolves those more
+  // strictly than require(): a directory such as 'tailwindcss/nesting' fails,
+  // and the build then runs without the plugin. Asked of Node itself, because
+  // the test runner's own resolver accepts directories.
+  it('are all importable as ES modules', () => {
+    const enabled = Object.keys(postcssPlugins).filter(
+      (name) => postcssPlugins[name],
+    )
+    expect(enabled).toContain('tailwindcss')
+
+    const script = `for (const name of ${JSON.stringify(enabled)}) await import(name)`
+    expect(() =>
+      execFileSync(process.execPath, ['--input-type=module', '-e', script], {
+        stdio: 'pipe',
+      }),
+    ).not.toThrow()
+  })
+
+  it('flatten nested rules before Tailwind runs', () => {
+    const enabled = Object.keys(postcssPlugins).filter(
+      (name) => postcssPlugins[name],
+    )
+    const nesting = enabled.findIndex((name) =>
+      name.startsWith('tailwindcss/nesting'),
+    )
+
+    expect(nesting).toBeGreaterThan(-1)
+    expect(nesting).toBeLessThan(enabled.indexOf('tailwindcss'))
   })
 })
