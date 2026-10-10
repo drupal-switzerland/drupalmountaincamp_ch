@@ -25,13 +25,11 @@ definePageMeta({
 
 const nuxtRoute = useRoute()
 
-const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
-  return await useGraphqlQuery('routeNodeCanonical', {
-    path: nuxtRoute.path,
-  }).then((v) => {
-    return v.data
-  })
-})
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('routeNodeCanonical', { path: nuxtRoute.path }).then(
+    (v) => v.data,
+  ),
+)
 
 const pageType = computed(() => {
   const route = query?.value?.route as EntityUrlFragment

@@ -3,8 +3,11 @@ import graphqlMiddlewareConfig from './../../server/graphqlMiddleware.serverOpti
 import type { H3Event } from 'h3'
 import { FetchError } from 'ofetch'
 import {
-  BACKEND_FETCH_TIMEOUT_MS,
+  BACKEND_QUERY_TIMEOUT_MS,
   BACKEND_RETRY_AFTER_SECONDS,
+  BACKEND_WRITE_TIMEOUT_MS,
+  backendFetchTimeout,
+  resolveQueryTimeout,
 } from './../../server/helpers'
 
 describe('The nuxt-graphql-middleware config', () => {
@@ -136,18 +139,62 @@ describe('The nuxt-graphql-middleware config', () => {
     expect(headers.has('set-cookie')).toBe(false)
   })
 
-  test('Bounds every request to Drupal with the backend timeout', async () => {
+  async function timeoutFor(operation: string | null | undefined) {
     const event = {
       node: { req: { headers: {} } },
     } as unknown as H3Event
-
-    const withEvent = await graphqlMiddlewareConfig.serverFetchOptions!(event)
+    const withEvent = await graphqlMiddlewareConfig.serverFetchOptions!(
+      event,
+      operation,
+    )
     const withoutEvent = await graphqlMiddlewareConfig.serverFetchOptions!(
       undefined as unknown as H3Event,
+      operation,
     )
+    expect(withoutEvent.timeout).toBe(withEvent.timeout)
+    return withEvent.timeout
+  }
 
-    expect(withEvent.timeout).toBe(BACKEND_FETCH_TIMEOUT_MS)
-    expect(withoutEvent.timeout).toBe(BACKEND_FETCH_TIMEOUT_MS)
+  test('Bounds a query with the short query timeout', async () => {
+    expect(await timeoutFor('query')).toBe(BACKEND_QUERY_TIMEOUT_MS)
+  })
+
+  // Uploads reach serverFetchOptions as a mutation; the do-request route
+  // passes no operation type.
+  test.each([['mutation'], [null], [undefined]])(
+    'Gives a %s operation the long write timeout',
+    async (operation) => {
+      expect(await timeoutFor(operation)).toBe(BACKEND_WRITE_TIMEOUT_MS)
+    },
+  )
+
+  test('Keeps the write timeout well above the query timeout', () => {
+    expect(BACKEND_WRITE_TIMEOUT_MS).toBeGreaterThan(BACKEND_QUERY_TIMEOUT_MS)
+  })
+
+  test('Applies a configured query timeout to queries only', () => {
+    expect(backendFetchTimeout('query', 20_000)).toBe(20_000)
+    expect(backendFetchTimeout('mutation', 20_000)).toBe(
+      BACKEND_WRITE_TIMEOUT_MS,
+    )
+  })
+
+  test.each([
+    [20_000, 20_000],
+    ['20000', 20_000],
+    [undefined, BACKEND_QUERY_TIMEOUT_MS],
+    ['', BACKEND_QUERY_TIMEOUT_MS],
+    ['soon', BACKEND_QUERY_TIMEOUT_MS],
+    [0, BACKEND_QUERY_TIMEOUT_MS],
+    [-5, BACKEND_QUERY_TIMEOUT_MS],
+    [true, BACKEND_QUERY_TIMEOUT_MS],
+  ])('Reads the configured query timeout %o as %i ms', (configured, ms) => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    try {
+      expect(resolveQueryTimeout(configured)).toBe(ms)
+    } finally {
+      warn.mockRestore()
+    }
   })
 
   function respondToError(error: FetchError) {
@@ -169,10 +216,30 @@ describe('The nuxt-graphql-middleware config', () => {
     })
   })
 
-  test('Answers 500 when Drupal responds with an error', () => {
-    const error = Object.assign(new FetchError('server error'), {
-      response: new Response('', { status: 502 }),
+  function upstreamError(status: number) {
+    return Object.assign(new FetchError('upstream error'), {
+      response: new Response('', { status }),
     })
-    expect(respondToError(error).status).toBe(500)
-  })
+  }
+
+  // nginx answers for a Drupal that is down or in maintenance.
+  test.each([[502], [503], [504]])(
+    'Answers 503 with Retry-After for an upstream %i',
+    (status) => {
+      expect(respondToError(upstreamError(status))).toEqual({
+        status: 503,
+        retryAfter: BACKEND_RETRY_AFTER_SECONDS,
+      })
+    },
+  )
+
+  test.each([[400], [403], [500]])(
+    'Answers 500 without Retry-After for an upstream %i',
+    (status) => {
+      expect(respondToError(upstreamError(status))).toEqual({
+        status: 500,
+        retryAfter: undefined,
+      })
+    },
+  )
 })

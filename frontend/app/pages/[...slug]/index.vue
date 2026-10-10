@@ -20,26 +20,9 @@ definePageMeta({
 const nuxtRoute = useRoute()
 
 // Get the data.
-const { data: query, error: queryError } = await useAsyncData(
-  nuxtRoute.path,
-  async () => {
-    return await useGraphqlQuery('route', {
-      path: nuxtRoute.path,
-    }).then((v) => {
-      return v.data
-    })
-  },
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('route', { path: nuxtRoute.path }).then((v) => v.data),
 )
-
-// A failed request (e.g. Drupal down, 503) is not a missing page: keep its
-// status instead of letting useDrupalRoute turn the empty result into a 404.
-if (queryError.value) {
-  throw createError({
-    statusCode: queryError.value.statusCode || 500,
-    statusMessage: queryError.value.statusMessage,
-    fatal: true,
-  })
-}
 
 // Handles redirects and metatags.
 const { entity: node } = await useDrupalRoute<NodePageFragment>(
