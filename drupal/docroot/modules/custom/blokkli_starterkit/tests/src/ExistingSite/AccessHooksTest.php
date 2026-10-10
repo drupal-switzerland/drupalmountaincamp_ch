@@ -115,18 +115,14 @@ class AccessHooksTest extends BlokkliStarterkitExistingSiteBase {
   }
 
   /**
-   * The user status field needs its view permission.
-   *
-   * The permission is not declared by any module, so only admin roles have it.
+   * Core's user access handler limits the status field to user admins.
    */
-  public function testUserStatusNeedsPermission(): void {
+  public function testUserStatusIsAdminOnly(): void {
     $user = $this->createUser();
 
-    $this->assertTrue($this->fieldAccess($user, 'status', 'view', $this->createUser([], NULL, TRUE))->isAllowed());
-    $this->assertFalse($this->fieldAccess($user, 'status', 'view', $user)->isAllowed());
-
+    $this->assertTrue($this->fieldAccess($user, 'status', 'view', $user)->isNeutral());
     $this->assertTrue($this->handlerFieldAccess($user, 'status', 'view', $this->createUser([], NULL, TRUE)));
-    $this->assertFalse($this->handlerFieldAccess($user, 'status', 'view', $user));
+    $this->assertFalse($this->handlerFieldAccess($user, 'status', 'view', $this->createUser()));
   }
 
   /**
