@@ -3,7 +3,13 @@ import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import { SCREENS } from './app/tailwind/screens'
-import { SKY_RISE_RATIO, heroSkyGradient } from './app/helpers/heroSky'
+import {
+  HOME_VALLEY_RATIO,
+  SKY_RISE_RATIO,
+  heroSkyGradient,
+  homeHorizonGradient,
+  homeRiseGradient,
+} from './app/helpers/heroSky'
 
 const fontSize: Record<string, [string, string]> = {
   xs: ['12px', '15px'],
@@ -198,15 +204,20 @@ const config: Config = {
       addVariant('not-first', '&:not(:first-child)')
     }),
     /**
-     * The inner-page hero's sky, generated from its curve (helpers/heroSky)
-     * into the stylesheet. Declared on the hero itself: the gradient refers
-     * to --sky-from and --sky-to, which resolve where it is declared.
+     * The heroes' sky, generated from one curve (helpers/heroSky) into the
+     * stylesheet. Declared on the hero itself: the gradients refer to
+     * --sky-from, --sky-mid and --sky-to, which resolve where they are declared.
      */
     plugin(({ addComponents }) => {
       addComponents({
         '.page-hero': {
           '--page-hero-sky': heroSkyGradient(),
           '--page-hero-rise': String(SKY_RISE_RATIO),
+        },
+        '.home-hero': {
+          '--home-hero-rise-sky': homeRiseGradient(),
+          '--home-hero-horizon-sky': homeHorizonGradient(),
+          '--home-hero-valley': `${(HOME_VALLEY_RATIO * 100).toFixed(2)}vw`,
         },
       })
     }),

@@ -103,6 +103,59 @@
     );
   }
 
+  /* Shared horizon (helpers/heroSky): navy behind the badge and title, blue
+     rising behind the lead, sky behind the ridge. Plain navy, not .brand-hero's
+     diagonal, because the sky-coloured year only reaches 4.5:1 on navy. */
+  .home-hero {
+    --sky-from: theme(colors.brand.blue);
+    --sky-mid: theme(colors.brand.sky);
+    --home-hero-rise: 10rem;
+    /* The ridge's height (BrandRidge) and how far it reaches up over the text. */
+    --home-hero-ridge: max(72px, 20vw);
+    --home-hero-overlap: 6px;
+    --home-hero-pad: theme(spacing.10);
+    /* From the hero's bottom edge up to the text, less the focus ring of the
+       buttons (3px offset, 3px wide) and what a scrollbar takes from 100vw. */
+    --home-hero-clearance: 12px;
+    --home-hero-horizon: calc(
+      var(--home-hero-ridge) - var(--home-hero-overlap) + var(--home-hero-pad) -
+        var(--home-hero-clearance)
+    );
+    background: theme(colors.brand.navy);
+
+    @screen xs {
+      --home-hero-ridge: 28.125vw;
+      --home-hero-overlap: min(190px, 14.8vw);
+      --home-hero-pad: theme(spacing.4);
+    }
+
+    @screen md {
+      --home-hero-pad: 0px;
+    }
+  }
+
+  /* Both layers sit under the ridge and the text. */
+  .home-hero-rise,
+  .home-hero-horizon {
+    @apply pointer-events-none absolute inset-x-0 z-[-1] block;
+  }
+
+  /* No top or bottom: it stays at its place in the flow, right under the title
+     row, so the blue starts there however the title wraps. Its gradient's stops
+     are lengths and blue carries on below them, so the box only has to reach
+     past the hero's bottom edge, which clips it; rem keeps that true when text
+     is enlarged. */
+  .home-hero-rise {
+    height: 200rem;
+    background-image: var(--home-hero-rise-sky);
+  }
+
+  .home-hero-horizon {
+    @apply bottom-0;
+    height: var(--home-hero-horizon);
+    background-image: var(--home-hero-horizon-sky);
+  }
+
   /* The one oversized call to action: Get tickets in the hero bar and footer. */
   .ticket-button {
     @apply inline-flex min-h-14 items-center justify-center gap-[10px] rounded-full bg-primary-500 px-9 text-lg font-bold text-white transition-colors duration-250 hover:bg-primary-400 motion-reduce:transition-none;
