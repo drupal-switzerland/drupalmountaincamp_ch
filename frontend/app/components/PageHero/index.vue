@@ -75,43 +75,94 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   transform: translate(-50%, -50%);
 }
 
-/* Fade into snow: below the text the hero runs into the ice that .snow-blocks
-   starts with, so there is no edge between the two. The text keeps today's
-   dark background: the fade only covers the padding added for it. */
+/* Long sky: the whole hero is one sky. Brand blue fades in behind the text
+   (never fully, so the text keeps a dark background), is complete just below
+   the lead and then eases into the handover colour that .snow-blocks starts
+   with. Both sides reach the same blue at the same height, so the hero's
+   diagonal gradient and the glow leave no band. */
 .page-hero {
-  --page-hero-fade: 56px;
+  --page-hero-fade: 112px;
+  --page-hero-pad: theme(spacing.10);
+  --page-hero-zone: calc(var(--page-hero-fade) + var(--page-hero-pad));
   padding-bottom: var(--page-hero-fade);
 
   @screen md {
-    --page-hero-fade: 88px;
+    --page-hero-fade: 150px;
+    --page-hero-pad: theme(spacing.16);
   }
 
   @screen lg {
-    --page-hero-fade: 104px;
+    --page-hero-fade: 180px;
+    --page-hero-pad: theme(spacing.20);
   }
 }
 
 .page-hero::after {
   content: '';
-  @apply pointer-events-none absolute inset-x-0 bottom-0 -z-[1];
-  height: calc(var(--page-hero-fade) + theme(spacing.6));
-  background: linear-gradient(
-    to bottom,
-    theme(colors.brand.ice / 0%) 0%,
-    theme(colors.brand.ice / 18%) 30%,
-    theme(colors.brand.ice / 60%) 65%,
-    theme(colors.brand.ice) 100%
-  );
+  @apply pointer-events-none absolute inset-0 -z-[1];
+  background:
+    linear-gradient(
+        to bottom,
+        theme(colors.brand.blue / 70%) 0%,
+        theme(colors.brand.blue) 14%,
+        theme(colors.brand.sky) 55%,
+        var(--sky-handover) 100%
+      )
+      bottom / 100% var(--page-hero-zone) no-repeat,
+    linear-gradient(
+        to bottom,
+        theme(colors.brand.blue / 0%),
+        theme(colors.brand.blue / 70%)
+      )
+      top / 100% calc(100% - var(--page-hero-zone)) no-repeat;
 }
 
-/* A dark band right after the hero: ice between the two would read as a
-   stripe, so the hero keeps its straight edge. */
+/* Eased stops, mixed in oklch so the midtones stay blue instead of grey. */
+@supports (background: linear-gradient(in oklch, #000, #fff)) {
+  .page-hero::after {
+    --sky-from: theme(colors.brand.blue);
+    --sky-to: var(--sky-handover);
+    background:
+      linear-gradient(
+          to bottom in oklch,
+          theme(colors.brand.blue / 70%) 0%,
+          var(--sky-from) 14%,
+          color-mix(in oklch, var(--sky-to) 5.5%, var(--sky-from)) 26.3%,
+          color-mix(in oklch, var(--sky-to) 19.8%, var(--sky-from)) 38.6%,
+          color-mix(in oklch, var(--sky-to) 39.7%, var(--sky-from)) 50.9%,
+          color-mix(in oklch, var(--sky-to) 60.3%, var(--sky-from)) 63.1%,
+          color-mix(in oklch, var(--sky-to) 80.2%, var(--sky-from)) 75.4%,
+          color-mix(in oklch, var(--sky-to) 94.5%, var(--sky-from)) 87.7%,
+          var(--sky-to) 100%
+        )
+        bottom / 100% var(--page-hero-zone) no-repeat,
+      linear-gradient(
+          to bottom,
+          theme(colors.brand.blue / 0%) 0%,
+          theme(colors.brand.blue / 7.3%) 20%,
+          theme(colors.brand.blue / 24.6%) 40%,
+          theme(colors.brand.blue / 45.4%) 60%,
+          theme(colors.brand.blue / 62.7%) 80%,
+          theme(colors.brand.blue / 70%) 100%
+        )
+        top / 100% calc(100% - var(--page-hero-zone)) no-repeat;
+  }
+}
+
+/* A dark band right after the hero: light blue between the two would read as
+   a stripe, so the hero keeps its straight edge. */
 .page-hero:has(+ * > .snow-blocks > :is(.navy-band, .week-band):first-child) {
   --page-hero-fade: 0px;
 
   &::after {
     content: none;
   }
+}
+
+/* A band that starts in plain ice: hand over in ice, so its top edge
+   doesn't show. */
+.page-hero:has(+ * > .snow-blocks > :is(.news-band, .theme-band):first-child) {
+  --sky-handover: theme(colors.brand.ice);
 }
 
 /* The lead is ice, so its links need more than colour to stand out. */

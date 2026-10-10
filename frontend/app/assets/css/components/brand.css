@@ -152,18 +152,38 @@
     }
   }
 
-  /* The snow carries on: the hero's ice continues behind the first blocks and
-     fades to white, instead of a hard cut after the hero. .home-blocks on the
-     homepage, .snow-blocks under the inner-page hero. Sized, not stopped in
-     px, so a block shorter than the fade still ends in white. */
-  .home-blocks,
-  .snow-blocks {
-    --snow-fade-height: 640px;
+  /* The snow carries on: the hero bar's ice continues behind the first
+     homepage blocks and fades to white, instead of a hard cut after the hero. */
+  .home-blocks {
     /* Keeps the first block's top margin inside, so no white gap shows. */
     display: flow-root;
     background: linear-gradient(
         theme(colors.brand.ice) 0,
-        theme(colors.brand.tint) 56.25%,
+        theme(colors.brand.tint) 360px,
+        theme(colors.white) 640px
+      )
+      no-repeat;
+  }
+
+  /* Ice with 3% sky: where the inner-page hero's sky ends and .snow-blocks
+     begins (helpers/heroSky). */
+  .page-hero,
+  .snow-blocks {
+    --sky-handover: #c7ebf8;
+  }
+
+  /* Under the inner-page hero the sky keeps getting lighter: from the
+     handover colour to ice around the middle of the first block, then the
+     homepage's tint and white. Sized, not stopped in px, so a page shorter
+     than the fade still ends in white. */
+  .snow-blocks {
+    --snow-fade-height: clamp(720px, 640px + 12vw, 840px);
+    /* Keeps the first block's top margin inside, so no white gap shows. */
+    display: flow-root;
+    background: linear-gradient(
+        var(--sky-handover) 0,
+        theme(colors.brand.ice) 18%,
+        theme(colors.brand.tint) 62%,
         theme(colors.white) 100%
       )
       no-repeat;
