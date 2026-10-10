@@ -133,6 +133,13 @@
     @screen md {
       --home-hero-pad: 0px;
     }
+
+    /* Desktop heroes are tall: a short rise would be done by the buttons and
+       leave a band of flat blue above the sky. This one ends near the ridge's
+       valleys, so navy, blue and sky read as one fade. */
+    @screen lg {
+      --home-hero-rise: calc(4.5rem + 17.5vw);
+    }
   }
 
   /* Both layers sit under the ridge and the text. */
