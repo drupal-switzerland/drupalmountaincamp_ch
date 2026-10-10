@@ -1,6 +1,4 @@
 <template>
-  <!-- Pages with a hero image get the landing treatment (e.g. the front
-       page, which Drupal serves via its alias after the / redirect). -->
   <NodePageLanding v-if="node?.hero" v-bind="node" />
   <NodePage v-else-if="node" v-bind="node" />
 </template>

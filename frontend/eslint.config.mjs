@@ -90,6 +90,7 @@ export default withNuxt([
             'content-fullscreen-header',
             'is-previous',
             'is-active',
+            'is-hero',
             'is-next',
             'paragraph-expand-section',
             'search-input',

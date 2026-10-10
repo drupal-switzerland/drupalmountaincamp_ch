@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import type { LocationQuery } from 'vue-router'
 import {
   canonicalPageQuery,
+  canonicalPageUrl,
   getListPageState,
   isSameTabClick,
   parsePageParam,
@@ -160,5 +161,31 @@ describe('getListPageState', () => {
 
   it.each(['idle', 'pending'] as const)('is pending while %s', (status) => {
     expect(getListPageState({ ...loaded, page: 99, status })).toBe('pending')
+  })
+})
+
+describe('canonicalPageUrl', () => {
+  const origin = 'https://example.com'
+
+  it('has no page parameter on page 1', () => {
+    expect(canonicalPageUrl(origin, '/news', 1)).toBe(
+      'https://example.com/news',
+    )
+  })
+
+  it.each([2, 10])('adds the page parameter on page %i', (page) => {
+    expect(canonicalPageUrl(origin, '/news', page)).toBe(
+      `https://example.com/news?page=${page}`,
+    )
+  })
+
+  it('builds the site root URL', () => {
+    expect(canonicalPageUrl(origin, '/', 1)).toBe('https://example.com/')
+  })
+
+  it('keeps a port in the origin', () => {
+    expect(canonicalPageUrl('http://localhost:3000', '/news', 2)).toBe(
+      'http://localhost:3000/news?page=2',
+    )
   })
 })

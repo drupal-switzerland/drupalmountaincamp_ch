@@ -1,5 +1,7 @@
 <template>
-  <section class="on-dark brand-hero relative overflow-hidden text-white">
+  <section
+    class="on-dark brand-hero relative isolate overflow-hidden text-white"
+  >
     <div class="grid-container my-0 py-10 md:py-16 lg:py-20">
       <div class="grid-container-8 flex flex-col gap-3 md:gap-4">
         <Breadcrumb :links="breadcrumb" :current-title="title" variant="hero" />
@@ -19,7 +21,7 @@
         </div>
         <div
           v-if="$slots.lead"
-          class="mt-1 max-w-2xl text-lg text-primary-100 md:text-xl lg:text-2xl"
+          class="page-hero-lead mt-1 max-w-2xl text-lg text-primary-100 md:text-xl lg:text-2xl"
         >
           <slot name="lead" />
         </div>
@@ -60,14 +62,21 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 
 <style lang="postcss">
 .page-hero-marks {
-  @apply relative isolate w-16 shrink-0 xs:w-20 md:w-28 xl:w-36;
+  @apply relative w-16 shrink-0 xs:w-20 md:w-28 xl:w-36;
 }
 
-/* Centred on the marks, so the light follows them when the title wraps. */
+/* Centred on the marks, so the light follows them when the title wraps.
+   Negative z-index inside the section's stacking context: above the hero
+   background, below the title, breadcrumb and lead it overlaps. */
 .page-hero-glow {
   @apply pointer-events-none absolute left-1/2 top-1/2 -z-10;
   width: 360%;
   height: 440%;
   transform: translate(-50%, -50%);
+}
+
+/* The lead is ice, so its links need more than colour to stand out. */
+.page-hero-lead a {
+  @apply text-white underline underline-offset-4;
 }
 </style>
