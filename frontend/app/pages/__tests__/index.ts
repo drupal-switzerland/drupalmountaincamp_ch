@@ -49,7 +49,6 @@ describe('The Nuxt page component', async () => {
       ignore: [path.resolve(__dirname, './../blokkli/**/*.vue')],
     },
   ).then((pageFilePaths) => {
-    console.log(pageFilePaths)
     return Promise.all(
       pageFilePaths.map((filePath) => {
         return fsp.readFile(filePath, { encoding: 'utf8' }).then((content) => {
