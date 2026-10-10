@@ -14,9 +14,9 @@
         'pt-[100px]': (isMenuOpen || !hasMenuFinishedClosing) && isLessThanLg,
       }"
     >
-      <NuxtPageDependency>
+      <PageDependency>
         <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
-      </NuxtPageDependency>
+      </PageDependency>
 
       <main id="main-content" class="page-content">
         <ClientOnly>

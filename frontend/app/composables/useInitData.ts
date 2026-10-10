@@ -42,7 +42,14 @@ export default async function (): Promise<Ref<InitData>> {
   const currentLanguage = useCurrentLanguage()
   const data = useState<InitData>('initData')
 
-  // Let's try to fetch the data from the cache first.
+  // Already loaded in this render or hydrated from the payload. Reading the
+  // cache again would replace the state with a new copy, and components
+  // that compare menu links by identity would then render differently on the
+  // server than on the client.
+  if (data.value) {
+    return data
+  }
+
   const event = useRequestEvent()
   const { value, addToCache } = await useDataCache<InitData>(
     'initData_' + currentLanguage.value,
@@ -50,11 +57,6 @@ export default async function (): Promise<Ref<InitData>> {
   )
   if (value) {
     data.value = value
-    return data
-  }
-
-  // If the data is not in the cache, we fetch it from the payload / useState().
-  if (data.value) {
     return data
   }
 
