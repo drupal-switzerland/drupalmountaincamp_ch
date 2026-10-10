@@ -8302,30 +8302,30 @@
         },
         {
             "name": "drupal/texts",
-            "version": "1.0.14",
+            "version": "1.0.15",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/texts.git",
-                "reference": "1.0.14"
+                "reference": "1.0.15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/texts-1.0.14.zip",
-                "reference": "1.0.14",
-                "shasum": "f5467b43027ba603ec731d8e8b3a475e36722722"
+                "url": "https://ftp.drupal.org/files/projects/texts-1.0.15.zip",
+                "reference": "1.0.15",
+                "shasum": "7b9df7985b39aa8520ffa1121885b31ac5022fda"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10 || ^11",
-                "league/csv": "^9.0"
+                "drupal/core": "^10.2 || ^11 || ^12",
+                "league/csv": "^9.27"
             },
             "require-dev": {
-                "drupal/graphql": "*"
+                "drupal/graphql": "^4"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.14",
-                    "datestamp": "1769080873",
+                    "version": "1.0.15",
+                    "datestamp": "1790867109",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
