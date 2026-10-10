@@ -13,7 +13,7 @@
       <span class="block max-w-full" :style="logoStyle" aria-hidden="true">
         <img
           v-if="image"
-          :src="image.urlPath"
+          :src="toDrupalFilePath(image.urlPath)"
           alt=""
           class="size-full object-contain"
           loading="lazy"
@@ -31,6 +31,7 @@
 <script lang="ts" setup>
 import type { NodeSponsorFragment } from '#graphql-operations'
 import { type LogoBox, logoSize } from '~/helpers/sponsors'
+import { toDrupalFilePath } from '~/helpers/drupalFiles'
 
 const props = defineProps<{
   sponsor: NodeSponsorFragment
