@@ -98,7 +98,7 @@ services:
       - default
 
   mariadb:
-    image: uselagoon/mariadb-10.11-drupal:latest
+    image: uselagoon/mariadb-10.11-drupal:26.9.0
     labels:
       lagoon.type: mariadb
       lando.type: mariadb-drupal

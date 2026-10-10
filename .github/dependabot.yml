@@ -24,3 +24,22 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
+
+  # The uselagoon images in .lagoon/Dockerfile share one release tag and move
+  # together, so one pull request updates all of them.
+  - package-ecosystem: docker
+    directory: /.lagoon
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      lagoon-images:
+        patterns:
+          - "uselagoon/*"
+
+  # docker-compose.yml: the local database image.
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
