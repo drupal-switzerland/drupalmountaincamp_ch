@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
-import { siteOrigin } from '../helpers/site'
+import { shareMeta, siteOrigin } from '../helpers/site'
 
 const CANONICAL = 'https://drupalmountaincamp.ch'
 
@@ -40,5 +40,38 @@ describe('siteOrigin', () => {
     expect(
       siteOrigin(undefined, 'https://drupalmountaincamp.ch.evil.example'),
     ).toBe('https://drupalmountaincamp.ch.evil.example')
+  })
+})
+
+describe('shareMeta', () => {
+  const meta = shareMeta({
+    origin: CANONICAL,
+    url: `${CANONICAL}/news?page=2`,
+    title: 'News – Page 2',
+    description: 'News and updates',
+  })
+
+  it('carries the Open Graph and Twitter card values Drupal sends for nodes', () => {
+    expect(meta).toEqual({
+      ogSiteName: 'Mountain Camp',
+      ogType: 'website',
+      ogUrl: `${CANONICAL}/news?page=2`,
+      ogTitle: 'News – Page 2',
+      ogDescription: 'News and updates',
+      ogImage: `${CANONICAL}/images/hero-davos.jpg`,
+      twitterCard: 'summary_large_image',
+    })
+  })
+
+  it('builds the image on the given origin, never a request host', () => {
+    const local = shareMeta({
+      origin: 'https://mountaincamp.ddev.site',
+      url: 'https://mountaincamp.ddev.site/news',
+      title: 'News',
+      description: '',
+    })
+    expect(local.ogImage).toBe(
+      'https://mountaincamp.ddev.site/images/hero-davos.jpg',
+    )
   })
 })
