@@ -8,7 +8,7 @@ export const SITE_TITLE = 'Mountain Camp 2027, Davos, Switzerland'
 /** Same value as Drupal's site name, which its og:site_name uses. */
 export const SITE_NAME = 'Mountain Camp'
 /** Fallback share image, the one Drupal's metatag defaults point to. */
-export const SHARE_IMAGE_PATH = '/images/hero-davos.jpg'
+export const SHARE_IMAGE_PATH = '/images/mountain-camp-og-1200x630.jpg'
 /** What the default share image shows, for og:image:alt. The owner's wording. */
 export const SHARE_IMAGE_ALT =
   'Mountain Camp 10 year edition invites you to Davos on 2 to 4 March 2027. Memorable: survive a sledding night in the Swiss Alps. Transformative: an environment curated to spark transformative conversations. Gathering: a community of givers together at the top. Snowy mountain peaks on a blue background.'
