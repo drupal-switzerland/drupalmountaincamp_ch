@@ -14,16 +14,16 @@
           <h1
             id="home-hero-title"
             v-blokkli-editable:title
-            class="text-[length:min(2.5rem,12.5vw)] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
+            class="shrink-[9999] text-[length:min(2.5rem,12.5vw)] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
           >
             {{ titleParts.name }}
             <span v-if="titleParts.year" class="text-primary-300">
               {{ titleParts.year }}
             </span>
           </h1>
-          <BrandSparkles
-            class="w-14 shrink-0 text-white xs:w-24 md:w-36 lg:w-40"
-          />
+          <div class="page-marks-box w-14 xs:w-24 md:w-36 lg:w-40">
+            <BrandSparkles class="w-full text-white" />
+          </div>
         </div>
       </div>
       <!-- Everything under the title row: the box the blue rises in. -->

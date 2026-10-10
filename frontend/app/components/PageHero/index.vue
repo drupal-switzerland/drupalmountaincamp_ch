@@ -10,7 +10,7 @@
           <slot name="title" :title-class="TITLE_CLASS">
             <h1 :class="TITLE_CLASS">{{ title }}</h1>
           </slot>
-          <div class="page-hero-marks">
+          <div class="page-hero-marks page-marks-box">
             <span
               class="page-hero-glow"
               :style="{ backgroundImage: glow }"
@@ -40,7 +40,7 @@ defineProps<{
 }>()
 
 const TITLE_CLASS =
-  'text-[length:min(2.625rem,13.125vw)] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
+  'shrink-[9999] text-[length:min(2.625rem,13.125vw)] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
 
 defineSlots<{
   /** Overrides the default <h1>, e.g. to make it editable in blokkli. */
@@ -62,7 +62,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 
 <style lang="postcss">
 .page-hero-marks {
-  @apply relative w-16 shrink-0 xs:w-20 md:w-28 xl:w-36;
+  @apply relative w-16 xs:w-20 md:w-28 xl:w-36;
 }
 
 /* Centred on the marks, so the light follows them when the title wraps.
