@@ -2,13 +2,21 @@ import {
   appendResponseHeader,
   getHeaders,
   getQuery,
+  setResponseHeader,
   setResponseStatus,
   type H3Event,
 } from 'h3'
 import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-options'
+import type { FetchError } from 'ofetch'
 import { extractCacheability } from './utils/cacheability'
 import { withTrustedForwardedHost } from './utils/trustedHost'
-import type { GraphqlCacheability } from './helpers'
+import {
+  BACKEND_RETRY_AFTER_SECONDS,
+  BACKEND_UNAVAILABLE_UPSTREAM_STATUSES,
+  backendFetchTimeout,
+  resolveQueryTimeout,
+  type GraphqlCacheability,
+} from './helpers'
 
 const HEADER_KEYS: string[] = [
   'x-forwarded-for',
@@ -36,9 +44,14 @@ export default defineGraphqlServerOptions<{
     const config = useRuntimeConfig()
     return `${config.backendUrl}/graphql`
   },
-  serverFetchOptions(event: H3Event | undefined) {
+  serverFetchOptions(event: H3Event | undefined, operation) {
+    const config = useRuntimeConfig()
+    const timeout = backendFetchTimeout(
+      operation,
+      resolveQueryTimeout(config.backendQueryTimeoutMs),
+    )
+
     if (event) {
-      const config = useRuntimeConfig()
       const incomingHeaders = getHeaders(event) as Record<string, string>
 
       const headers: Record<string, string> = {
@@ -57,10 +70,11 @@ export default defineGraphqlServerOptions<{
           headers,
           process.env.LAGOON_ENVIRONMENT_TYPE,
         ),
+        timeout,
       }
     }
 
-    return {}
+    return { timeout }
   },
   onServerResponse(event, graphqlResponse) {
     // Pass Drupal's cookies on to the browser, one header per cookie:
@@ -106,7 +120,19 @@ export default defineGraphqlServerOptions<{
       __cacheability: addCacheability ? cacheability : undefined,
     }
   },
-  onServerError(event: H3Event) {
+  onServerError(event: H3Event, error: FetchError) {
+    // No response (unreachable or timed out), or nginx answering for a
+    // Drupal that is down: unavailable, not a broken request.
+    const upstreamStatus = error?.response?.status
+    if (
+      upstreamStatus === undefined ||
+      BACKEND_UNAVAILABLE_UPSTREAM_STATUSES.includes(upstreamStatus)
+    ) {
+      setResponseStatus(event, 503)
+      setResponseHeader(event, 'retry-after', BACKEND_RETRY_AFTER_SECONDS)
+      return
+    }
+
     // Directly set the response status so we don't render the Nuxt 404 page.
     setResponseStatus(event, 500)
   },

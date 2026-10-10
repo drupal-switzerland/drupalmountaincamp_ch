@@ -24,13 +24,9 @@ const nuxtRoute = useRoute()
 // resolver answers "/" with a 301 RedirectUrl to the alias (and no entity),
 // while the alias itself resolves to the entity. /home redirects to "/" in
 // middleware/frontpage.global.ts.
-const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
-  return await useGraphqlQuery('route', {
-    path: '/home',
-  }).then((v) => {
-    return v.data
-  })
-})
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('route', { path: '/home' }).then((v) => v.data),
+)
 
 // Handles redirects and metatags.
 const { entity: node } = await useDrupalRoute<NodePageFragment>(

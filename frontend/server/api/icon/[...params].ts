@@ -9,7 +9,7 @@ import {
 import type { H3Event } from 'h3'
 import { optimize } from 'svgo'
 import type { CustomPlugin, XastChild, XastElement, XastParent } from 'svgo'
-import { MAX_AGE } from '../../helpers'
+import { MAX_AGE, resolveQueryTimeout } from '../../helpers'
 
 const config = useRuntimeConfig()
 
@@ -323,6 +323,7 @@ async function getIcon(
   // forwarded and the cached result never depends on who requested it.
   const url = `${config.backendUrl}/media/${id}/icon`
   const response = await $fetch.raw<Blob>(url, {
+    timeout: resolveQueryTimeout(config.backendQueryTimeoutMs),
     headers: {
       host,
       referer: requestHeaders.referer || '',

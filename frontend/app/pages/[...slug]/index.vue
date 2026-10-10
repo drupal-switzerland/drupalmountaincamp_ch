@@ -18,13 +18,9 @@ definePageMeta({
 const nuxtRoute = useRoute()
 
 // Get the data.
-const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
-  return await useGraphqlQuery('route', {
-    path: nuxtRoute.path,
-  }).then((v) => {
-    return v.data
-  })
-})
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('route', { path: nuxtRoute.path }).then((v) => v.data),
+)
 
 // Handles redirects and metatags.
 const { entity: node } = await useDrupalRoute<NodePageFragment>(
