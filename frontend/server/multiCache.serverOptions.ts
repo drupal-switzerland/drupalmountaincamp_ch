@@ -1,13 +1,18 @@
 import { defineMultiCacheOptions } from 'nuxt-multi-cache/server-options'
-import { getHeaders, type H3Event } from 'h3'
+import type { H3Event } from 'h3'
 import lruCacheDriver from 'unstorage/drivers/lru-cache'
+import {
+  buildRouteCacheKey,
+  isCacheEnabledForRequest,
+} from './utils/multiCache'
 
+// The logic lives in utils/multiCache.ts: nuxt-multi-cache replaces this file
+// with an empty stub in client builds, which is also what tests would import.
 const multiCacheServerOptions = defineMultiCacheOptions({
   api: {},
   data: {},
   enabledForRequest: (event: H3Event) => {
-    const hasSession = (event.node.req.headers.cookie || '').includes('SSESS')
-    return Promise.resolve(!hasSession)
+    return Promise.resolve(isCacheEnabledForRequest(event))
   },
   route: {
     storage: {
@@ -15,16 +20,7 @@ const multiCacheServerOptions = defineMultiCacheOptions({
         max: 10000,
       }),
     },
-    buildCacheKey: (event: H3Event) => {
-      const path = (event.path || '')
-        .replaceAll('/', '__')
-        .replaceAll('?', '__')
-        .replaceAll('&', '__')
-
-      const headers = getHeaders(event)
-      const cookie = headers.cookie || 'anonymous'
-      return path + cookie
-    },
+    buildCacheKey: (event: H3Event) => buildRouteCacheKey(event),
   },
 })
 

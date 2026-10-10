@@ -9,17 +9,9 @@ export default defineVitestConfig({
     coverage: {
       all: true,
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      include: [
-        'app/**/*.*',
-        'components/**/*.*',
-        'composables/**/*.*',
-        'config/**/*.*',
-        'layouts/**/*.*',
-        'middleware/**/*.*',
-        'plugins/**/*.*',
-        '/**/*.*',
-      ],
+      reporter: ['text', 'json', 'json-summary', 'html'],
+      include: ['app/**/*.{ts,vue}', 'server/**/*.ts', 'config/**/*.ts'],
+      exclude: ['**/__tests__/**', '**/*.d.ts'],
     },
   },
 })
