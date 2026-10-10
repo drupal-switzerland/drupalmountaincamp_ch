@@ -62,26 +62,34 @@ describe('hero sky curve', () => {
 
 describe('heroSkyGradient', () => {
   const gradient = heroSkyGradient()
+  const stops = [
+    ...gradient.matchAll(
+      /calc\(var\(--page-hero-sky-height\) \* (\d\.\d{4})\)/g,
+    ),
+  ].map((m) => Number(m[1]))
 
-  it('is one oklch gradient from clear blue to the handover colour', () => {
-    expect(gradient.startsWith('linear-gradient(to bottom in oklch, ')).toBe(
-      true,
+  it('is one oklch gradient from the handover colour up to clear blue', () => {
+    expect(gradient.startsWith('linear-gradient(to top in oklch, ')).toBe(true)
+    expect(gradient).toContain(
+      'color-mix(in oklch, var(--sky-to) 100.0%, var(--sky-from)) calc(var(--page-hero-sky-height) * 0.0000)',
     )
-    expect(gradient).toContain('var(--sky-from) 0.0%, transparent) 0.00%')
     expect(
       gradient.endsWith(
-        'color-mix(in oklch, var(--sky-to) 100.0%, var(--sky-from)) 100.00%)',
+        'var(--sky-from) 0.0%, transparent) calc(var(--page-hero-sky-height) * 1.0000))',
       ),
     ).toBe(true)
   })
 
-  it('lists its stops in rising order with one at the end of the lead', () => {
-    const stops = [...gradient.matchAll(/ (\d+\.\d\d)%(?:,|\)$)/g)].map((m) =>
-      Number(m[1]),
-    )
-
+  // A sized, bottom-anchored tile taller than a hero of fractional height
+  // stops short of the last pixel row and lets the navy show as a line.
+  it('measures every stop up from the bottom edge instead of sizing a tile', () => {
+    expect(gradient).not.toMatch(/\d\.\d\d%/)
     expect(stops.length).toBeGreaterThan(20)
+    expect(stops[0]).toBe(0)
+  })
+
+  it('lists its stops in rising order with one at the end of the lead', () => {
     expect([...stops].sort((a, b) => a - b)).toEqual(stops)
-    expect(stops).toContain(Number((SKY_LEAD_END * 100).toFixed(2)))
+    expect(stops).toContain(Number((1 - SKY_LEAD_END).toFixed(4)))
   })
 })

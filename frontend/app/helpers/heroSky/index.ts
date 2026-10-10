@@ -64,10 +64,16 @@ export function skyHandoverShare(position: number): number {
 const percent = (value: number, digits: number) =>
   `${(value * 100).toFixed(digits)}%`
 
+// Stops are lengths measured up from the hero's bottom edge, not shares of a
+// sized background tile: a tile taller than a hero of fractional height is
+// snapped short of the last pixel row, which then shows the navy underneath.
+const fromBottom = (position: number) =>
+  `calc(var(--page-hero-sky-height) * ${(1 - position).toFixed(4)})`
+
 function skyStop(position: number): string {
   const opacity = skyBlueOpacity(position)
   const share = skyHandoverShare(position)
-  const at = percent(position, 2)
+  const at = fromBottom(position)
   const colour =
     share > 0
       ? `color-mix(in oklch, var(--sky-to) ${percent(share, 1)}, var(--sky-from))`
@@ -79,9 +85,10 @@ function skyStop(position: number): string {
 
 /**
  * Background image for the hero's sky, written into the stylesheet by
- * tailwind.config. --sky-from (brand blue) and --sky-to (the handover colour)
- * are set in PageHero's styles. Mixed in oklch so the midtones stay blue
- * instead of grey.
+ * tailwind.config. It fills the hero from the bottom edge up over
+ * --page-hero-sky-height and is clear above that. --sky-from (brand blue) and
+ * --sky-to (the handover colour) are set in PageHero's styles. Mixed in oklch
+ * so the midtones stay blue instead of grey.
  */
 export function heroSkyGradient(): string {
   const positions = Array.from(
@@ -90,7 +97,7 @@ export function heroSkyGradient(): string {
   )
   const stops = [...new Set([...positions, SKY_LEAD_END, OPAQUE_AT])]
     .filter((position) => position <= 1)
-    .sort((a, b) => a - b)
+    .sort((a, b) => b - a)
     .map(skyStop)
-  return `linear-gradient(to bottom in oklch, ${stops.join(', ')})`
+  return `linear-gradient(to top in oklch, ${stops.join(', ')})`
 }
