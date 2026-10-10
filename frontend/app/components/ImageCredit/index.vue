@@ -68,11 +68,15 @@ function onPointerLeave() {
 }
 
 // WCAG 1.4.13: content shown on hover has to be dismissible without moving the pointer.
-useEventListener('keydown', (event: KeyboardEvent) => {
-  if (event.key !== 'Escape' || !isOpen.value) {
-    return
-  }
-  isPinned.value = false
-  isDismissed.value = true
-})
+useEventListener(
+  () => (isOpen.value ? window : null),
+  'keydown',
+  (event: KeyboardEvent) => {
+    if (event.key !== 'Escape') {
+      return
+    }
+    isPinned.value = false
+    isDismissed.value = true
+  },
+)
 </script>

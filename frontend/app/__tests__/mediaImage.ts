@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import MediaImage from '../components/MediaImage/index.vue'
 import { IMAGE_CREDIT_BELOW_IMAGE } from '../composables/imageCreditDisplay'
@@ -49,7 +49,15 @@ async function mountWithCredit() {
   return { wrapper, button, credit, hover, pressEscape, isOpen }
 }
 
+function keydownListeners(spy: { mock: { calls: unknown[][] } }) {
+  return spy.mock.calls.filter((call) => call[0] === 'keydown').length
+}
+
 describe('MediaImage', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('puts imgClass on the image, so rounding never clips the caption', async () => {
     const wrapper = await mountSuspended(MediaImage, {
       props: { image, copyright, imgClass: 'rounded-[18px]' },
@@ -142,5 +150,32 @@ describe('MediaImage', () => {
     await hover('pointerleave')
     await hover('pointerenter')
     expect(isOpen()).toBe(true)
+  })
+
+  it('adds no keydown listener for an image without a credit', async () => {
+    const added = vi.spyOn(window, 'addEventListener')
+
+    await mountSuspended(MediaImage, { props: { image } })
+    await mountSuspended(MediaImage, {
+      props: { image, copyright, hideCaption: true },
+    })
+
+    expect(keydownListeners(added)).toBe(0)
+  })
+
+  it('listens for Escape only while the credit is open', async () => {
+    const added = vi.spyOn(window, 'addEventListener')
+    const removed = vi.spyOn(window, 'removeEventListener')
+    const { button } = await mountWithCredit()
+
+    expect(keydownListeners(added)).toBe(0)
+
+    await button.trigger('click')
+    expect(keydownListeners(added)).toBe(1)
+    expect(keydownListeners(removed)).toBe(0)
+
+    await button.trigger('click')
+    expect(keydownListeners(added)).toBe(1)
+    expect(keydownListeners(removed)).toBe(1)
   })
 })
