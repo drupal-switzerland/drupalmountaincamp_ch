@@ -9,6 +9,7 @@ import {
 import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-options'
 import type { FetchError } from 'ofetch'
 import { extractCacheability } from './utils/cacheability'
+import { withTrustedForwardedHost } from './utils/trustedHost'
 import {
   BACKEND_FETCH_TIMEOUT_MS,
   BACKEND_RETRY_AFTER_SECONDS,
@@ -58,7 +59,10 @@ export default defineGraphqlServerOptions<{
       })
 
       return {
-        headers,
+        headers: withTrustedForwardedHost(
+          headers,
+          process.env.LAGOON_ENVIRONMENT_TYPE,
+        ),
         timeout: BACKEND_FETCH_TIMEOUT_MS,
       }
     }

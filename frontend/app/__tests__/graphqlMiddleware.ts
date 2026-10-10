@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import graphqlMiddlewareConfig from './../../server/graphqlMiddleware.serverOptions'
 import type { H3Event } from 'h3'
 import { FetchError } from 'ofetch'
@@ -27,6 +27,27 @@ describe('The nuxt-graphql-middleware config', () => {
     expect(result.headers?.foobar).toBeUndefined()
     // @ts-ignore
     expect(result.headers?.cookie).toEqual('my_cookie')
+  })
+
+  test('Sends Drupal the public host for a request on an internal route on production', async () => {
+    const event = {
+      node: {
+        req: {
+          headers: {
+            'x-forwarded-host':
+              'frontend.prod.drupalmountaincamp-ch.ch4.amazee.io',
+          },
+        },
+      },
+    } as unknown as H3Event
+    vi.stubEnv('LAGOON_ENVIRONMENT_TYPE', 'production')
+    try {
+      const result = await graphqlMiddlewareConfig!.serverFetchOptions!(event)
+      // @ts-ignore
+      expect(result.headers?.['x-forwarded-host']).toBe('drupalmountaincamp.ch')
+    } finally {
+      vi.unstubAllEnvs()
+    }
   })
 
   function createEvent(initialHeaders: Record<string, string | string[]> = {}) {

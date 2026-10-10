@@ -190,7 +190,7 @@ display:
         type: rss
         options:
           uses_fields: false
-          description: ''
+          description: 'News from Drupal Mountain Camp, the Drupal community event in Davos, Switzerland.'
       row:
         type: node_rss
         options:
