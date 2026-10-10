@@ -4,7 +4,11 @@ import plugin from 'tailwindcss/plugin'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import { SCREENS } from './app/tailwind/screens'
 import { heroSkyProperties } from './app/helpers/heroSky'
-import { RIDGE_NARROW_HEIGHT, RIDGE_SIZE } from './app/helpers/ridge'
+import {
+  RIDGE_NARROW_HEIGHT,
+  RIDGE_SIZE,
+  RIDGE_SUMMIT_TOP,
+} from './app/helpers/ridge'
 
 const fontSize: Record<string, [string, string]> = {
   xs: ['12px', '15px'],
@@ -208,6 +212,8 @@ const config: Config = {
         ':root': {
           '--ridge-height-narrow': RIDGE_NARROW_HEIGHT,
           '--ridge-height-wide': `${(RIDGE_SIZE.height / RIDGE_SIZE.width) * 100}vw`,
+          // How far below the wide ridge's top edge its tall peak begins.
+          '--ridge-summit-wide': `${(RIDGE_SUMMIT_TOP / RIDGE_SIZE.width) * 100}vw`,
         },
       })
       addComponents(heroSkyProperties({ from: brand.blue, mid: brand.sky }))
