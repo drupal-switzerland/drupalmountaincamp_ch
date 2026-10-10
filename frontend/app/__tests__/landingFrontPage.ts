@@ -7,7 +7,8 @@ import { IS_FRONT_PAGE } from '../composables/frontPage'
 // Stands in for the page's blocks and shows what they are told.
 const Blocks = defineComponent({
   inheritAttrs: false,
-  setup: () => () => h('output', String(inject(IS_FRONT_PAGE, 'not provided'))),
+  setup: () => () =>
+    h('output', String(inject(IS_FRONT_PAGE) ?? 'not provided')),
 })
 
 const Nothing = defineComponent({ inheritAttrs: false, render: () => null })
