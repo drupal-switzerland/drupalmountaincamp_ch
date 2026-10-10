@@ -110,8 +110,9 @@
     --sky-from: theme(colors.brand.blue);
     --sky-mid: theme(colors.brand.sky);
     --home-hero-rise: 10rem;
-    /* The ridge's height (BrandRidge) and how far it reaches up over the text. */
-    --home-hero-ridge: max(72px, 20vw);
+    /* The ridge's height (set in tailwind.config from helpers/ridge) and how
+       far it reaches up over the text. */
+    --home-hero-ridge: var(--ridge-height-narrow);
     --home-hero-overlap: 6px;
     --home-hero-pad: theme(spacing.10);
     /* From the hero's bottom edge up to the text, less the focus ring of the
@@ -124,7 +125,7 @@
     background: theme(colors.brand.navy);
 
     @screen xs {
-      --home-hero-ridge: 28.125vw;
+      --home-hero-ridge: var(--ridge-height-wide);
       --home-hero-overlap: min(190px, 14.8vw);
       --home-hero-pad: theme(spacing.4);
     }

@@ -7,6 +7,13 @@ export const RIDGE_VIEWBOX = `0 0 ${RIDGE_SIZE.width} ${RIDGE_SIZE.height}`
 export const RIDGE_OUTLINE =
   'M-20 450 L8 400 L14 340 L46 316 L62 268 L94 252 L122 214 L130 192 L162 178 L205 245 L213 278 L237 319 L264 332 L272 352 L278 378 L385 411 L435 395 L476 416 L518 385 L535 357 L576 351 L640 411 L672 431 L702 410 L708 392 L764 373 L830 418 L893 401 L944 363 L959 340 L1026 325 L1110 397 L1125 431 L1216 398 L1252 373 L1332 371 L1396 414 L1441 408 L1514 352 L1600 342 L1692 393 L1805 381 L1940 428 L1940 560 L-20 560 Z'
 
+/**
+ * Height of the phone crop, which keeps the drawing's bottom edge: 20vw shows
+ * the lower 384 of 540 units, which holds the summit (y 178) and its stroke.
+ * Written to --ridge-height-narrow by tailwind.config.
+ */
+export const RIDGE_NARROW_HEIGHT = 'max(72px, 20vw)'
+
 /** The lowest point of the skyline inside the box (its y). */
 export const RIDGE_DEEPEST_VALLEY = 431
 

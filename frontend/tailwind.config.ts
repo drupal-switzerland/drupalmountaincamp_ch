@@ -10,6 +10,7 @@ import {
   homeHorizonGradient,
   homeRiseGradient,
 } from './app/helpers/heroSky'
+import { RIDGE_NARROW_HEIGHT, RIDGE_SIZE } from './app/helpers/ridge'
 
 const fontSize: Record<string, [string, string]> = {
   xs: ['12px', '15px'],
@@ -208,7 +209,14 @@ const config: Config = {
      * stylesheet. Declared on the hero itself: the gradients refer to
      * --sky-from, --sky-mid and --sky-to, which resolve where they are declared.
      */
-    plugin(({ addComponents }) => {
+    plugin(({ addBase, addComponents }) => {
+      // The ridge's height, shared by BrandRidge and the homepage hero's sky.
+      addBase({
+        ':root': {
+          '--ridge-height-narrow': RIDGE_NARROW_HEIGHT,
+          '--ridge-height-wide': `${(RIDGE_SIZE.height / RIDGE_SIZE.width) * 100}vw`,
+        },
+      })
       addComponents({
         '.page-hero': {
           '--page-hero-sky': heroSkyGradient(),
