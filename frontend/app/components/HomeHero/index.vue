@@ -2,45 +2,49 @@
   <section aria-labelledby="home-hero-title" class="relative">
     <div class="on-dark home-hero relative isolate overflow-hidden text-white">
       <div
-        class="container !my-0 flex flex-col gap-5 pb-[var(--home-hero-pad)] pt-6 xs:gap-6 xs:pt-12 md:pt-20"
+        class="container !my-0 flex flex-col gap-5 pt-6 xs:gap-6 xs:pt-12 md:pt-20"
       >
         <p
           class="label self-start rounded-full border-2 border-primary-100 px-4 py-1"
         >
           {{ $texts('hero.badge', '10 years of community') }}
         </p>
-        <div>
-          <!-- The plus marks share the title's row so they line up with it at every width. -->
-          <div class="flex items-center justify-between gap-4 md:gap-10">
-            <h1
-              id="home-hero-title"
-              v-blokkli-editable:title
-              class="text-[2.5rem] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
-            >
-              {{ titleParts.name }}
-              <span v-if="titleParts.year" class="text-primary-300">
-                {{ titleParts.year }}
-              </span>
-            </h1>
-            <BrandSparkles
-              class="w-14 shrink-0 text-white xs:w-24 md:w-36 lg:w-40"
-            />
-          </div>
-          <span class="home-hero-rise" aria-hidden="true" />
+        <!-- The plus marks share the title's row so they line up with it at every width. -->
+        <div class="flex items-center justify-between gap-4 md:gap-10">
+          <h1
+            id="home-hero-title"
+            v-blokkli-editable:title
+            class="text-[2.5rem] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
+          >
+            {{ titleParts.name }}
+            <span v-if="titleParts.year" class="text-primary-300">
+              {{ titleParts.year }}
+            </span>
+          </h1>
+          <BrandSparkles
+            class="w-14 shrink-0 text-white xs:w-24 md:w-36 lg:w-40"
+          />
         </div>
-        <!-- Rich text so editors can add Button / Button (outline) links. -->
-        <div
-          v-if="lead"
-          v-blokkli-editable:field_lead
-          class="ck-content is-small home-hero-lead max-w-2xl text-base md:text-2xl"
-          v-html="lead"
+      </div>
+      <!-- Everything under the title row: the box the blue rises in. -->
+      <div class="relative">
+        <span class="home-hero-rise" aria-hidden="true" />
+        <span class="home-hero-horizon" aria-hidden="true" />
+        <!-- Flex, so the lead's top margin stays inside and the blue starts at the title. -->
+        <div class="container !my-0 flex flex-col pb-[var(--home-hero-pad)]">
+          <!-- Rich text so editors can add Button / Button (outline) links. -->
+          <div
+            v-if="lead"
+            v-blokkli-editable:field_lead
+            class="ck-content is-small home-hero-lead mt-5 max-w-2xl text-base xs:mt-6 md:text-2xl"
+            v-html="lead"
+          />
+        </div>
+        <BrandRidge
+          mirrored
+          class="relative z-[-1] mt-[calc(var(--home-hero-overlap)*-1)]"
         />
       </div>
-      <span class="home-hero-horizon" aria-hidden="true" />
-      <BrandRidge
-        mirrored
-        class="relative z-[-1] mt-[calc(var(--home-hero-overlap)*-1)]"
-      />
     </div>
 
     <div class="bg-primary-100 text-primary-500">

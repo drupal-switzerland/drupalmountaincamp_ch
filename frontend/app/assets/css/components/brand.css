@@ -123,7 +123,19 @@
       var(--home-hero-ridge) - var(--home-hero-overlap) + var(--home-hero-pad) -
         var(--home-hero-clearance)
     );
-    background: theme(colors.brand.navy);
+    /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
+       150% scaling. The browser then covers the last pixel row fully with the
+       box's own background but only partly with the ridge and the layers
+       under it, so anything dark there shows as a line above the ice bar.
+       Navy and both layers therefore stop this far above the edge and the
+       box's own colour there is the ridge's ice. */
+    --home-hero-edge: 2px;
+    background: linear-gradient(
+        theme(colors.brand.navy),
+        theme(colors.brand.navy)
+      )
+      top / 100% calc(100% - var(--home-hero-edge)) no-repeat
+      theme(colors.brand.ice);
 
     @screen xs {
       --home-hero-ridge: var(--ridge-height-wide);
@@ -143,25 +155,22 @@
     }
   }
 
-  /* Both layers sit under the ridge and the text. */
+  /* Both layers sit under the ridge and the text, in the box under the title
+     row, so the blue starts there however the title wraps. */
   .home-hero-rise,
   .home-hero-horizon {
     @apply pointer-events-none absolute inset-x-0 z-[-1] block;
+    bottom: var(--home-hero-edge);
   }
 
-  /* No top or bottom: it stays at its place in the flow, right under the title
-     row, so the blue starts there however the title wraps. Its gradient's stops
-     are lengths and blue carries on below them, so the box only has to reach
-     past the hero's bottom edge, which clips it; rem keeps that true when text
-     is enlarged. */
+  /* Its gradient's stops are lengths and blue carries on below them. */
   .home-hero-rise {
-    height: 200rem;
+    @apply top-0;
     background-image: var(--home-hero-rise-sky);
   }
 
   .home-hero-horizon {
-    @apply bottom-0;
-    height: var(--home-hero-horizon);
+    height: calc(var(--home-hero-horizon) - var(--home-hero-edge));
     background-image: var(--home-hero-horizon-sky);
   }
 
