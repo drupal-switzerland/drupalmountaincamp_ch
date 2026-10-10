@@ -55,6 +55,12 @@ const pairs: [string, string, string, number][] = [
   ['gray-600 caption on white', colors.gray[600], WHITE, AA_TEXT],
   ['gray-600 caption on ice', colors.gray[600], brand.ice, AA_TEXT],
   ['gray-600 caption on tint', colors.gray[600], brand.tint, AA_TEXT],
+  // Inner pages: the first blocks sit on the snow fade (ice, then tint, then
+  // white) that continues from the hero.
+  ['body text on ice', colors.gray[900], brand.ice, AA_TEXT],
+  ['body text on tint', colors.gray[900], brand.tint, AA_TEXT],
+  ['link text on ice', colors.link.DEFAULT, brand.ice, AA_TEXT],
+  ['link hover text on ice', colors.link.hover, brand.ice, AA_TEXT],
   // Inner-page hero. The glow is painted behind the text, so text sits on the
   // gradient blended with the glow: the title anywhere, the ice lead and
   // breadcrumb only over the navy part (see the rejected pair below).

@@ -2,30 +2,32 @@
   <div>
     <PageHero :title="entity?.title || 'News'" />
 
-    <div class="container">
-      <div ref="results" tabindex="-1" class="mx-auto max-w-3xl scroll-mt-28">
-        <p v-if="listFailed" class="text-lg">
-          {{
-            $texts(
-              'news.loadError',
-              'The news could not be loaded. Please try again later.',
-            )
-          }}
-        </p>
-        <div v-else class="space-y-10">
-          <NodePressReleaseTeaser
-            v-for="item in pressReleases"
-            :key="item.uuid"
-            v-bind="item"
-          />
+    <div class="snow-blocks">
+      <div class="container">
+        <div ref="results" tabindex="-1" class="mx-auto max-w-3xl scroll-mt-28">
+          <p v-if="listFailed" class="text-lg">
+            {{
+              $texts(
+                'news.loadError',
+                'The news could not be loaded. Please try again later.',
+              )
+            }}
+          </p>
+          <div v-else class="space-y-10">
+            <NodePressReleaseTeaser
+              v-for="item in pressReleases"
+              :key="item.uuid"
+              v-bind="item"
+            />
+          </div>
         </div>
+        <Pagination
+          class="mt-12"
+          :current-page="currentPage"
+          :total-pages="pageCount"
+          @navigate="focusResultsOnLoad = true"
+        />
       </div>
-      <Pagination
-        class="mt-12"
-        :current-page="currentPage"
-        :total-pages="pageCount"
-        @navigate="focusResultsOnLoad = true"
-      />
     </div>
   </div>
 </template>

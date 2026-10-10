@@ -15,6 +15,7 @@
         :list="paragraphs"
         name="field_paragraphs"
         :allowed-fragments="PAGE_FRAGMENTS"
+        class="snow-blocks"
       />
     </div>
   </BlokkliProvider>

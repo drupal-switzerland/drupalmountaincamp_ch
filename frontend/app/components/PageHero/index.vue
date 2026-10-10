@@ -1,6 +1,6 @@
 <template>
   <section
-    class="on-dark brand-hero relative isolate overflow-hidden text-white"
+    class="page-hero on-dark brand-hero relative isolate overflow-hidden text-white"
   >
     <div class="grid-container my-0 py-10 md:py-16 lg:py-20">
       <div class="grid-container-8 flex flex-col gap-3 md:gap-4">
@@ -73,6 +73,45 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   width: 360%;
   height: 440%;
   transform: translate(-50%, -50%);
+}
+
+/* Fade into snow: below the text the hero runs into the ice that .snow-blocks
+   starts with, so there is no edge between the two. The text keeps today's
+   dark background: the fade only covers the padding added for it. */
+.page-hero {
+  --page-hero-fade: 56px;
+  padding-bottom: var(--page-hero-fade);
+
+  @screen md {
+    --page-hero-fade: 88px;
+  }
+
+  @screen lg {
+    --page-hero-fade: 104px;
+  }
+}
+
+.page-hero::after {
+  content: '';
+  @apply pointer-events-none absolute inset-x-0 bottom-0 -z-[1];
+  height: calc(var(--page-hero-fade) + theme(spacing.6));
+  background: linear-gradient(
+    to bottom,
+    theme(colors.brand.ice / 0%) 0%,
+    theme(colors.brand.ice / 18%) 30%,
+    theme(colors.brand.ice / 60%) 65%,
+    theme(colors.brand.ice) 100%
+  );
+}
+
+/* A dark band right after the hero: ice between the two would read as a
+   stripe, so the hero keeps its straight edge. */
+.page-hero:has(+ * > .snow-blocks > :is(.navy-band, .week-band):first-child) {
+  --page-hero-fade: 0px;
+
+  &::after {
+    content: none;
+  }
 }
 
 /* The lead is ice, so its links need more than colour to stand out. */
