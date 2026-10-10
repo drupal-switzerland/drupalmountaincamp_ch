@@ -59,7 +59,7 @@
     "eslint-plugin-tailwindcss": "^3.18.3",
     "glob": "^13.0.6",
     "happy-dom": "^20.14.5",
-    "nuxt": "^4.5.2",
+    "nuxt": "^4.6.0",
     "postcss-cli": "^12.0.0",
     "postcss-hexrgba": "github:thormeier/postcss-hexrgba",
     "postcss-nesting": "^14.0.3",
