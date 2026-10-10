@@ -24,6 +24,8 @@
             <img
               src="/images/icon-mountain.png"
               alt=""
+              width="128"
+              height="128"
               class="size-7 xs:size-8 md:size-10"
             />
             <span
