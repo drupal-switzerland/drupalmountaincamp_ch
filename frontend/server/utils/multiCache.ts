@@ -17,3 +17,12 @@ export function buildRouteCacheKey(event: H3Event): string {
   // Percent-encoded, so two different URLs never share a key.
   return encodeURIComponent(event.path || '')
 }
+
+/**
+ * The cache API's authorization callback. nuxt-multi-cache compares the
+ * request's token with NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN itself and
+ * only asks this callback when that variable is not set.
+ */
+export function refuseCacheApiRequest(): Promise<boolean> {
+  return Promise.resolve(false)
+}

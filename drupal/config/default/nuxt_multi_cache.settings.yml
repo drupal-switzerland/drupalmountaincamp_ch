@@ -8,4 +8,3 @@ ban_tags:
   - graphql_response
   - 'config:graphql.graphql_servers.graphql_compose_server'
   - http_response
-token: local-development
