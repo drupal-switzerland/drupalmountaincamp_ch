@@ -4,12 +4,15 @@ import lruCacheDriver from 'unstorage/drivers/lru-cache'
 import {
   buildRouteCacheKey,
   isCacheEnabledForRequest,
+  refuseCacheApiRequest,
 } from './utils/multiCache'
 
 // The logic lives in utils/multiCache.ts: nuxt-multi-cache replaces this file
 // with an empty stub in client builds, which is also what tests would import.
 const multiCacheServerOptions = defineMultiCacheOptions({
-  api: {},
+  api: {
+    authorization: refuseCacheApiRequest,
+  },
   data: {},
   enabledForRequest: (event: H3Event) => {
     return Promise.resolve(isCacheEnabledForRequest(event))
