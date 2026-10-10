@@ -1,4 +1,6 @@
 // @vitest-environment node
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { brand } from '../../tailwind.config'
 import {
@@ -230,6 +232,21 @@ describe('homepage horizon', () => {
     ['white focus ring on sky', WHITE, brand.sky, AA_NON_TEXT],
   ])('%s meets WCAG AA', (_label, foreground, background, min) => {
     expect(contrast(foreground, background)).toBeGreaterThanOrEqual(min)
+  })
+
+  // Editors can mark words in the lead as "Highlight"; on dark sections that
+  // is sky, which fails on the blue the lead sits on.
+  it('gives highlights in the lead ice, which passes on full blue', () => {
+    const css = readFileSync(
+      join(process.cwd(), 'app/assets/css/components/brand.css'),
+      'utf8',
+    )
+    const rule =
+      /\.on-dark \.ck-content\.home-hero-lead \.highlight \{\s*@apply text-primary-100;/
+
+    expect(css).toMatch(rule)
+    expect(contrast(brand.ice, brand.blue)).toBeGreaterThanOrEqual(AA_TEXT)
+    expect(contrast(brand.ice, brand.navy)).toBeGreaterThanOrEqual(AA_TEXT)
   })
 
   it('rejects the text colours on what the layers keep away from them', () => {
