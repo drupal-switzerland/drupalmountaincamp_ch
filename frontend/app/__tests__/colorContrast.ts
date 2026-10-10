@@ -1,9 +1,15 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
-import { brand, colors } from '../../tailwind.config'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import config, { brand, colors } from '../../tailwind.config'
 import { HERO_GLOW, blendHeroGlowOver } from '../helpers/heroGlow'
+import { SKY_HANDOVER } from '../helpers/heroSky'
 
 const WHITE = '#FFFFFF'
+const TABLE_BORDER = (config.theme?.colors as Record<string, string>)[
+  'table-border'
+]!
 const AA_TEXT = 4.5
 const AA_LARGE_TEXT = 3
 const AA_NON_TEXT = 3
@@ -55,6 +61,35 @@ const pairs: [string, string, string, number][] = [
   ['gray-600 caption on white', colors.gray[600], WHITE, AA_TEXT],
   ['gray-600 caption on ice', colors.gray[600], brand.ice, AA_TEXT],
   ['gray-600 caption on tint', colors.gray[600], brand.tint, AA_TEXT],
+  // Inner pages: the first blocks sit on the snow fade (ice, then tint, then
+  // white) that continues from the hero.
+  ['body text on ice', colors.gray[900], brand.ice, AA_TEXT],
+  ['body text on tint', colors.gray[900], brand.tint, AA_TEXT],
+  ['link text on ice', colors.link.DEFAULT, brand.ice, AA_TEXT],
+  ['link hover text on ice', colors.link.hover, brand.ice, AA_TEXT],
+  // The top of the first block can sit on the hero's handover colour, the
+  // darkest background the page content reaches.
+  ['body text on the sky handover', colors.gray[900], SKY_HANDOVER, AA_TEXT],
+  ['navy heading on the sky handover', brand.navy, SKY_HANDOVER, AA_TEXT],
+  [
+    'blue label and link on the sky handover',
+    brand.blue,
+    SKY_HANDOVER,
+    AA_TEXT,
+  ],
+  [
+    'gray-600 caption on the sky handover',
+    colors.gray[600],
+    SKY_HANDOVER,
+    AA_TEXT,
+  ],
+  [
+    'navy focus outline on the sky handover',
+    brand.navy,
+    SKY_HANDOVER,
+    AA_NON_TEXT,
+  ],
+  ['table border on the sky handover', TABLE_BORDER, SKY_HANDOVER, AA_NON_TEXT],
   // Inner-page hero. The glow is painted behind the text, so text sits on the
   // gradient blended with the glow: the title anywhere, the ice lead and
   // breadcrumb only over the navy part (see the rejected pair below).
@@ -94,6 +129,14 @@ describe('brand colour contrast', () => {
     expect(contrast(brand.ice, blendHeroGlowOver(brand.blue))).toBeLessThan(
       AA_TEXT,
     )
+  })
+
+  it('uses the tested handover colour in the stylesheet', () => {
+    const css = readFileSync(
+      join(process.cwd(), 'app/assets/css/components/brand.css'),
+      'utf8',
+    )
+    expect(css.toUpperCase()).toContain(`--SKY-HANDOVER: ${SKY_HANDOVER}`)
   })
 
   it('draws the hero glow in brand sky', () => {

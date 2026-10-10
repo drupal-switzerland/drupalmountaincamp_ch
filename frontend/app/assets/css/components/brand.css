@@ -165,6 +165,31 @@
       no-repeat;
   }
 
+  /* Ice with 3% sky: where the inner-page hero's sky ends and .snow-blocks
+     begins (helpers/heroSky). */
+  .page-hero,
+  .snow-blocks {
+    --sky-handover: #c7ebf8;
+  }
+
+  /* Under the inner-page hero the sky keeps getting lighter: from the
+     handover colour to ice around the middle of the first block, then the
+     homepage's tint and white. Sized, not stopped in px, so a page shorter
+     than the fade still ends in white. */
+  .snow-blocks {
+    --snow-fade-height: clamp(720px, 640px + 12vw, 840px);
+    /* Keeps the first block's top margin inside, so no white gap shows. */
+    display: flow-root;
+    background: linear-gradient(
+        var(--sky-handover) 0,
+        theme(colors.brand.ice) 18%,
+        theme(colors.brand.tint) 62%,
+        theme(colors.white) 100%
+      )
+      no-repeat;
+    background-size: 100% min(var(--snow-fade-height), 100%);
+  }
+
   /* Homepage sponsor card across the edge of the band above it. It only
      overlaps the bands listed here, by less than their smallest bottom
      padding, so it never covers content: week timeline and news 64px (96px
