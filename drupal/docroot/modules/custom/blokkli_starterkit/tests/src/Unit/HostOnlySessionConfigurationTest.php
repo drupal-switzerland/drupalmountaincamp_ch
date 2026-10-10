@@ -63,7 +63,12 @@ class HostOnlySessionConfigurationTest extends UnitTestCase {
    */
   public static function hosts(): array {
     return [
-      'production apex' => ['https://drupalmountaincamp.ch/user/login', '.drupalmountaincamp.ch', 'SSESS', 'drupalmountaincamp.ch'],
+      'production apex' => [
+        'https://drupalmountaincamp.ch/user/login',
+        '.drupalmountaincamp.ch',
+        'SSESS',
+        'drupalmountaincamp.ch',
+      ],
       'ddev' => ['https://mountaincamp.ddev.site/', '.mountaincamp.ddev.site', 'SSESS', 'mountaincamp.ddev.site'],
       'localhost' => ['http://localhost/', '', 'SESS', 'localhost'],
       'ip address' => ['http://127.0.0.1/', '', 'SESS', '127.0.0.1'],
@@ -91,7 +96,8 @@ class HostOnlySessionConfigurationTest extends UnitTestCase {
    */
   public function testStorageOptionsAreKept(): void {
     $request = Request::create('https://drupalmountaincamp.ch/');
-    $options = $this->configuration(HostOnlySessionConfiguration::class, ['cookie_lifetime' => 2000000, 'name_suffix' => 'x'])->getOptions($request);
+    $storageOptions = ['cookie_lifetime' => 2000000, 'name_suffix' => 'x'];
+    $options = $this->configuration(HostOnlySessionConfiguration::class, $storageOptions)->getOptions($request);
 
     $this->assertSame(2000000, $options['cookie_lifetime']);
     $this->assertSame('SSESS' . substr(hash('sha256', 'drupalmountaincamp.chx' . HostOnlySessionConfiguration::NAME_SUFFIX), 0, 32), $options['name']);

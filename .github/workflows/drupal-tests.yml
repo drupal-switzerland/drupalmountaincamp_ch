@@ -3,9 +3,6 @@ name: Drupal tests
 on:
   pull_request:
     branches: [prod]
-    paths:
-      - 'drupal/**'
-      - '.github/workflows/drupal-tests.yml'
 
 permissions:
   contents: read
