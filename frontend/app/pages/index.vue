@@ -4,6 +4,7 @@
 
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
+import { buildEventSchema } from '~/helpers/eventSchema'
 
 defineOptions({
   name: 'Homepage',
@@ -33,6 +34,16 @@ const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
 const { entity: node } = await useDrupalRoute<NodePageFragment>(
   query.value ?? null,
 )
+
+useHead({
+  script: [
+    {
+      key: 'event-schema',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildEventSchema()),
+    },
+  ],
+})
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
 setPageHasHero(false)
