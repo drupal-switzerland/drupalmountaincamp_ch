@@ -1,42 +1,11 @@
-import type {
-  GlobalConfigFragment,
-  InitDataQuery,
-  MenuLinkTreeElementFirstFragment,
-} from '#graphql-operations'
+import {
+  buildInitData,
+  fallbackInitData,
+  getInitDataCacheTags,
+  type InitData,
+} from '~/helpers/initData'
 
-export interface InitData {
-  mainMenuLinks: MenuLinkTreeElementFirstFragment[]
-  footerMenuLinks: MenuLinkTreeElementFirstFragment[]
-  translations: Record<string, string | [string, string]>
-  globalConfig: {
-    address?: GlobalConfigFragment['address']
-  }
-}
-
-function getTranslations(
-  v?: InitDataQuery,
-): Record<string, string | [string, string]> {
-  if (!v) {
-    return {}
-  }
-  return Object.entries(
-    (v.translations || {}) as Record<
-      string,
-      string | { singular?: string; plural?: string }
-    >,
-  ).reduce<Record<string, string | [string, string]>>(
-    (acc, [fullKey, value]) => {
-      const keyWithDots = fullKey.replace('__', '.')
-      if (typeof value === 'string') {
-        acc[keyWithDots] = value
-      } else if (typeof value === 'object' && value.plural && value.singular) {
-        acc[keyWithDots] = [value.singular, value.plural]
-      }
-      return acc
-    },
-    {},
-  )
-}
+export type { InitData }
 
 export default async function (): Promise<Ref<InitData>> {
   const currentLanguage = useCurrentLanguage()
@@ -84,17 +53,6 @@ export default async function (): Promise<Ref<InitData>> {
   return data
 }
 
-// What renders when Drupal can't be reached: no menus, English default texts
-// (server-only runtime config, so empty on the client).
-function fallbackInitData(defaultTexts: Record<string, string> = {}): InitData {
-  return {
-    mainMenuLinks: [],
-    footerMenuLinks: [],
-    translations: defaultTexts,
-    globalConfig: {},
-  }
-}
-
 async function fetchInitData(
   language: string,
   host: string,
@@ -113,21 +71,12 @@ async function fetchInitData(
       },
     },
   }).then((v) => {
-    const initData = {
-      mainMenuLinks: v.data.mainMenu?.links || [],
-      footerMenuLinks: v.data.footerMenu?.links || [],
-      globalConfig: v.data.globalConfig || {},
-      translations: getTranslations(v.data),
-    }
+    const initData = buildInitData(v.data)
 
     // The cache tags are coming from the onServerResponse() function in the graphqlMiddleware.
-
-    if (
-      import.meta.server &&
-      v.__cacheability?.isCacheable &&
-      v.__cacheability.tagsNuxt
-    ) {
-      addToCache(initData, v.__cacheability.tagsNuxt)
+    const cacheTags = getInitDataCacheTags(v.__cacheability)
+    if (import.meta.server && cacheTags) {
+      addToCache(initData, cacheTags)
     }
 
     return initData
