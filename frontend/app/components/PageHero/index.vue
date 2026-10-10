@@ -1,6 +1,6 @@
 <template>
   <section
-    class="page-hero on-dark brand-hero relative isolate overflow-hidden text-white"
+    class="on-dark brand-hero page-hero relative isolate overflow-hidden text-white"
   >
     <div class="grid-container my-0 py-10 md:py-16 lg:py-20">
       <div class="grid-container-8 flex flex-col gap-3 md:gap-4">
@@ -10,7 +10,7 @@
           <slot name="title" :title-class="TITLE_CLASS">
             <h1 :class="TITLE_CLASS">{{ title }}</h1>
           </slot>
-          <div class="page-hero-marks">
+          <div class="page-hero-marks page-marks-box">
             <span
               class="page-hero-glow"
               :style="{ backgroundImage: glow }"
@@ -40,7 +40,7 @@ defineProps<{
 }>()
 
 const TITLE_CLASS =
-  'text-[2.625rem] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
+  'shrink-[9999] text-[2.625rem] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
 
 defineSlots<{
   /** Overrides the default <h1>, e.g. to make it editable in blokkli. */
@@ -62,7 +62,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 
 <style lang="postcss">
 .page-hero-marks {
-  @apply relative w-16 shrink-0 xs:w-20 md:w-28 xl:w-36;
+  @apply relative w-16 xs:w-20 md:w-28 xl:w-36;
 }
 
 /* Centred on the marks, so the light follows them when the title wraps.
@@ -75,15 +75,31 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   transform: translate(-50%, -50%);
 }
 
-/* Long sky: the whole hero is one sky. Brand blue fades in behind the text
-   (never fully, so the text keeps a dark background), is complete just below
-   the lead and then eases into the handover colour that .snow-blocks starts
-   with. Both sides reach the same blue at the same height, so the hero's
-   diagonal gradient and the glow leave no band. */
+/* Long sky: the whole hero is one sky, drawn as ONE gradient so its slope
+   never jumps. It is measured up from the hero's bottom edge: the zone below the
+   lead, plus a rise behind the text. The stops come from helpers/heroSky
+   through tailwind.config (--page-hero-sky), the horizon the homepage hero
+   shares: brand blue fades in behind the text (never fully, so the ice lead
+   keeps a dark background), is complete a little below the lead, turns sky
+   and eases into the handover colour that .snow-blocks starts with. Both
+   sides reach the same blue at the same height, so the hero's diagonal
+   gradient and the glow leave no band. */
 .page-hero {
   --page-hero-fade: 112px;
   --page-hero-pad: theme(spacing.10);
   --page-hero-zone: calc(var(--page-hero-fade) + var(--page-hero-pad));
+  --page-hero-sky-height: calc(
+    var(--page-hero-zone) * (1 + var(--page-hero-rise))
+  );
+  --sky-from: theme(colors.brand.blue);
+  --sky-mid: theme(colors.brand.sky);
+  --sky-to: var(--sky-handover);
+  /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
+     150% scaling. The browser then covers the last pixel row fully with the
+     box's own background but only partly with ::after and the section below,
+     so a dark background there shows as a line. The dark gradient therefore
+     stops this far above the edge and the box's own colour takes over. */
+  --page-hero-edge: 2px;
   padding-bottom: var(--page-hero-fade);
 
   @screen md {
@@ -97,62 +113,43 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   }
 }
 
+/* Both classes, so this wins over .brand-hero's background whichever of the
+   two stylesheets loads first. */
+.brand-hero.page-hero {
+  background: var(--brand-hero-gradient) top / 100%
+    calc(100% - var(--page-hero-edge)) no-repeat var(--sky-handover);
+}
+
+/* Plain stops for browsers without oklch gradients, measured up from the
+   bottom edge like the generated ones: blue at 70% where the lead ends
+   (44.44% = zone / (rise + zone)), clear at the top of the sky. */
 .page-hero::after {
   content: '';
   @apply pointer-events-none absolute inset-0 -z-[1];
-  background:
-    linear-gradient(
-        to bottom,
-        theme(colors.brand.blue / 70%) 0%,
-        theme(colors.brand.blue) 14%,
-        theme(colors.brand.sky) 55%,
-        var(--sky-handover) 100%
-      )
-      bottom / 100% var(--page-hero-zone) no-repeat,
-    linear-gradient(
-        to bottom,
-        theme(colors.brand.blue / 0%),
-        theme(colors.brand.blue / 70%)
-      )
-      top / 100% calc(100% - var(--page-hero-zone)) no-repeat;
+  background-image: linear-gradient(
+    to top,
+    var(--sky-handover) 0,
+    theme(colors.brand.sky) calc(var(--page-hero-sky-height) * 0.1),
+    theme(colors.brand.blue) calc(var(--page-hero-sky-height) * 0.22),
+    theme(colors.brand.blue / 70%) calc(var(--page-hero-sky-height) * 0.4444),
+    theme(colors.brand.blue / 35%) calc(var(--page-hero-sky-height) * 0.7),
+    theme(colors.brand.blue / 0%) var(--page-hero-sky-height)
+  );
 }
 
-/* Eased stops, mixed in oklch so the midtones stay blue instead of grey. */
 @supports (background: linear-gradient(in oklch, #000, #fff)) {
   .page-hero::after {
-    --sky-from: theme(colors.brand.blue);
-    --sky-to: var(--sky-handover);
-    background:
-      linear-gradient(
-          to bottom in oklch,
-          theme(colors.brand.blue / 70%) 0%,
-          var(--sky-from) 14%,
-          color-mix(in oklch, var(--sky-to) 5.5%, var(--sky-from)) 26.3%,
-          color-mix(in oklch, var(--sky-to) 19.8%, var(--sky-from)) 38.6%,
-          color-mix(in oklch, var(--sky-to) 39.7%, var(--sky-from)) 50.9%,
-          color-mix(in oklch, var(--sky-to) 60.3%, var(--sky-from)) 63.1%,
-          color-mix(in oklch, var(--sky-to) 80.2%, var(--sky-from)) 75.4%,
-          color-mix(in oklch, var(--sky-to) 94.5%, var(--sky-from)) 87.7%,
-          var(--sky-to) 100%
-        )
-        bottom / 100% var(--page-hero-zone) no-repeat,
-      linear-gradient(
-          to bottom,
-          theme(colors.brand.blue / 0%) 0%,
-          theme(colors.brand.blue / 7.3%) 20%,
-          theme(colors.brand.blue / 24.6%) 40%,
-          theme(colors.brand.blue / 45.4%) 60%,
-          theme(colors.brand.blue / 62.7%) 80%,
-          theme(colors.brand.blue / 70%) 100%
-        )
-        top / 100% calc(100% - var(--page-hero-zone)) no-repeat;
+    background-image: var(--page-hero-sky);
   }
 }
 
 /* A dark band right after the hero: light blue between the two would read as
    a stripe, so the hero keeps its straight edge. */
-.page-hero:has(+ * > .snow-blocks > :is(.navy-band, .week-band):first-child) {
+.brand-hero.page-hero:has(
+    + * > .snow-blocks > :is(.navy-band, .week-band):first-child
+  ) {
   --page-hero-fade: 0px;
+  background: var(--brand-hero-gradient);
 
   &::after {
     content: none;
