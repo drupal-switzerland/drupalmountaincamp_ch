@@ -101,8 +101,6 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
      stops this far above the edge and the box's own colour takes over. */
   --page-hero-edge: 2px;
   padding-bottom: var(--page-hero-fade);
-  background: var(--brand-hero-gradient) top / 100%
-    calc(100% - var(--page-hero-edge)) no-repeat var(--sky-handover);
 
   @screen md {
     --page-hero-fade: 150px;
@@ -113,6 +111,13 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
     --page-hero-fade: 180px;
     --page-hero-pad: theme(spacing.20);
   }
+}
+
+/* Both classes, so this wins over .brand-hero's background whichever of the
+   two stylesheets loads first. */
+.brand-hero.page-hero {
+  background: var(--brand-hero-gradient) top / 100%
+    calc(100% - var(--page-hero-edge)) no-repeat var(--sky-handover);
 }
 
 /* Plain stops for browsers without oklch gradients, measured up from the
@@ -140,7 +145,9 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 
 /* A dark band right after the hero: light blue between the two would read as
    a stripe, so the hero keeps its straight edge. */
-.page-hero:has(+ * > .snow-blocks > :is(.navy-band, .week-band):first-child) {
+.brand-hero.page-hero:has(
+    + * > .snow-blocks > :is(.navy-band, .week-band):first-child
+  ) {
   --page-hero-fade: 0px;
   background: var(--brand-hero-gradient);
 
