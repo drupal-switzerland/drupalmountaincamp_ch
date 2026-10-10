@@ -1,11 +1,13 @@
 # Stage 1: Drupal dependencies
-FROM uselagoon/php-8.3-cli-drupal:latest AS drupal-builder
+# The uselagoon images share one release tag; keep all six on the same one.
+# Dependabot proposes new releases (.github/dependabot.yml).
+FROM uselagoon/php-8.3-cli-drupal:26.9.0 AS drupal-builder
 COPY drupal /app/drupal
 WORKDIR /app/drupal
 RUN composer install --no-dev --optimize-autoloader
 
 # Stage 2: Frontend build
-FROM uselagoon/node-24-builder:latest AS frontend-builder
+FROM uselagoon/node-24-builder:26.9.0 AS frontend-builder
 # Install bun
 RUN npm install -g bun@latest
 ENV PATH="/root/.bun/bin:${PATH}"
@@ -22,7 +24,7 @@ RUN bun install
 RUN bun run build
 
 # Stage 3: CLI image
-FROM uselagoon/php-8.3-cli-drupal:latest AS cli
+FROM uselagoon/php-8.3-cli-drupal:26.9.0 AS cli
 RUN install-php-extensions memcached
 COPY --from=drupal-builder /app/drupal /app/drupal
 RUN mkdir -p /app/drupal/files-private && fix-permissions /app/drupal/files-private
@@ -38,14 +40,14 @@ ENV WEBROOT=drupal/docroot
 ENV PATH="/app/drupal/vendor/bin:${PATH}"
 
 # Stage 4: PHP image
-FROM uselagoon/php-8.3-fpm:latest AS php
+FROM uselagoon/php-8.3-fpm:26.9.0 AS php
 RUN install-php-extensions memcached
 COPY --from=cli /app /app
 ENV WEBROOT=drupal/docroot
 ENV PATH="/app/drupal/vendor/bin:${PATH}"
 
 # Stage 5: Nginx image
-FROM uselagoon/nginx-drupal:latest AS nginx
+FROM uselagoon/nginx-drupal:26.9.0 AS nginx
 COPY --from=cli /app /app
 ENV WEBROOT=drupal/docroot
 # Replace the stock Drupal server block with our reverse-proxy config
@@ -53,7 +55,7 @@ ENV WEBROOT=drupal/docroot
 COPY .lagoon/nginx-lagoon.conf /etc/nginx/conf.d/app.conf
 
 # Stage 6: Frontend image (Nuxt SSR)
-FROM uselagoon/node-24:latest AS frontend
+FROM uselagoon/node-24:26.9.0 AS frontend
 COPY --from=frontend-builder /app/frontend /app/frontend
 WORKDIR /app/frontend
 ENV NODE_ENV=production
