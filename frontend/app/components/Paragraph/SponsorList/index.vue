@@ -4,11 +4,11 @@
       <h2 v-if="title" class="mb-10 text-3xl md:text-4xl lg:mb-14">
         {{ title }}
       </h2>
-      <p v-else-if="isEditing && !groups.length" class="text-gray-500">
+      <p v-else-if="isEditing && !groups.length" class="text-gray-600">
         No published sponsors{{ year ? ` for ${year}` : '' }} yet.
       </p>
       <section v-for="group in groups" :key="group.key" class="mb-12">
-        <h3 class="mb-6 text-sm uppercase tracking-wide text-gray-500">
+        <h3 class="mb-6 text-sm uppercase tracking-wide text-gray-600">
           {{ group.label }}
         </h3>
         <ul class="flex flex-wrap gap-4">

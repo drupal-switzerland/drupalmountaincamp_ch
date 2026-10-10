@@ -39,4 +39,10 @@ if (getenv('LAGOON')) {
   // not exist on Lagoon - without this nothing is ever delivered. native://
   // hands the mail to PHP's configured sendmail, which the cluster relays.
   $config['symfony_mailer_lite.symfony_mailer_lite_transport.dsn']['configuration']['dsn'] = 'native://default';
+
+  // Keep exception details out of GraphQL responses, which Nuxt can pass on to
+  // visitors. Introspection stays on locally: nuxi dev downloads the schema
+  // with it, while the Lagoon build uses the committed schema.graphql.
+  $config['graphql.graphql_servers.graphql']['debug_flag'] = 0;
+  $config['graphql.graphql_servers.graphql']['disable_introspection'] = TRUE;
 }

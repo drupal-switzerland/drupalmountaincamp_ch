@@ -1,5 +1,13 @@
 <template>
   <div>
+    <!-- Hidden while the phone menu is open: main is inert then. -->
+    <a
+      v-if="!isMainMenuOpen"
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-white focus:px-6 focus:py-3 focus:font-bold focus:text-primary-500 focus:shadow-lg"
+    >
+      {{ $texts('layout.skipToContent', 'Skip to content') }}
+    </a>
     <!-- The homepage hero bar shows the same dates and venue. -->
     <PageHeaderEventStrip v-if="route.name !== 'home'" />
     <PageHeader
@@ -18,7 +26,13 @@
         <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
       </PageDependency>
 
-      <main id="main-content" class="page-content">
+      <!-- tabindex lets the skip link move focus here, not only scroll. -->
+      <!-- scroll-mt keeps main's top below the sticky header. -->
+      <main
+        id="main-content"
+        tabindex="-1"
+        class="page-content scroll-mt-12 outline-none md:scroll-mt-20"
+      >
         <ClientOnly>
           <DrupalMessages v-if="!isEditing" />
         </ClientOnly>
@@ -32,6 +46,7 @@
 
 <script setup lang="ts">
 const route = useRoute()
+const { $texts } = useEasyTexts()
 const drupalUser = useDrupalUser()
 const language = useCurrentLanguage()
 const breadcrumb = useDisplayedBreadcrumbLinks()

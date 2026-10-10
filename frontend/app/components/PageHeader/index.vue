@@ -138,12 +138,11 @@ function openMenu() {
   grid-template:
     'logo hamburger' theme(space.10)
     'global global' 1fr
-    'search search' auto
     'language language' auto
     / 1fr auto;
 
   @screen md {
-    grid-template: 'logo global search language' auto / auto 1fr auto auto;
+    grid-template: 'logo global language' auto / auto 1fr auto;
   }
 }
 
@@ -157,10 +156,6 @@ function openMenu() {
 
 .grid-area-global {
   grid-area: global;
-}
-
-.grid-area-search {
-  grid-area: search;
 }
 
 .grid-area-language {
