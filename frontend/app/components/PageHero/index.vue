@@ -76,13 +76,14 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 }
 
 /* Long sky: the whole hero is one sky, drawn as ONE gradient so its slope
-   never jumps. It is measured up from the hero's bottom edge: the zone below
-   the lead, plus a rise behind the text. The stops come from helpers/heroSky
-   through tailwind.config (--page-hero-sky). Brand blue fades in
-   behind the text (never fully, so the text keeps a dark background), is
-   complete a little below the lead and eases into the handover colour that
-   .snow-blocks starts with. Both sides reach the same blue at the same height,
-   so the hero's diagonal gradient and the glow leave no band. */
+   never jumps. It is measured up from the hero's bottom edge: the zone below the
+   lead, plus a rise behind the text. The stops come from helpers/heroSky
+   through tailwind.config (--page-hero-sky), the horizon the homepage hero
+   shares: brand blue fades in behind the text (never fully, so the ice lead
+   keeps a dark background), is complete a little below the lead, turns sky
+   and eases into the handover colour that .snow-blocks starts with. Both
+   sides reach the same blue at the same height, so the hero's diagonal
+   gradient and the glow leave no band. */
 .page-hero {
   --page-hero-fade: 112px;
   --page-hero-pad: theme(spacing.10);
@@ -91,6 +92,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
     var(--page-hero-zone) * (1 + var(--page-hero-rise))
   );
   --sky-from: theme(colors.brand.blue);
+  --sky-mid: theme(colors.brand.sky);
   --sky-to: var(--sky-handover);
   /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
      150% scaling. The browser then covers the last pixel row fully with the

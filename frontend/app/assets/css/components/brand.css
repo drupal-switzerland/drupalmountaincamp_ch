@@ -104,6 +104,82 @@
     background: var(--brand-hero-gradient);
   }
 
+  /* Shared horizon (helpers/heroSky): navy behind the badge and title, blue
+     rising behind the lead, sky behind the ridge. Plain navy, not .brand-hero's
+     diagonal, because the sky-coloured year only reaches 4.5:1 on navy. */
+  .home-hero {
+    --sky-from: theme(colors.brand.blue);
+    --sky-mid: theme(colors.brand.sky);
+    --home-hero-rise: 10rem;
+    /* The ridge's height (set in tailwind.config from helpers/ridge) and how
+       far it reaches up over the text. */
+    --home-hero-ridge: var(--ridge-height-narrow);
+    --home-hero-overlap: 6px;
+    --home-hero-pad: theme(spacing.10);
+    /* From the hero's bottom edge up to the text, less the focus ring of the
+       buttons (3px offset, 3px wide) and what a scrollbar takes from 100vw. */
+    --home-hero-clearance: 12px;
+    --home-hero-horizon: calc(
+      var(--home-hero-ridge) - var(--home-hero-overlap) + var(--home-hero-pad) -
+        var(--home-hero-clearance)
+    );
+    /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
+       150% scaling. The browser then covers the last pixel row fully with the
+       box's own background but only partly with the ridge and the layers
+       under it, so anything dark there shows as a line above the ice bar.
+       Navy and both layers therefore stop this far above the edge and the
+       box's own colour there is the ridge's ice. */
+    --home-hero-edge: 2px;
+    background: linear-gradient(
+        theme(colors.brand.navy),
+        theme(colors.brand.navy)
+      )
+      top / 100% calc(100% - var(--home-hero-edge)) no-repeat
+      theme(colors.brand.ice);
+
+    @screen xs {
+      --home-hero-ridge: var(--ridge-height-wide);
+      --home-hero-overlap: min(190px, 14.8vw);
+      --home-hero-pad: theme(spacing.4);
+    }
+
+    @screen md {
+      --home-hero-pad: 0px;
+    }
+
+    /* Desktop heroes are tall: a short rise would be done by the buttons and
+       leave a band of flat blue above the sky. This one ends near the ridge's
+       valleys, so navy, blue and sky read as one fade. */
+    @screen lg {
+      --home-hero-rise: calc(4.5rem + 17.5vw);
+    }
+  }
+
+  /* Both layers sit under the ridge and the text, in the box under the title
+     row, so the blue starts there however the title wraps. */
+  .home-hero-rise,
+  .home-hero-horizon {
+    @apply pointer-events-none absolute inset-x-0 z-[-1] block;
+    bottom: var(--home-hero-edge);
+  }
+
+  /* Its gradient's stops are lengths and blue carries on below them. */
+  .home-hero-rise {
+    @apply top-0;
+    background-image: var(--home-hero-rise-sky);
+  }
+
+  .home-hero-horizon {
+    height: calc(var(--home-hero-horizon) - var(--home-hero-edge));
+    background-image: var(--home-hero-horizon-sky);
+  }
+
+  /* The lead sits on the rising blue, where the sky colour that highlights
+     take on dark sections fails as text. Ice holds 4.5:1 on full blue. */
+  .on-dark .ck-content.home-hero-lead .highlight {
+    @apply text-primary-100;
+  }
+
   /* The one oversized call to action: Get tickets in the hero bar and footer. */
   .ticket-button {
     @apply inline-flex min-h-14 items-center justify-center gap-[10px] rounded-full bg-primary-500 px-9 text-lg font-bold text-white transition-colors duration-250 hover:bg-primary-400 motion-reduce:transition-none;
