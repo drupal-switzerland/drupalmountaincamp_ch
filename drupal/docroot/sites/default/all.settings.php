@@ -10,15 +10,6 @@ if (getenv('LAGOON')) {
   // "https://drupalmountaincamp.ch,https://nginx.prod.drupalmountaincamp-ch.ch4.amazee.io".
   $routes = array_filter(array_map('trim', explode(',', getenv('LAGOON_ROUTES') ?: '')));
 
-  // CORS.
-  $settings['cors_config']['allowedOrigins'] = $routes ?: ['*'];
-  $settings['cors_config']['enabled'] = TRUE;
-  $settings['cors_config']['allowedMethods'] = ['*'];
-  $settings['cors_config']['allowedHeaders'] = ['*'];
-  $settings['cors_config']['exposedHeaders'] = FALSE;
-  $settings['cors_config']['maxAge'] = FALSE;
-  $settings['cors_config']['supportsCredentials'] = FALSE;
-
   // Multi-cache and Vuepal settings.
   // We use the first route for the frontend if not otherwise specified.
   if ($routes) {
