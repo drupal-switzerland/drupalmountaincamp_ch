@@ -5,6 +5,15 @@ import { defineVitestConfig } from '@nuxt/test-utils/config'
 // 10s default from load 55, which fails the whole file with its tests skipped.
 const HOOK_TIMEOUT_MS = 60_000
 
+// About three points under the measured 63.9 / 47.9 / 59.0 / 63.1, so an
+// unrelated change does not fail the run. Raise them when coverage rises.
+const COVERAGE_THRESHOLDS = {
+  lines: 60,
+  branches: 45,
+  functions: 55,
+  statements: 60,
+}
+
 export default defineVitestConfig({
   test: {
     hookTimeout: HOOK_TIMEOUT_MS,
@@ -18,6 +27,7 @@ export default defineVitestConfig({
       reporter: ['text', 'json', 'json-summary', 'html'],
       include: ['app/**/*.{ts,vue}', 'server/**/*.ts', 'config/**/*.ts'],
       exclude: ['**/__tests__/**', '**/*.d.ts'],
+      thresholds: COVERAGE_THRESHOLDS,
     },
   },
 })
