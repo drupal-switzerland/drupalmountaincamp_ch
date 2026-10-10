@@ -35,6 +35,9 @@ const { entity: node } = await useDrupalRoute<NodePageFragment>(
   query.value ?? null,
 )
 
+// The front page resolves as node /home in Drupal, so its og:url says /home.
+useSeoMeta({ ogUrl: `${useRequestURL().origin}/` })
+
 useHead({
   script: [
     {
