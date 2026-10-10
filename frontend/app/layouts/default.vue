@@ -22,9 +22,9 @@
         'pt-[100px]': (isMenuOpen || !hasMenuFinishedClosing) && isLessThanLg,
       }"
     >
-      <NuxtPageDependency>
+      <PageDependency>
         <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
-      </NuxtPageDependency>
+      </PageDependency>
 
       <!-- tabindex lets the skip link move focus here, not only scroll. -->
       <!-- scroll-mt keeps main's top below the sticky header. -->
