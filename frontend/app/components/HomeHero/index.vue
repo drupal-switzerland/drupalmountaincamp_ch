@@ -2,7 +2,7 @@
   <section aria-labelledby="home-hero-title" class="relative">
     <div class="brand-hero on-dark overflow-hidden text-white">
       <div
-        class="container relative z-[1] !my-0 flex flex-col gap-3 pb-10 pt-6 xs:gap-6 xs:pb-4 xs:pt-12 md:pb-0 md:pt-20"
+        class="container relative z-[1] !my-0 flex flex-col gap-5 pb-10 pt-6 xs:gap-6 xs:pb-4 xs:pt-12 md:pb-0 md:pt-20"
       >
         <p
           class="label self-start rounded-full border-2 border-primary-100 px-4 py-1"
@@ -38,7 +38,7 @@
 
     <div class="bg-primary-100 text-primary-500">
       <div
-        class="container !my-0 grid gap-y-2 pb-8 pt-4 xs:pb-12 xs:pt-6 md:grid-cols-[max-content_1fr_auto] md:items-center md:gap-y-0 md:pb-16 md:pt-8"
+        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:gap-y-2 xs:pb-12 md:grid-cols-[max-content_1fr_auto] md:items-center md:gap-y-0 md:pb-16 md:pt-8"
       >
         <div class="flex flex-col gap-[6px] md:pr-8">
           <p class="label">
@@ -73,7 +73,7 @@
         <VuepalLink
           v-if="ticketsLink"
           :to="ticketsLink.link.url?.path"
-          class="ticket-button mt-1 min-h-[52px] xs:min-h-14"
+          class="ticket-button mt-2 min-h-[52px] xs:mt-1 xs:min-h-14"
         >
           {{ $texts('edition.tickets', 'Get tickets') }}
           <span aria-hidden="true">→</span>
