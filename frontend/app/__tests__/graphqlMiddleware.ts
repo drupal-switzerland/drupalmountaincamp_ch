@@ -37,7 +37,6 @@ describe('The nuxt-graphql-middleware config', () => {
       'x-forwarded-for': '203.0.113.7',
       'x-forwarded-proto': 'https',
       'x-forwarded-port': '443',
-      'x-real-ip': '203.0.113.7',
       referer: 'https://drupalmountaincamp.ch/news',
       'user-agent': 'Vitest',
       cookie: 'SSESSabc=def',
@@ -49,6 +48,10 @@ describe('The nuxt-graphql-middleware config', () => {
             ...forwarded,
             // Nothing at Drupal reads it, and the cache decision ignores it.
             authorization: 'Basic abc',
+            // Nothing reads these either; Drupal takes the client address
+            // from X-Forwarded-For.
+            'x-real-ip': '203.0.113.7',
+            'x-client-ip': '203.0.113.7',
             host: 'attacker.example',
             'content-length': '999',
             'x-middleware-subrequest': '1',
