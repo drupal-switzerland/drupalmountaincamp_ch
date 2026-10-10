@@ -28,7 +28,7 @@
             </div>
             <div
               v-if="copyright"
-              class="w-full pt-2 text-right text-xs text-gray-500"
+              class="w-full pt-2 text-right text-xs text-gray-600"
             >
               &copy; {{ copyright }}
             </div>
