@@ -51,6 +51,10 @@ const pairs: [string, string, string, number][] = [
   ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
   ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
   ['loading bar on gray-50', LOADING_BAR, colors.gray[50], AA_NON_TEXT],
+  // Image and video copyright captions.
+  ['gray-600 caption on white', colors.gray[600], WHITE, AA_TEXT],
+  ['gray-600 caption on ice', colors.gray[600], brand.ice, AA_TEXT],
+  ['gray-600 caption on tint', colors.gray[600], brand.tint, AA_TEXT],
   // Inner-page hero. The glow is painted behind the text, so text sits on the
   // gradient blended with the glow: the title anywhere, the ice lead and
   // breadcrumb only over the navy part (see the rejected pair below).

@@ -11,16 +11,100 @@ import { MAX_AGE } from '../../helpers'
 
 const config = useRuntimeConfig()
 
+const WORD_CHAR = /\w/
+const WHITESPACE = /\s/
+const LINE_TERMINATOR = /[\n\r\u2028\u2029]/
+const QUOTES = new Set(['"', "'"])
+const SKIPPED_VALUE = 'none'
+
+const isWordChar = (char: string | undefined) =>
+  char !== undefined && WORD_CHAR.test(char)
+const isWhitespace = (char: string | undefined) =>
+  char !== undefined && WHITESPACE.test(char)
+
+/**
+ * Returns the end of a `\s*\bname=(["'])(?!none).*?\1` match at start, or -1.
+ */
+function attributeMatchEnd(markup: string, start: number, name: string) {
+  let nameStart = start
+  while (isWhitespace(markup[nameStart])) {
+    nameStart++
+  }
+  if (nameStart === start && isWordChar(markup[start - 1])) {
+    return -1
+  }
+  if (!markup.startsWith(name + '=', nameStart)) {
+    return -1
+  }
+  const quoteIndex = nameStart + name.length + 1
+  const quote = markup[quoteIndex]
+  if (!quote || !QUOTES.has(quote)) {
+    return -1
+  }
+  if (markup.startsWith(SKIPPED_VALUE, quoteIndex + 1)) {
+    return -1
+  }
+  for (let i = quoteIndex + 1; i < markup.length; i++) {
+    if (markup[i] === quote) {
+      return i + 1
+    }
+    if (LINE_TERMINATOR.test(markup[i]!)) {
+      return -1
+    }
+  }
+  return -1
+}
+
+/**
+ * Replaces `name="…"` attributes inside opening tags with the replacement.
+ *
+ * Mirrors `/(?<=<\b[^<>]*)\s*\bname=(["'](?!none)).*?\1/g` in one forward
+ * pass: a position is inside an opening tag when the last "<" or ">" of the
+ * original markup before it is a "<" followed by a word character. Replaced
+ * text is never examined again. Starts inside a whitespace run are skipped:
+ * they fail exactly when the start of the run failed.
+ */
+function replaceAttributeInOpeningTags(
+  markup: string,
+  name: string,
+  replacement: string,
+) {
+  let output = ''
+  let copiedUpTo = 0
+  let lastBoundary = -1
+  let position = 0
+
+  while (position < markup.length) {
+    const inOpeningTag =
+      markup[lastBoundary] === '<' && isWordChar(markup[lastBoundary + 1])
+    const startsWhitespaceRun = !isWhitespace(markup[position - 1])
+    const matchEnd =
+      inOpeningTag && startsWhitespaceRun
+        ? attributeMatchEnd(markup, position, name)
+        : -1
+
+    const nextPosition = matchEnd === -1 ? position + 1 : matchEnd
+    if (matchEnd !== -1) {
+      output += markup.slice(copiedUpTo, position) + replacement
+      copiedUpTo = matchEnd
+    }
+    for (let i = position; i < nextPosition; i++) {
+      if (markup[i] === '<' || markup[i] === '>') {
+        lastBoundary = i
+      }
+    }
+    position = nextPosition
+  }
+
+  return output + markup.slice(copiedUpTo)
+}
+
 export function replaceColors(markup = '') {
-  return markup
-    .replaceAll(
-      /(?<=<\b[^<>]*)\s*\bfill=(["'](?!none)).*?\1/g,
-      ` fill="currentColor"`,
-    )
-    .replaceAll(
-      /(?<=<\b[^<>]*)\s*\bstroke=(["'](?!none)).*?\1/g,
-      ` stroke="currentColor"`,
-    )
+  return replaceAttributeInOpeningTags(
+    replaceAttributeInOpeningTags(markup, 'fill', ' fill="currentColor"'),
+    'stroke',
+    ' stroke="currentColor"',
+  )
 }
 
 type ParsedSymbol = {
@@ -28,9 +112,29 @@ type ParsedSymbol = {
   content: string
 }
 
+function splitSvg(source: string) {
+  const openingTagStart = source.search(/<svg/i)
+  if (openingTagStart === -1) {
+    return {}
+  }
+  const attributesStart = openingTagStart + '<svg'.length
+  const openingTagEnd = source.indexOf('>', attributesStart)
+  if (openingTagEnd === -1) {
+    return {}
+  }
+  const rest = source.slice(openingTagEnd + 1)
+  const closingTagIndex = rest.search(/<\/svg>/i)
+  if (closingTagIndex === -1) {
+    return {}
+  }
+  return {
+    parsedAttributes: source.slice(attributesStart, openingTagEnd),
+    content: rest.slice(0, closingTagIndex),
+  }
+}
+
 export function extractSymbol(source = ''): ParsedSymbol {
-  const [, parsedAttributes, content] =
-    source.match(/<svg(.*?)>(.*?)<\/svg>/is) || []
+  const { parsedAttributes, content } = splitSvg(source)
   const matches = (parsedAttributes || '').match(
     /([\w-:]+)(=)?("[^<>"]*"|'[^<>']*'|[\w-:]+)/g,
   )
@@ -54,8 +158,6 @@ export function extractSymbol(source = ''): ParsedSymbol {
 
 /**
  * Process the raw SVG markup to be a <symbol>.
- *
- * @TODO: Needs a more reliable solution.
  */
 function processIcon(markup = '') {
   const optimized = optimize(markup, {
@@ -166,12 +268,12 @@ export default defineEventHandler(async (event) => {
   try {
     const routerParams = getRouterParams(event)
     const paramsValue = routerParams?.params
-    const paramsStr =
-      typeof paramsValue === 'string'
-        ? paramsValue
-        : Array.isArray(paramsValue)
-          ? paramsValue[0]
-          : undefined
+    let paramsStr: string | undefined
+    if (typeof paramsValue === 'string') {
+      paramsStr = paramsValue
+    } else if (Array.isArray(paramsValue)) {
+      paramsStr = paramsValue[0]
+    }
 
     if (!paramsStr) {
       return EMPTY_RESPONSE

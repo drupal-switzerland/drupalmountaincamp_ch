@@ -88,7 +88,6 @@ services:
         NUXT_BACKEND_URL: http://appserver_nginx
         NUXT_REQUEST_HOST: mountaincamp.lndo.site
         NUXT_PORT: 3000
-        NUXT_ELASTICSEARCH_URL: http://elasticsearch:9200
     build_as_root:
       - npm install -g npm@10.8.2
 

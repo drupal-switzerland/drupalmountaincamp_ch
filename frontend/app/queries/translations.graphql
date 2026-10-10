@@ -21,6 +21,7 @@ fragment easyTexts on TextsLoader {
   iconText__day: getText(key: "day", context: "iconText", default: "Day")
   latestNews__all: getText(key: "all", context: "latestNews", default: "All news")
   latestNews__title: getText(key: "title", context: "latestNews", default: "News")
+  layout__skipToContent: getText(key: "skipToContent", context: "layout", default: "Skip to content")
   menu__back: getText(key: "back", context: "menu", default: "Back")
   menu__submenu: getText(key: "submenu", context: "menu", default: "submenu")
   menu: getText(key: "menu", default: "Menu")
@@ -36,9 +37,6 @@ fragment easyTexts on TextsLoader {
   partners__media: getText(key: "media", context: "partners", default: "Media partners")
   partners__title: getText(key: "title", context: "partners", default: "Partners")
   scrollableTable: getText(key: "scrollableTable", default: "Scrollable table")
-  search__ctaButton: getText(key: "ctaButton", context: "search", default: "Search")
-  search__searchFieldLabel: getText(key: "searchFieldLabel", context: "search", default: "Search term")
-  search__searchFieldPlaceholder: getText(key: "searchFieldPlaceholder", context: "search", default: "Enter a search term")
   slides__next: getText(key: "next", context: "slides", default: "Next")
   slides__prev: getText(key: "prev", context: "slides", default: "Previous")
   sponsors__cta: getText(key: "cta", context: "sponsors", default: "Become a sponsor")
@@ -51,4 +49,5 @@ fragment easyTexts on TextsLoader {
   sponsors__titleHighlight: getText(key: "titleHighlight", context: "sponsors", default: "top")
   sponsors__titleThanks: getText(key: "titleThanks", context: "sponsors", default: "Thank you for taking us to the top")
   video__load: getText(key: "load", context: "video", default: "Load video")
+  video__player: getText(key: "player", context: "video", default: "Video")
 }
