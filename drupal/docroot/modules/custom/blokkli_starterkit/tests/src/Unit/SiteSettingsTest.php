@@ -53,6 +53,7 @@ class SiteSettingsTest extends UnitTestCase {
     'APP_ENV',
     'IS_DDEV_PROJECT',
     'DRUPAL_GRAPHQL_TOKEN',
+    'NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN',
     'ROKKA_API_KEY',
     'ROKKA_ORGANIZATION_NAME',
     'DEEPL_AUTH_KEY',
@@ -127,10 +128,8 @@ class SiteSettingsTest extends UnitTestCase {
   public function testFrontendUrlsComeFromTheFirstLagoonRoute(): void {
     $config = $this->loadSettings(['LAGOON_ROUTES' => ' https://first.example , https://second.example'] + self::LAGOON)['config'];
 
-    $this->assertSame([
-      'endpoint' => 'https://first.example/api/multi-cache',
-      'frontend' => 'https://first.example',
-    ], $config['nuxt_multi_cache.settings']);
+    $this->assertSame('https://first.example/api/multi-cache', $config['nuxt_multi_cache.settings']['endpoint']);
+    $this->assertSame('https://first.example', $config['nuxt_multi_cache.settings']['frontend']);
   }
 
   /**
@@ -140,9 +139,12 @@ class SiteSettingsTest extends UnitTestCase {
     $withoutRoutes = self::LAGOON;
     unset($withoutRoutes['LAGOON_ROUTES']);
 
-    $this->assertArrayNotHasKey('nuxt_multi_cache.settings', $this->loadSettings($withoutRoutes)['config']);
-    $this->assertArrayNotHasKey('nuxt_multi_cache.settings', $this->loadSettings(['LAGOON_ROUTES' => ' , '] + self::LAGOON)['config']);
-    $this->assertArrayNotHasKey('nuxt_multi_cache.settings', $this->loadSettings([])['config']);
+    $environments = [$withoutRoutes, ['LAGOON_ROUTES' => ' , '] + self::LAGOON, []];
+    foreach ($environments as $environment) {
+      $settings = $this->loadSettings($environment)['config']['nuxt_multi_cache.settings'];
+      $this->assertArrayNotHasKey('endpoint', $settings);
+      $this->assertArrayNotHasKey('frontend', $settings);
+    }
   }
 
   /**
@@ -230,6 +232,18 @@ class SiteSettingsTest extends UnitTestCase {
 
     $this->assertSame('native://default', $this->loadSettings(self::LAGOON)['config'][$transport]['configuration']['dsn']);
     $this->assertArrayNotHasKey($transport, $this->loadSettings([])['config']);
+  }
+
+  /**
+   * The frontend cache purge token comes from the environment, or is empty.
+   */
+  public function testCachePurgeTokenComesFromTheEnvironment(): void {
+    $withToken = ['NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN' => 'purge-token'];
+
+    $this->assertSame('purge-token', $this->loadSettings($withToken + self::LAGOON)['config']['nuxt_multi_cache.settings']['token']);
+    $this->assertSame('purge-token', $this->loadSettings($withToken)['config']['nuxt_multi_cache.settings']['token']);
+    $this->assertSame('', $this->loadSettings(self::LAGOON)['config']['nuxt_multi_cache.settings']['token']);
+    $this->assertSame('', $this->loadSettings([])['config']['nuxt_multi_cache.settings']['token']);
   }
 
   /**
