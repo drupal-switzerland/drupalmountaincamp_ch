@@ -190,6 +190,17 @@
     background-size: 100% min(var(--snow-fade-height), 100%);
   }
 
+  /* A full-width band as the last block runs straight into the footer,
+     without the white gap the footer keeps above it after normal content. */
+  :has(
+      > main
+        :is(.home-blocks, .snow-blocks)
+        > :is(.week-band, .news-band, .theme-band, .navy-band):last-child
+    )
+    + footer {
+    margin-top: 0;
+  }
+
   /* Homepage sponsor card across the edge of the band above it. It only
      overlaps the bands listed here, by less than their smallest bottom
      padding, so it never covers content: week timeline and news 64px (96px
