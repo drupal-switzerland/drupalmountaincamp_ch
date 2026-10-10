@@ -816,8 +816,10 @@ if (!empty($env)) {
 $settings['reverse_proxy'] = TRUE;
 $settings['reverse_proxy_addresses'] = [$_SERVER['REMOTE_ADDR'] ?? ''];
 
-// See https://symfony.com/doc/current/deployment/proxies.html.
-$settings['reverse_proxy_trusted_headers'] = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_FORWARDED;
+// See https://symfony.com/doc/current/deployment/proxies.html. "Forwarded"
+// stays untrusted: no proxy here sets it, and a visitor's own value that
+// disagrees with X-Forwarded-* makes Symfony reject the request (HTTP 500).
+$settings['reverse_proxy_trusted_headers'] = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
 
 $settings['access_graphql.token'] = getenv('DRUPAL_GRAPHQL_TOKEN');
 // The token Drupal sends when it purges the frontend's caches; the frontend
