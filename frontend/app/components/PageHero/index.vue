@@ -1,6 +1,6 @@
 <template>
   <section
-    class="page-hero on-dark brand-hero relative isolate overflow-hidden text-white"
+    class="on-dark brand-hero page-hero relative isolate overflow-hidden text-white"
   >
     <div class="grid-container my-0 py-10 md:py-16 lg:py-20">
       <div class="grid-container-8 flex flex-col gap-3 md:gap-4">
@@ -75,15 +75,20 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   transform: translate(-50%, -50%);
 }
 
-/* Long sky: the whole hero is one sky. Brand blue fades in behind the text
-   (never fully, so the text keeps a dark background), is complete just below
-   the lead and then eases into the handover colour that .snow-blocks starts
-   with. Both sides reach the same blue at the same height, so the hero's
-   diagonal gradient and the glow leave no band. */
+/* Long sky: the whole hero is one sky, drawn as ONE gradient so its slope
+   never jumps. It is anchored to the hero's bottom edge: the zone below the
+   lead, plus a rise behind the text. The stops come from helpers/heroSky
+   through tailwind.config (--page-hero-sky). Brand blue fades in
+   behind the text (never fully, so the text keeps a dark background), is
+   complete a little below the lead and eases into the handover colour that
+   .snow-blocks starts with. Both sides reach the same blue at the same height,
+   so the hero's diagonal gradient and the glow leave no band. */
 .page-hero {
   --page-hero-fade: 112px;
   --page-hero-pad: theme(spacing.10);
   --page-hero-zone: calc(var(--page-hero-fade) + var(--page-hero-pad));
+  --sky-from: theme(colors.brand.blue);
+  --sky-to: var(--sky-handover);
   padding-bottom: var(--page-hero-fade);
 
   @screen md {
@@ -97,55 +102,27 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   }
 }
 
+/* Plain stops for browsers without oklch gradients: blue at 70% where the
+   lead ends (55.56% = rise / (rise + zone)), then on to the handover. */
 .page-hero::after {
   content: '';
   @apply pointer-events-none absolute inset-0 -z-[1];
-  background:
-    linear-gradient(
-        to bottom,
-        theme(colors.brand.blue / 70%) 0%,
-        theme(colors.brand.blue) 14%,
-        theme(colors.brand.sky) 55%,
-        var(--sky-handover) 100%
-      )
-      bottom / 100% var(--page-hero-zone) no-repeat,
-    linear-gradient(
-        to bottom,
-        theme(colors.brand.blue / 0%),
-        theme(colors.brand.blue / 70%)
-      )
-      top / 100% calc(100% - var(--page-hero-zone)) no-repeat;
+  background: linear-gradient(
+      to bottom,
+      theme(colors.brand.blue / 0%) 0%,
+      theme(colors.brand.blue / 35%) 30%,
+      theme(colors.brand.blue / 70%) 55.56%,
+      theme(colors.brand.blue) 78%,
+      theme(colors.brand.sky) 90%,
+      var(--sky-handover) 100%
+    )
+    bottom / 100% calc(var(--page-hero-zone) * (1 + var(--page-hero-rise)))
+    no-repeat;
 }
 
-/* Eased stops, mixed in oklch so the midtones stay blue instead of grey. */
 @supports (background: linear-gradient(in oklch, #000, #fff)) {
   .page-hero::after {
-    --sky-from: theme(colors.brand.blue);
-    --sky-to: var(--sky-handover);
-    background:
-      linear-gradient(
-          to bottom in oklch,
-          theme(colors.brand.blue / 70%) 0%,
-          var(--sky-from) 14%,
-          color-mix(in oklch, var(--sky-to) 5.5%, var(--sky-from)) 26.3%,
-          color-mix(in oklch, var(--sky-to) 19.8%, var(--sky-from)) 38.6%,
-          color-mix(in oklch, var(--sky-to) 39.7%, var(--sky-from)) 50.9%,
-          color-mix(in oklch, var(--sky-to) 60.3%, var(--sky-from)) 63.1%,
-          color-mix(in oklch, var(--sky-to) 80.2%, var(--sky-from)) 75.4%,
-          color-mix(in oklch, var(--sky-to) 94.5%, var(--sky-from)) 87.7%,
-          var(--sky-to) 100%
-        )
-        bottom / 100% var(--page-hero-zone) no-repeat,
-      linear-gradient(
-          to bottom,
-          theme(colors.brand.blue / 0%) 0%,
-          theme(colors.brand.blue / 7.3%) 20%,
-          theme(colors.brand.blue / 24.6%) 40%,
-          theme(colors.brand.blue / 45.4%) 60%,
-          theme(colors.brand.blue / 62.7%) 80%,
-          theme(colors.brand.blue / 70%) 100%
-        )
-        top / 100% calc(100% - var(--page-hero-zone)) no-repeat;
+    background-image: var(--page-hero-sky);
   }
 }
 
