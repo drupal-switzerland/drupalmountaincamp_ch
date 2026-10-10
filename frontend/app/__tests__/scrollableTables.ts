@@ -19,7 +19,24 @@ mockNuxtImport('useEasyTexts', () => () => ({
 }))
 
 // happy-dom does no layout, so element sizes come from this map, keyed by id.
-const sizes = new Map<string, { scroll: number; client: number }>()
+// A wrapper measures as the table it wraps; wideClient applies while the
+// element breaks out of the column.
+const sizes = new Map<
+  string,
+  { scroll: number; client: number; wideClient?: number }
+>()
+
+function sizeOf(el: HTMLElement) {
+  const id =
+    el.getAttribute('data-scrollable-table') === 'wrapper'
+      ? el.firstElementChild?.id
+      : el.id
+  const size = id ? sizes.get(id) : undefined
+  if (size?.wideClient && el.classList.contains('is-wide-table')) {
+    return { ...size, client: size.wideClient }
+  }
+  return size
+}
 
 function stubSize(property: 'scrollWidth' | 'clientWidth') {
   const original = Object.getOwnPropertyDescriptor(
@@ -30,7 +47,7 @@ function stubSize(property: 'scrollWidth' | 'clientWidth') {
   Object.defineProperty(HTMLElement.prototype, property, {
     configurable: true,
     get(this: HTMLElement) {
-      return sizes.get(this.id)?.[key] ?? 0
+      return sizeOf(this)?.[key] ?? 0
     },
   })
   return () => {
@@ -114,22 +131,43 @@ function wideTable(id: string, caption = '') {
   return `<table id="${id}">${captionHtml}<tr><td>x</td></tr></table>`
 }
 
+function regionAround(wrapper: Wrapper, tableId: string): HTMLElement {
+  const region = wrapper.get(`#${tableId}`).element.parentElement
+  if (region?.getAttribute('data-scrollable-table') !== 'wrapper') {
+    throw new Error(`#${tableId} is not wrapped in a scroll region`)
+  }
+  return region
+}
+
 describe('useScrollableTables', () => {
   it('makes an overflowing table a focusable region named by its caption', async () => {
     sizes.set('t', { scroll: 900, client: 600 })
     const wrapper = await mountRichText({ html: wideTable('t', 'Prices') })
 
+    const region = regionAround(wrapper, 't')
+    expect(region.getAttribute('role')).toBe('region')
+    expect(region.getAttribute('tabindex')).toBe('0')
+    expect(region.getAttribute('aria-label')).toBe('Prices')
+  })
+
+  it('keeps the table semantics by putting the region on a wrapper', async () => {
+    sizes.set('t', { scroll: 900, client: 600 })
+    const wrapper = await mountRichText({ html: wideTable('t', 'Prices') })
+
     const table = wrapper.get('#t')
-    expect(table.attributes('role')).toBe('region')
-    expect(table.attributes('tabindex')).toBe('0')
-    expect(table.attributes('aria-label')).toBe('Prices')
+    expect(table.attributes('role')).toBeUndefined()
+    expect(table.attributes('tabindex')).toBeUndefined()
+    expect(table.attributes('aria-label')).toBeUndefined()
+    expect(table.find('caption').text()).toBe('Prices')
   })
 
   it('falls back to the generic label without a caption', async () => {
     sizes.set('t', { scroll: 900, client: 600 })
     const wrapper = await mountRichText({ html: wideTable('t') })
 
-    expect(wrapper.get('#t').attributes('aria-label')).toBe('scrollableTable')
+    expect(regionAround(wrapper, 't').getAttribute('aria-label')).toBe(
+      'scrollableTable',
+    )
   })
 
   it('handles CKEditor table figures', async () => {
@@ -140,6 +178,7 @@ describe('useScrollableTables', () => {
 
     expect(wrapper.get('#f').attributes('role')).toBe('region')
     expect(wrapper.get('#inner').attributes('role')).toBeUndefined()
+    expect(wrapper.get('#inner').element.parentElement?.id).toBe('f')
   })
 
   it('ignores tables nested in other markup', async () => {
@@ -156,25 +195,26 @@ describe('useScrollableTables', () => {
     const wrapper = await mountRichText({ html: wideTable('t') })
 
     const table = wrapper.get('#t')
+    expect(table.element.parentElement?.id).toBe('column')
     expect(table.attributes('role')).toBeUndefined()
     expect(table.attributes('tabindex')).toBeUndefined()
     expect(table.attributes('aria-label')).toBeUndefined()
   })
 
-  it('removes only its own attributes once a table fits again', async () => {
+  it('unwraps a table once it fits again, leaving authored markup alone', async () => {
     sizes.set('mine', { scroll: 900, client: 600 })
     const wrapper = await mountRichText({
       html:
         wideTable('mine') +
         '<table id="authored" role="grid" aria-label="Authored"></table>',
     })
-    expect(wrapper.get('#mine').attributes('role')).toBe('region')
+    expect(regionAround(wrapper, 'mine').getAttribute('role')).toBe('region')
 
     sizes.set('mine', { scroll: 600, client: 600 })
     await wrapper.setProps({ version: 1 })
 
-    expect(wrapper.get('#mine').attributes('role')).toBeUndefined()
-    expect(wrapper.get('#mine').attributes('aria-label')).toBeUndefined()
+    expect(wrapper.get('#mine').element.parentElement?.id).toBe('column')
+    expect(wrapper.find('[data-scrollable-table]').exists()).toBe(false)
     expect(wrapper.get('#authored').attributes('role')).toBe('grid')
     expect(wrapper.get('#authored').attributes('aria-label')).toBe('Authored')
   })
@@ -188,7 +228,8 @@ describe('useScrollableTables', () => {
       gridPadding: 50,
     })
 
-    expect(wrapper.get('#t').classes()).toContain('is-wide-table')
+    expect(regionAround(wrapper, 't').classList).toContain('is-wide-table')
+    expect(wrapper.get('#t').classes()).not.toContain('is-wide-table')
     expect(
       (wrapper.get('#column').element as HTMLElement).style.getPropertyValue(
         '--wide-table-available-width',
@@ -200,7 +241,7 @@ describe('useScrollableTables', () => {
     sizes.set('t', { scroll: 900, client: 600 })
     const wrapper = await mountRichText({ html: wideTable('t') })
 
-    expect(wrapper.get('#t').classes()).not.toContain('is-wide-table')
+    expect(regionAround(wrapper, 't').classList).not.toContain('is-wide-table')
     expect(
       (wrapper.get('#column').element as HTMLElement).style.getPropertyValue(
         '--wide-table-available-width',
@@ -216,6 +257,20 @@ describe('useScrollableTables', () => {
     })
     await wrapper.setProps({ version: 1 })
 
-    expect(wrapper.get('#t').attributes('role')).toBeUndefined()
+    expect(wrapper.get('#t').element.parentElement?.id).toBe('column')
+  })
+
+  it('keeps a table that fits once broken out wide, without a region', async () => {
+    sizes.set('grid', { scroll: 1200, client: 1200 })
+    sizes.set('t', { scroll: 900, client: 600, wideClient: 1000 })
+    const wrapper = await mountRichText({
+      html: wideTable('t'),
+      breakout: true,
+    })
+
+    const table = wrapper.get('#t')
+    expect(table.element.parentElement?.id).toBe('column')
+    expect(table.classes()).toContain('is-wide-table')
+    expect(wrapper.find('[data-scrollable-table]').exists()).toBe(false)
   })
 })
