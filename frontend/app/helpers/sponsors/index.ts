@@ -34,6 +34,29 @@ export function logoSize(width: number, height: number, box: LogoBox) {
   return { width: Math.round(w), height: Math.round(h) }
 }
 
+type Derivative = { urlPath?: string | null; width?: number | null }
+
+/**
+ * srcset of the usable derivatives, smallest first, so the browser fetches
+ * the smallest one that covers the logo's rendered width on the screen's
+ * pixel density. One entry per width.
+ */
+export function logoSrcset(
+  derivatives: (Derivative | null | undefined)[],
+  toPath: (url: string) => string = (url) => url,
+): string {
+  const byWidth = new Map<number, string>()
+  for (const derivative of derivatives) {
+    if (derivative?.urlPath && derivative.width) {
+      byWidth.set(derivative.width, toPath(derivative.urlPath))
+    }
+  }
+  return [...byWidth]
+    .sort(([a], [b]) => a - b)
+    .map(([width, path]) => `${path} ${width}w`)
+    .join(', ')
+}
+
 export function groupByTier<T extends { tier?: string | null }>(
   items: T[],
 ): Record<string, T[]> {

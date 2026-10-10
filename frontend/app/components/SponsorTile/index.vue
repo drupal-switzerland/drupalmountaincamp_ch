@@ -14,6 +14,8 @@
         <img
           v-if="image"
           :src="toDrupalFilePath(image.urlPath)"
+          :srcset="srcset || undefined"
+          :sizes="srcset ? logoStyle.width : undefined"
           alt=""
           class="size-full object-contain"
           loading="lazy"
@@ -30,7 +32,7 @@
 
 <script lang="ts" setup>
 import type { NodeSponsorFragment } from '#graphql-operations'
-import { type LogoBox, logoSize } from '~/helpers/sponsors'
+import { type LogoBox, logoSize, logoSrcset } from '~/helpers/sponsors'
 import { toDrupalFilePath } from '~/helpers/drupalFiles'
 
 const props = defineProps<{
@@ -47,6 +49,14 @@ const image = computed(() => {
   const entity = media.value
   const wide = entity && 'image' in entity ? entity.image?.wide : null
   return wide?.urlPath ? wide : null
+})
+
+// The logo renders far below the wide derivative's 1090px, so the browser
+// picks between the derivatives by the rendered width.
+const srcset = computed(() => {
+  const entity = media.value
+  const file = entity && 'image' in entity ? entity.image : null
+  return file ? logoSrcset([file.large, file.wide], toDrupalFilePath) : ''
 })
 
 const icon = computed(() => {
