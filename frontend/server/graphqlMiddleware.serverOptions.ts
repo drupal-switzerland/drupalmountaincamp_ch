@@ -7,6 +7,7 @@ import {
 } from 'h3'
 import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-options'
 import { extractCacheability } from './utils/cacheability'
+import { withTrustedForwardedHost } from './utils/trustedHost'
 import type { GraphqlCacheability } from './helpers'
 
 const HEADER_KEYS: string[] = [
@@ -52,7 +53,10 @@ export default defineGraphqlServerOptions<{
       })
 
       return {
-        headers,
+        headers: withTrustedForwardedHost(
+          headers,
+          process.env.LAGOON_ENVIRONMENT_TYPE,
+        ),
       }
     }
 
