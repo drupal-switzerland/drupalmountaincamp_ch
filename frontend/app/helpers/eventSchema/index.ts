@@ -1,7 +1,8 @@
+import { CANONICAL_HOST } from '../../../config/publicHosts'
 import { TICKETS_PATH } from '~/helpers/navigation'
 
 /** Public origin for structured data, independent of the requesting host. */
-export const SITE_URL = 'https://drupalmountaincamp.ch'
+export const SITE_URL = `https://${CANONICAL_HOST}`
 
 export type EventFacts = {
   name: string
