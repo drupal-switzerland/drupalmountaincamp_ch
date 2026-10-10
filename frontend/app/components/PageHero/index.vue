@@ -40,7 +40,7 @@ defineProps<{
 }>()
 
 const TITLE_CLASS =
-  'shrink-[9999] text-[2.625rem] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
+  'shrink-[9999] text-[length:min(2.625rem,13.125vw)] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
 
 defineSlots<{
   /** Overrides the default <h1>, e.g. to make it editable in blokkli. */
