@@ -1,8 +1,10 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
 
-const SCROLLER_SELECTOR = ':scope > table, figure.table'
 const WIDE_CLASS = 'is-wide-table'
 const SCROLLABLE_MARKER = 'data-scrollable-table'
+const WRAPPER_MARKER_VALUE = 'wrapper'
+const BARE_TABLE_SELECTOR = ':scope > table'
+const SCROLLER_SELECTOR = `:scope > [${SCROLLABLE_MARKER}="${WRAPPER_MARKER_VALUE}"], figure.table`
 const AVAILABLE_WIDTH_PROPERTY = '--wide-table-available-width'
 const OVERFLOW_TOLERANCE_PX = 1
 
@@ -29,28 +31,54 @@ function getAvailableWidth(column: HTMLElement): number {
   )
 }
 
-function setScrollable(scroller: HTMLElement, fallbackLabel: string) {
-  const caption = scroller.querySelector('caption')?.textContent?.trim()
-  scroller.setAttribute(SCROLLABLE_MARKER, '')
-  scroller.setAttribute('tabindex', '0')
-  scroller.setAttribute('role', 'region')
-  scroller.setAttribute('aria-label', caption || fallbackLabel)
+// Every bare table gets a plain wrapper that does the scrolling, so the table
+// keeps display: table (and its semantics) and a region role never lands on
+// the <table> itself. A CKEditor figure scrolls itself.
+function wrapTable(table: HTMLElement) {
+  const wrapper = document.createElement('div')
+  wrapper.setAttribute(SCROLLABLE_MARKER, WRAPPER_MARKER_VALUE)
+  table.replaceWith(wrapper)
+  wrapper.append(table)
 }
 
-// Only undo attributes this composable set, never ones from the content.
+// CKEditor 5 captions a table with a <figcaption> in its figure; a bare table
+// uses <caption>.
+function captionOf(region: HTMLElement): string | undefined {
+  const caption =
+    region.querySelector(':scope > figcaption') ??
+    region.querySelector('caption')
+  return caption?.textContent?.trim() || undefined
+}
+
+function setScrollable(region: HTMLElement, fallbackLabel: string) {
+  if (!region.hasAttribute(SCROLLABLE_MARKER)) {
+    region.setAttribute(SCROLLABLE_MARKER, '')
+  }
+  region.setAttribute('tabindex', '0')
+  region.setAttribute('role', 'region')
+  region.setAttribute('aria-label', captionOf(region) ?? fallbackLabel)
+}
+
+// Only undo attributes this composable set, never ones from the content. A
+// wrapper stays, as a plain div.
 function unsetScrollable(scroller: HTMLElement) {
-  if (!scroller.hasAttribute(SCROLLABLE_MARKER)) {
+  const marker = scroller.getAttribute(SCROLLABLE_MARKER)
+  if (marker === null) {
     return
   }
-  for (const name of [SCROLLABLE_MARKER, 'tabindex', 'role', 'aria-label']) {
+  const names = ['tabindex', 'role', 'aria-label']
+  if (marker !== WRAPPER_MARKER_VALUE) {
+    names.push(SCROLLABLE_MARKER)
+  }
+  for (const name of names) {
     scroller.removeAttribute(name)
   }
 }
 
 /**
  * Marks tables in v-html rich text that overflow their column: wide ones break
- * out of the column (if allowed), and any that still scroll become focusable
- * named regions so keyboard users can scroll them.
+ * out of the column (if allowed), and any that still scroll get a focusable
+ * named region around them so keyboard users can scroll them.
  */
 export default function (root: Ref<HTMLElement | null>, options: Options) {
   const { $texts } = useEasyTexts()
@@ -73,6 +101,8 @@ export default function (root: Ref<HTMLElement | null>, options: Options) {
         `${getAvailableWidth(column)}px`,
       )
     }
+
+    column.querySelectorAll<HTMLElement>(BARE_TABLE_SELECTOR).forEach(wrapTable)
 
     column
       .querySelectorAll<HTMLElement>(SCROLLER_SELECTOR)
