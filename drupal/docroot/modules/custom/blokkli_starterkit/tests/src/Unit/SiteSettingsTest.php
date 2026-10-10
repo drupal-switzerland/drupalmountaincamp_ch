@@ -165,9 +165,38 @@ class SiteSettingsTest extends UnitTestCase {
     $this->assertTrue($settings['reverse_proxy']);
     $this->assertSame(['10.1.2.3'], $settings['reverse_proxy_addresses']);
     $this->assertSame(
-      Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_FORWARDED,
+      Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO,
       $settings['reverse_proxy_trusted_headers'],
     );
+  }
+
+  /**
+   * A "Forwarded" header sent by a visitor is ignored.
+   *
+   * No proxy in front of Drupal sets it. Trusted next to X-Forwarded-*, a
+   * value that disagrees with them makes Symfony throw and the request fail.
+   */
+  public function testForwardedHeaderFromVisitorIsIgnored(): void {
+    $settings = $this->loadSettings(self::LAGOON, '10.1.2.3')['settings'];
+    $request = Request::create('http://nginx:8080/user/login', 'GET', [], [], [], [
+      'REMOTE_ADDR' => '10.1.2.3',
+      'HTTP_X_FORWARDED_HOST' => 'drupalmountaincamp.ch',
+      'HTTP_X_FORWARDED_PROTO' => 'https',
+      'HTTP_X_FORWARDED_PORT' => '443',
+      'HTTP_X_FORWARDED_FOR' => '198.51.100.4',
+      'HTTP_FORWARDED' => 'for=203.0.113.9;host=other.example;proto=http',
+    ]);
+
+    $trustedProxies = Request::getTrustedProxies();
+    $trustedHeaders = Request::getTrustedHeaderSet();
+    Request::setTrustedProxies($settings['reverse_proxy_addresses'], $settings['reverse_proxy_trusted_headers']);
+    try {
+      $this->assertSame('https://drupalmountaincamp.ch', $request->getSchemeAndHttpHost());
+      $this->assertSame('198.51.100.4', $request->getClientIp());
+    }
+    finally {
+      Request::setTrustedProxies($trustedProxies, $trustedHeaders);
+    }
   }
 
   /**
