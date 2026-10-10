@@ -57,6 +57,7 @@
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
 import { PAGE_FRAGMENTS } from '~/composables/pageFragments'
+import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
   uuid: string
@@ -75,8 +76,8 @@ const bigGrid = defineImageStyle({
   sizes: {
     xs: 770,
     sm: 984,
-    md: 1380,
-    lg: 1380,
+    md: SCREENS.xl,
+    lg: SCREENS.xl,
   },
 })
 </script>

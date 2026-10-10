@@ -1,0 +1,15 @@
+uuid: 5b1be900-e111-454e-9254-949995f9e393
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - ai_ckeditor
+id: ai_ckeditor_spellfix
+label: 'AI CKEditor spellfix prompt'
+variables:
+  -
+    name: inputText
+    help_text: 'The input text to fix spelling for'
+    required: true
+tokens: {  }
