@@ -820,6 +820,9 @@ $settings['reverse_proxy_addresses'] = [$_SERVER['REMOTE_ADDR'] ?? ''];
 $settings['reverse_proxy_trusted_headers'] = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_FORWARDED;
 
 $settings['access_graphql.token'] = getenv('DRUPAL_GRAPHQL_TOKEN');
+// The token Drupal sends when it purges the frontend's caches; the frontend
+// reads the same variable. Without it no token is sent.
+$config['nuxt_multi_cache.settings']['token'] = (string) getenv('NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN');
 $config['rokka.settings']['api_key'] = getenv('ROKKA_API_KEY');
 $config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY');
 $config['rokka.settings']['organization_name'] = getenv('ROKKA_ORGANIZATION_NAME');
