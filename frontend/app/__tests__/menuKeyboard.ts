@@ -116,6 +116,39 @@ describe('main menu submenu toggle', () => {
   })
 })
 
+describe('main menu submenu panel', () => {
+  it('stays open when a tap on the panel blurs focus to nothing', async () => {
+    viewport.isLessThanMd = true
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    await toggle.trigger('click')
+
+    await wrapper
+      .get('button[aria-label="menu.back"]')
+      .trigger('focusout', { relatedTarget: null })
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+
+    await wrapper
+      .get('button[aria-label="menu.back"]')
+      .trigger('focusout', { relatedTarget: document.body })
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    wrapper.unmount()
+  })
+
+  it('takes taps across the open phone panel', async () => {
+    viewport.isLessThanMd = true
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    const panel = () => wrapper.get(`#${toggle.attributes('aria-controls')}`)
+    expect(panel().classes()).toContain('pointer-events-none')
+
+    await toggle.trigger('click')
+    expect(panel().classes()).toContain('pointer-events-auto')
+    expect(panel().classes()).not.toContain('pointer-events-none')
+    wrapper.unmount()
+  })
+})
+
 describe('Drupal messages', () => {
   it('dismisses one message with a named button', async () => {
     useDrupalMessages().messages.value = [
