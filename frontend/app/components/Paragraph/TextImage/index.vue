@@ -45,7 +45,7 @@
         />
         <div
           v-if="copyright"
-          class="absolute left-0 top-full w-full pt-1 text-right text-xs text-gray-500"
+          class="absolute left-0 top-full w-full pt-1 text-right text-xs text-gray-600"
         >
           &copy; {{ copyright }}
         </div>

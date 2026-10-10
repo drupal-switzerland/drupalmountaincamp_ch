@@ -1,0 +1,11 @@
+uuid: 66966187-895d-4a23-a1c0-89b8f47f4aa1
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.rss
+label: RSS
+description: 'Paragraphs inside RSS feed items: content only, no field labels.'
+targetEntityType: paragraph
+cache: true

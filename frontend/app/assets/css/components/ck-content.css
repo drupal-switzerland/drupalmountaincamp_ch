@@ -100,8 +100,11 @@
       @apply list-disc;
     }
 
+    /* A bare table only matches until useScrollableTables wraps it: before
+       hydration and in the blokkli editor, where the composable is off. */
     figure.table,
-    & > table {
+    & > table,
+    & > [data-scrollable-table='wrapper'] {
       @apply my-5 block max-w-full overflow-x-auto;
 
       /* Scroll hint: "local" covers hide the "scroll" edge shadows at each end. */
@@ -120,7 +123,8 @@
     /* Set by useScrollableTables; the column is centred, so equal negative
        margins keep the table centred within the grid container's gutters. */
     figure.table.is-wide-table,
-    & > table.is-wide-table {
+    & > table.is-wide-table,
+    & > [data-scrollable-table='wrapper'].is-wide-table {
       --wide-table-width: min(
         var(--container-wide-table-max-width),
         var(--wide-table-available-width, 100%)

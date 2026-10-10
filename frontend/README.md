@@ -1,30 +1,18 @@
-# Setup
+# Frontend
 
-## Base Frontend Setup
+Nuxt app for the site. Setup, the dev server and tests are in the
+[root README](../README.md); the short version:
 
-- Move the `frontend/.env.example` file to `frontend/.env` and adapt the
-  variables if needed.
-- Install the frontend dependencies `lando bun install`.
-- Start the frontend using `lando npm run dev`.
-
-## Start the frontend
-
-The frontend runs in a dedicated node container, one container per site. Login
-and start it by running:
-
-```sh
-lando ssh -s frontend
-bun install # install dependencies if not already done
-npm run dev
-```
-
-You can also use the tooling commands which is mapped to the frontend container:
-
-```
-lando npm run dev
-```
-
-You can now access the frontend at https://starterkit.lndo.site.
+- `ddev bun install`: install dependencies.
+- `ddev frontend`: dev server on port 3000, served at
+  <https://mountaincamp.ddev.site>.
+- `ddev bun run test:ci`: vitest.
+- `ddev bun run lint`, `ddev bun run prettier`, `ddev bun run typecheck`.
+- `frontend/.env` (from `.env.example`) only needs rokka values if you use
+  rokka; images work without it.
+- Running `nuxi dev` on the host needs `NUXT_BACKEND_URL` set to the plain
+  `http://` port of the ddev web container and
+  `DRUPAL_GRAPHQL_TOKEN=local-development`; see the root README.
 
 ## Add a route template only for a specific content type bundle
 
