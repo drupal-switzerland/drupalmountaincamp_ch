@@ -68,7 +68,7 @@ CMD ["node", ".output/server/index.mjs"]
 # uselagoon only ships elasticsearch-7, but our composer elasticsearch/elasticsearch
 # client is v9 (required by search_api_elasticsearch_client) and can't talk to a 7.x
 # server. Bake the Lagoon-style single-node config into the official 9.x image.
-FROM docker.elastic.co/elasticsearch/elasticsearch:9.3.8 AS elasticsearch
+FROM docker.elastic.co/elasticsearch/elasticsearch:9.5.5 AS elasticsearch
 RUN { \
       echo 'discovery.type: single-node'; \
       echo 'xpack.security.enabled: false'; \
