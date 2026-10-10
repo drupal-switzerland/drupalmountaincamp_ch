@@ -71,21 +71,27 @@ final class BlokkliStarterkitCommands extends DrushCommands {
     $this->logger()->success(dt('DB converted.'));
   }
 
+  /**
+   * Swaps the language codes and default language in the Nuxt config file.
+   */
   public function updateNuxtConfig($filePath, $fromLanguage, $toLanguage) {
     $content = file_get_contents($filePath);
 
     $langcodesArray = "const LANGCODES = ['$toLanguage', '$fromLanguage', 'fr']";
 
-    // Replace LANGCODES array
+    // Replace LANGCODES array.
     $content = preg_replace("/const LANGCODES = \[.*?]/", $langcodesArray, $content);
 
-    // Replace defaultLanguage
+    // Replace defaultLanguage.
     $content = preg_replace("/defaultLanguage: '$fromLanguage'/", "defaultLanguage: '$toLanguage'", $content);
 
-    // Write the updated content back to the file
+    // Write the updated content back to the file.
     file_put_contents($filePath, $content);
   }
 
+  /**
+   * Translates the German demo node and menu link titles to English.
+   */
   public function updateNodeTitles() {
 
     $tables = [
@@ -117,12 +123,18 @@ final class BlokkliStarterkitCommands extends DrushCommands {
 
   }
 
+  /**
+   * Sets the site default language.
+   */
   private function updateDefaultLanguage($toLanguage) {
     $config = $this->configFactory->getEditable('system.site');
     $config->set('default_langcode', $toLanguage);
     $config->save();
   }
 
+  /**
+   * Sets English labels on the demo fields and paragraph types.
+   */
   private function updateConfiguration() {
 
     $config = $this->configFactory->getEditable('field.field.paragraph.quote.field_quote');

@@ -4,6 +4,7 @@ const WIDE_CLASS = 'is-wide-table'
 const SCROLLABLE_MARKER = 'data-scrollable-table'
 const WRAPPER_MARKER_VALUE = 'wrapper'
 const BARE_TABLE_SELECTOR = ':scope > table'
+const AUTHORED_WRAPPER_SELECTOR = `:scope > div:not([${SCROLLABLE_MARKER}])`
 const SCROLLER_SELECTOR = `:scope > [${SCROLLABLE_MARKER}="${WRAPPER_MARKER_VALUE}"], figure.table`
 const AVAILABLE_WIDTH_PROPERTY = '--wide-table-available-width'
 const OVERFLOW_TOLERANCE_PX = 1
@@ -39,6 +40,30 @@ function wrapTable(table: HTMLElement) {
   wrapper.setAttribute(SCROLLABLE_MARKER, WRAPPER_MARKER_VALUE)
   table.replaceWith(wrapper)
   wrapper.append(table)
+}
+
+// Editors also paste tables inside their own <div style="overflow-x: auto">.
+// A div that holds nothing but one table becomes the wrapper instead of
+// getting a second scroller inside it; its inline overflow goes, so the
+// stylesheet's scroller rules apply.
+function isAuthoredWrapper(div: HTMLElement): boolean {
+  const hasText = [...div.childNodes].some(
+    (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+  )
+  return (
+    !hasText &&
+    div.children.length === 1 &&
+    div.firstElementChild?.tagName === 'TABLE'
+  )
+}
+
+function adoptWrapper(div: HTMLElement) {
+  div.style.removeProperty('overflow')
+  div.style.removeProperty('overflow-x')
+  if (!div.getAttribute('style')) {
+    div.removeAttribute('style')
+  }
+  div.setAttribute(SCROLLABLE_MARKER, WRAPPER_MARKER_VALUE)
 }
 
 // CKEditor 5 captions a table with a <figcaption> in its figure; a bare table
@@ -103,6 +128,9 @@ export default function (root: Ref<HTMLElement | null>, options: Options) {
     }
 
     column.querySelectorAll<HTMLElement>(BARE_TABLE_SELECTOR).forEach(wrapTable)
+    column
+      .querySelectorAll<HTMLElement>(AUTHORED_WRAPPER_SELECTOR)
+      .forEach((div) => isAuthoredWrapper(div) && adoptWrapper(div))
 
     column
       .querySelectorAll<HTMLElement>(SCROLLER_SELECTOR)

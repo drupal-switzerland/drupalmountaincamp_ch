@@ -181,13 +181,76 @@ describe('useScrollableTables', () => {
     expect(wrapper.get('#inner').element.parentElement?.id).toBe('f')
   })
 
-  it('ignores tables nested in other markup', async () => {
+  it('ignores tables nested with other content or deeper', async () => {
     sizes.set('t', { scroll: 900, client: 600 })
+    sizes.set('u', { scroll: 900, client: 600 })
+    sizes.set('v', { scroll: 900, client: 600 })
     const wrapper = await mountRichText({
-      html: `<div>${wideTable('t')}</div>`,
+      html:
+        `<div id="mixed"><p>Intro</p>${wideTable('t')}</div>` +
+        `<div id="text">Prices ${wideTable('u')}</div>` +
+        `<blockquote>${wideTable('v')}</blockquote>`,
     })
 
+    for (const id of ['mixed', 'text']) {
+      expect(
+        wrapper.get(`#${id}`).attributes('data-scrollable-table'),
+      ).toBeUndefined()
+    }
+    for (const id of ['t', 'u', 'v']) {
+      expect(wrapper.get(`#${id}`).attributes('role')).toBeUndefined()
+      expect(
+        wrapper.get(`#${id}`).element.parentElement?.getAttribute('role'),
+      ).toBeNull()
+    }
+  })
+
+  it('adopts an authored overflow div around a table as the scroll region', async () => {
+    sizes.set('t', { scroll: 560, client: 358 })
+    const wrapper = await mountRichText({
+      html: `<div id="authored" style="overflow-x:auto;">
+        <table id="t" class="table table-bordered" style="min-width:560px;width:100%;"><tr><td>x</td></tr></table>
+      </div>`,
+    })
+
+    const region = regionAround(wrapper, 't')
+    expect(region.id).toBe('authored')
+    expect(region.getAttribute('role')).toBe('region')
+    expect(region.getAttribute('tabindex')).toBe('0')
+    expect(region.getAttribute('aria-label')).toBe('scrollableTable')
+    // The stylesheet's scroller rules replace the inline overflow.
+    expect(region.hasAttribute('style')).toBe(false)
+    // No second scroller inside, and the table keeps its own styles and role.
+    expect(region.parentElement?.id).toBe('column')
+    expect(wrapper.findAll('[data-scrollable-table]')).toHaveLength(1)
     expect(wrapper.get('#t').attributes('role')).toBeUndefined()
+    expect(wrapper.get('#t').attributes('style')).toContain('min-width')
+  })
+
+  it('keeps the other inline styles of an adopted div', async () => {
+    sizes.set('t', { scroll: 900, client: 600 })
+    const wrapper = await mountRichText({
+      html: `<div style="overflow: auto; margin-top: 8px">${wideTable('t')}</div>`,
+    })
+
+    const region = regionAround(wrapper, 't')
+    expect(region.style.overflow).toBe('')
+    expect(region.style.overflowX).toBe('')
+    expect(region.style.marginTop).toBe('8px')
+  })
+
+  it('adopts a fitting authored div without making it a region, and lets it break out', async () => {
+    sizes.set('grid', { scroll: 1200, client: 1200 })
+    sizes.set('t', { scroll: 900, client: 600, wideClient: 1000 })
+    const wrapper = await mountRichText({
+      html: `<div style="overflow-x:auto">${wideTable('t')}</div>`,
+      breakout: true,
+    })
+
+    const adopted = regionAround(wrapper, 't')
+    expect(adopted.classList).toContain('is-wide-table')
+    expect(adopted.getAttribute('role')).toBeNull()
+    expect(adopted.getAttribute('tabindex')).toBeNull()
   })
 
   it('wraps a table that fits, within a pixel of tolerance, without a region', async () => {

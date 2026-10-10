@@ -6,6 +6,7 @@
       :loading="loading"
       :preload="preload"
       class="w-full overflow-hidden"
+      :class="imgClass"
     />
     <figcaption
       v-if="!hideCaption && (caption || copyright)"
