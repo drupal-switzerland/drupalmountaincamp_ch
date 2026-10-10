@@ -1,34 +1,38 @@
 <template>
-  <VuepalLink
-    v-if="url"
-    :to="url.path"
-    class="group block text-body no-underline"
+  <article
+    class="group relative rounded-sm border-4 border-primary-500 p-4 text-body transition-colors duration-500 ease-in-out hover:border-primary-400 has-[:focus-visible]:border-primary-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-[3px] has-[:focus-visible]:outline-primary-500"
   >
-    <article
-      class="rounded-sm border-4 border-primary-500 p-4 transition-colors duration-500 ease-in-out group-hover:border-primary-400 group-focus:border-primary-400"
+    <p v-if="date" class="font-bold text-primary-500">
+      {{ date.formatted }}
+    </p>
+    <h2
+      class="mb-6 text-2xl font-bold leading-snug text-primary-500 md:text-3xl"
     >
-      <p v-if="date" class="font-bold text-primary-500">
-        {{ date.formatted }}
-      </p>
-      <h2
-        class="mb-6 text-2xl font-bold leading-snug text-primary-500 md:text-3xl"
+      <!-- The link's ::after covers the card (and the image that hangs out
+           of it on desktop), so the whole card is clickable while the
+           accessible name stays the title. -->
+      <VuepalLink
+        v-if="url"
+        :to="url.path"
+        class="text-current no-underline after:absolute after:inset-0 after:z-10 focus-visible:outline-none md:after:-left-10"
       >
         {{ title }}
-      </h2>
-      <div
-        v-if="image"
-        class="-mx-4 mb-6 border-y-4 border-current bg-white md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:w-full md:max-w-xs md:border-4"
-      >
-        <MediaImage
-          v-bind="image"
-          :image-style="isPortrait ? portraitImageStyle : imageStyle"
-          hide-caption
-        />
-      </div>
-      <div v-if="teaser" class="overflow-auto text-base" v-html="teaser" />
-      <div class="clear-both" />
-    </article>
-  </VuepalLink>
+      </VuepalLink>
+      <template v-else>{{ title }}</template>
+    </h2>
+    <div
+      v-if="image"
+      class="-mx-4 mb-6 border-y-4 border-current bg-white md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:w-full md:max-w-xs md:border-4"
+    >
+      <MediaImage
+        v-bind="image"
+        :image-style="isPortrait ? portraitImageStyle : imageStyle"
+        hide-caption
+      />
+    </div>
+    <div v-if="teaser" class="overflow-auto text-base" v-html="teaser" />
+    <div class="clear-both" />
+  </article>
 </template>
 
 <script lang="ts" setup>
