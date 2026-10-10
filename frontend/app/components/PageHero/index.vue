@@ -76,7 +76,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 }
 
 /* Long sky: the whole hero is one sky, drawn as ONE gradient so its slope
-   never jumps. It is anchored to the hero's bottom edge: the zone below the
+   never jumps. It is measured up from the hero's bottom edge: the zone below the
    lead, plus a rise behind the text. The stops come from helpers/heroSky
    through tailwind.config (--page-hero-sky), the horizon the homepage hero
    shares: brand blue fades in behind the text (never fully, so the ice lead
@@ -88,6 +88,9 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-fade: 112px;
   --page-hero-pad: theme(spacing.10);
   --page-hero-zone: calc(var(--page-hero-fade) + var(--page-hero-pad));
+  --page-hero-sky-height: calc(
+    var(--page-hero-zone) * (1 + var(--page-hero-rise))
+  );
   --sky-from: theme(colors.brand.blue);
   --sky-mid: theme(colors.brand.sky);
   --sky-to: var(--sky-handover);
@@ -104,22 +107,21 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   }
 }
 
-/* Plain stops for browsers without oklch gradients: blue at 70% where the
-   lead ends (55.56% = rise / (rise + zone)), then on to the handover. */
+/* Plain stops for browsers without oklch gradients, measured up from the
+   bottom edge like the generated ones: blue at 70% where the lead ends
+   (44.44% = zone / (rise + zone)), clear at the top of the sky. */
 .page-hero::after {
   content: '';
   @apply pointer-events-none absolute inset-0 -z-[1];
-  background: linear-gradient(
-      to bottom,
-      theme(colors.brand.blue / 0%) 0%,
-      theme(colors.brand.blue / 35%) 30%,
-      theme(colors.brand.blue / 70%) 55.56%,
-      theme(colors.brand.blue) 78%,
-      theme(colors.brand.sky) 90%,
-      var(--sky-handover) 100%
-    )
-    bottom / 100% calc(var(--page-hero-zone) * (1 + var(--page-hero-rise)))
-    no-repeat;
+  background-image: linear-gradient(
+    to top,
+    var(--sky-handover) 0,
+    theme(colors.brand.sky) calc(var(--page-hero-sky-height) * 0.1),
+    theme(colors.brand.blue) calc(var(--page-hero-sky-height) * 0.22),
+    theme(colors.brand.blue / 70%) calc(var(--page-hero-sky-height) * 0.4444),
+    theme(colors.brand.blue / 35%) calc(var(--page-hero-sky-height) * 0.7),
+    theme(colors.brand.blue / 0%) var(--page-hero-sky-height)
+  );
 }
 
 @supports (background: linear-gradient(in oklch, #000, #fff)) {

@@ -102,6 +102,12 @@ const evenly = (count: number) =>
 const mix = (colour: string, share: number, into: string) =>
   `color-mix(in oklch, ${colour} ${percent(share, 1)}, ${into})`
 
+// Stops are lengths measured up from the hero's bottom edge, not shares of a
+// sized background tile: a tile taller than a hero of fractional height is
+// snapped short of the last pixel row, which then shows the navy underneath.
+const fromBottom = (position: number) =>
+  `calc(var(--page-hero-sky-height) * ${(1 - position).toFixed(4)})`
+
 function skyStop(position: number): string {
   const opacity = skyBlueOpacity(position)
   const sky = skySkyShare(position)
@@ -109,7 +115,7 @@ function skyStop(position: number): string {
   const blue =
     sky > 0 ? mix('var(--sky-mid)', sky, 'var(--sky-from)') : 'var(--sky-from)'
   const colour = handover > 0 ? mix('var(--sky-to)', handover, blue) : blue
-  const at = percent(position, 2)
+  const at = fromBottom(position)
   return opacity < 1
     ? `${mix(colour, opacity, 'transparent')} ${at}`
     : `${colour} ${at}`
@@ -117,16 +123,18 @@ function skyStop(position: number): string {
 
 /**
  * Background image for the inner-page hero's sky, written into the stylesheet
- * by tailwind.config. --sky-from (brand blue), --sky-mid (brand sky) and
- * --sky-to (the handover colour) are set in brand.css and PageHero. Mixed in
- * oklch so the midtones stay blue instead of grey.
+ * by tailwind.config. It fills the hero from the bottom edge up over
+ * --page-hero-sky-height and is clear above that. --sky-from (brand blue),
+ * --sky-mid (brand sky) and --sky-to (the handover colour) are set in
+ * brand.css and PageHero. Mixed in oklch so the midtones stay blue instead of
+ * grey.
  */
 export function heroSkyGradient(): string {
   const stops = [...new Set([...evenly(STOP_COUNT), SKY_LEAD_END, OPAQUE_AT])]
     .filter((position) => position <= 1)
-    .sort((a, b) => a - b)
+    .sort((a, b) => b - a)
     .map(skyStop)
-  return `linear-gradient(to bottom in oklch, ${stops.join(', ')})`
+  return `linear-gradient(to top in oklch, ${stops.join(', ')})`
 }
 
 const HOME_STOP_COUNT = STOP_COUNT / 2
