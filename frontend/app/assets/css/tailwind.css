@@ -31,6 +31,20 @@
   h6 {
     @apply font-heading font-medium;
   }
+
+  /* Reduced motion: transitions and keyframes finish at once. A near-zero
+     duration instead of none keeps transitionend and animationend firing,
+     which Vue transitions, Swiper and the menu icon wait for. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {

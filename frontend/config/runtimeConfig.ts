@@ -15,8 +15,6 @@ export const runtimeConfig: NuxtConfig['runtimeConfig'] = {
   backendUrl: '',
   requestHost: '',
   drupalGraphqlToken: process.env.DRUPAL_GRAPHQL_TOKEN || '',
-  elasticsearchUrl: '',
-  elasticsearchPrefix: '',
   easyTextsDefaults,
   public: {
     rokkaHost: '',
