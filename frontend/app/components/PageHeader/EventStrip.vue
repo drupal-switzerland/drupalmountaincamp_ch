@@ -1,6 +1,6 @@
 <template>
   <p
-    class="m-0 h-12 truncate border-b border-primary-100 bg-primary-50 px-outer py-2 text-center text-xs font-medium leading-4 text-primary-500 min-[390px]:h-10 min-[390px]:py-0 min-[390px]:leading-10 xs:text-sm xs:leading-10"
+    class="m-0 h-12 truncate border-b border-primary-100 bg-primary-50 px-outer py-2 text-center text-xs font-medium leading-[16px] text-primary-500 min-[390px]:h-10 min-[390px]:py-0 min-[390px]:leading-[40px] xs:text-sm xs:leading-[40px]"
   >
     {{ $texts('edition.dates', 'March 2–4, 2027') }}
     <span
