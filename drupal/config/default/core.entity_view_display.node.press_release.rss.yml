@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.rss
+    - core.entity_view_mode.paragraph.rss
     - field.field.node.press_release.field_date
     - field.field.node.press_release.field_image
     - field.field.node.press_release.field_lead
@@ -11,9 +12,11 @@ dependencies:
     - field.field.node.press_release.field_paragraphs
     - field.field.node.press_release.field_tags
     - field.field.node.press_release.field_teaser
+    - image.style.large
     - node.type.press_release
   module:
     - entity_reference_revisions
+    - media
     - text
     - user
 id: node.press_release.rss
@@ -22,11 +25,13 @@ bundle: press_release
 mode: rss
 content:
   field_image:
-    type: entity_reference_entity_view
+    type: media_thumbnail
     label: hidden
     settings:
-      view_mode: full
-      link: false
+      image_link: ''
+      image_style: large
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
@@ -41,15 +46,10 @@ content:
     type: entity_reference_revisions_entity_view
     label: hidden
     settings:
-      view_mode: default
+      view_mode: rss
       link: ''
     third_party_settings: {  }
     weight: 2
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
     region: content
 hidden:
   field_date: true
@@ -57,4 +57,5 @@ hidden:
   field_tags: true
   field_teaser: true
   langcode: true
+  links: true
   search_api_excerpt: true

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\blokkli_starterkit\RokkaFileMigration;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -111,11 +112,6 @@ function blokkli_starterkit_entity_field_access(
   $field_name = $field_definition->getName();
   $entity = $items?->getEntity();
 
-  if ($field_name === 'status' && $operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
-    // Allow viewing the status field.
-    return AccessResult::allowedIf($account->hasPermission('view user status'));
-  }
-
   if ($entity instanceof UserInterface) {
     $isSameAccount = (int) $entity->id() === (int) $account->id();
 
@@ -195,4 +191,17 @@ function blokkli_starterkit_paragraphs_type_access(EntityInterface $entity, $ope
  */
 function blokkli_starterkit_cron() {
   \Drupal::classResolver(RokkaFileMigration::class)->retryOnCron();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ *
+ * The node_rss views row renders a node without its template, so the title,
+ * author and date, which no view display can hide, would repeat inside every
+ * feed item's description. The RSS item carries them as its own elements.
+ */
+function blokkli_starterkit_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($display->getMode() === 'rss') {
+    unset($build['title'], $build['uid'], $build['created']);
+  }
 }

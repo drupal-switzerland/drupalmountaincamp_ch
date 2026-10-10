@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { brand, colors } from '../../tailwind.config'
+import { HERO_GLOW, blendHeroGlowOver } from '../helpers/heroGlow'
 
 const WHITE = '#FFFFFF'
 const AA_TEXT = 4.5
@@ -50,6 +51,27 @@ const pairs: [string, string, string, number][] = [
   ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
   ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
   ['loading bar on gray-50', LOADING_BAR, colors.gray[50], AA_NON_TEXT],
+  // Inner-page hero: ice lead and breadcrumb on the gradient; the white title
+  // over the glow's peak, which can reach the gradient's blue end.
+  ['ice lead text on blue', brand.ice, brand.blue, AA_TEXT],
+  [
+    'white title on glow over navy',
+    WHITE,
+    blendHeroGlowOver(brand.navy),
+    AA_LARGE_TEXT,
+  ],
+  [
+    'white title on glow over blue',
+    WHITE,
+    blendHeroGlowOver(brand.blue),
+    AA_LARGE_TEXT,
+  ],
+  [
+    'ice lead text on glow over navy',
+    brand.ice,
+    blendHeroGlowOver(brand.navy),
+    AA_TEXT,
+  ],
 ]
 
 describe('brand colour contrast', () => {
@@ -59,5 +81,9 @@ describe('brand colour contrast', () => {
 
   it('rejects sky as small text on white', () => {
     expect(contrast(brand.sky, WHITE)).toBeLessThan(AA_TEXT)
+  })
+
+  it('draws the hero glow in brand sky', () => {
+    expect(HERO_GLOW.color).toBe(brand.sky)
   })
 })

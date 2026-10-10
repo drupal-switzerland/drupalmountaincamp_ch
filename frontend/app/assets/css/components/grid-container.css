@@ -261,8 +261,6 @@
       }
     }
 
-    /* @todo: Delete this later, this is just for reference */
-
     .grid-container-6 {
       @apply col-span-4 md:col-span-5 md:col-start-2 lg:col-span-6 lg:col-start-3;
     }
