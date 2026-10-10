@@ -14,7 +14,7 @@
           <h1
             id="home-hero-title"
             v-blokkli-editable:title
-            class="text-[2.5rem] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
+            class="text-[length:min(2.5rem,12.5vw)] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
           >
             {{ titleParts.name }}
             <span v-if="titleParts.year" class="text-primary-300">
@@ -49,7 +49,7 @@
 
     <div class="bg-primary-100 text-primary-500">
       <div
-        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:gap-y-2 xs:pb-12 md:grid-cols-[max-content_1fr_auto] md:items-center md:gap-y-0 md:pb-16 md:pt-8"
+        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:gap-y-2 xs:pb-12 md:grid-cols-[minmax(0,max-content)_minmax(min-content,1fr)_auto] md:items-center md:gap-y-0 md:pb-16 md:pt-8"
       >
         <div class="flex flex-col gap-[6px] md:pr-8">
           <p class="label">
@@ -66,7 +66,7 @@
             class="flex flex-col gap-1 py-2 pr-4 md:border-l md:border-primary-500 md:px-8 md:py-1"
           >
             <dt class="label">{{ $texts('edition.whenLabel', 'When') }}</dt>
-            <dd class="font-medium md:text-lg">
+            <dd class="break-words font-medium md:text-lg">
               {{ $texts('edition.dates', 'March 2–4, 2027') }}
             </dd>
           </div>
@@ -74,7 +74,7 @@
             class="flex flex-col gap-1 border-l border-primary-500 py-2 pl-4 md:px-8 md:py-1"
           >
             <dt class="label">{{ $texts('edition.whereLabel', 'Where') }}</dt>
-            <dd class="font-medium md:text-lg">
+            <dd class="break-words font-medium md:text-lg">
               {{
                 $texts('edition.venue', 'Davos Congress Centre, Switzerland')
               }}
