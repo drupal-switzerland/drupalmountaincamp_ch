@@ -58,7 +58,7 @@ describe('shareMeta', () => {
       ogUrl: `${CANONICAL}/news?page=2`,
       ogTitle: 'News – Page 2',
       ogDescription: 'News and updates',
-      ogImage: `${CANONICAL}/images/hero-davos.jpg`,
+      ogImage: `${CANONICAL}/images/mountain-camp-og-1200x630.jpg`,
       twitterCard: 'summary_large_image',
     })
   })
@@ -71,7 +71,7 @@ describe('shareMeta', () => {
       description: '',
     })
     expect(local.ogImage).toBe(
-      'https://mountaincamp.ddev.site/images/hero-davos.jpg',
+      'https://mountaincamp.ddev.site/images/mountain-camp-og-1200x630.jpg',
     )
   })
 })
