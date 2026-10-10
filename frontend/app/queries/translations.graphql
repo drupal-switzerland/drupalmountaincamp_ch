@@ -20,6 +20,7 @@ fragment easyTexts on TextsLoader {
   footer__navigation: getText(key: "navigation", context: "footer", default: "Footer")
   hero__badge: getText(key: "badge", context: "hero", default: "10 years of community")
   iconText__day: getText(key: "day", context: "iconText", default: "Day")
+  iframe__title: getText(key: "title", context: "iframe", default: "Embedded content")
   latestNews__all: getText(key: "all", context: "latestNews", default: "All news")
   latestNews__title: getText(key: "title", context: "latestNews", default: "News")
   layout__skipToContent: getText(key: "skipToContent", context: "layout", default: "Skip to content")
