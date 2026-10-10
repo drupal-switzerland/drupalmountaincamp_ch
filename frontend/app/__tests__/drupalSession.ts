@@ -13,6 +13,8 @@ describe('hasDrupalSessionCookie', () => {
     ['without a space after the separator', `consent=1;SSESS${HASH}=id`],
     ['with a shorter hash', 'SSESSabc123=id'],
     ['in lower case', `ssess${HASH}=id`],
+    // Looser than core's name on purpose; a miss here could cache a session.
+    ['a cookie literally named SESSION', 'SESSION=abc'],
     ['in a header sent as a list', ['consent=1', `SSESS${HASH}=id`]],
   ])('finds a session cookie: %s', (_label, header) => {
     expect(hasDrupalSessionCookie(header)).toBe(true)
