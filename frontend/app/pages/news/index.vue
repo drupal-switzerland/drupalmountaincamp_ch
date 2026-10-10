@@ -36,6 +36,7 @@ import type {
   NodePageFragment,
 } from '#graphql-operations'
 import {
+  canonicalPageUrl,
   getListPageState,
   isOffsetInRange,
   parsePageParam,
@@ -139,6 +140,7 @@ watch(pressReleases, async () => {
 })
 
 // The overview has no Drupal metatags of its own; same pattern as node pages.
+const requestOrigin = useRequestURL().origin
 useHead({
   title: () => {
     const title = unref(entity)?.title || 'News'
@@ -148,6 +150,23 @@ useHead({
         : ''
     return `${title}${page} | Mountain Camp`
   },
+  link: [
+    {
+      rel: 'canonical',
+      href: () =>
+        canonicalPageUrl(requestOrigin, nuxtRoute.path, currentPage.value),
+    },
+  ],
+  meta: [
+    {
+      name: 'description',
+      content: () =>
+        $texts(
+          'news.metaDescription',
+          'News and updates from Drupal Mountain Camp 2027 in Davos',
+        ),
+    },
+  ],
 })
 
 setBreadcrumbLinksFromRoute(query.value ?? null)

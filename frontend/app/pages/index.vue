@@ -4,6 +4,8 @@
 
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
+import { canonicalPageUrl } from '~/helpers/pagination'
+import { SITE_TITLE } from '~/helpers/site'
 
 defineOptions({
   name: 'Homepage',
@@ -33,6 +35,19 @@ const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
 const { entity: node } = await useDrupalRoute<NodePageFragment>(
   query.value ?? null,
 )
+
+// Drupal's node title pattern would repeat the brand ("… | Mountain Camp"),
+// and its canonical points to the /home alias, which redirects to "/".
+// Unhead keeps one canonical link, so this replaces Drupal's.
+useHead({
+  title: SITE_TITLE,
+  link: [
+    {
+      rel: 'canonical',
+      href: canonicalPageUrl(useRequestURL().origin, '/', 1),
+    },
+  ],
+})
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
 setPageHasHero(false)
