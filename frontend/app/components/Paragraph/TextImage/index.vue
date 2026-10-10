@@ -26,8 +26,6 @@
           v-if="image"
           v-bind="image"
           :image-style="pageImageStyle"
-          :loading="loading"
-          :preload="preload"
           img-class="rounded-[18px]"
         />
       </div>
@@ -40,8 +38,6 @@
           data-swiper-parallax-scale="0.66666666"
           :image-style="imageStyle"
           v-bind="image?.image"
-          :loading="loading"
-          :preload="preload"
         />
         <div
           v-if="copyright"
@@ -95,7 +91,7 @@ const pageImageStyle = defineImageStyle({
   },
 })
 
-const { index, parentType, options } = defineBlokkli({
+const { parentType, options } = defineBlokkli({
   bundle: 'text_image',
   globalOptions: ['spacing'],
   options: {
@@ -136,11 +132,6 @@ useScrollableTables(content, {
   enabled: !import.meta.blokkliEditing,
   content: () => props.text,
 })
-
-const preload = computed(() => index.value === 0 && !parentType.value)
-
-// If the index is 0, the image is most probably above the fold
-const loading = computed(() => (preload.value ? 'eager' : 'lazy'))
 
 const copyright = computed(() => {
   return props.image?.copyright || ''
