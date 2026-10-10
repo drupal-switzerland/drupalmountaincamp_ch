@@ -1,8 +1,8 @@
 <template>
   <BlokkliProvider v-slot="{ entity }" v-bind="blokkliProps" :entity="props">
     <PageHero :title="entity?.title || title || ''">
-      <template #title>
-        <h1 v-blokkli-editable:title class="text-4xl md:text-5xl lg:text-6xl">
+      <template #title="{ titleClass }">
+        <h1 v-blokkli-editable:title :class="titleClass">
           {{ entity?.title || title }}
         </h1>
       </template>
