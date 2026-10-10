@@ -76,6 +76,7 @@
 <script lang="ts" setup>
 import type { ParagraphVideoFragment } from '#graphql-operations'
 import { toDrupalFilePath } from '~/helpers/drupalFiles'
+import { SCREENS } from '~/tailwind/screens'
 
 const { options } = defineBlokkli({
   bundle: 'video',
@@ -116,8 +117,8 @@ const bigGrid = defineImageStyle({
   sizes: {
     xs: 770,
     sm: 984,
-    md: 1380,
-    lg: 1380,
+    md: SCREENS.xl,
+    lg: SCREENS.xl,
   },
 })
 
