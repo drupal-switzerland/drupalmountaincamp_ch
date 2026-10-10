@@ -66,6 +66,21 @@ describe('SPA middleware', () => {
     expect(event.context.nuxt).toBeUndefined()
   })
 
+  it('keeps SSR for a visitor without any cookie', () => {
+    const event = createEvent('/news')
+
+    expect(() => handler(event)).not.toThrow()
+    expect(event.context.nuxt).toBeUndefined()
+    expect(event.context.hasSession).toBeUndefined()
+  })
+
+  it('leaves a request without a path alone, even with a session', () => {
+    const event = createEvent('', { cookie: 'SSESSabc=def' })
+    handler(event)
+
+    expect(event.context.nuxt).toBeUndefined()
+  })
+
   it('removes a client-sent header that forces SPA mode', () => {
     const event = createEvent('/news', {
       cookie: 'a=1',
