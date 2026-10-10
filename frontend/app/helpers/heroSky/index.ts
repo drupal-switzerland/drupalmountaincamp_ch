@@ -72,7 +72,7 @@ const OPAQUE_AT = SKY_LEAD_END / inverseSmoothstep(SKY_TEXT_MAX_OPACITY)
 const belowLead = (position: number) =>
   (position - SKY_LEAD_END) / (1 - SKY_LEAD_END)
 
-/** Inner pages: how opaque the blue is; at its limit where the lead ends, opaque a little below. */
+/** Inner pages: how opaque the blue is; at its limit where the lead ends, opaque about 70% of the way from there to the edge. */
 export function skyBlueOpacity(position: number): number {
   return horizonBlueOpacity(position / OPAQUE_AT)
 }
@@ -124,10 +124,10 @@ function skyStop(position: number): string {
 /**
  * Background image for the inner-page hero's sky, written into the stylesheet
  * by tailwind.config. It fills the hero from the bottom edge up over
- * --page-hero-sky-height and is clear above that. --sky-from (brand blue),
- * --sky-mid (brand sky) and --sky-to (the handover colour) are set in
- * brand.css and PageHero. Mixed in oklch so the midtones stay blue instead of
- * grey.
+ * --page-hero-sky-height and is clear above that. PageHero sets --sky-from
+ * (brand blue), --sky-mid (brand sky) and --sky-to (the handover colour) on
+ * .page-hero; brand.css sets the first two on .home-hero. Mixed in oklch so
+ * the midtones stay blue instead of grey.
  */
 export function heroSkyGradient(): string {
   const stops = [...new Set([...evenly(STOP_COUNT), SKY_LEAD_END, OPAQUE_AT])]
@@ -169,3 +169,88 @@ export function homeHorizonGradient(): string {
 /** How far above the hero's bottom edge the ridge's deepest valley sits, as a share of the hero's width. */
 export const HOME_VALLEY_RATIO =
   (RIDGE_SIZE.height - RIDGE_DEEPEST_VALLEY) / RIDGE_SIZE.width
+
+/** Brand colours as hex, for the gradients browsers without oklch support get. */
+export interface SkyColours {
+  /** Brand blue. */
+  from: string
+  /** Brand sky. */
+  mid: string
+}
+
+// Enough for a plain sRGB gradient; it only has to look like the horizon.
+const FALLBACK_STOP_COUNT = 16
+
+// Eight-digit hex: the stylesheet pipeline mangles rgba() next to calc().
+function translucent(hex: string, opacity: number): string {
+  const alpha = Math.round(opacity * 255)
+    .toString(16)
+    .padStart(2, '0')
+    .toUpperCase()
+  return `${hex}${alpha}`
+}
+
+// Below the lead the two eases overlap; the fallback passes through plain sky
+// half-way between where the handover starts and where the sky is complete.
+const FALLBACK_SKY_AT =
+  SKY_LEAD_END + (1 - SKY_LEAD_END) * ((SKY_HANDOVER_FROM + SKY_REACHED_AT) / 2)
+
+/**
+ * The inner-page sky without color-mix or oklch interpolation: the same rise
+ * behind the text, then sky and the handover colour as plain stops.
+ */
+export function heroSkyFallbackGradient({ from, mid }: SkyColours): string {
+  const rise = evenly(FALLBACK_STOP_COUNT)
+    .map((share) => share * SKY_LEAD_END)
+    .reverse()
+    .map(
+      (position) =>
+        `${translucent(from, skyBlueOpacity(position))} ${fromBottom(position)}`,
+    )
+  const stops = [
+    `var(--sky-to) ${fromBottom(1)}`,
+    `${mid} ${fromBottom(FALLBACK_SKY_AT)}`,
+    ...rise,
+  ]
+  return `linear-gradient(to top, ${stops.join(', ')})`
+}
+
+/** The homepage rise without color-mix or oklch interpolation. */
+export function homeRiseFallbackGradient({ from }: SkyColours): string {
+  const stops = evenly(FALLBACK_STOP_COUNT).map(
+    (progress) =>
+      `${translucent(from, horizonBlueOpacity(progress))} calc(var(--home-hero-rise) * ${progress.toFixed(4)})`,
+  )
+  return `linear-gradient(to bottom, ${stops.join(', ')})`
+}
+
+/** The homepage sky layer without color-mix or oklch interpolation. */
+export function homeHorizonFallbackGradient({ mid }: SkyColours): string {
+  const stops = evenly(FALLBACK_STOP_COUNT).map(
+    (progress) =>
+      `${translucent(mid, horizonSkyShare(progress))} calc((var(--home-hero-horizon) - var(--home-hero-valley)) * ${progress.toFixed(4)})`,
+  )
+  return `linear-gradient(to bottom, ${stops.join(', ')})`
+}
+
+/**
+ * The custom properties tailwind.config writes on the two heroes. They are
+ * declared on the hero itself: the gradients refer to --sky-from, --sky-mid
+ * and --sky-to, which resolve where they are declared.
+ */
+export function heroSkyProperties(colours: SkyColours) {
+  return {
+    '.page-hero': {
+      '--page-hero-sky': heroSkyGradient(),
+      '--page-hero-sky-fallback': heroSkyFallbackGradient(colours),
+      '--page-hero-rise': String(SKY_RISE_RATIO),
+    },
+    '.home-hero': {
+      '--home-hero-rise-sky': homeRiseGradient(),
+      '--home-hero-rise-sky-fallback': homeRiseFallbackGradient(colours),
+      '--home-hero-horizon-sky': homeHorizonGradient(),
+      '--home-hero-horizon-sky-fallback': homeHorizonFallbackGradient(colours),
+      '--home-hero-valley': `${(HOME_VALLEY_RATIO * 100).toFixed(2)}vw`,
+    },
+  }
+}

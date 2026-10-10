@@ -2,20 +2,23 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { brand } from '../../tailwind.config'
+import { brand, colors } from '../../tailwind.config'
 import {
   RIDGE_DEEPEST_VALLEY,
   RIDGE_OUTLINE,
   RIDGE_SIZE,
 } from '../helpers/ridge'
 import {
-  HOME_VALLEY_RATIO,
   SKY_HANDOVER_FROM,
   SKY_LEAD_END,
   SKY_REACHED_AT,
   SKY_TEXT_MAX_OPACITY,
+  heroSkyFallbackGradient,
   heroSkyGradient,
+  heroSkyProperties,
+  homeHorizonFallbackGradient,
   homeHorizonGradient,
+  homeRiseFallbackGradient,
   homeRiseGradient,
   horizonBlueOpacity,
   horizonSkyShare,
@@ -216,44 +219,6 @@ describe('homepage horizon', () => {
     expect([...stops].sort((a, b) => a - b)).toEqual(stops)
   })
 
-  // What the text can have behind it: navy behind the badge and title, up to
-  // full blue behind the lead and buttons, and sky only below them, where the
-  // buttons' white focus ring ends.
-  it.each([
-    ['sky year on navy', brand.sky, brand.navy, AA_TEXT],
-    ['ice badge on navy', brand.ice, brand.navy, AA_TEXT],
-    ['white lead and button label on blue', WHITE, brand.blue, AA_TEXT],
-    [
-      'white button border and focus ring on blue',
-      WHITE,
-      brand.blue,
-      AA_NON_TEXT,
-    ],
-    ['white focus ring on sky', WHITE, brand.sky, AA_NON_TEXT],
-  ])('%s meets WCAG AA', (_label, foreground, background, min) => {
-    expect(contrast(foreground, background)).toBeGreaterThanOrEqual(min)
-  })
-
-  // Editors can mark words in the lead as "Highlight"; on dark sections that
-  // is sky, which fails on the blue the lead sits on.
-  it('gives highlights in the lead ice, which passes on full blue', () => {
-    const css = readFileSync(
-      join(process.cwd(), 'app/assets/css/components/brand.css'),
-      'utf8',
-    )
-    const rule =
-      /\.on-dark \.ck-content\.home-hero-lead \.highlight \{\s*@apply text-primary-100;/
-
-    expect(css).toMatch(rule)
-    expect(contrast(brand.ice, brand.blue)).toBeGreaterThanOrEqual(AA_TEXT)
-    expect(contrast(brand.ice, brand.navy)).toBeGreaterThanOrEqual(AA_TEXT)
-  })
-
-  it('rejects the text colours on what the layers keep away from them', () => {
-    expect(contrast(brand.sky, brand.blue)).toBeLessThan(AA_TEXT)
-    expect(contrast(WHITE, brand.sky)).toBeLessThan(AA_TEXT)
-  })
-
   it('reaches plain sky at the deepest valley of the ridge', () => {
     const ys = [...RIDGE_OUTLINE.matchAll(/[ML](-?\d+) (\d+)/g)]
       .map((m) => [Number(m[1]), Number(m[2])] as const)
@@ -263,9 +228,233 @@ describe('homepage horizon', () => {
       .map(([, y]) => y)
 
     expect(Math.max(...ys)).toBe(RIDGE_DEEPEST_VALLEY)
-    expect(HOME_VALLEY_RATIO).toBeCloseTo(
-      (RIDGE_SIZE.height - RIDGE_DEEPEST_VALLEY) / RIDGE_SIZE.width,
-      6,
+    // 109 of the drawing's 1920 units above its bottom edge.
+    expect(PROPERTIES['.home-hero']['--home-hero-valley']).toBe('5.68vw')
+  })
+})
+
+const COLOURS = { from: brand.blue, mid: brand.sky }
+const PROPERTIES = heroSkyProperties(COLOURS)
+const read = (path: string) => readFileSync(join(process.cwd(), path), 'utf8')
+const BRAND_CSS = read('app/assets/css/components/brand.css')
+const CK_CONTENT_CSS = read('app/assets/css/components/ck-content.css')
+const PAGE_HERO = read('app/components/PageHero/index.vue')
+const HOME_HERO = read('app/components/HomeHero/index.vue')
+const TAILWIND_CONFIG = read('tailwind.config.ts')
+const STYLES = [BRAND_CSS, PAGE_HERO].join('\n')
+
+describe('fallback gradients without oklch', () => {
+  it.each([
+    ['inner page', heroSkyFallbackGradient(COLOURS)],
+    ['homepage rise', homeRiseFallbackGradient(COLOURS)],
+    ['homepage horizon', homeHorizonFallbackGradient(COLOURS)],
+  ])('%s uses only syntax old browsers know', (_name, gradient) => {
+    expect(gradient).not.toContain('oklch')
+    expect(gradient).not.toContain('color-mix')
+    expect(gradient).not.toContain('rgb')
+    expect(gradient).toMatch(/^linear-gradient\(to (top|bottom), /)
+  })
+
+  it('inner page: handover colour at the edge, blue at its limit where the lead ends, clear at the top', () => {
+    const gradient = heroSkyFallbackGradient(COLOURS)
+
+    expect(gradient).toContain(
+      'linear-gradient(to top, var(--sky-to) calc(var(--page-hero-sky-height) * 0.0000), #009CDE ',
+    )
+    expect(gradient).toContain(
+      `#006AA9B3 calc(var(--page-hero-sky-height) * ${(1 - SKY_LEAD_END).toFixed(4)})`,
+    )
+    expect(
+      gradient.endsWith(
+        '#006AA900 calc(var(--page-hero-sky-height) * 1.0000))',
+      ),
+    ).toBe(true)
+  })
+
+  it('homepage: the same ends as the oklch layers', () => {
+    const rise = homeRiseFallbackGradient(COLOURS)
+    const horizon = homeHorizonFallbackGradient(COLOURS)
+
+    expect(rise).toContain('#006AA900 calc(var(--home-hero-rise) * 0.0000)')
+    expect(
+      rise.endsWith('#006AA9FF calc(var(--home-hero-rise) * 1.0000))'),
+    ).toBe(true)
+    expect(horizon).toContain('#009CDE00 calc(')
+    expect(
+      horizon.endsWith(
+        '#009CDEFF calc((var(--home-hero-horizon) - var(--home-hero-valley)) * 1.0000))',
+      ),
+    ).toBe(true)
+  })
+})
+
+describe('custom properties between tailwind.config and the stylesheets', () => {
+  const emitted = Object.values(PROPERTIES).flatMap((block) =>
+    Object.keys(block),
+  )
+  const values = Object.values(PROPERTIES)
+    .flatMap((block) => Object.values(block))
+    .join(' ')
+  const referenced = [...new Set(values.match(/var\((--[a-z-]+)\)/g))].map(
+    (reference) => reference.slice(4, -1),
+  )
+
+  it('writes them through the plugin', () => {
+    expect(TAILWIND_CONFIG).toMatch(
+      /addComponents\(heroSkyProperties\(\{ from: brand\.blue, mid: brand\.sky \}\)\)/,
+    )
+  })
+
+  it.each(emitted)('%s is read by a stylesheet or a gradient', (name) => {
+    expect(`${STYLES} ${values}`).toContain(`var(${name})`)
+  })
+
+  it.each(referenced)('%s, used inside a gradient, is declared', (name) => {
+    expect(emitted.includes(name) || STYLES.includes(`${name}:`)).toBe(true)
+  })
+
+  it("declares each hero's properties on the class the stylesheets style", () => {
+    expect(Object.keys(PROPERTIES)).toEqual(['.page-hero', '.home-hero'])
+    expect(PAGE_HERO).toContain('.page-hero {')
+    expect(BRAND_CSS).toContain('.home-hero {')
+    expect(HOME_HERO).toMatch(/class="[^"]*\bhome-hero\b/)
+  })
+
+  it('uses the oklch gradients only where they are supported', () => {
+    const supports =
+      /@supports \(background: linear-gradient\(in oklch, #000, #fff\)\) \{([\s\S]*?)\n {0,2}\}\n/g
+    const guarded = [...STYLES.matchAll(supports)].map((m) => m[1]).join('\n')
+    const unguarded = STYLES.replace(supports, '')
+
+    for (const name of [
+      '--page-hero-sky',
+      '--home-hero-rise-sky',
+      '--home-hero-horizon-sky',
+    ]) {
+      expect(guarded).toContain(`var(${name})`)
+      expect(unguarded).not.toContain(`var(${name})`)
+      expect(unguarded).toContain(`var(${name}-fallback)`)
+    }
+  })
+})
+
+// The colour a rule or element really gets, read from the source, so a change
+// to the stylesheet or the template fails here.
+const TEXT_COLOURS: Record<string, string> = {
+  'text-white': WHITE,
+  'text-primary-100': colors.primary[100],
+  'text-primary-300': colors.primary[300],
+  'text-primary-400': colors.primary[400],
+  'text-primary-500': colors.primary[500],
+}
+
+function textColourAfter(source: string, anchor: string): string {
+  const from = source.indexOf(anchor)
+  expect(from, `"${anchor}" not found`).toBeGreaterThanOrEqual(0)
+  const match = source
+    .slice(from + anchor.length)
+    .match(/\btext-(?:white|primary-\d+)\b/)
+  expect(match, `no text colour after "${anchor}"`).not.toBeNull()
+  return TEXT_COLOURS[match![0]]!
+}
+
+function themeColour(source: string, anchor: string): string {
+  const from = source.indexOf(anchor)
+  expect(from, `"${anchor}" not found`).toBeGreaterThanOrEqual(0)
+  const match = source.slice(from).match(/theme\(colors\.brand\.(\w+)\)/)
+  expect(match, `no brand colour after "${anchor}"`).not.toBeNull()
+  return brand[match![1] as keyof typeof brand]
+}
+
+describe('homepage hero text on what the layers put behind it', () => {
+  const heroBase = themeColour(
+    BRAND_CSS,
+    '    background: linear-gradient(\n        theme(colors.brand.navy)',
+  )
+  const riseColour = themeColour(BRAND_CSS, '  .home-hero {\n    --sky-from:')
+  const skyColour = themeColour(BRAND_CSS, '    --sky-mid:')
+  const year = textColourAfter(HOME_HERO, 'v-if="titleParts.year"')
+  const badgeLabel = textColourAfter(
+    BRAND_CSS,
+    '  .label {\n    @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;\n\n    .on-dark & {',
+  )
+  const highlight = textColourAfter(
+    BRAND_CSS,
+    '.on-dark .ck-content.home-hero-lead .highlight',
+  )
+  const leadLink = textColourAfter(CK_CONTENT_CSS, '      a:not(.button) {')
+  const outlineButton = textColourAfter(
+    CK_CONTENT_CSS,
+    '      a.button.is-outline {',
+  )
+
+  it('reads the colours the hero really uses', () => {
+    expect(heroBase).toBe(brand.navy)
+    expect(riseColour).toBe(brand.blue)
+    expect(skyColour).toBe(brand.sky)
+    expect(HOME_HERO).toMatch(/class="on-dark home-hero\b/)
+  })
+
+  // Navy behind the badge and title; up to full blue behind the lead and
+  // buttons; sky only below them, where the buttons' focus ring ends.
+  it.each([
+    ['year in the title on the hero base', year, heroBase, AA_TEXT],
+    ['badge label on the hero base', badgeLabel, heroBase, AA_TEXT],
+    ['lead text on the full rise', WHITE, riseColour, AA_TEXT],
+    ['highlight in the lead on the full rise', highlight, riseColour, AA_TEXT],
+    ['highlight in the lead on the hero base', highlight, heroBase, AA_TEXT],
+    ['link in the lead on the full rise', leadLink, riseColour, AA_TEXT],
+    [
+      'outline button label on the full rise',
+      outlineButton,
+      riseColour,
+      AA_TEXT,
+    ],
+    [
+      'outline button border on the full rise',
+      outlineButton,
+      riseColour,
+      AA_NON_TEXT,
+    ],
+    ['focus ring on the sky', WHITE, skyColour, AA_NON_TEXT],
+  ])('%s meets WCAG AA', (_label, foreground, background, min) => {
+    expect(contrast(foreground, background)).toBeGreaterThanOrEqual(min)
+  })
+
+  it('draws the focus ring on dark sections in white', () => {
+    expect(BRAND_CSS).toMatch(
+      /\.on-dark :focus-visible \{\s*outline-color: theme\(colors\.white\);/,
+    )
+  })
+
+  it('rejects the text colours on what the layers keep away from them', () => {
+    expect(contrast(year, riseColour)).toBeLessThan(AA_TEXT)
+    expect(contrast(WHITE, skyColour)).toBeLessThan(AA_TEXT)
+  })
+
+  it('keeps the sky clear of the buttons by their focus ring', () => {
+    expect(BRAND_CSS).toMatch(
+      /--home-hero-clearance: calc\(\s*var\(--focus-ring-width\) \+ var\(--focus-ring-offset\) \+\s*var\(--home-hero-scrollbar-slack\)\s*\);/,
+    )
+    expect(BRAND_CSS).toMatch(/outline: var\(--focus-ring-width\) solid/)
+    expect(BRAND_CSS).toMatch(/outline-offset: var\(--focus-ring-offset\);/)
+  })
+})
+
+describe('hero bottom edge at fractional device pixel ratios', () => {
+  it('ends the dark base above the edge and backs the edge row with the next colour', () => {
+    expect(PAGE_HERO).toMatch(
+      /\.brand-hero\.page-hero \{\s*background: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--sky-handover\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
+    )
+    expect(PAGE_HERO).toContain('--page-hero-edge-colour: var(--sky-handover);')
+    expect(BRAND_CSS).toMatch(
+      /top \/ 100% calc\(100% - var\(--home-hero-edge\)\) no-repeat\s*theme\(colors\.brand\.ice\);\s*box-shadow: 0 var\(--home-hero-backdrop\) 0 theme\(colors\.brand\.ice\);/,
+    )
+  })
+
+  it('backs a hero that meets a dark band with navy', () => {
+    expect(PAGE_HERO).toMatch(
+      /:is\(\.navy-band, \.week-band\):first-child\s*\) \{\s*--page-hero-fade: 0px;\s*--page-hero-edge-colour: theme\(colors\.brand\.navy\);/,
     )
   })
 })
