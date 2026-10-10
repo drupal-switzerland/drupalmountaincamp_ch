@@ -70,11 +70,41 @@ export default async function (): Promise<Ref<InitData>> {
   }
 
   // Fetch the data from the server.
-  data.value = await useGraphqlQuery({
+  data.value = await fetchInitData(
+    currentLanguage.value,
+    host,
+    addToCache,
+  ).catch((error: unknown) => {
+    // The header and footer still render without menus, so an error page
+    // shows the site chrome even when Drupal is down. The GraphQL plugin has
+    // already marked this render uncacheable.
+    console.error('initData could not be loaded from Drupal.', error)
+    return fallbackInitData(config.easyTextsDefaults as Record<string, string>)
+  })
+  return data
+}
+
+// What renders when Drupal can't be reached: no menus, English default texts
+// (server-only runtime config, so empty on the client).
+function fallbackInitData(defaultTexts: Record<string, string> = {}): InitData {
+  return {
+    mainMenuLinks: [],
+    footerMenuLinks: [],
+    translations: defaultTexts,
+    globalConfig: {},
+  }
+}
+
+async function fetchInitData(
+  language: string,
+  host: string,
+  addToCache: (value: InitData, tags: string[]) => Promise<void> | void,
+): Promise<InitData> {
+  return useGraphqlQuery({
     name: 'initData',
     fetchOptions: {
       query: {
-        language: currentLanguage.value,
+        language,
         __server: 'true',
       },
       headers: {
@@ -102,6 +132,4 @@ export default async function (): Promise<Ref<InitData>> {
 
     return initData
   })
-
-  return data
 }

@@ -2,12 +2,18 @@ import {
   appendResponseHeader,
   getHeaders,
   getQuery,
+  setResponseHeader,
   setResponseStatus,
   type H3Event,
 } from 'h3'
 import { defineGraphqlServerOptions } from 'nuxt-graphql-middleware/server-options'
+import type { FetchError } from 'ofetch'
 import { extractCacheability } from './utils/cacheability'
-import type { GraphqlCacheability } from './helpers'
+import {
+  BACKEND_FETCH_TIMEOUT_MS,
+  BACKEND_RETRY_AFTER_SECONDS,
+  type GraphqlCacheability,
+} from './helpers'
 
 const HEADER_KEYS: string[] = [
   'x-forwarded-for',
@@ -53,10 +59,11 @@ export default defineGraphqlServerOptions<{
 
       return {
         headers,
+        timeout: BACKEND_FETCH_TIMEOUT_MS,
       }
     }
 
-    return {}
+    return { timeout: BACKEND_FETCH_TIMEOUT_MS }
   },
   onServerResponse(event, graphqlResponse) {
     // Pass Drupal's cookies on to the browser, one header per cookie:
@@ -102,8 +109,15 @@ export default defineGraphqlServerOptions<{
       __cacheability: addCacheability ? cacheability : undefined,
     }
   },
-  onServerError(event: H3Event) {
+  onServerError(event: H3Event, error: FetchError) {
     // Directly set the response status so we don't render the Nuxt 404 page.
-    setResponseStatus(event, 500)
+    if (error?.response) {
+      setResponseStatus(event, 500)
+      return
+    }
+
+    // No response: Drupal was unreachable or timed out.
+    setResponseStatus(event, 503)
+    setResponseHeader(event, 'retry-after', BACKEND_RETRY_AFTER_SECONDS)
   },
 })

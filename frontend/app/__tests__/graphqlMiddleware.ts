@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'vitest'
 import graphqlMiddlewareConfig from './../../server/graphqlMiddleware.serverOptions'
 import type { H3Event } from 'h3'
+import { FetchError } from 'ofetch'
+import {
+  BACKEND_FETCH_TIMEOUT_MS,
+  BACKEND_RETRY_AFTER_SECONDS,
+} from './../../server/helpers'
 
 describe('The nuxt-graphql-middleware config', () => {
   test('Passes appropriate incoming headers', async () => {
@@ -108,5 +113,45 @@ describe('The nuxt-graphql-middleware config', () => {
     graphqlMiddlewareConfig.onServerResponse!(event, createResponse([]))
 
     expect(headers.has('set-cookie')).toBe(false)
+  })
+
+  test('Bounds every request to Drupal with the backend timeout', async () => {
+    const event = {
+      node: { req: { headers: {} } },
+    } as unknown as H3Event
+
+    const withEvent = await graphqlMiddlewareConfig.serverFetchOptions!(event)
+    const withoutEvent = await graphqlMiddlewareConfig.serverFetchOptions!(
+      undefined as unknown as H3Event,
+    )
+
+    expect(withEvent.timeout).toBe(BACKEND_FETCH_TIMEOUT_MS)
+    expect(withoutEvent.timeout).toBe(BACKEND_FETCH_TIMEOUT_MS)
+  })
+
+  function respondToError(error: FetchError) {
+    const headers = new Map<string, unknown>()
+    const res = {
+      statusCode: 200,
+      statusMessage: '',
+      setHeader: (name: string, value: unknown) => headers.set(name, value),
+    }
+    const event = { node: { req: { headers: {} }, res } } as unknown as H3Event
+    graphqlMiddlewareConfig.onServerError!(event, error, null, null, null)
+    return { status: res.statusCode, retryAfter: headers.get('retry-after') }
+  }
+
+  test('Answers 503 with Retry-After when Drupal gives no response', () => {
+    expect(respondToError(new FetchError('timeout'))).toEqual({
+      status: 503,
+      retryAfter: BACKEND_RETRY_AFTER_SECONDS,
+    })
+  })
+
+  test('Answers 500 when Drupal responds with an error', () => {
+    const error = Object.assign(new FetchError('server error'), {
+      response: new Response('', { status: 502 }),
+    })
+    expect(respondToError(error).status).toBe(500)
   })
 })
