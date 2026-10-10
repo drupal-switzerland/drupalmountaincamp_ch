@@ -232,6 +232,10 @@ const config: Config = {
   ],
   corePlugins: {
     textOpacity: false,
+    // Our own .container (assets/css/components/container.css) is fluid up
+    // to xl. Tailwind's adds a max-width that jumps at every breakpoint, which
+    // left the content narrower than the page between breakpoints.
+    container: false,
   },
 }
 
