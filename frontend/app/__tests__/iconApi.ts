@@ -1,5 +1,160 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 
+// Reference copies of the regex implementation that replaceColors and
+// extractSymbol replaced. They are super-linear, which is fine for a test.
+/* eslint-disable sonarjs/super-linear-regex */
+function legacyReplaceColors(markup = '') {
+  return markup
+    .replaceAll(
+      /(?<=<\b[^<>]*)\s*\bfill=(["'](?!none)).*?\1/g,
+      ` fill="currentColor"`,
+    )
+    .replaceAll(
+      /(?<=<\b[^<>]*)\s*\bstroke=(["'](?!none)).*?\1/g,
+      ` stroke="currentColor"`,
+    )
+}
+
+function legacyExtractSymbol(source = '') {
+  const [, parsedAttributes, content] =
+    source.match(/<svg(.*?)>(.*?)<\/svg>/is) || []
+  const matches = (parsedAttributes || '').match(
+    /([\w-:]+)(=)?("[^<>"]*"|'[^<>']*'|[\w-:]+)/g,
+  )
+  const attributes =
+    matches?.reduce<Record<string, string>>((acc, attribute) => {
+      const [name, unformattedValue] = attribute.split('=')
+      if (name) {
+        acc[name] = unformattedValue
+          ? unformattedValue.replace(/['"]/g, '')
+          : 'true'
+      }
+      return acc
+    }, {}) || {}
+  return { attributes, content: content || '' }
+}
+/* eslint-enable sonarjs/super-linear-regex */
+
+const LINEAR_TIME_BUDGET_MS = 1000
+const RANDOM_SEED = 0x5eed
+const RANDOM_CASES = 5000
+const MAX_RANDOM_TOKENS = 40
+const RANDOM_TOKENS = [
+  '<',
+  '>',
+  '</',
+  '/>',
+  '<svg',
+  '<SVG',
+  '</svg>',
+  'svg',
+  'path',
+  'g',
+  'a',
+  'x',
+  '-',
+  '_',
+  '=',
+  ' ',
+  '  ',
+  '\t',
+  '\n',
+  '\r',
+  '\u00a0',
+  '\u2028',
+  '"',
+  "'",
+  'fill=',
+  ' fill=',
+  'stroke=',
+  ' stroke=',
+  'fill="',
+  "stroke='",
+  'none',
+  'red',
+  '"none"',
+  'data-fill=',
+  'fill-rule=',
+  'viewBox="0 0 1 1"',
+]
+
+function mulberry32(seed: number) {
+  let state = seed
+  return () => {
+    state = (state + 0x6d2b79f5) | 0
+    let t = Math.imul(state ^ (state >>> 15), 1 | state)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function randomMarkup(random: () => number) {
+  const length = Math.floor(random() * MAX_RANDOM_TOKENS)
+  let markup = ''
+  for (let i = 0; i < length; i++) {
+    markup += RANDOM_TOKENS[Math.floor(random() * RANDOM_TOKENS.length)]
+  }
+  return markup
+}
+
+function randomCases() {
+  const random = mulberry32(RANDOM_SEED)
+  return Array.from({ length: RANDOM_CASES }, () => randomMarkup(random))
+}
+
+const ADVERSARIAL_COLOR_CASES = [
+  '<a fill="<b fill=\'red\'" x>',
+  '<a fill="<b fill=\'red\'">',
+  '<a fill="<b stroke=\'red\'" stroke="blue">',
+  '<a stroke="<b fill=\'red\'" fill="blue">',
+  '<a fill="x<b fill="red">',
+  '<a fill=\'x<b fill="red" y\'>',
+  '<a fill="<b>" fill="red">',
+  '<a fill="<b" fill="red">',
+  '<a fill="<1" fill="red">',
+  '<a fill=">" fill="red">',
+  '<a fill="x>" <b fill="red">',
+  '<a fill="red" fill="red" fill="red">',
+  '<a fill="red"fill="red"stroke="red"stroke="red">',
+  '<a fill="\'" fill=\'"\' fill="\'\'">',
+  '<a fill=\'"fill="red"\'>',
+  '<a fill=" fill=\'red\' " stroke=" stroke=\'red\' ">',
+  '<a stroke="fill=\'red\'">',
+  '<a fill="stroke=\'red\'">',
+  '<a fill="<b fill=\'<c fill=&quot;red&quot;\'">',
+  '<<a fill="red">',
+  '<a <b fill="red">',
+  '<a> fill="red" <b fill="red">',
+  '<a fill="red\n" fill="blue">',
+  '<a fill="none" fill="red">',
+  '<a\u00a0fill="red">',
+  '<a\u2028fill="red">',
+]
+
+const ADVERSARIAL_SYMBOL_CASES = [
+  '<svg a="1">x</svg>',
+  '<svg<svg a="1">x</svg>',
+  '<svg a=">">x</svg>',
+  '<svgx a="1">x</svg>',
+  '<svg>x</SVG><svg>y</svg>',
+  '<svg a="1">x</svg',
+  '<svg\na="1"\n>\nx\n</svg>',
+  "<SvG a='1'>x</sVg>",
+  '<svg a="1" b c=d>x</svg>',
+]
+
+function legacyReplaceColorsSamples() {
+  return [...EXISTING_COLOR_CASES, ...ADVERSARIAL_COLOR_CASES, ...randomCases()]
+}
+
+function legacyExtractSymbolSamples() {
+  return [
+    ...EXISTING_SYMBOL_CASES,
+    ...ADVERSARIAL_SYMBOL_CASES,
+    ...randomCases(),
+  ]
+}
+
 type IconApi = typeof import('../../server/api/icon/[...params]')
 
 let replaceColors: IconApi['replaceColors']
@@ -9,6 +164,69 @@ let extractSymbol: IconApi['extractSymbol']
 beforeAll(async () => {
   ;({ replaceColors, extractSymbol } =
     await import('../../server/api/icon/[...params]'))
+})
+
+const EXISTING_COLOR_CASES = [
+  '<path fill="#ff0000" stroke=\'red\' d="M0 0"/>',
+  '<path fill="none" stroke="none" d="M0 0"/>',
+  '<text>fill="red"</text>',
+  "<path fill='none'/>",
+  '<path fill="nonzero"/>',
+  '<path fill="none2"/>',
+  '<path fill=""/>',
+  '<path fill="a\'b"/>',
+  '<path\n  fill="red"/>',
+  '<path fill=red/>',
+  '<path fill="re\nd"/>',
+  '<path fill-rule="evenodd"/>',
+  '<path data-fill="red"/>',
+  '<path xfill="red"/>',
+  '<fill="red"/>',
+  '</g fill="red">',
+  '<g>x fill="red"</g>',
+  '<a fill="x>" fill="red">',
+  'p fill="<b" fill="red">',
+  '<a fill="x>" stroke="red">',
+  "<path stroke='none'/>",
+  "<path stroke='#000'/>",
+  '<path stroke-width="2"/>',
+  '<path\tstroke="red"/>',
+]
+
+const EXISTING_SYMBOL_CASES = [
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden>\n<path d="M0 0"/>\n</svg>',
+  '<SVG\n  viewBox=\'0 0 8 8\'\n  data-x="1">\n<g/></SVG>',
+  'x<svg a="1"><svg b="2"></svg><p/></svg>',
+  '<svg></svg>',
+  '',
+  '<div>not an svg</div>',
+  '<svg viewBox="0 0 1 1">',
+  '<svg</svg>',
+]
+
+describe('equivalence with the legacy regex implementation', () => {
+  it('replaceColors matches the legacy output', () => {
+    const mismatches = legacyReplaceColorsSamples().filter(
+      (markup) => replaceColors(markup) !== legacyReplaceColors(markup),
+    )
+    expect(mismatches).toEqual([])
+  })
+
+  it('extractSymbol matches the legacy output', () => {
+    const mismatches = legacyExtractSymbolSamples().filter(
+      (source) =>
+        JSON.stringify(extractSymbol(source)) !==
+        JSON.stringify(legacyExtractSymbol(source)),
+    )
+    expect(mismatches).toEqual([])
+  })
+
+  it('replaceColors stays linear on long adversarial input', () => {
+    const markup = '<a' + ' '.repeat(50_000) + 'fill="' + '<b '.repeat(50_000)
+    const started = performance.now()
+    replaceColors(markup)
+    expect(performance.now() - started).toBeLessThan(LINEAR_TIME_BUDGET_MS)
+  })
 })
 
 describe('replaceColors', () => {

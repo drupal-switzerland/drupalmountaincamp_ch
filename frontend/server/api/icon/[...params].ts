@@ -11,55 +11,98 @@ import { MAX_AGE } from '../../helpers'
 
 const config = useRuntimeConfig()
 
-const TAG_START = /<(?=\w)/g
-const TAG_BOUNDARY_OR_FILL = /[<>]|(?<!\s)\s*\bfill=(["'])(?!none).*?\1/g
-const TAG_BOUNDARY_OR_STROKE = /[<>]|(?<!\s)\s*\bstroke=(["'])(?!none).*?\1/g
+const WORD_CHAR = /\w/
+const WHITESPACE = /\s/
+const LINE_TERMINATOR = /[\n\r\u2028\u2029]/
+const QUOTES = new Set(['"', "'"])
+const SKIPPED_VALUE = 'none'
 
-function lastTagBoundary(text: string) {
-  return Math.max(text.lastIndexOf('<'), text.lastIndexOf('>'))
+const isWordChar = (char: string | undefined) =>
+  char !== undefined && WORD_CHAR.test(char)
+const isWhitespace = (char: string | undefined) =>
+  char !== undefined && WHITESPACE.test(char)
+
+/**
+ * Returns the end of a `\s*\bname=(["'])(?!none).*?\1` match at start, or -1.
+ */
+function attributeMatchEnd(markup: string, start: number, name: string) {
+  let nameStart = start
+  while (isWhitespace(markup[nameStart])) {
+    nameStart++
+  }
+  if (nameStart === start && isWordChar(markup[start - 1])) {
+    return -1
+  }
+  if (!markup.startsWith(name + '=', nameStart)) {
+    return -1
+  }
+  const quoteIndex = nameStart + name.length + 1
+  const quote = markup[quoteIndex]
+  if (!quote || !QUOTES.has(quote)) {
+    return -1
+  }
+  if (markup.startsWith(SKIPPED_VALUE, quoteIndex + 1)) {
+    return -1
+  }
+  for (let i = quoteIndex + 1; i < markup.length; i++) {
+    if (markup[i] === quote) {
+      return i + 1
+    }
+    if (LINE_TERMINATOR.test(markup[i]!)) {
+      return -1
+    }
+  }
+  return -1
 }
 
 /**
- * Replaces attribute matches inside opening tags: after a "<" followed by a
- * word character, with no "<" or ">" in between. A quoted value may contain
- * "<" or ">", which then decides whether the scan is still inside a tag.
+ * Replaces `name="…"` attributes inside opening tags with the replacement.
+ *
+ * Mirrors `/(?<=<\b[^<>]*)\s*\bname=(["'](?!none)).*?\1/g` in one forward
+ * pass: a position is inside an opening tag when the last "<" or ">" of the
+ * original markup before it is a "<" followed by a word character. Replaced
+ * text is never examined again. Starts inside a whitespace run are skipped:
+ * they fail exactly when the start of the run failed.
  */
-function replaceInOpeningTags(
+function replaceAttributeInOpeningTags(
   markup: string,
-  boundaryOrAttribute: RegExp,
+  name: string,
   replacement: string,
 ) {
   let output = ''
   let copiedUpTo = 0
-  TAG_START.lastIndex = 0
+  let lastBoundary = -1
+  let position = 0
 
-  while (TAG_START.exec(markup)) {
-    boundaryOrAttribute.lastIndex = TAG_START.lastIndex
-    let match = boundaryOrAttribute.exec(markup)
-    while (match && lastTagBoundary(match[0]) === -1) {
-      output += markup.slice(copiedUpTo, match.index) + replacement
-      copiedUpTo = boundaryOrAttribute.lastIndex
-      match = boundaryOrAttribute.exec(markup)
-    }
+  while (position < markup.length) {
+    const inOpeningTag =
+      markup[lastBoundary] === '<' && isWordChar(markup[lastBoundary + 1])
+    const startsWhitespaceRun = !isWhitespace(markup[position - 1])
+    const matchEnd =
+      inOpeningTag && startsWhitespaceRun
+        ? attributeMatchEnd(markup, position, name)
+        : -1
 
-    if (!match) {
-      break
+    const nextPosition = matchEnd === -1 ? position + 1 : matchEnd
+    if (matchEnd !== -1) {
+      output += markup.slice(copiedUpTo, position) + replacement
+      copiedUpTo = matchEnd
     }
-    const isAttribute = match[0].length > 1
-    if (isAttribute) {
-      output += markup.slice(copiedUpTo, match.index) + replacement
-      copiedUpTo = boundaryOrAttribute.lastIndex
+    for (let i = position; i < nextPosition; i++) {
+      if (markup[i] === '<' || markup[i] === '>') {
+        lastBoundary = i
+      }
     }
-    TAG_START.lastIndex = match.index + lastTagBoundary(match[0])
+    position = nextPosition
   }
 
   return output + markup.slice(copiedUpTo)
 }
 
 export function replaceColors(markup = '') {
-  return replaceInOpeningTags(
-    replaceInOpeningTags(markup, TAG_BOUNDARY_OR_FILL, ' fill="currentColor"'),
-    TAG_BOUNDARY_OR_STROKE,
+  return replaceAttributeInOpeningTags(
+    replaceAttributeInOpeningTags(markup, 'fill', ' fill="currentColor"'),
+    'stroke',
     ' stroke="currentColor"',
   )
 }
@@ -70,17 +113,22 @@ type ParsedSymbol = {
 }
 
 function splitSvg(source: string) {
-  const openingTag = /<svg([^>]*)>/i.exec(source)
-  if (!openingTag) {
+  const openingTagStart = source.search(/<svg/i)
+  if (openingTagStart === -1) {
     return {}
   }
-  const rest = source.slice(openingTag.index + openingTag[0].length)
+  const attributesStart = openingTagStart + '<svg'.length
+  const openingTagEnd = source.indexOf('>', attributesStart)
+  if (openingTagEnd === -1) {
+    return {}
+  }
+  const rest = source.slice(openingTagEnd + 1)
   const closingTagIndex = rest.search(/<\/svg>/i)
   if (closingTagIndex === -1) {
     return {}
   }
   return {
-    parsedAttributes: openingTag[1],
+    parsedAttributes: source.slice(attributesStart, openingTagEnd),
     content: rest.slice(0, closingTagIndex),
   }
 }
