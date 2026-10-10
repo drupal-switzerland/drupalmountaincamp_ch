@@ -1,5 +1,6 @@
 <template>
   <nav
+    :aria-label="$texts('mainNavigation', 'Main')"
     class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-4 lg:pl-10"
   >
     <ul
@@ -56,6 +57,7 @@ import { isActivePath } from '~/helpers/navigation'
 const data = await useInitData()
 const menuLinks = data.value.mainMenuLinks
 const route = useRoute()
+const { $texts } = useEasyTexts()
 
 // An open phone submenu covers every other item, so they leave the tab order.
 const phoneSubmenuOpen = usePhoneSubmenuOpen()

@@ -23,6 +23,7 @@ fragment easyTexts on TextsLoader {
   latestNews__all: getText(key: "all", context: "latestNews", default: "All news")
   latestNews__title: getText(key: "title", context: "latestNews", default: "News")
   layout__skipToContent: getText(key: "skipToContent", context: "layout", default: "Skip to content")
+  mainNavigation: getText(key: "mainNavigation", default: "Main")
   menu__back: getText(key: "back", context: "menu", default: "Back")
   menu__submenu: getText(key: "submenu", context: "menu", default: "submenu")
   menu: getText(key: "menu", default: "Menu")
