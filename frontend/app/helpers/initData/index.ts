@@ -23,14 +23,14 @@ function getTranslations(
   return Object.entries(
     (v.translations || {}) as Record<
       string,
-      string | { singular?: string; plural?: string }
+      string | { singular?: string; plural?: string } | null
     >,
   ).reduce<Record<string, string | [string, string]>>(
     (acc, [fullKey, value]) => {
       const keyWithDots = fullKey.replace('__', '.')
       if (typeof value === 'string') {
         acc[keyWithDots] = value
-      } else if (typeof value === 'object' && value.plural && value.singular) {
+      } else if (value?.plural && value.singular) {
         acc[keyWithDots] = [value.singular, value.plural]
       }
       return acc
