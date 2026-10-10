@@ -4,5 +4,8 @@ description: 'Provides a starting point for blökkli projects.'
 package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:
+  - allowed_formats:allowed_formats
+  - bca:bca
   - paragraphs_blokkli:paragraphs_blokkli
+  - paragraphs_blokkli:paragraphs_blokkli_search
   - search_api:search_api
