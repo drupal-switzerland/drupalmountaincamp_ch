@@ -41,6 +41,22 @@ export function canonicalPageQuery(query: LocationQuery): LocationQuery | null {
   return canonical.page === query.page ? null : canonical
 }
 
+/**
+ * Absolute canonical URL of one page of a paginated list. Page 1 has no
+ * `?page=` parameter, matching canonicalPageQuery().
+ */
+export function canonicalPageUrl(
+  origin: string,
+  path: string,
+  page: number,
+): string {
+  const url = new URL(path, origin)
+  if (page > 1) {
+    url.searchParams.set('page', String(page))
+  }
+  return url.href
+}
+
 export function totalPages(total: number, pageSize: number): number {
   return Math.max(1, Math.ceil(total / pageSize))
 }

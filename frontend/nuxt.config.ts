@@ -7,6 +7,7 @@ import blokkliDrupal from '@blokkli/editor/drupal'
 import { runtimeConfig } from './config/runtimeConfig'
 import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
+import { SITE_TITLE } from './app/helpers/site'
 
 const ONE_YEAR = 31_536_000
 const ONE_DAY = 60 * 60 * 24
@@ -33,7 +34,7 @@ export default defineNuxtConfig({
     rootId: 'nuxt-root',
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: 'Mountain Camp 2027, Davos, Switzerland',
+      title: SITE_TITLE,
       htmlAttrs: {
         lang: 'en',
       },
@@ -227,12 +228,14 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // Build assets have content-hashed file names. Nuxt's own, more specific
+    // /_nuxt/builds/** rules keep the unhashed latest.json short-lived.
     '/_nuxt/**': {
       cache: {
         maxAge: ONE_YEAR,
       },
       headers: {
-        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR}`,
+        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR},immutable`,
       },
     },
     '/fonts/**': {
