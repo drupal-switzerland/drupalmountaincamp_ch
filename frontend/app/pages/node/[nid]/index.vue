@@ -33,7 +33,7 @@ const query = await useRouteQuery(nuxtRoute.path, () =>
 
 const pageType = computed(() => {
   const route = query?.value?.route as EntityUrlFragment
-  return route.entityGlobal?.__typename
+  return route?.entityGlobal?.__typename
 })
 
 const { entity: node } = await useDrupalRoute<

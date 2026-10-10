@@ -8,7 +8,7 @@
       <nav
         class="breadcrumb"
         :class="{ 'is-hero': variant === 'hero' }"
-        aria-label="breadcrumbs"
+        :aria-label="$texts('breadcrumb.label', 'Breadcrumb')"
       >
         <ol
           itemscope
@@ -62,6 +62,7 @@ const props = defineProps<{
   currentTitle?: string
 }>()
 
+const { $texts } = useEasyTexts()
 const scroller = ref<HTMLElement | null>(null)
 
 const linksComputed = computed(() => {

@@ -1,6 +1,7 @@
 import type { FetchResponse } from 'ofetch'
 import type { H3Event } from 'h3'
 import { MAX_AGE } from '../helpers'
+import { hasDrupalSessionCookie } from '../../app/helpers/drupalSession'
 
 function extractCacheTags(
   response: FetchResponse<unknown>,
@@ -44,9 +45,7 @@ export function extractCacheability(
   response: FetchResponse<unknown>,
   event: H3Event,
 ) {
-  const hasSessionCookie = (event.node.req.headers.cookie || '').includes(
-    'SSESS',
-  )
+  const hasSessionCookie = hasDrupalSessionCookie(event.node.req.headers.cookie)
   // These tags are provided by the nuxt_multi_cache module and used to
   // cache the initData in the cache of nuxt_multi_cache in the frontend.
   const tagsNuxt = extractCacheTags(response, 'x-nuxt-cache-tags')

@@ -44,6 +44,7 @@ import {
   parsePageParam,
   totalPages,
 } from '~/helpers/pagination'
+import { SITE_NAME, shareMeta } from '~/helpers/site'
 
 const PAGE_SIZE = 10
 
@@ -143,32 +144,38 @@ watch(pressReleases, async () => {
 
 // The overview has no Drupal metatags of its own; same pattern as node pages.
 const origin = useSiteOrigin()
+const pageTitle = computed(() => {
+  const title = unref(entity)?.title || 'News'
+  const page =
+    currentPage.value > 1
+      ? ` – ${$texts('pagination.page', 'Page')} ${currentPage.value}`
+      : ''
+  return `${title}${page}`
+})
+const share = computed(() =>
+  shareMeta({
+    origin: origin.value,
+    url: canonicalPageUrl(origin.value, nuxtRoute.path, currentPage.value),
+    title: pageTitle.value,
+    description: $texts(
+      'news.metaDescription',
+      'News and updates from Drupal Mountain Camp 2027 in Davos',
+    ),
+  }),
+)
 useHead({
-  title: () => {
-    const title = unref(entity)?.title || 'News'
-    const page =
-      currentPage.value > 1
-        ? ` – ${$texts('pagination.page', 'Page')} ${currentPage.value}`
-        : ''
-    return `${title}${page} | Mountain Camp`
-  },
-  link: [
-    {
-      rel: 'canonical',
-      href: () =>
-        canonicalPageUrl(origin.value, nuxtRoute.path, currentPage.value),
-    },
-  ],
-  meta: [
-    {
-      name: 'description',
-      content: () =>
-        $texts(
-          'news.metaDescription',
-          'News and updates from Drupal Mountain Camp 2027 in Davos',
-        ),
-    },
-  ],
+  title: () => `${pageTitle.value} | ${SITE_NAME}`,
+  link: [{ rel: 'canonical', href: () => share.value.ogUrl }],
+})
+useSeoMeta({
+  description: () => share.value.ogDescription,
+  ogSiteName: () => share.value.ogSiteName,
+  ogType: () => share.value.ogType,
+  ogUrl: () => share.value.ogUrl,
+  ogTitle: () => share.value.ogTitle,
+  ogDescription: () => share.value.ogDescription,
+  ogImage: () => share.value.ogImage,
+  twitterCard: () => share.value.twitterCard,
 })
 
 setBreadcrumbLinksFromRoute(query.value ?? null)

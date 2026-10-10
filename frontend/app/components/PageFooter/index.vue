@@ -199,8 +199,8 @@ const BUNDLED_MEDIA_PARTNERS = [
     'The DropTimes',
     'https://www.thedroptimes.com/',
     '/images/logos/droptimes-logo.png',
-    1167,
-    505,
+    400,
+    173,
   ),
   bundledPartner(
     'The Weekly Drop',

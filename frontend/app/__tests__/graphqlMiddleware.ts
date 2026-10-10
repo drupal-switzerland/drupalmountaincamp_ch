@@ -41,13 +41,14 @@ describe('The nuxt-graphql-middleware config', () => {
       referer: 'https://drupalmountaincamp.ch/news',
       'user-agent': 'Vitest',
       cookie: 'SSESSabc=def',
-      authorization: 'Basic abc',
     }
     const event = {
       node: {
         req: {
           headers: {
             ...forwarded,
+            // Nothing at Drupal reads it, and the cache decision ignores it.
+            authorization: 'Basic abc',
             host: 'attacker.example',
             'content-length': '999',
             'x-middleware-subrequest': '1',
