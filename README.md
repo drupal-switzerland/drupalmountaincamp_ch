@@ -1,123 +1,106 @@
-# Getting Started
+# Drupal Mountain Camp
 
-Getting up and running with the blökkli starterkit is straightforward. You can quickly spin up a demo site on your local
-machine.
+Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
+[DDEV](https://ddev.com/) and hosted on Lagoon.
 
-## Installation Requirements
+- `.lando.yml` and `lando/` are legacy and unmaintained; use DDEV.
 
-You need to install either [DDEV](https://ddev.com/) or [Lando](https://lando.dev/) in order to run the starterkit.
+## Requirements
 
-### DDEV
+- [DDEV](https://ddev.readthedocs.io/en/stable/users/install/ddev-installation/)
+  and `mkcert -install` for local HTTPS.
 
-1. Follow the instruction to install DDEV on your machine (if not already installed):
-   https://ddev.readthedocs.io/en/stable/users/install/ddev-installation/
-2. After installing DDEV, check if the `ddev` command is working in your terminal
-3. Make sure you have run `mkcert --install` to set up local SSL certificates
+## Local setup
 
-You are ready to use the automated setup script in the next section.
+- `ddev start`: web container (PHP 8.3, nginx, Node and bun), MariaDB,
+  Elasticsearch and memcached. The site is <https://mountaincamp.ddev.site>.
+- `ddev composer install`: Drupal dependencies into `drupal/vendor`.
+- `ddev bun install`: frontend dependencies into `frontend/node_modules`.
+- Database, one of:
+  - `ddev init-db`: drops the local database, imports
+    `drupal/dump/init.sql.gz` and runs `drush deploy`.
+  - `ddev copy-live-to-self` or `ddev copy-stage-to-self`: pulls a Lagoon
+    environment (needs Lagoon access).
+- After pulling new code: `ddev drush deploy` (updb, cim, cr and deploy
+  hooks), or `ddev drush cim -y` for configuration only.
+- `ddev drush uli`: one-time admin login link.
+- Images work without rokka: uploads go to `public://`.
 
-### Lando
+## Frontend dev server
 
-1. On OSX, follow the documentation: https://docs.lando.dev/install/macos.html
-2. On Linux, follow the documentation: https://docs.lando.dev/install/linux.html
-3. On Windows, install Lando inside a WSL2 enabled distro: https://docs.lando.dev/install/windows.html
-4. As soon as the lando command is working in your terminal
+- In the container: `ddev frontend` runs `bun run dev` in `frontend/` on port
+  3000; nginx serves it at <https://mountaincamp.ddev.site> and sends Drupal
+  paths (`/admin`, `/user`, `/graphql`, files) to Drupal.
+- On the host, set the backend variables yourself:
 
-You are ready to use the automated setup script in the next section.
+  ```bash
+  cd frontend
+  NUXT_BACKEND_URL=http://127.0.0.1:<web port> \
+  DRUPAL_GRAPHQL_TOKEN=local-development \
+  NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN=local-development \
+  NUXT_REQUEST_HOST=localhost:3000 \
+  node node_modules/.bin/nuxi dev
+  ```
 
-## Automated Setup Script
+  - `<web port>` is the host port mapped to `web:80` in `ddev describe`.
+  - `NUXT_BACKEND_URL` must be the plain `http://` port: the `https://` URL
+    fails on the local certificate.
+  - Without `DRUPAL_GRAPHQL_TOKEN=local-development`, Drupal rejects the
+    GraphQL requests and every page fails to load.
+  - Inside the container `.ddev/config.yaml` sets these variables already.
 
-This script setups up a working local environment with Drupal and Nuxt frontend in a few minutes.
+## Tests
 
-It is recommended to create a free account on [rokka.io](https://rokka.io/dashboard/#/signup) and get your API key to
-use the image CDN.
-During the setup process, you will be asked to provide the API key and the organisation name.
+- Frontend: `ddev bun run test:ci` (vitest). CI runs the same in
+  `.github/workflows/frontend-tests.yml`.
+- Backend:
+  `ddev exec -d /var/www/html/drupal env -u SIMPLETEST_BASE_URL vendor/bin/phpunit`.
+  - `env -u SIMPLETEST_BASE_URL` makes phpunit use the `http://localhost`
+    fallback in `drupal/phpunit.xml`, which reaches Drupal from inside the
+    container. A base URL from your shell (often the `https://` site URL)
+    breaks the ExistingSite tests.
+  - Pass a path to run part of the suite, e.g.
+    `docroot/modules/custom/blokkli_starterkit/tests/src/Unit`.
 
-### Setup rokka.io for image handling
+## Lint
 
-All image handling, processing and optimization is done by rokka.io.
-You can create a free account and set up a new organization at https://rokka.io/dashboard/#/signup.
+- Frontend: `ddev bun run lint`, `ddev bun run prettier` and
+  `ddev bun run typecheck` (what `scripts/ci/lint-tests.sh` runs).
+- Backend: `ddev exec vendor/bin/phpcs` and `ddev exec vendor/bin/phpstan`
+  (run from `drupal/`).
 
-You will get an API key and an organisation name.
+## Deploy
 
-### Run the installer
+- Lagoon builds on push to `prod` (`.lagoon.yml`, `docker-compose.yml`).
+- Post-rollout on the cli container: `drush updb`, `drush cr`, `drush cim`,
+  `drush cr`, then `drush search-api:index`.
+- Configuration lives in `drupal/config/default`; export changes with
+  `ddev drush cex` and commit only the files you meant to change.
 
-Start script and provided the desired setup type (ddev or lando).
+## DDEV commands
 
-```bash
-./scripts/local/init-project.sh (ddev | lando)
-```
+| Command                                  | What it does                                     |
+| :--------------------------------------- | :----------------------------------------------- |
+| `ddev frontend`                          | Start the Nuxt dev server (`bun run dev`)        |
+| `ddev bun …` / `ddev npm …`              | Run bun or npm in `frontend/`                    |
+| `ddev f`                                 | Shell in `frontend/`                             |
+| `ddev phpunit …`                         | Run phpunit in `drupal/`                         |
+| `ddev init-db`                           | Replace the database with the bundled dump       |
+| `ddev copy-live-to-self`                 | Copy the live database to local                  |
+| `ddev copy-stage-to-self`                | Copy the stage database to local                 |
+| `ddev regenerate-nginx-config`           | Regenerate the nginx routing                     |
+| `ddev drupal-check-and-update-locale`    | Check and update translations                    |
+| `ddev drupal-reindex-search-api-indices` | Re-index Search API                              |
+| `ddev drupal-composer-update-info`       | List outdated Composer packages                  |
 
-This will:
+## Routing
 
-- Set up the necessary `.env` files.
-- Run `composer install` within the container.
-- Import demo database.
-- Upload some demo images to rokka.io and set up the image styles.
-- Install all frontend dependencies with a clean state using `bun install`.
-- Rebuild all styles.
-- Ask you to start the frontend in development mode.
-
-After running the script, you can log in in the Drupal backend using one of the URLs:
-
-- https://starterkit.ddev.site/user (for DDEV)
-- https://starterkit.lndo.site/user (for Lando)
-
-with the credentials generated during installation. Defaults to `admin` / `password`.
-
-Now you can visit the frontpage and start building your first page with blökkli.
-
-## Regular DDEV commands
-
-| Command         | Description                                                                                                                       |
-|:----------------|:----------------------------------------------------------------------------------------------------------------------------------|
-| `ddev launch`   | Opens the site in a new browser window.<br/>Note: You won't see the Nuxt frontend unless you have started it with `ddev frontend` |
-| `ddev frontend` | Start the frontend. Same as running `ddev bun run dev`.                                                                           |
-| `ddev restart`  | Restart ddev.                                                                                                                     |
-| `ddev poweroff` | Powers off ddev.                                                                                                                  |
-
-## Scripts
-
-| Script description                      | DDEV                                     | Lando                                     |
-|:----------------------------------------|:-----------------------------------------|:------------------------------------------|
-| Copy live to self                       | `ddev copy-live-to-self`                 | `lando drupal:copy-live-to-self`          |
-| Copy stage to self                      | `ddev copy-stage-to-self`                | `lando drupal:copy-stage-to-self`         |
-| Regenerates the Nginx configurations    | `ddev regenerate-nginx-config`           | `lando regenerate-nginx-config`           |
-| Check and update locales (translations) | `ddev drupal-check-and-update-locale`    | `lando drupal:check-and-update-locale`    |
-| Re-index Search API indices             | `ddev drupal-reindex-search-api-indices` | `lando drupal:reindex-search-api-indices` |
-| Composer Update Info                    | `ddev drupal-composer-update-info`       | `lando drupal:composer-update-info`       |
-
-## Routing and Nginx Configuration
-
-Both Drupal and the frontend app are accessible on the same domain:
-https://starterkit.ddev.site (for DDEV) or https://starterkit.lndo.site (for Lando).
-
-The requests are routed to the correct app. For example, `/de` is routed to the frontend and `/admin` is routed to
-Drupal.
-
-This means that if the frontend is not running, `exped.lndo.site` will
-automatically fall back to the Drupal backend. Drupal is available via `/admin`.
-
-### Add Drupal routes in the frontend
-
-#### Step 1: Add routes
-
-Add the routes you would you like to be handled in drupal inside `scripts/nginx-conf-generator/config/base.yml` file.
-
-#### Step 2: Regenerate Nginx configuration
-
-##### Using a script
-
-Run `ddev regenerate-nginx-config` (for DDEV) or `lando regenerate-nginx-config` (for Lando)
-
-##### Manually
-
-1. SSH into the container using `ddev ssh` (for DDEV) or `lando ssh -s frontend` (for Lando)
-2. Run `npm ci && npm start`.
-
-#### Step 3: Restart/Reload nginx
-
-Simply run `ddev restart` (for DDEV) or `lando reload` (for Lando)
+- Drupal and the frontend share <https://mountaincamp.ddev.site>; nginx sends
+  each path to the right app (`.ddev/nginx_full/nginx-site.conf`).
+- If the frontend isn't running, frontend paths fall back to Drupal.
+- To send another path to Drupal: add it to
+  `scripts/nginx-conf-generator/config/base.yml`, run
+  `ddev regenerate-nginx-config`, then `ddev restart`.
 
 ## AI modules (drupal/ai + amazee.ai provider)
 

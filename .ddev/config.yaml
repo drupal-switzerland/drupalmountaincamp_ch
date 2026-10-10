@@ -31,9 +31,8 @@ web_environment:
     - NUXT_REQUEST_HOST=mountaincamp.ddev.site
     - DRUPAL_GRAPHQL_TOKEN=local-development
     - NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN=local-development
-    - NUXT_ELASTICSEARCH_URL=http://elasticsearch:9200
     - SIMPLETEST_DB=mysql://db:db@db/db
-nodejs_version: "20"
+nodejs_version: "24"
 corepack_enable: true
 
 # Key features of DDEV's config.yaml:

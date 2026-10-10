@@ -82,6 +82,7 @@ export default defineNuxtConfig({
       './app/components/**/*.{js,ts,vue}',
       './app/pages/**/*.{js,ts,vue}',
       './app/composables/**/*.{js,ts,vue}',
+      './app/layouts/**/*.{js,ts,vue}',
       './app/*.{js,ts,vue}',
     ],
     generators: [
@@ -202,6 +203,8 @@ export default defineNuxtConfig({
   },
 
   svgIconSprite: {
+    // Every symbol is decorative; controls get their name from text.
+    ariaHidden: true,
     sprites: {
       default: {
         importPatterns: ['./app/assets/symbols/**/*.svg'],
