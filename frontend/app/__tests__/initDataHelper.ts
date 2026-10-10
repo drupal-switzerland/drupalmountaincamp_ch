@@ -80,6 +80,7 @@ describe('buildInitData', () => {
   it.each([
     ['only a singular', { singular: '1 result' }],
     ['only a plural', { plural: '@count results' }],
+    ['no value', null],
   ])('leaves out a text with %s', (_, value) => {
     const { translations } = buildInitData({
       translations: { news__results: value, news__title: 'News' },
