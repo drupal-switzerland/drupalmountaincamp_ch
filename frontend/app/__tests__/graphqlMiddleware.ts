@@ -32,6 +32,71 @@ describe('The nuxt-graphql-middleware config', () => {
     expect(result.headers?.cookie).toEqual('my_cookie')
   })
 
+  test('Forwards only the allow-listed request headers to Drupal', async () => {
+    const forwarded = {
+      'x-forwarded-for': '203.0.113.7',
+      'x-forwarded-proto': 'https',
+      'x-forwarded-port': '443',
+      'x-real-ip': '203.0.113.7',
+      referer: 'https://drupalmountaincamp.ch/news',
+      'user-agent': 'Vitest',
+      cookie: 'SSESSabc=def',
+      authorization: 'Basic abc',
+    }
+    const event = {
+      node: {
+        req: {
+          headers: {
+            ...forwarded,
+            host: 'attacker.example',
+            'content-length': '999',
+            'x-middleware-subrequest': '1',
+            'x-custom': 'value',
+          },
+        },
+      },
+    } as unknown as H3Event
+
+    const result = await graphqlMiddlewareConfig.serverFetchOptions!(event)
+    const headers = { ...(result.headers as Record<string, string>) }
+    delete headers['x-drupal-graphql-token']
+
+    expect(headers).toEqual(forwarded)
+  })
+
+  test("Sends the configured GraphQL token, never a visitor's", async () => {
+    const config = useRuntimeConfig() as { drupalGraphqlToken?: string }
+    const previous = config.drupalGraphqlToken
+    config.drupalGraphqlToken = 'from-the-server-config'
+    const event = {
+      node: {
+        req: { headers: { 'x-drupal-graphql-token': 'from-the-visitor' } },
+      },
+    } as unknown as H3Event
+
+    try {
+      const result = await graphqlMiddlewareConfig.serverFetchOptions!(event)
+      const headers = result.headers as Record<string, string>
+
+      expect(headers['x-drupal-graphql-token']).toBe('from-the-server-config')
+    } finally {
+      config.drupalGraphqlToken = previous
+    }
+  })
+
+  test('Reads the GraphQL endpoint from the backend URL in the runtime config', () => {
+    const config = useRuntimeConfig() as { backendUrl?: string }
+    const previous = config.backendUrl
+    config.backendUrl = 'http://drupal.test'
+    try {
+      expect(graphqlMiddlewareConfig.graphqlEndpoint!(undefined as never)).toBe(
+        'http://drupal.test/graphql',
+      )
+    } finally {
+      config.backendUrl = previous
+    }
+  })
+
   test('Sends Drupal the public host for a request on an internal route on production', async () => {
     const event = {
       node: {
@@ -129,6 +194,51 @@ describe('The nuxt-graphql-middleware config', () => {
     )
 
     expect(result.__cacheability?.isCacheable).toBe(true)
+  })
+
+  test('Marks a response that carries Drupal messages as uncacheable', async () => {
+    const { event } = createEvent()
+    const response = Object.assign(createResponse([]) as Response, {
+      _data: { data: { messengerMessages: [{ type: 'status' }] } },
+    }) as never
+
+    const result = await graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      response,
+    )
+
+    expect(result.__cacheability?.isCacheable).toBe(false)
+  })
+
+  test('Keeps a response with an empty message list cacheable', async () => {
+    const { event } = createEvent()
+    const response = Object.assign(createResponse([]) as Response, {
+      _data: { data: { messengerMessages: [] } },
+    }) as never
+
+    const result = await graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      response,
+    )
+
+    expect(result.__cacheability?.isCacheable).toBe(true)
+  })
+
+  test('Passes data and errors from Drupal through unchanged', async () => {
+    const { event } = createEvent()
+    const data = { route: { path: '/news' } }
+    const errors = [{ message: 'Partial failure' }]
+    const response = Object.assign(createResponse([]) as Response, {
+      _data: { data, errors },
+    }) as never
+
+    const result = await graphqlMiddlewareConfig.onServerResponse!(
+      event,
+      response,
+    )
+
+    expect(result.data).toBe(data)
+    expect(result.errors).toBe(errors)
   })
 
   test('Sets no cookie header when Drupal sends none', () => {
