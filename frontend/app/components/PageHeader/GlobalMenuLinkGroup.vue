@@ -43,11 +43,13 @@
       :id="submenuId"
       :inert="!subtreeOpen || undefined"
       :class="{
-        '-translate-x-full md:translate-x-0 md:scale-y-0 md:overflow-hidden':
+        'pointer-events-none -translate-x-full md:translate-x-0 md:scale-y-0 md:overflow-hidden':
           !subtreeOpen,
-        'h-full translate-x-0 md:scale-y-100': subtreeOpen,
+        // Open, the panel takes the taps across its full width, so nothing
+        // it covers is reachable.
+        'pointer-events-auto h-full translate-x-0 md:scale-y-100': subtreeOpen,
       }"
-      class="pointer-events-none absolute left-0 top-0 z-[100] size-full bg-gray-50 transition-all duration-500 ease-in-out md:pointer-events-auto md:top-20 md:h-auto md:w-[calc(100%+50px)] md:origin-top md:border md:border-gray-300"
+      class="absolute left-0 top-0 z-[100] size-full bg-gray-50 transition-all duration-500 ease-in-out md:pointer-events-auto md:top-20 md:h-auto md:w-[calc(100%+50px)] md:origin-top md:border md:border-gray-300"
       @mouseenter="menuHoverOpen"
       @mouseleave="menuHoverClose"
     >
@@ -155,9 +157,13 @@ function closeAndFocusToggle(event: Event) {
   toggleButton.value?.focus()
 }
 
+// Only focus moving to another element closes the submenu. A tap on the
+// panel's empty area blurs to nothing, and click-away handles real clicks
+// outside.
 function onFocusOut(event: FocusEvent) {
+  const next = event.relatedTarget as Node | null
   const group = event.currentTarget as HTMLElement
-  if (!group.contains(event.relatedTarget as Node | null)) {
+  if (next && !group.contains(next)) {
     clickAway()
   }
 }
