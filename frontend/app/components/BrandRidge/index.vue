@@ -92,6 +92,7 @@ import {
   RIDGE_FACES,
   RIDGE_GLINTS,
   RIDGE_OUTLINE,
+  RIDGE_SIZE,
   RIDGE_VIEWBOX,
 } from '~/helpers/ridge'
 
@@ -100,7 +101,7 @@ const props = defineProps<{
   mirrored?: boolean
 }>()
 
-const MIRROR = 'translate(1920,0) scale(-1,1)'
+const MIRROR = `translate(${RIDGE_SIZE.width},0) scale(-1,1)`
 // SVG ids must be unique per instance and safe inside url(#…).
 const uid = useId().replace(/[^a-zA-Z0-9-]/g, '-')
 
