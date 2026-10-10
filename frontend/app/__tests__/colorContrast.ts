@@ -51,8 +51,9 @@ const pairs: [string, string, string, number][] = [
   ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
   ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
   ['loading bar on gray-50', LOADING_BAR, colors.gray[50], AA_NON_TEXT],
-  // Inner-page hero: ice lead and breadcrumb on the gradient; the white title
-  // over the glow's peak, which can reach the gradient's blue end.
+  // Inner-page hero. The glow is painted behind the text, so text sits on the
+  // gradient blended with the glow: the title anywhere, the ice lead and
+  // breadcrumb only over the navy part (see the rejected pair below).
   ['ice lead text on blue', brand.ice, brand.blue, AA_TEXT],
   [
     'white title on glow over navy',
@@ -81,6 +82,14 @@ describe('brand colour contrast', () => {
 
   it('rejects sky as small text on white', () => {
     expect(contrast(brand.sky, WHITE)).toBeLessThan(AA_TEXT)
+  })
+
+  // The lead must stay clear of the glow's centre near the gradient's blue
+  // end; PageHero keeps the glow on the title row for that reason.
+  it('rejects ice lead text on the glow over blue', () => {
+    expect(contrast(brand.ice, blendHeroGlowOver(brand.blue))).toBeLessThan(
+      AA_TEXT,
+    )
   })
 
   it('draws the hero glow in brand sky', () => {
