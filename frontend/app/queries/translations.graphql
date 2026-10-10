@@ -3,6 +3,7 @@
 
 fragment easyTexts on TextsLoader {
   breadcrumb__home: getText(key: "home", context: "breadcrumb", default: "Home")
+  breadcrumb__label: getText(key: "label", context: "breadcrumb", default: "Breadcrumb")
   edition__dates: getText(key: "dates", context: "edition", default: "March 2–4, 2027")
   edition__label: getText(key: "label", context: "edition", default: "10th anniversary gathering")
   edition__tickets: getText(key: "tickets", context: "edition", default: "Get tickets")

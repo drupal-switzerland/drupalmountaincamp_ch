@@ -38,6 +38,25 @@ describe('canonical-page-param middleware', () => {
     )
   })
 
+  it('redirects a trailing slash to the path without it, keeping the query', () => {
+    visit('/news/', { page: '2' }, '#list')
+
+    expect(navigateToMock).toHaveBeenCalledWith(
+      { path: '/news', query: { page: '2' }, hash: '#list' },
+      { redirectCode: 301 },
+    )
+  })
+
+  it('fixes the trailing slash and the page parameter in one redirect', () => {
+    visit('/news//', { page: '1' })
+
+    expect(navigateToMock).toHaveBeenCalledTimes(1)
+    expect(navigateToMock).toHaveBeenCalledWith(
+      { path: '/news', query: {}, hash: '' },
+      { redirectCode: 301 },
+    )
+  })
+
   it.each<RouteLocationNormalized['query']>([
     {},
     { page: '2' },

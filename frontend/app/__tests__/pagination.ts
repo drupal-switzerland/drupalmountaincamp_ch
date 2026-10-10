@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest'
 import type { LocationQuery } from 'vue-router'
 import {
+  canonicalPath,
   canonicalPageQuery,
   canonicalPageUrl,
   getListPageState,
@@ -187,5 +188,17 @@ describe('canonicalPageUrl', () => {
     expect(canonicalPageUrl('http://localhost:3000', '/news', 2)).toBe(
       'http://localhost:3000/news?page=2',
     )
+  })
+})
+
+describe('canonicalPath', () => {
+  it.each([
+    ['/news/', '/news'],
+    ['/news//', '/news'],
+    ['/news', '/news'],
+    ['/news/article/', '/news/article'],
+    ['/', '/'],
+  ])('%s becomes %s', (path, expected) => {
+    expect(canonicalPath(path)).toBe(expected)
   })
 })

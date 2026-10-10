@@ -41,6 +41,15 @@ export function canonicalPageQuery(query: LocationQuery): LocationQuery | null {
   return canonical.page === query.page ? null : canonical
 }
 
+/** A path without trailing slashes; "/" stays as it is. */
+export function canonicalPath(path: string): string {
+  let end = path.length
+  while (end > 1 && path[end - 1] === '/') {
+    end--
+  }
+  return path.slice(0, end)
+}
+
 /**
  * Absolute canonical URL of one page of a paginated list. Page 1 has no
  * `?page=` parameter, matching canonicalPageQuery().
