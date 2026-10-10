@@ -1,3 +1,6 @@
+import { dedupeKey } from 'unhead/utils'
+import { SHARE_IMAGE_ALT, SHARE_IMAGE_PATH } from '~/helpers/site'
+
 type HeadTagLike = { tag: string; props: Record<string, string> }
 type MetaTag = { tag: 'meta'; props: Record<string, string> }
 
@@ -71,4 +74,36 @@ export function shareImageAltTags(
     })
   }
   return added
+}
+
+type ResolvingHead = {
+  hooks?: {
+    hook: (
+      name: 'tags:resolve',
+      handler: (context: { tags: HeadTagLike[] }) => void,
+    ) => unknown
+  }
+}
+
+/**
+ * Adds the share tags to a head while it resolves its tags: after
+ * de-duplication, so it sees the tags that actually win (Drupal's metatags, a
+ * page's own, or the site default from nuxt.config).
+ */
+export function registerShareTags(head: ResolvingHead) {
+  head.hooks?.hook('tags:resolve', (context) => {
+    const fallback = ogDescriptionFallback(context.tags)
+    const added = [
+      ...(fallback ? [fallback] : []),
+      ...shareImageAltTags(
+        fallback ? [...context.tags, fallback] : context.tags,
+        SHARE_IMAGE_PATH,
+        SHARE_IMAGE_ALT,
+      ),
+    ]
+    // The key unhead gives its own tags: the browser matches the tag the
+    // server rendered by it, instead of adding a second one, and removes it
+    // when a later page doesn't need it.
+    context.tags.push(...added.map((tag) => ({ ...tag, _d: dedupeKey(tag) })))
+  })
 }
