@@ -83,6 +83,37 @@ describe('main menu submenu toggle', () => {
     expect(document.activeElement).toBe(toggle.element)
     wrapper.unmount()
   })
+
+  it('makes the row it covers on phones inert until it closes', async () => {
+    viewport.isLessThanMd = true
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    const row = () => wrapper.get('a[href="/news"]').element.parentElement!
+
+    await toggle.trigger('click')
+    expect(row().hasAttribute('inert')).toBe(true)
+    expect(usePhoneSubmenuOpen().value).toBe(0)
+
+    await wrapper.get('button[aria-label="menu.back"]').trigger('click')
+    await nextTick()
+    expect(row().hasAttribute('inert')).toBe(false)
+    expect(usePhoneSubmenuOpen().value).toBeNull()
+    expect(document.activeElement).toBe(toggle.element)
+    wrapper.unmount()
+  })
+
+  it('leaves the row reachable when the submenu opens on desktop', async () => {
+    const wrapper = await mountGroup()
+    await wrapper.get('button[aria-controls]').trigger('click')
+
+    expect(
+      wrapper
+        .get('a[href="/news"]')
+        .element.parentElement!.hasAttribute('inert'),
+    ).toBe(false)
+    expect(usePhoneSubmenuOpen().value).toBeNull()
+    wrapper.unmount()
+  })
 })
 
 describe('Drupal messages', () => {
