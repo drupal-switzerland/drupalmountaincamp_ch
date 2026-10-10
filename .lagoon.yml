@@ -46,21 +46,8 @@ environments:
             schedule: "*/15 * * * *"
             command: drush cron
             service: cli
-      # Route options: https://docs.lagoon.sh/concepts-basics/lagoon-yml/#environment-routes
       routes:
           - nginx:
-              - "drupalmountaincamp.ch":
-                  tls-acme: true
-                  insecure: Redirect
-                  hstsEnabled: true
-                  hstsMaxAge: 31536000
-              - "www.drupalmountaincamp.ch":
-                  tls-acme: true
-                  insecure: Redirect
-                  hstsEnabled: true
-                  hstsMaxAge: 31536000
-              - "cfp.drupalmountaincamp.ch":
-                  tls-acme: true
-                  insecure: Redirect
-                  hstsEnabled: true
-                  hstsMaxAge: 31536000
+              - "drupalmountaincamp.ch"
+              - "www.drupalmountaincamp.ch"
+              - "cfp.drupalmountaincamp.ch"
