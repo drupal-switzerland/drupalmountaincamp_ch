@@ -21,3 +21,19 @@ const positions: [number, number][] = [
   [30, 54],
 ]
 </script>
+
+<style lang="postcss">
+/* The box for the marks beside a hero title. With large text the title needs
+   the row; the box then gets what is left, the marks shrink with it, and
+   below 32px they disappear instead of showing as a sliver. A percentage
+   max-width resolves against the box, so the product is either 0 or far more
+   than the box is wide. */
+.page-marks-box {
+  min-width: 0;
+  flex-shrink: 1;
+
+  & > * {
+    max-width: max(0px, calc((100% - 32px) * 9999));
+  }
+}
+</style>
