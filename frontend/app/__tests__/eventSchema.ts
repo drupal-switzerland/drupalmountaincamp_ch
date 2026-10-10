@@ -34,7 +34,9 @@ describe('buildEventSchema', () => {
 
   it('uses absolute URLs on the public site', () => {
     expect(schema.url).toBe(`${SITE_URL}/`)
-    expect(schema.image).toEqual([`${SITE_URL}/images/hero-davos.jpg`])
+    expect(schema.image).toEqual([
+      `${SITE_URL}/images/mountain-camp-og-1200x630.jpg`,
+    ])
     expect(schema.offers).toEqual({
       '@type': 'Offer',
       url: `${SITE_URL}/tickets`,

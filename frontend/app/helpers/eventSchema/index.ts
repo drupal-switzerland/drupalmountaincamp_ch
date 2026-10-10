@@ -23,7 +23,7 @@ export const EVENT: Readonly<EventFacts> = {
   locality: 'Davos',
   country: 'CH',
   organizer: 'Drupal Events Switzerland',
-  imagePath: '/images/hero-davos.jpg',
+  imagePath: '/images/mountain-camp-og-1200x630.jpg',
 }
 
 /** schema.org Event for the homepage, serialised for a JSON-LD script. */
