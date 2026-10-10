@@ -5,6 +5,8 @@ import {
   BACKEND_UNAVAILABLE_STATUS,
   guardBackendRequest,
   handleBackendResponseError,
+  BACKEND_RETRY_AFTER_SECONDS,
+  retryAfterSeconds,
 } from '../helpers/backendUnavailable'
 
 describe('Drupal unavailable during a server render', () => {
@@ -44,5 +46,16 @@ describe('Drupal unavailable during a server render', () => {
       expect.objectContaining({ statusCode: BACKEND_UNAVAILABLE_STATUS }),
     )
     expect(markPageUncacheable).toHaveBeenCalledOnce()
+  })
+})
+
+describe('retryAfterSeconds', () => {
+  it('gives the retry hint for a 503', () => {
+    expect(retryAfterSeconds(503)).toBe(BACKEND_RETRY_AFTER_SECONDS)
+    expect(BACKEND_RETRY_AFTER_SECONDS).toBeGreaterThan(0)
+  })
+
+  it.each([200, 404, 500, 502, undefined])('gives none for %s', (status) => {
+    expect(retryAfterSeconds(status)).toBeUndefined()
   })
 })
