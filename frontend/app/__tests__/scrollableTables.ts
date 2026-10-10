@@ -190,18 +190,20 @@ describe('useScrollableTables', () => {
     expect(wrapper.get('#t').attributes('role')).toBeUndefined()
   })
 
-  it('leaves tables that fit, within a pixel of tolerance, alone', async () => {
+  it('wraps a table that fits, within a pixel of tolerance, without a region', async () => {
     sizes.set('t', { scroll: 601, client: 600 })
     const wrapper = await mountRichText({ html: wideTable('t') })
 
-    const table = wrapper.get('#t')
-    expect(table.element.parentElement?.id).toBe('column')
-    expect(table.attributes('role')).toBeUndefined()
-    expect(table.attributes('tabindex')).toBeUndefined()
-    expect(table.attributes('aria-label')).toBeUndefined()
+    const plain = wrapper.get('#t').element.parentElement!
+    expect(plain.getAttribute('data-scrollable-table')).toBe('wrapper')
+    for (const el of [plain, wrapper.get('#t').element]) {
+      expect(el.getAttribute('role')).toBeNull()
+      expect(el.getAttribute('tabindex')).toBeNull()
+      expect(el.getAttribute('aria-label')).toBeNull()
+    }
   })
 
-  it('unwraps a table once it fits again, leaving authored markup alone', async () => {
+  it('drops the region once a table fits again, leaving authored markup alone', async () => {
     sizes.set('mine', { scroll: 900, client: 600 })
     const wrapper = await mountRichText({
       html:
@@ -213,8 +215,10 @@ describe('useScrollableTables', () => {
     sizes.set('mine', { scroll: 600, client: 600 })
     await wrapper.setProps({ version: 1 })
 
-    expect(wrapper.get('#mine').element.parentElement?.id).toBe('column')
-    expect(wrapper.find('[data-scrollable-table]').exists()).toBe(false)
+    const plain = regionAround(wrapper, 'mine')
+    expect(plain.getAttribute('role')).toBeNull()
+    expect(plain.getAttribute('tabindex')).toBeNull()
+    expect(plain.getAttribute('aria-label')).toBeNull()
     expect(wrapper.get('#authored').attributes('role')).toBe('grid')
     expect(wrapper.get('#authored').attributes('aria-label')).toBe('Authored')
   })
@@ -268,9 +272,28 @@ describe('useScrollableTables', () => {
       breakout: true,
     })
 
-    const table = wrapper.get('#t')
-    expect(table.element.parentElement?.id).toBe('column')
-    expect(table.classes()).toContain('is-wide-table')
-    expect(wrapper.find('[data-scrollable-table]').exists()).toBe(false)
+    const plain = regionAround(wrapper, 't')
+    expect(plain.classList).toContain('is-wide-table')
+    expect(plain.getAttribute('role')).toBeNull()
+    expect(wrapper.get('#t').classes()).not.toContain('is-wide-table')
+  })
+
+  it('names a CKEditor table figure by its figcaption', async () => {
+    sizes.set('f', { scroll: 900, client: 600 })
+    const wrapper = await mountRichText({
+      html: `<figure id="f" class="table">${wideTable('inner')}<figcaption> Schedule </figcaption></figure>`,
+    })
+
+    expect(wrapper.get('#f').attributes('aria-label')).toBe('Schedule')
+    expect(wrapper.get('figcaption').attributes('id')).toBeUndefined()
+  })
+
+  it('falls back to the generic label for a figure without a caption', async () => {
+    sizes.set('f', { scroll: 900, client: 600 })
+    const wrapper = await mountRichText({
+      html: `<figure id="f" class="table">${wideTable('inner')}</figure>`,
+    })
+
+    expect(wrapper.get('#f').attributes('aria-label')).toBe('scrollableTable')
   })
 })
