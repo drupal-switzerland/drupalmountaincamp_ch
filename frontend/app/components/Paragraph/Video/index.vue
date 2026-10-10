@@ -13,7 +13,9 @@
         <figure class="w-full max-w-[1920px]">
           <iframe
             v-if="embedUrl && isPlaying"
+            ref="player"
             :src="embedUrl"
+            :title="playerTitle"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowfullscreen
             class="aspect-video w-full lg:px-0"
@@ -23,7 +25,7 @@
             v-if="!isPlaying"
             class="relative flex aspect-video w-full cursor-pointer items-center justify-center lg:px-0"
             :aria-label="$texts('video.load', 'Load video')"
-            @click.prevent="isPlaying = true"
+            @click.prevent="play"
           >
             <ImageItem
               v-if="video?.thumbnailCustom"
@@ -61,7 +63,7 @@
             <div v-if="videoDescription">
               {{ videoDescription }}
             </div>
-            <div v-if="source" class="mt-2 text-gray-900/60 md:mt-0">
+            <div v-if="source" class="mt-2 text-gray-600 md:mt-0">
               &copy; {{ source }}
             </div>
           </figcaption>
@@ -152,6 +154,7 @@ const fullWidth = defineImageStyle({
 })
 
 const props = defineProps<{
+  title?: ParagraphVideoFragment['title']
   video?: ParagraphVideoFragment['video']
   videoDescription?: ParagraphVideoFragment['videoDescription']
   source?: ParagraphVideoFragment['source']
@@ -174,6 +177,19 @@ const imageStyle = computed(() => {
 })
 
 const isPlaying = ref(false)
+const player = ref<HTMLIFrameElement | null>(null)
+
+const playerTitle = computed(
+  () =>
+    props.title || props.videoDescription || $texts('video.player', 'Video'),
+)
+
+// The play button disappears, so focus moves on to the player.
+async function play() {
+  isPlaying.value = true
+  await nextTick()
+  player.value?.focus()
+}
 
 const videoUrl = computed(() => props.video?.url)
 

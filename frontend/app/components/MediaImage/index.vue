@@ -14,7 +14,7 @@
       <div v-if="caption" class="float-start ms-1">
         {{ caption }}
       </div>
-      <div v-if="copyright" class="float-end me-1 text-gray-900/60">
+      <div v-if="copyright" class="float-end me-1 text-gray-600">
         &copy; {{ copyright }}
       </div>
     </figcaption>

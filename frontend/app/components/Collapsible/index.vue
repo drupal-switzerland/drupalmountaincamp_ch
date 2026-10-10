@@ -39,6 +39,15 @@ function checkIfNotNull(e: Ref<HTMLElement | null>): e is Ref<HTMLElement> {
   return e && e.value !== null
 }
 
+const ANIMATION_DURATION_MS = 250
+
+// Zero still runs onfinish, so reduced motion opens and closes at once.
+function animationDuration() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ? 0
+    : ANIMATION_DURATION_MS
+}
+
 /**
  * <details>/<summary> are notoriously hard to animate due to not being able to animate on the `open` attribute
  * or animating the height with CSS alone. However, we can animate them nicely by first grabbing the content's
@@ -93,7 +102,7 @@ function toggle() {
         },
         {
           easing: 'ease-in-out',
-          duration: 250,
+          duration: animationDuration(),
         },
       )
 
@@ -124,7 +133,7 @@ function toggle() {
         },
         {
           easing: 'ease-in-out',
-          duration: 250,
+          duration: animationDuration(),
         },
       )
 
