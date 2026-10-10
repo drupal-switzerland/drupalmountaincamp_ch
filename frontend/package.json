@@ -19,7 +19,8 @@
     "styles:backend": "postcss --config ./drupal ./app/assets/css/backend.css -o ./../drupal/docroot/modules/custom/blokkli_starterkit/css/backend.css",
     "styles:backend:watch": "postcss --config ./drupal ./app/assets/css/backend.css -o ./../drupal/docroot/modules/custom/blokkli_starterkit/css/backend.css --watch",
     "test": "TZ=utc vitest",
-    "test:ci": "TZ=utc vitest run"
+    "test:ci": "TZ=utc vitest run",
+    "test:coverage": "TZ=utc vitest run --coverage"
   },
   "dependencies": {
     "@blokkli/editor": "^2.0.0-alpha.73",
@@ -54,6 +55,7 @@
     "@nuxt/test-utils": "^4.3.3",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@types/iframe-resizer": "^4.0.0",
+    "@vitest/coverage-v8": "5.0.3",
     "@vue/test-utils": "^2.4.2",
     "eslint-plugin-depend": "^1.5.0",
     "eslint-plugin-sonarjs": "^4.2.2",
