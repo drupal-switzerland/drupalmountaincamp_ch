@@ -1,9 +1,9 @@
 import { getHeaders, type H3Event } from 'h3'
+import { hasDrupalSessionCookie } from '../../app/helpers/drupalSession'
 
 /** Caching is off for a request that carries a Drupal session cookie. */
 export function isCacheEnabledForRequest(event: H3Event): boolean {
-  const hasSession = (event.node.req.headers.cookie || '').includes('SSESS')
-  return !hasSession
+  return !hasDrupalSessionCookie(event.node.req.headers.cookie)
 }
 
 /** The route cache key of a request: its path and its Cookie header. */

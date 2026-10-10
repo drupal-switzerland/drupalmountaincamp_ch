@@ -23,12 +23,33 @@ function createEvent(path: string, headers: Record<string, string> = {}) {
 }
 
 describe('SPA middleware', () => {
-  it('disables SSR for requests with a Drupal session', () => {
-    const event = createEvent('/news', { cookie: 'a=1; SSESSabc=def' })
-    handler(event)
+  it.each([
+    ['HTTPS', 'a=1; SSESSabc=def'],
+    ['plain HTTP', 'SESS0123456789abcdef0123456789abcdef=def'],
+  ])(
+    'disables SSR for a Drupal session cookie set over %s',
+    (_label, cookie) => {
+      const event = createEvent('/news', { cookie })
+      handler(event)
 
-    expect(event.context.nuxt?.noSSR).toBe(true)
-    expect(event.context.hasSession).toBe(true)
+      expect(event.context.nuxt?.noSSR).toBe(true)
+      expect(event.context.hasSession).toBe(true)
+    },
+  )
+
+  it.each<[string, Record<string, string>]>([
+    ['with only unrelated cookies', { cookie: 'a=1' }],
+    [
+      'whose cookies only contain "SSESS" inside another cookie',
+      { cookie: 'ref=SSESSabc; XSSESSION=1' },
+    ],
+    ['without any cookie', {}],
+  ])('keeps SSR for a visitor %s', (_label, headers) => {
+    const event = createEvent('/news', headers)
+
+    expect(() => handler(event)).not.toThrow()
+    expect(event.context.nuxt).toBeUndefined()
+    expect(event.context.hasSession).toBeUndefined()
   })
 
   it.each(['/de/page?blokkliEditing=1', '/de/page?blokkliPreview=1'])(
@@ -57,21 +78,6 @@ describe('SPA middleware', () => {
 
     expect(event.context.nuxt).toBeUndefined()
     expect(event.node.req.headers['x-nuxt-no-ssr']).toBe('1')
-  })
-
-  it('keeps SSR for visitors without a session', () => {
-    const event = createEvent('/news', { cookie: 'a=1' })
-    handler(event)
-
-    expect(event.context.nuxt).toBeUndefined()
-  })
-
-  it('keeps SSR for a visitor without any cookie', () => {
-    const event = createEvent('/news')
-
-    expect(() => handler(event)).not.toThrow()
-    expect(event.context.nuxt).toBeUndefined()
-    expect(event.context.hasSession).toBeUndefined()
   })
 
   it('leaves a request without a path alone, even with a session', () => {

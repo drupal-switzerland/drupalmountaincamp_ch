@@ -32,6 +32,19 @@ describe('multi cache: enabled for a request', () => {
     expect(isCacheEnabledForRequest(createEvent('/', cookie))).toBe(false)
   })
 
+  it('is off for the session cookie Drupal sets over plain HTTP', () => {
+    const cookie = 'SESS0123456789abcdef0123456789abcdef=session-id'
+
+    expect(isCacheEnabledForRequest(createEvent('/', cookie))).toBe(false)
+  })
+
+  it.each([
+    ['in the value of another cookie', 'ref=SSESSabc; theme=dark'],
+    ['inside the name of another cookie', 'XSSESSION=1; MYSESS1=2'],
+  ])('stays on when "SSESS" only appears %s', (_label, cookie) => {
+    expect(isCacheEnabledForRequest(createEvent('/', cookie))).toBe(true)
+  })
+
   it('is on for a visitor without cookies', () => {
     expect(isCacheEnabledForRequest(createEvent('/'))).toBe(true)
   })
