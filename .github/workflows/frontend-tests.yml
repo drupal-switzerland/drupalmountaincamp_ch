@@ -35,7 +35,8 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      - run: bun run test:ci
+      # Fails below the thresholds in frontend/vitest.config.mts.
+      - run: bun run test:coverage
 
   # The postinstall script runs `nuxt prepare`, which lint and typecheck need.
   checks:
