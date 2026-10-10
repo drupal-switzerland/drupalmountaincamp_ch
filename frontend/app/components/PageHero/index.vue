@@ -94,7 +94,15 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --sky-from: theme(colors.brand.blue);
   --sky-mid: theme(colors.brand.sky);
   --sky-to: var(--sky-handover);
+  /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
+     150% scaling. The browser then covers the last pixel row fully with the
+     box's own background but only partly with ::after and the section below,
+     so a dark background there shows as a line. The dark gradient therefore
+     stops this far above the edge and the box's own colour takes over. */
+  --page-hero-edge: 2px;
   padding-bottom: var(--page-hero-fade);
+  background: var(--brand-hero-gradient) top / 100%
+    calc(100% - var(--page-hero-edge)) no-repeat var(--sky-handover);
 
   @screen md {
     --page-hero-fade: 150px;
@@ -134,6 +142,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
    a stripe, so the hero keeps its straight edge. */
 .page-hero:has(+ * > .snow-blocks > :is(.navy-band, .week-band):first-child) {
   --page-hero-fade: 0px;
+  background: var(--brand-hero-gradient);
 
   &::after {
     content: none;

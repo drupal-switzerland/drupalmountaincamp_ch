@@ -28,7 +28,7 @@
           :image-style="pageImageStyle"
           :loading="loading"
           :preload="preload"
-          class="overflow-hidden rounded-[18px]"
+          img-class="rounded-[18px]"
         />
       </div>
     </div>

@@ -95,12 +95,13 @@
   }
 
   .brand-hero {
-    background: linear-gradient(
+    --brand-hero-gradient: linear-gradient(
       160deg,
       theme(colors.brand.navy) 0%,
       theme(colors.brand.navy) 50%,
       theme(colors.brand.blue) 100%
     );
+    background: var(--brand-hero-gradient);
   }
 
   /* Shared horizon (helpers/heroSky): navy behind the badge and title, blue
@@ -249,6 +250,17 @@
       )
       no-repeat;
     background-size: 100% min(var(--snow-fade-height), 100%);
+  }
+
+  /* A full-width band as the last block runs straight into the footer,
+     without the white gap the footer keeps above it after normal content. */
+  :has(
+      > main
+        :is(.home-blocks, .snow-blocks)
+        > :is(.week-band, .news-band, .theme-band, .navy-band):last-child
+    )
+    + footer {
+    margin-top: 0;
   }
 
   /* Homepage sponsor card across the edge of the band above it. It only
