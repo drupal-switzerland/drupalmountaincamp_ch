@@ -1,4 +1,5 @@
 import type { SwiperModule, Swiper } from 'swiper/types'
+import { SCREENS } from '~/tailwind/screens'
 
 type SwiperContext = {
   swiper: Swiper
@@ -62,7 +63,7 @@ function setTransform(
 
 export const Parallax: SwiperModule = ({ swiper }: SwiperContext) => {
   const setTranslate = () => {
-    const isMobile = window.innerWidth < 1024
+    const isMobile = window.innerWidth < SCREENS.md
     const { slides, progress, snapGrid, el } = swiper
     const rootWidth: number = el.offsetWidth
     const slidesPerGroup = swiper.params.slidesPerGroup || 1

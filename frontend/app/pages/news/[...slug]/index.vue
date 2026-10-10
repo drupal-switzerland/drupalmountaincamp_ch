@@ -15,13 +15,11 @@ definePageMeta({
 
 const nuxtRoute = useRoute()
 
-const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
-  return await useGraphqlQuery('routeNodePressRelease', {
-    path: nuxtRoute.path,
-  }).then((v) => {
-    return v.data
-  })
-})
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('routeNodePressRelease', { path: nuxtRoute.path }).then(
+    (v) => v.data,
+  ),
+)
 
 const { entity: node } = await useDrupalRoute<NodePressReleaseFragment>(
   query.value ?? null,

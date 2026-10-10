@@ -35,3 +35,19 @@ export function guardBackendRequest(
     statusMessage: 'Drupal gave no response earlier in this render',
   })
 }
+
+/**
+ * What a route page throws when its query failed. A failed request (e.g.
+ * Drupal down, 503) is not a missing page: it keeps its status instead of
+ * reaching useDrupalRoute as an empty result, which renders a 404.
+ */
+export function routeQueryError(error: {
+  statusCode?: number
+  statusMessage?: string
+}) {
+  return {
+    statusCode: error.statusCode || 500,
+    statusMessage: error.statusMessage,
+    fatal: true,
+  }
+}
