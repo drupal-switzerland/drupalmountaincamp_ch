@@ -3,12 +3,6 @@ import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import useInitData from '../composables/useInitData'
 import type { InitData } from '../composables/useInitData'
 
-const { useDataCacheMock } = vi.hoisted(() => ({
-  useDataCacheMock: vi.fn(),
-}))
-
-mockNuxtImport('useDataCache', () => useDataCacheMock)
-
 function cachedInitData(): InitData {
   return {
     mainMenuLinks: [],
@@ -18,14 +12,23 @@ function cachedInitData(): InitData {
   }
 }
 
+// Every cache read returns a new copy, like a deserialized cache entry.
+function readCache() {
+  return Promise.resolve({ value: cachedInitData(), addToCache: () => {} })
+}
+
+const { useDataCacheMock } = vi.hoisted(() => ({
+  useDataCacheMock: vi.fn(),
+}))
+
+mockNuxtImport('useDataCache', () => useDataCacheMock)
+// The easy texts plugin loads init data while the test app starts.
+useDataCacheMock.mockImplementation(readCache)
+
 describe('useInitData', () => {
   beforeEach(() => {
     clearNuxtState()
-    useDataCacheMock.mockReset()
-    // Every cache read returns a new copy, like a deserialized cache entry.
-    useDataCacheMock.mockImplementation(() =>
-      Promise.resolve({ value: cachedInitData(), addToCache: vi.fn() }),
-    )
+    useDataCacheMock.mockClear()
   })
 
   it('keeps the same data for every call in one render', async () => {
