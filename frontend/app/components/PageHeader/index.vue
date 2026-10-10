@@ -27,7 +27,7 @@
               class="size-7 xs:size-8 md:size-10"
             />
             <span
-              class="font-heading text-base font-bold uppercase leading-none tracking-wide text-primary-500 xs:text-lg md:text-xl"
+              class="font-heading text-base font-bold uppercase leading-none tracking-wide text-primary-500 xs:text-lg md:whitespace-nowrap lg:text-xl"
             >
               Mountain Camp <span class="text-primary-400">2027</span>
             </span>
