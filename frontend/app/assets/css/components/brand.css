@@ -116,8 +116,10 @@
     }
   }
 
-  /* Hero buttons sit side by side on phones so the whole hero fits one screen. */
-  @media (max-width: theme('screens.xs')) {
+  /* Hero buttons sit side by side on phones so the whole hero fits one screen.
+     Ends just below xs, so at exactly 640px the phone grid and the xs layout
+     don't both apply. */
+  @media (max-width: calc(theme('screens.xs') - 0.02px)) {
     .home-hero-lead p:has(> .button) {
       @apply grid grid-cols-2 gap-[10px];
 

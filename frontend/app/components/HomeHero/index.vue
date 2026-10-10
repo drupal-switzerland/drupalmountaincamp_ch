@@ -2,7 +2,7 @@
   <section aria-labelledby="home-hero-title" class="relative">
     <div class="brand-hero on-dark overflow-hidden text-white">
       <div
-        class="container relative z-[1] !my-0 flex flex-col gap-3 pt-6 xs:gap-6 xs:pt-12 md:pt-20"
+        class="container relative z-[1] !my-0 flex flex-col gap-3 pb-10 pt-6 xs:gap-6 xs:pb-4 xs:pt-12 md:pb-0 md:pt-20"
       >
         <p
           class="label self-start rounded-full border-2 border-primary-100 px-4 py-1"
