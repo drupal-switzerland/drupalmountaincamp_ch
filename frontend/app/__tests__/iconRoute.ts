@@ -6,13 +6,12 @@ import { extractCacheability } from '../../server/utils/cacheability'
 const BACKEND_URL = 'http://drupal.test'
 const QUERY_TIMEOUT_MS = 4321
 
-const { dataCache, cdnCalls, fetchRaw } = vi.hoisted(() => ({
+const { dataCache, fetchRaw } = vi.hoisted(() => ({
   dataCache: {
     value: undefined as unknown,
     keys: [] as string[],
     addToCache: vi.fn(),
   },
-  cdnCalls: [] as string[],
   fetchRaw: vi.fn(),
 }))
 
@@ -34,35 +33,26 @@ mockNuxtImport('useDataCache', () => async (key: string) => {
   return { value: dataCache.value, addToCache: dataCache.addToCache }
 })
 
-// Records what the handler asks of the CDN header helper, in order.
-mockNuxtImport(
-  'useCDNHeaders',
-  () => (configure: (helper: unknown) => void) => {
-    const helper = {
-      public() {
-        cdnCalls.push('public')
-        return helper
-      },
-      private() {
-        cdnCalls.push('private')
-        return helper
-      },
-      setNumeric(name: string, value: number) {
-        cdnCalls.push(`${name}=${value}`)
-        return helper
-      },
-      set(name: string, value: number) {
-        cdnCalls.push(`${name}=${value}`)
-        return helper
-      },
-      addTags(tags: string[]) {
-        cdnCalls.push(`tags:${tags.join(',')}`)
-        return helper
-      },
-    }
-    configure(helper)
-  },
-)
+// nuxt-multi-cache's real CDN helper, kept per request and written to the
+// response as its server-side useCDNHeaders does (which is switched off in
+// the build vitest runs). Not a recorder: the helper has state (once private,
+// it stays private), and the header it writes is what the CDN reads.
+mockNuxtImport('useCDNHeaders', async () => {
+  const { NuxtMultiCacheCDNHelper } =
+    await import('../../node_modules/nuxt-multi-cache/dist/runtime/helpers/CDNHelper.js')
+  type Helper = InstanceType<typeof NuxtMultiCacheCDNHelper>
+  type CdnEvent = H3Event & { context: { cdn?: Helper } }
+
+  return (configure: (helper: Helper) => void, event: CdnEvent) => {
+    event.context.cdn ||= new NuxtMultiCacheCDNHelper(
+      Math.floor(Date.now() / 1000),
+      'CDN-Cache-Control',
+      'Cache-Tag',
+    )
+    configure(event.context.cdn)
+    event.context.cdn.applyToEvent(event)
+  }
+})
 
 const ICON =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">' +
@@ -90,6 +80,15 @@ function createEvent(params: unknown, headers: Record<string, string> = {}) {
   return { event, res, responseHeaders }
 }
 
+// The directives of the CDN-Cache-Control header the response carries.
+function cdnDirectives(responseHeaders: Map<string, unknown>) {
+  return String(responseHeaders.get('cdn-cache-control') ?? '')
+    .split(',')
+    .map((directive) => directive.trim())
+    .filter(Boolean)
+    .sort()
+}
+
 let handler: EventHandler
 
 // The route reads the runtime config once, on import. Nitro auto-imports
@@ -103,7 +102,6 @@ beforeEach(() => {
   dataCache.value = undefined
   dataCache.keys.length = 0
   dataCache.addToCache.mockReset()
-  cdnCalls.length = 0
   fetchRaw.mockReset().mockImplementation(async () =>
     drupalResponse(ICON, {
       'x-nuxt-expires': '3600',
@@ -116,12 +114,14 @@ beforeEach(() => {
 
 describe('icon route', () => {
   it('answers 400 with an empty icon for a malformed id, without asking Drupal', async () => {
-    const { event, res } = createEvent('7/../../user/1')
+    const { event, res, responseHeaders } = createEvent('7/../../user/1')
 
     expect(await handler(event)).toBe('<svg></svg>')
     expect(res.statusCode).toBe(400)
     expect(fetchRaw).not.toHaveBeenCalled()
     expect(dataCache.keys).toEqual([])
+    expect(responseHeaders.get('cache-control')).toBe('no-store')
+    expect(cdnDirectives(responseHeaders)).toEqual(['private'])
   })
 
   it('sends the sandbox and nosniff headers on every response, also a 400', async () => {
@@ -176,13 +176,12 @@ describe('icon route', () => {
     await handler(event)
 
     expect(responseHeaders.get('cache-control')).toBe('public, max-age=604800')
-    expect(cdnCalls).toEqual([
+    expect(cdnDirectives(responseHeaders)).toEqual([
+      'max-age=31536000',
       'public',
-      'maxAge=31536000',
-      'tags:cdn-media-7',
-      'tags:nuxt:api:icon',
-      'staleIfError=86400',
+      'stale-if-error=86400',
     ])
+    expect(responseHeaders.get('cache-tag')).toBe('cdn-media-7 nuxt:api:icon')
   })
 
   it('stores the built icon in the data cache under its id, with the Drupal tags', async () => {
@@ -198,11 +197,12 @@ describe('icon route', () => {
 
   it('serves a cached icon without asking Drupal again', async () => {
     dataCache.value = { markup: '<svg>cached</svg>', tagsCdn: ['cached-tag'] }
-    const { event } = createEvent('7')
+    const { event, responseHeaders } = createEvent('7')
 
     expect(await handler(event)).toBe('<svg>cached</svg>')
     expect(fetchRaw).not.toHaveBeenCalled()
-    expect(cdnCalls).toContain('tags:cached-tag')
+    expect(cdnDirectives(responseHeaders)).toContain('public')
+    expect(responseHeaders.get('cache-tag')).toBe('cached-tag nuxt:api:icon')
   })
 
   it('keeps one cache entry per id, whatever the slug', async () => {
@@ -222,14 +222,15 @@ describe('icon route', () => {
     ['Drupal sends no body', async () => drupalResponse(undefined)],
     ['Drupal sends an empty body', async () => drupalResponse('')],
   ])(
-    'answers an empty icon that nothing may cache when %s',
+    'answers an empty icon marked as not cacheable when %s',
     async (_label, respond) => {
       fetchRaw.mockImplementation(respond)
       const { event, responseHeaders } = createEvent('7')
 
       expect(await handler(event)).toBe('<svg></svg>')
-      expect(responseHeaders.get('cache-control')).toBeUndefined()
-      expect(cdnCalls).toEqual([])
+      expect(responseHeaders.get('cache-control')).toBe('no-store')
+      expect(cdnDirectives(responseHeaders)).toEqual(['private'])
+      expect(responseHeaders.has('cache-tag')).toBe(false)
       expect(dataCache.addToCache).not.toHaveBeenCalled()
     },
   )

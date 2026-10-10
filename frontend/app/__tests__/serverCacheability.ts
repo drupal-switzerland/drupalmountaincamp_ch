@@ -76,6 +76,24 @@ describe('extractCacheability', () => {
     expect(result.isCacheable).toBe(false)
   })
 
+  it('is uncacheable for the session cookie Drupal sets over plain HTTP', () => {
+    const result = extractCacheability(
+      createResponse({ 'x-nuxt-expires': '3600' }),
+      createEvent('SESS0123456789abcdef0123456789abcdef=abc'),
+    )
+
+    expect(result.isCacheable).toBe(false)
+  })
+
+  it('stays cacheable when "SSESS" only appears in another cookie', () => {
+    const result = extractCacheability(
+      createResponse({ 'x-nuxt-expires': '3600' }),
+      createEvent('ref=SSESSabc; XSSESSION=1'),
+    )
+
+    expect(result.isCacheable).toBe(true)
+  })
+
   it('has no tags without tag headers', () => {
     const result = extractCacheability(
       createResponse({ 'x-nuxt-expires': '3600' }),
