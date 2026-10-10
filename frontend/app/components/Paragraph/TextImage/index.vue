@@ -66,6 +66,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
+import { IS_FRONT_PAGE } from '~/composables/frontPage'
 
 const props = defineProps<{
   title?: string
@@ -137,9 +138,13 @@ useScrollableTables(content, {
   content: () => props.text,
 })
 
-const preload = computed(() => index.value === 0 && !parentType.value)
+// The first paragraph's image is in the first viewport on inner pages. On the
+// homepage the tall hero and the edition bar push it below the fold.
+const isFrontPage = inject(IS_FRONT_PAGE, false)
+const preload = computed(
+  () => index.value === 0 && !parentType.value && !isFrontPage,
+)
 
-// If the index is 0, the image is most probably above the fold
 const loading = computed(() => (preload.value ? 'eager' : 'lazy'))
 
 const copyright = computed(() => {
