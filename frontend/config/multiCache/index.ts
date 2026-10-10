@@ -13,7 +13,9 @@ const multiCache: NuxtConfig['multiCache'] = {
   },
   api: {
     enabled: true,
-    authorization: 'overriden-at-runtime',
+    // No token in the build: NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN sets it at
+    // runtime, and without one the API refuses every request.
+    authorization: '',
     prefix: '/api/multi-cache',
     cacheTagInvalidationDelay: 5000,
   },

@@ -24,8 +24,6 @@ const HEADER_KEYS: string[] = [
   'x-forwarded-server',
   'x-forwarded-proto',
   'x-forwarded-port',
-  'x-client-ip',
-  'x-real-ip',
   'x-client-ssl',
   'sec-fetch-site',
   'sec-ch-ua-platform',

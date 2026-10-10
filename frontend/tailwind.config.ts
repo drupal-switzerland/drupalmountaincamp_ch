@@ -3,14 +3,12 @@ import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import { SCREENS } from './app/tailwind/screens'
+import { heroSkyProperties } from './app/helpers/heroSky'
 import {
-  HOME_VALLEY_RATIO,
-  SKY_RISE_RATIO,
-  heroSkyGradient,
-  homeHorizonGradient,
-  homeRiseGradient,
-} from './app/helpers/heroSky'
-import { RIDGE_NARROW_HEIGHT, RIDGE_SIZE } from './app/helpers/ridge'
+  RIDGE_NARROW_HEIGHT,
+  RIDGE_SIZE,
+  RIDGE_SUMMIT_TOP,
+} from './app/helpers/ridge'
 
 const fontSize: Record<string, [string, string]> = {
   xs: ['12px', '15px'],
@@ -206,8 +204,7 @@ const config: Config = {
     }),
     /**
      * The heroes' sky, generated from one curve (helpers/heroSky) into the
-     * stylesheet. Declared on the hero itself: the gradients refer to
-     * --sky-from, --sky-mid and --sky-to, which resolve where they are declared.
+     * stylesheet.
      */
     plugin(({ addBase, addComponents }) => {
       // The ridge's height, shared by BrandRidge and the homepage hero's sky.
@@ -215,23 +212,19 @@ const config: Config = {
         ':root': {
           '--ridge-height-narrow': RIDGE_NARROW_HEIGHT,
           '--ridge-height-wide': `${(RIDGE_SIZE.height / RIDGE_SIZE.width) * 100}vw`,
+          // How far below the wide ridge's top edge its tall peak begins.
+          '--ridge-summit-wide': `${(RIDGE_SUMMIT_TOP / RIDGE_SIZE.width) * 100}vw`,
         },
       })
-      addComponents({
-        '.page-hero': {
-          '--page-hero-sky': heroSkyGradient(),
-          '--page-hero-rise': String(SKY_RISE_RATIO),
-        },
-        '.home-hero': {
-          '--home-hero-rise-sky': homeRiseGradient(),
-          '--home-hero-horizon-sky': homeHorizonGradient(),
-          '--home-hero-valley': `${(HOME_VALLEY_RATIO * 100).toFixed(2)}vw`,
-        },
-      })
+      addComponents(heroSkyProperties({ from: brand.blue, mid: brand.sky }))
     }),
   ],
   corePlugins: {
     textOpacity: false,
+    // Our own .container (assets/css/components/container.css) is fluid up
+    // to xl. Tailwind's adds a max-width that jumps at every breakpoint, which
+    // left the content narrower than the page between breakpoints.
+    container: false,
   },
 }
 

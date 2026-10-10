@@ -1475,6 +1475,9 @@ enum ImageStyleId {
   """{medium} Mittel (220x220)"""
   MEDIUM
 
+  """{medium_wide} Mittelbreit (768)"""
+  MEDIUM_WIDE
+
   """{thumbnail} Miniaturansicht (100x100)"""
   THUMBNAIL
 

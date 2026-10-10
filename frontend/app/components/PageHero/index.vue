@@ -10,7 +10,7 @@
           <slot name="title" :title-class="TITLE_CLASS">
             <h1 :class="TITLE_CLASS">{{ title }}</h1>
           </slot>
-          <div class="page-hero-marks">
+          <div class="page-hero-marks page-marks-box">
             <span
               class="page-hero-glow"
               :style="{ backgroundImage: glow }"
@@ -40,7 +40,7 @@ defineProps<{
 }>()
 
 const TITLE_CLASS =
-  'text-[2.625rem] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
+  'shrink-[9999] text-[length:min(2.625rem,13.125vw)] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl'
 
 defineSlots<{
   /** Overrides the default <h1>, e.g. to make it editable in blokkli. */
@@ -62,7 +62,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 
 <style lang="postcss">
 .page-hero-marks {
-  @apply relative w-16 shrink-0 xs:w-20 md:w-28 xl:w-36;
+  @apply relative w-16 xs:w-20 md:w-28 xl:w-36;
 }
 
 /* Centred on the marks, so the light follows them when the title wraps.
@@ -80,8 +80,8 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
    lead, plus a rise behind the text. The stops come from helpers/heroSky
    through tailwind.config (--page-hero-sky), the horizon the homepage hero
    shares: brand blue fades in behind the text (never fully, so the ice lead
-   keeps a dark background), is complete a little below the lead, turns sky
-   and eases into the handover colour that .snow-blocks starts with. Both
+   keeps a dark background) and from the end of the lead turns sky and eases
+   into the handover colour that .snow-blocks starts with. Both
    sides reach the same blue at the same height, so the hero's diagonal
    gradient and the glow leave no band. */
 .page-hero {
@@ -95,11 +95,15 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --sky-mid: theme(colors.brand.sky);
   --sky-to: var(--sky-handover);
   /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
-     150% scaling. The browser then covers the last pixel row fully with the
-     box's own background but only partly with ::after and the section below,
-     so a dark background there shows as a line. The dark gradient therefore
-     stops this far above the edge and the box's own colour takes over. */
+     150% scaling. The browser then covers the last pixel row only partly with
+     ::after and the section below, so whatever is under them shows as a line:
+     the box's own background, and through that the page behind the hero.
+     The dark gradient therefore stops --page-hero-edge above the edge, where
+     the box's own colour takes over, and the box's shadow puts that colour
+     behind the edge row. The next section paints over the shadow. */
   --page-hero-edge: 2px;
+  --page-hero-backdrop: 1px;
+  --page-hero-edge-colour: var(--sky-handover);
   padding-bottom: var(--page-hero-fade);
 
   @screen md {
@@ -118,23 +122,14 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 .brand-hero.page-hero {
   background: var(--brand-hero-gradient) top / 100%
     calc(100% - var(--page-hero-edge)) no-repeat var(--sky-handover);
+  box-shadow: 0 var(--page-hero-backdrop) 0 var(--page-hero-edge-colour);
 }
 
-/* Plain stops for browsers without oklch gradients, measured up from the
-   bottom edge like the generated ones: blue at 70% where the lead ends
-   (44.44% = zone / (rise + zone)), clear at the top of the sky. */
+/* Plain stops from the same curve for browsers without oklch gradients. */
 .page-hero::after {
   content: '';
   @apply pointer-events-none absolute inset-0 -z-[1];
-  background-image: linear-gradient(
-    to top,
-    var(--sky-handover) 0,
-    theme(colors.brand.sky) calc(var(--page-hero-sky-height) * 0.1),
-    theme(colors.brand.blue) calc(var(--page-hero-sky-height) * 0.22),
-    theme(colors.brand.blue / 70%) calc(var(--page-hero-sky-height) * 0.4444),
-    theme(colors.brand.blue / 35%) calc(var(--page-hero-sky-height) * 0.7),
-    theme(colors.brand.blue / 0%) var(--page-hero-sky-height)
-  );
+  background-image: var(--page-hero-sky-fallback);
 }
 
 @supports (background: linear-gradient(in oklch, #000, #fff)) {
@@ -149,6 +144,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
     + * > .snow-blocks > :is(.navy-band, .week-band):first-child
   ) {
   --page-hero-fade: 0px;
+  --page-hero-edge-colour: theme(colors.brand.navy);
   background: var(--brand-hero-gradient);
 
   &::after {

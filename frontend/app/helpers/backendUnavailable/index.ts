@@ -3,6 +3,16 @@ import { createError } from 'h3'
 /** Status the GraphQL route answers when Drupal gave no response in time. */
 export const BACKEND_UNAVAILABLE_STATUS = 503
 
+/** Retry-After hint, in seconds, on a 503 when Drupal is unavailable. */
+export const BACKEND_RETRY_AFTER_SECONDS = 30
+
+/** The Retry-After value for a response status, or undefined for any other. */
+export function retryAfterSeconds(status: number | undefined) {
+  return status === BACKEND_UNAVAILABLE_STATUS
+    ? BACKEND_RETRY_AFTER_SECONDS
+    : undefined
+}
+
 /**
  * After a failed GraphQL response during a server render: the page is never
  * cacheable, and a 503 marks Drupal unavailable for the rest of the render.

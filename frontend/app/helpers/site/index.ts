@@ -8,7 +8,7 @@ export const SITE_TITLE = 'Mountain Camp 2027, Davos, Switzerland'
 /** Same value as Drupal's site name, which its og:site_name uses. */
 export const SITE_NAME = 'Mountain Camp'
 /** Fallback share image, the one Drupal's metatag defaults point to. */
-export const SHARE_IMAGE_PATH = '/images/hero-davos.jpg'
+export const SHARE_IMAGE_PATH = '/images/mountain-camp-og-1200x630.jpg'
 
 /**
  * Origin for absolute URLs in the page head. Production always answers with

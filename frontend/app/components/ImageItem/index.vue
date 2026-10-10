@@ -44,6 +44,7 @@ const props = withDefaults(
   defineProps<{
     file?: ImageItemFragment['file']
     large?: ImageItemFragment['large']
+    mediumWide?: ImageItemFragment['mediumWide']
     wide?: ImageItemFragment['wide']
     extraWide?: ImageItemFragment['extraWide']
     alt?: string
@@ -56,6 +57,7 @@ const props = withDefaults(
   {
     file: undefined,
     large: undefined,
+    mediumWide: undefined,
     wide: undefined,
     extraWide: undefined,
     alt: '',
@@ -81,7 +83,7 @@ const styleConfig = computed(() =>
 
 const srcset = computed(() => {
   const seen = new Set<number>()
-  return [props.large, props.wide, props.extraWide]
+  return [props.large, props.mediumWide, props.wide, props.extraWide]
     .filter(
       (d): d is NonNullable<typeof d> =>
         !!d?.urlPath && !!d.width && !seen.has(d.width) && !!seen.add(d.width),

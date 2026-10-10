@@ -36,4 +36,38 @@ describe('ImageItem', () => {
     expect(urls).toHaveLength(4)
     urls.forEach((url) => expect(url).toMatch(/^\/sites\/default\/files\//))
   })
+
+  it('offers every derivative once, narrowest first', async () => {
+    const wrapper = await mountSuspended(ImageItem, {
+      props: {
+        large: style('large', 480),
+        mediumWide: style('medium_wide', 768),
+        wide: style('wide', 1090),
+        extraWide: style('extra_wide', 2070),
+      },
+    })
+    const widths = wrapper
+      .get('img')
+      .attributes('srcset')!
+      .split(', ')
+      .map((entry) => entry.split(' ')[1])
+
+    expect(widths).toEqual(['480w', '768w', '1090w', '2070w'])
+  })
+
+  it('leaves out a derivative no wider than the one before it', async () => {
+    // Styles do not upscale: a 600 px source gives 600 px for every wider style.
+    const wrapper = await mountSuspended(ImageItem, {
+      props: {
+        large: style('large', 480),
+        mediumWide: style('medium_wide', 600),
+        wide: style('wide', 600),
+        extraWide: style('extra_wide', 600),
+      },
+    })
+
+    expect(wrapper.get('img').attributes('srcset')).toMatch(
+      /large\S* 480w, \S*medium_wide\S* 600w$/,
+    )
+  })
 })

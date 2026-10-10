@@ -9,7 +9,10 @@ type RouteRule = {
 const ONE_YEAR = 31_536_000
 const ONE_DAY = 86_400
 
-type MultiCacheConfig = { route: { enabled: boolean } }
+type MultiCacheConfig = {
+  route: { enabled: boolean }
+  api: { enabled: boolean; authorization?: unknown }
+}
 
 let routeRules: Record<string, RouteRule>
 let multiCache: MultiCacheConfig
@@ -71,5 +74,12 @@ describe('multi cache config', () => {
   // whole pages from the route cache is not safe.
   it('keeps the route cache off', () => {
     expect(multiCache.route.enabled).toBe(false)
+  })
+
+  // A token in the config would be part of every build and of this
+  // repository. The cache API takes it from the environment at runtime.
+  it('has no cache API token in the build', () => {
+    expect(multiCache.api.enabled).toBe(true)
+    expect(multiCache.api.authorization).toBe('')
   })
 })

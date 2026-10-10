@@ -27,15 +27,16 @@ jobs:
         with:
           node-version-file: frontend/.nvmrc
 
-      # Same version as the ddev web container. The Lagoon build installs
-      # bun@latest, so bump this when Lagoon picks up a new release.
+      # Same version as the Lagoon build (.lagoon/Dockerfile); bump both
+      # together.
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: 1.4.2
 
       - run: bun install --frozen-lockfile
 
-      - run: bun run test:ci
+      # Fails below the thresholds in frontend/vitest.config.mts.
+      - run: bun run test:coverage
 
   # The postinstall script runs `nuxt prepare`, which lint and typecheck need.
   checks:
@@ -68,5 +69,13 @@ jobs:
       - if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bun run typecheck
 
-      - if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      - id: build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bun run build
+
+      # The preloaded font files are named in nuxt.config.ts; this fails when
+      # the build no longer produces them.
+      - if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: bun run test:ci app/__tests__/fontPreload.ts
+        env:
+          REQUIRE_BUILT_FONTS: 1

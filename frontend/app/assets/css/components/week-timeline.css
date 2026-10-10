@@ -1,5 +1,3 @@
-@tailwind components;
-
 /* Icon Text List "Week timeline": stops on one line through the week. Phones
    get a vertical line on the left; from md the line runs across the top. */
 @layer components {
