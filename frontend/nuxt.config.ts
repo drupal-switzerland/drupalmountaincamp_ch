@@ -232,7 +232,11 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       'postcss-import': {},
-      'tailwindcss/nesting': {},
+      // Nuxt imports PostCSS plugins as ES modules, which cannot resolve the
+      // directory 'tailwindcss/nesting'. The file is named instead, and the
+      // entry @nuxtjs/tailwindcss adds under the directory name is switched off.
+      'tailwindcss/nesting': false,
+      'tailwindcss/nesting/index.js': {},
       tailwindcss: {},
       'postcss-hexrgba': {
         colorFunctionNotation: 'modern',
