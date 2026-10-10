@@ -253,12 +253,55 @@ describe('processIcon', () => {
       'external use and data svg image',
       `<svg xmlns="http://www.w3.org/2000/svg" ${XLINK}><use xlink:href="https://evil.example/x.svg#a"/><image href="data:image/svg+xml;base64,PHN2Zz4="/><path d="M0 0h1v1z"/></svg>`,
     ],
+    [
+      'doctype declaring an entity',
+      '<!DOCTYPE svg [<!ENTITY x "<svg onload=\'alert(1)\'><script>alert(1)</script></svg>">]><svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'script element before the root',
+      '<script>alert(1)</script><svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'preserved comment holding an svg before the root',
+      '<!--! <svg onload="alert(1)"><script>alert(1)</script></svg> --><svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'preserved comment inside the root',
+      '<svg xmlns="http://www.w3.org/2000/svg"><!--! <script>alert(1)</script> --><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'processing instruction holding an svg',
+      '<?xml version="1.0"?><?x <svg onload="alert(1)"><script>alert(1)</script></svg> ?><svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'processing instruction inside the root',
+      '<svg xmlns="http://www.w3.org/2000/svg"><?x <script>alert(1)</script> ?><path d="M0 0h1v1z"/></svg>',
+    ],
   ])('strips a %s', (_, markup) => {
     const result = processIcon(markup)
     expect(result).toContain('<path d="M0 0h1v1z"/>')
     expect(result).not.toMatch(
-      /script|javascript|\bon\w+=|foreignObject|iframe|evil|svg\+xml|<set|<animate/i,
+      /script|javascript|\bon\w+=|foreignObject|iframe|evil|svg\+xml|<set|<animate|<!|<\?|&x;/i,
     )
+  })
+
+  // The handler turns a parser error into the empty sprite.
+  const SVGO_PARSER_ERROR = /Invalid character entity|outside of root node/
+  it.each([
+    [
+      'doctype entity expanding to markup',
+      '<!DOCTYPE svg [<!ENTITY x "<svg onload=\'alert(1)\'><script>alert(1)</script></svg>">]><svg xmlns="http://www.w3.org/2000/svg"><text>&x;</text><path d="M0 0h1v1z"/></svg>',
+    ],
+    [
+      'entity declared outside the doctype',
+      '<!DOCTYPE svg []><svg xmlns="http://www.w3.org/2000/svg"><!-- <!ENTITY x "<script>alert(1)</script>"> --><path d="M0 0h1v1z" data-x="&x;"/></svg>',
+    ],
+    [
+      'second root svg',
+      '<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1v1z"/></svg><svg onload="alert(1)"><script>alert(1)</script></svg>',
+    ],
+  ])('fails to parse a %s', (_, markup) => {
+    expect(() => processIcon(markup)).toThrow(SVGO_PARSER_ERROR)
   })
 })
 

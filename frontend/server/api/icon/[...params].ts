@@ -8,7 +8,7 @@ import {
 } from 'h3'
 import type { H3Event } from 'h3'
 import { optimize } from 'svgo'
-import type { CustomPlugin, XastElement } from 'svgo'
+import type { CustomPlugin, XastChild, XastElement, XastParent } from 'svgo'
 import { MAX_AGE } from '../../helpers'
 
 const config = useRuntimeConfig()
@@ -200,20 +200,37 @@ function isActiveElement(node: XastElement) {
   return isHrefAttribute(target) || isEventAttribute(target)
 }
 
+const ENTITY_DECLARATION = /<!ENTITY/gi
+
+function removeChild(node: XastChild, parentNode: XastParent) {
+  parentNode.children = parentNode.children.filter((child) => child !== node)
+}
+
+const isRootSvg = (node: XastChild) =>
+  node.type === 'element' && localName(node.name) === 'svg'
+
 /**
- * Backs up svgo's removeScripts: drops namespaced and embedding elements,
- * animations that rewrite links or handlers, every on* attribute and any
- * href that is not a fragment or an inline raster image.
+ * Backs up svgo's removeScripts: keeps only the root svg element, drops
+ * doctypes, processing instructions and comments anywhere, namespaced and
+ * embedding elements, animations that rewrite links or handlers, every on*
+ * attribute and any href that is not a fragment or an inline raster image.
  */
 const removeActiveContent: CustomPlugin = {
   name: 'removeActiveContent',
   fn: () => ({
+    root: {
+      enter: (root) => {
+        const svg = root.children.find(isRootSvg)
+        root.children = svg ? [svg] : []
+      },
+    },
+    doctype: { enter: removeChild },
+    instruction: { enter: removeChild },
+    comment: { enter: removeChild },
     element: {
       enter: (node, parentNode) => {
         if (isActiveElement(node)) {
-          parentNode.children = parentNode.children.filter(
-            (child) => child !== node,
-          )
+          removeChild(node, parentNode)
           return
         }
         node.attributes = Object.fromEntries(
@@ -232,8 +249,11 @@ const removeActiveContent: CustomPlugin = {
  * Process the raw SVG markup to be a <symbol>.
  */
 export function processIcon(markup = '') {
-  const optimized = optimize(markup, {
+  const optimized = optimize(markup.replaceAll(ENTITY_DECLARATION, ''), {
     plugins: [
+      'removeDoctype',
+      'removeXMLProcInst',
+      { name: 'removeComments', params: { preservePatterns: false } },
       'removeScripts',
       {
         name: 'inlineStyles',
@@ -244,11 +264,9 @@ export function processIcon(markup = '') {
       'convertStyleToAttrs',
       'cleanupIds',
       'cleanupAttrs',
-      'removeComments',
       'removeTitle',
       'removeDesc',
       'removeMetadata',
-      'removeComments',
       'removeUselessDefs',
       'removeUselessStrokeAndFill',
       'mergePaths',
