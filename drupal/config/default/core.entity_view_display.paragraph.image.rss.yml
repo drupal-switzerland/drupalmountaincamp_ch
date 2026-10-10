@@ -1,0 +1,29 @@
+uuid: f80aae6e-4300-4582-95bd-737971f0d4a6
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.rss
+    - field.field.paragraph.image.field_image
+    - image.style.large
+    - paragraphs.paragraphs_type.image
+  module:
+    - media
+id: paragraph.image.rss
+targetEntityType: paragraph
+bundle: image
+mode: rss
+content:
+  field_image:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: large
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

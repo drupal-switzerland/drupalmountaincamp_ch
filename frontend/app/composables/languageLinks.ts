@@ -3,9 +3,7 @@ import type {
   RouteNodeCanonicalQuery,
 } from '#graphql-operations'
 
-export function setLanguageLinksFromFragment(
-  links: LanguageSwitchLinkFragment[],
-) {
+function setLanguageLinksFromFragment(links: LanguageSwitchLinkFragment[]) {
   definePageLanguageLinks(
     links.reduce<Record<string, string>>((acc, v) => {
       if (v.language.id && v.url.path) {

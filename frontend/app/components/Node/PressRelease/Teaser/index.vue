@@ -2,7 +2,7 @@
   <VuepalLink
     v-if="url"
     :to="url.path"
-    class="teaser__link group block text-body no-underline"
+    class="group block text-body no-underline"
   >
     <article
       class="rounded-sm border-4 border-primary-500 p-4 transition-colors duration-500 ease-in-out group-hover:border-primary-400 group-focus:border-primary-400"
@@ -17,7 +17,7 @@
       </h2>
       <div
         v-if="image"
-        class="-mx-4 mb-6 border-y-4 border-current md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:max-w-xs md:border-4"
+        class="-mx-4 mb-6 border-y-4 border-current bg-white md:relative md:-left-10 md:float-left md:mb-2 md:mr-4 md:w-full md:max-w-xs md:border-4"
       >
         <MediaImage
           v-bind="image"

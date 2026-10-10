@@ -42,7 +42,11 @@
 
             <img
               v-else
-              :src="video?.thumbnailOriginal?.entity?.uri?.first?.url"
+              :src="
+                toDrupalFilePath(
+                  video?.thumbnailOriginal?.entity?.uri?.first?.url,
+                )
+              "
               class="absolute left-0 top-0 size-full object-cover"
               :alt="videoDescription"
             />
@@ -69,6 +73,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphVideoFragment } from '#graphql-operations'
+import { toDrupalFilePath } from '~/helpers/drupalFiles'
 import { SCREENS } from '~/tailwind/screens'
 
 const { options } = defineBlokkli({
