@@ -3,9 +3,6 @@ name: nginx config
 on:
   pull_request:
     branches: [prod]
-    paths:
-      - '.lagoon/**'
-      - '.github/workflows/nginx-config.yml'
 
 permissions:
   contents: read

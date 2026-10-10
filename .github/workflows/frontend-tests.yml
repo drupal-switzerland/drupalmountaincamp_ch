@@ -3,9 +3,6 @@ name: Frontend tests
 on:
   pull_request:
     branches: [prod]
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-tests.yml'
 
 permissions:
   contents: read
