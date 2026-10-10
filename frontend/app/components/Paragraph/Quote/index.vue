@@ -12,8 +12,9 @@
           }"
         >
           <div class="basis-full sm:basis-1/4">
-            <div
+            <ImageCredit
               v-if="image"
+              :copyright="isCreditOnImage ? copyright : ''"
               class="mx-auto size-[207px] overflow-hidden sm:me-0"
               :class="{
                 'sm:me-0': options.alignment === 'left',
@@ -25,9 +26,9 @@
                 :image-style="imageStyle"
                 loading="lazy"
               />
-            </div>
+            </ImageCredit>
             <div
-              v-if="copyright"
+              v-if="copyright && !isCreditOnImage"
               class="w-full pt-2 text-right text-xs text-gray-600"
             >
               &copy; {{ copyright }}
@@ -74,6 +75,8 @@ const props = defineProps<{
 const copyright = computed(() => {
   return props.image?.copyright ?? ''
 })
+
+const isCreditOnImage = useImageCreditOnImage()
 
 const imageStyle = defineImageStyle({
   type: 'sizes',

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import MediaImage from '../components/MediaImage/index.vue'
+import { IMAGE_CREDIT_BELOW_IMAGE } from '../composables/imageCreditDisplay'
+
+mockNuxtImport('useEasyTexts', () => () => ({
+  $texts: (key: string) => key,
+}))
 
 const image = {
   alt: 'Photo',
@@ -11,25 +16,131 @@ const image = {
   },
 }
 
+const copyright = 'Josef Kruckenberg'
+
+const article = {
+  global: { provide: { [IMAGE_CREDIT_BELOW_IMAGE as symbol]: true } },
+}
+
+function pointer(type: string, pointerType: string) {
+  const event = new Event(type)
+  Object.defineProperty(event, 'pointerType', { value: pointerType })
+  return event
+}
+
+async function mountWithCredit() {
+  const wrapper = await mountSuspended(MediaImage, {
+    props: { image, copyright },
+  })
+  const button = wrapper.get('button')
+  const credit = wrapper.get(`[id="${button.attributes('aria-controls')}"]`)
+  const hoverArea = wrapper.get('img').element.parentElement!
+  const hover = async (type: string, pointerType = 'mouse') => {
+    hoverArea.dispatchEvent(pointer(type, pointerType))
+    await wrapper.vm.$nextTick()
+  }
+  const pressEscape = async () => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await wrapper.vm.$nextTick()
+  }
+  const isOpen = () =>
+    button.attributes('aria-expanded') === 'true' &&
+    !credit.classes().includes('hidden')
+  return { wrapper, button, credit, hover, pressEscape, isOpen }
+}
+
 describe('MediaImage', () => {
   it('puts imgClass on the image, so rounding never clips the caption', async () => {
     const wrapper = await mountSuspended(MediaImage, {
-      props: {
-        image,
-        copyright: 'Josef Kruckenberg',
-        imgClass: 'rounded-[18px]',
-      },
+      props: { image, copyright, imgClass: 'rounded-[18px]' },
+      ...article,
     })
 
     expect(wrapper.get('img').classes()).toContain('rounded-[18px]')
     expect(wrapper.get('figure').classes()).not.toContain('rounded-[18px]')
     expect(wrapper.get('figure').classes()).not.toContain('overflow-hidden')
-    expect(wrapper.get('figcaption').text()).toBe('© Josef Kruckenberg')
   })
 
   it('renders no caption without caption or copyright', async () => {
     const wrapper = await mountSuspended(MediaImage, { props: { image } })
 
     expect(wrapper.find('figcaption').exists()).toBe(false)
+    expect(wrapper.find('button').exists()).toBe(false)
+  })
+
+  it('keeps the credit under the image in articles', async () => {
+    const wrapper = await mountSuspended(MediaImage, {
+      props: { image, copyright },
+      ...article,
+    })
+
+    expect(wrapper.get('figcaption').text()).toBe('© Josef Kruckenberg')
+    expect(wrapper.find('button').exists()).toBe(false)
+  })
+
+  it('moves the credit onto the image outside articles, closed by default', async () => {
+    const { wrapper, button, credit, isOpen } = await mountWithCredit()
+
+    expect(wrapper.find('figcaption').exists()).toBe(false)
+    expect(button.attributes('aria-label')).toBe('imageCredit.toggle')
+    expect(credit.text()).toBe(copyright)
+    expect(isOpen()).toBe(false)
+  })
+
+  it('keeps the caption under the image when the credit is on it', async () => {
+    const wrapper = await mountSuspended(MediaImage, {
+      props: { image, copyright, caption: 'The venue' },
+    })
+
+    expect(wrapper.get('figcaption').text()).toBe('The venue')
+  })
+
+  it('renders no credit at all with hideCaption', async () => {
+    const wrapper = await mountSuspended(MediaImage, {
+      props: { image, copyright, hideCaption: true },
+    })
+
+    expect(wrapper.find('figcaption').exists()).toBe(false)
+    expect(wrapper.find('button').exists()).toBe(false)
+  })
+
+  it('shows the credit while a mouse hovers the image', async () => {
+    const { hover, isOpen } = await mountWithCredit()
+
+    await hover('pointerenter')
+    expect(isOpen()).toBe(true)
+
+    await hover('pointerleave')
+    expect(isOpen()).toBe(false)
+  })
+
+  it('does not open on a touch pointer, which never leaves', async () => {
+    const { hover, isOpen } = await mountWithCredit()
+
+    await hover('pointerenter', 'touch')
+    expect(isOpen()).toBe(false)
+  })
+
+  it('toggles from the button for keyboard and touch', async () => {
+    const { button, isOpen } = await mountWithCredit()
+
+    await button.trigger('click')
+    expect(isOpen()).toBe(true)
+
+    await button.trigger('click')
+    expect(isOpen()).toBe(false)
+  })
+
+  it('closes on Escape, hovered or toggled open, until the next hover', async () => {
+    const { button, hover, pressEscape, isOpen } = await mountWithCredit()
+
+    await button.trigger('click')
+    await hover('pointerenter')
+    await pressEscape()
+    expect(isOpen()).toBe(false)
+
+    await hover('pointerleave')
+    await hover('pointerenter')
+    expect(isOpen()).toBe(true)
   })
 })
