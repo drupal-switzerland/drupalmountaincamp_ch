@@ -368,6 +368,10 @@ export default defineEventHandler(async (event) => {
     setHeader(event, name, value)
   }
   defaultContentType(event, 'image/svg+xml')
+  // Not cacheable unless an icon was loaded: a 400 or an empty icon after a
+  // Drupal failure must not be kept by a browser or the CDN.
+  setHeader(event, 'cache-control', 'no-store')
+  useCDNHeaders((v) => v.private(), event)
 
   try {
     const id = parseIconId(getRouterParams(event, { decode: true }).params)

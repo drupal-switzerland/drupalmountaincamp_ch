@@ -116,12 +116,14 @@ beforeEach(() => {
 
 describe('icon route', () => {
   it('answers 400 with an empty icon for a malformed id, without asking Drupal', async () => {
-    const { event, res } = createEvent('7/../../user/1')
+    const { event, res, responseHeaders } = createEvent('7/../../user/1')
 
     expect(await handler(event)).toBe('<svg></svg>')
     expect(res.statusCode).toBe(400)
     expect(fetchRaw).not.toHaveBeenCalled()
     expect(dataCache.keys).toEqual([])
+    expect(responseHeaders.get('cache-control')).toBe('no-store')
+    expect(cdnCalls).toEqual(['private'])
   })
 
   it('sends the sandbox and nosniff headers on every response, also a 400', async () => {
@@ -176,7 +178,7 @@ describe('icon route', () => {
     await handler(event)
 
     expect(responseHeaders.get('cache-control')).toBe('public, max-age=604800')
-    expect(cdnCalls).toEqual([
+    expect(cdnCalls.slice(cdnCalls.lastIndexOf('public'))).toEqual([
       'public',
       'maxAge=31536000',
       'tags:cdn-media-7',
@@ -222,14 +224,14 @@ describe('icon route', () => {
     ['Drupal sends no body', async () => drupalResponse(undefined)],
     ['Drupal sends an empty body', async () => drupalResponse('')],
   ])(
-    'answers an empty icon that nothing may cache when %s',
+    'answers an empty icon marked as not cacheable when %s',
     async (_label, respond) => {
       fetchRaw.mockImplementation(respond)
       const { event, responseHeaders } = createEvent('7')
 
       expect(await handler(event)).toBe('<svg></svg>')
-      expect(responseHeaders.get('cache-control')).toBeUndefined()
-      expect(cdnCalls).toEqual([])
+      expect(responseHeaders.get('cache-control')).toBe('no-store')
+      expect(cdnCalls).toEqual(['private'])
       expect(dataCache.addToCache).not.toHaveBeenCalled()
     },
   )
