@@ -95,12 +95,13 @@
   }
 
   .brand-hero {
-    background: linear-gradient(
+    --brand-hero-gradient: linear-gradient(
       160deg,
       theme(colors.brand.navy) 0%,
       theme(colors.brand.navy) 50%,
       theme(colors.brand.blue) 100%
     );
+    background: var(--brand-hero-gradient);
   }
 
   /* The one oversized call to action: Get tickets in the hero bar and footer. */
