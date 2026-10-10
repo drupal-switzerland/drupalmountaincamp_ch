@@ -70,6 +70,15 @@ describe('multi cache: route cache key', () => {
     expect(key('/news?page=2')).not.toBe(key('/news'))
   })
 
+  it.each([
+    ['/news/page=2', '/news?page=2'],
+    ['/a/b', '/a?b'],
+    ['/a?b=1&c=2', '/a?b=1/c=2'],
+    ['/a__b', '/a/b'],
+  ])('differs between %s and %s', (first, second) => {
+    expect(key(first)).not.toBe(key(second))
+  })
+
   it('never shares an entry between a visitor with cookies and one without', () => {
     expect(key('/news', SESSION_COOKIE)).not.toBe(key('/news'))
   })

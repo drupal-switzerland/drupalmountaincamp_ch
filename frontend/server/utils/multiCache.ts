@@ -8,10 +8,8 @@ export function isCacheEnabledForRequest(event: H3Event): boolean {
 
 /** The route cache key of a request: its path and its Cookie header. */
 export function buildRouteCacheKey(event: H3Event): string {
-  const path = (event.path || '')
-    .replaceAll('/', '__')
-    .replaceAll('?', '__')
-    .replaceAll('&', '__')
+  // Percent-encoded, so two different URLs never share a key.
+  const path = encodeURIComponent(event.path || '')
 
   const headers = getHeaders(event)
   const cookie = headers.cookie || 'anonymous'
