@@ -106,8 +106,7 @@ const uid = useId().replace(/[^a-zA-Z0-9-]/g, '-')
 
 // Wide screens show the whole drawing; phones crop the empty sky above the
 // ridge. "slice" scales the drawing to the width and keeps its bottom edge,
-// so the crop's height follows the width: 20vw shows the lower 384 of 540
-// units, which holds the summit (y 178) and its stroke at every width.
+// so the crop's height follows the width (RIDGE_NARROW_HEIGHT).
 const crops = computed(() => [
   {
     key: 'wide',
@@ -117,7 +116,7 @@ const crops = computed(() => [
   {
     key: 'narrow',
     aspect: props.mirrored ? 'xMaxYMax slice' : 'xMinYMax slice',
-    class: 'block h-[max(72px,20vw)] xs:hidden',
+    class: 'block h-[var(--ridge-height-narrow)] xs:hidden',
   },
 ])
 
