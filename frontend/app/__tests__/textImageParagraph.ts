@@ -1,10 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import TextImage from '../components/Paragraph/TextImage/index.vue'
+import { IS_FRONT_PAGE } from '../composables/frontPage'
 
-// The first paragraph of a page, not nested in another one.
+const { paragraph } = vi.hoisted(() => ({ paragraph: { index: 0 } }))
+
+// A top-level paragraph, at the position set per test.
 mockNuxtImport('defineBlokkli', () => () => ({
-  index: ref(0),
+  index: ref(paragraph.index),
   parentType: ref(undefined),
   options: ref({ imagePosition: 'right', spacing: 'none' }),
 }))
@@ -23,12 +26,35 @@ const image = {
   },
 }
 
-describe('text image paragraph', () => {
-  it('loads its image lazily even as the first paragraph: the hero is above it', async () => {
-    const wrapper = await mountSuspended(TextImage, {
-      props: { title: 'Community', text: '<p>Text</p>', image },
-    })
+async function imageLoading(isFrontPage?: boolean) {
+  const wrapper = await mountSuspended(TextImage, {
+    props: { title: 'Community', text: '<p>Text</p>', image },
+    global:
+      isFrontPage === undefined
+        ? {}
+        : { provide: { [IS_FRONT_PAGE as symbol]: isFrontPage } },
+  })
+  return wrapper.get('img').attributes('loading')
+}
 
-    expect(wrapper.get('img').attributes('loading')).toBe('lazy')
+describe('text image paragraph', () => {
+  beforeEach(() => {
+    paragraph.index = 0
+  })
+
+  it('loads the first paragraph image eagerly on an inner page, where it is in the first viewport', async () => {
+    expect(await imageLoading()).toBe('eager')
+    expect(await imageLoading(false)).toBe('eager')
+  })
+
+  it('loads it lazily on the homepage, where the hero pushes it below the fold', async () => {
+    expect(await imageLoading(true)).toBe('lazy')
+  })
+
+  it('loads the image of a later paragraph lazily on any page', async () => {
+    paragraph.index = 2
+
+    expect(await imageLoading()).toBe('lazy')
+    expect(await imageLoading(true)).toBe('lazy')
   })
 })

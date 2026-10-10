@@ -26,6 +26,8 @@
           v-if="image"
           v-bind="image"
           :image-style="pageImageStyle"
+          :loading="loading"
+          :preload="preload"
           img-class="rounded-[18px]"
         />
       </div>
@@ -38,6 +40,8 @@
           data-swiper-parallax-scale="0.66666666"
           :image-style="imageStyle"
           v-bind="image?.image"
+          :loading="loading"
+          :preload="preload"
         />
         <div
           v-if="copyright"
@@ -62,6 +66,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
+import { IS_FRONT_PAGE } from '~/composables/frontPage'
 
 const props = defineProps<{
   title?: string
@@ -91,7 +96,7 @@ const pageImageStyle = defineImageStyle({
   },
 })
 
-const { parentType, options } = defineBlokkli({
+const { index, parentType, options } = defineBlokkli({
   bundle: 'text_image',
   globalOptions: ['spacing'],
   options: {
@@ -132,6 +137,15 @@ useScrollableTables(content, {
   enabled: !import.meta.blokkliEditing,
   content: () => props.text,
 })
+
+// The first paragraph's image is in the first viewport on inner pages. On the
+// homepage the tall hero and the edition bar push it below the fold.
+const isFrontPage = inject(IS_FRONT_PAGE, false)
+const preload = computed(
+  () => index.value === 0 && !parentType.value && !isFrontPage,
+)
+
+const loading = computed(() => (preload.value ? 'eager' : 'lazy'))
 
 const copyright = computed(() => {
   return props.image?.copyright || ''

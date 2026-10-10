@@ -57,6 +57,7 @@
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
 import { PAGE_FRAGMENTS } from '~/composables/pageFragments'
+import { IS_FRONT_PAGE } from '~/composables/frontPage'
 import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
@@ -69,6 +70,8 @@ const props = defineProps<{
   body?: string
   blokkliProps: NodePageFragment['blokkliProps']
 }>()
+
+provide(IS_FRONT_PAGE, props.isFront ?? false)
 
 const bigGrid = defineImageStyle({
   type: 'sizes',
