@@ -79,11 +79,12 @@ describe('multi cache: route cache key', () => {
     expect(key(first)).not.toBe(key(second))
   })
 
-  it('never shares an entry between a visitor with cookies and one without', () => {
-    expect(key('/news', SESSION_COOKIE)).not.toBe(key('/news'))
+  it('is the same whatever other cookies a visitor sends', () => {
+    expect(key('/news', 'consent=1; theme=dark')).toBe(key('/news'))
+    expect(key('/news', 'consent=1')).toBe(key('/news', 'consent=0'))
   })
 
-  it('never shares an entry between two different cookies', () => {
-    expect(key('/news', 'SSESSa=one')).not.toBe(key('/news', 'SSESSa=two'))
+  it('holds no cookie value', () => {
+    expect(key('/news', 'consent=secret-value')).not.toContain('secret-value')
   })
 })
