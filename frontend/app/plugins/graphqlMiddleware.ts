@@ -1,34 +1,13 @@
 import { defineNuxtPlugin } from 'nuxt/app'
-import type { DrupalMessage } from '~/composables/useDrupalMessages'
-import type { GraphqlResponseTyped } from '#nuxt-graphql-middleware/response'
-import { getPageCacheability } from '~/helpers/graphqlCacheability'
+import {
+  applyPageCacheability,
+  getPageCacheability,
+} from '~/helpers/graphqlCacheability'
+import { appendNewMessages } from '~/helpers/drupalMessages'
 import {
   guardBackendRequest,
   handleBackendResponseError,
 } from '~/helpers/backendUnavailable'
-
-type GraphqlMessengerMessage = {
-  type: string
-  message: string
-  escaped: string
-  safe: string
-}
-
-/**
- * Try to extract the messages from a GraphQL query or mutation.
- */
-function extractMessages(data: GraphqlResponseTyped): DrupalMessage[] {
-  if (data.data && 'messengerMessages' in data.data) {
-    return data.data.messengerMessages.map((v: GraphqlMessengerMessage) => {
-      return {
-        type: v.type,
-        message: v.safe,
-      }
-    })
-  }
-
-  return []
-}
 
 /**
  * This is only called when performing a query or mutation from within the nuxt
@@ -73,17 +52,10 @@ export default defineNuxtPlugin({
 
         if (import.meta.server) {
           const cacheability = getPageCacheability(data)
-          useCDNHeaders((helper) => {
-            if (!cacheability) {
-              helper.private()
-              return
-            }
-
-            helper
-              .public()
-              .setNumeric('maxAge', cacheability.maxAge)
-              .addTags(cacheability.tagsCdn)
-          }, useRequestEvent())
+          useCDNHeaders(
+            (helper) => applyPageCacheability(helper, cacheability),
+            useRequestEvent(),
+          )
         }
 
         if (!data) {
@@ -91,14 +63,9 @@ export default defineNuxtPlugin({
         }
 
         // Extract drupal messages from every GraphQL response.
-        extractMessages(data).forEach((v) => {
-          const exists = messages.value.find((m) => m.message === v.message)
-          if (!exists) {
-            messages.value.push(v)
-
-            // When there are messages, we have to make the whole request uncacheable.
-            useCDNHeaders((v) => v.private())
-          }
+        appendNewMessages(messages.value, data).forEach(() => {
+          // When there are messages, we have to make the whole request uncacheable.
+          useCDNHeaders((v) => v.private())
         })
       },
 

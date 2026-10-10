@@ -28,7 +28,7 @@
     <env name="SIMPLETEST_BASE_URL" value="http://localhost"/>
     <env name="SIMPLETEST_DB" value="sqlite://localhost/:memory:"/>
     <env name="DTT_BASE_URL" value="http://localhost"/>
-    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="sites/simpletest"/>
+    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="docroot/sites/simpletest"/>
   </php>
   <testsuites>
     <testsuite name="starterkit">
@@ -38,7 +38,7 @@
   </testsuites>
   <extensions>
     <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
-      <parameter name="outputDirectory" value="sites/simpletest/browser_output"/>
+      <parameter name="outputDirectory" value="docroot/sites/simpletest/browser_output"/>
       <parameter name="verbose" value="true"/>
     </bootstrap>
     <bootstrap class="Drupal\TestTools\Extension\Dump\DebugDump">
