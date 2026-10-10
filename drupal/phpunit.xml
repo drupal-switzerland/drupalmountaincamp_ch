@@ -52,6 +52,7 @@
   <source>
     <include>
       <directory>docroot/modules/custom</directory>
+      <directory suffix=".module">docroot/modules/custom</directory>
       <directory>docroot/themes/custom</directory>
     </include>
     <exclude>
