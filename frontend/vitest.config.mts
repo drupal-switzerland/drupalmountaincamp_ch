@@ -4,6 +4,7 @@ export default defineVitestConfig({
   test: {
     globals: true,
     environment: 'nuxt',
+    setupFiles: ['./vitest.setup.ts'],
     include: ['**/__tests__/*.*'],
     coverage: {
       all: true,

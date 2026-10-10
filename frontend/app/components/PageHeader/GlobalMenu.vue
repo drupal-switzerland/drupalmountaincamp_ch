@@ -8,6 +8,7 @@
       <li
         v-for="item in items"
         :key="`global_${item.index}`"
+        :inert="isCovered(item.index) || undefined"
         class="flex items-stretch border-b border-primary-100 px-outer md:border-0 md:px-0"
       >
         <div
@@ -30,7 +31,11 @@
           {{ item.link.link.label }}
         </VuepalLink>
       </li>
-      <li v-if="ticketsLink" class="mt-8 px-outer md:mt-0 md:pl-3 md:pr-0">
+      <li
+        v-if="ticketsLink"
+        :inert="isCovered(null) || undefined"
+        class="mt-8 px-outer md:mt-0 md:pl-3 md:pr-0"
+      >
         <VuepalLink
           :to="ticketsLink.link.url?.path"
           :aria-current="
@@ -51,6 +56,12 @@ import { isActivePath } from '~/helpers/navigation'
 const data = await useInitData()
 const menuLinks = data.value.mainMenuLinks
 const route = useRoute()
+
+// An open phone submenu covers every other item, so they leave the tab order.
+const phoneSubmenuOpen = usePhoneSubmenuOpen()
+function isCovered(index: number | null) {
+  return phoneSubmenuOpen.value !== null && phoneSubmenuOpen.value !== index
+}
 
 // Tickets is rendered as the call-to-action button at the end, wherever
 // editors place it in the Drupal menu.

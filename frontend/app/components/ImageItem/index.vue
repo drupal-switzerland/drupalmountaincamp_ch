@@ -33,6 +33,7 @@ import type { DefineImageStyleConfig } from '#rokka/types'
 import type { ImageItemFragment } from '#graphql-operations'
 import { RokkaImage } from '#components'
 import { canRenderWithRokka } from '~/helpers/rokka'
+import { toDrupalFilePath } from '~/helpers/drupalFiles'
 
 defineOptions({
   name: 'ImageItem',
@@ -84,7 +85,7 @@ const srcset = computed(() => {
       (d): d is NonNullable<typeof d> =>
         !!d?.urlPath && !!d.width && !seen.has(d.width) && !!seen.add(d.width),
     )
-    .map((d) => `${d.urlPath} ${d.width}w`)
+    .map((d) => `${toDrupalFilePath(d.urlPath)} ${d.width}w`)
     .join(', ')
 })
 
@@ -114,7 +115,7 @@ const aspectStyle = computed(() => {
 const localSrc = computed(() => {
   // Prefer the Drupal image style derivative over the (potentially huge) original.
   if (props.wide?.urlPath) {
-    return props.wide.urlPath
+    return toDrupalFilePath(props.wide.urlPath)
   }
   const uri = props.file?.uri
   if (!uri) {
@@ -124,7 +125,7 @@ const localSrc = computed(() => {
     return uri.replace('public://', '/sites/default/files/')
   }
   if (uri.startsWith('http')) {
-    return uri
+    return toDrupalFilePath(uri)
   }
   return ''
 })
