@@ -5,3 +5,11 @@
 export function useMainMenuOpen() {
   return useState<boolean>('mainMenuOpen', () => false)
 }
+
+/**
+ * The main menu link whose submenu covers the phone menu, if any. Everything
+ * the open submenu covers is inert, so focus stays on the submenu.
+ */
+export function usePhoneSubmenuOpen() {
+  return useState<number | null>('phoneSubmenuOpen', () => null)
+}

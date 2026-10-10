@@ -8,6 +8,7 @@
     @focusout="onFocusOut"
   >
     <div
+      :inert="coversRow || undefined"
       class="flex h-10 w-full items-center pr-2 transition-all duration-250 ease-in-out hover:text-primary-400 md:h-20 lg:justify-between"
       @mouseenter="menuHoverOpen"
       @mouseleave="menuHoverClose"
@@ -136,6 +137,26 @@ const backButton = ref<HTMLButtonElement | null>(null)
 
 watch(() => route.path, clickAway)
 
+// On phones the open submenu covers this row and the other menu items.
+const phoneSubmenuOpen = usePhoneSubmenuOpen()
+const coversRow = computed(() => subtreeOpen.value && isLessThanMd.value)
+watch(
+  coversRow,
+  (covers) => {
+    if (covers) {
+      phoneSubmenuOpen.value = props.linkIndex
+    } else if (phoneSubmenuOpen.value === props.linkIndex) {
+      phoneSubmenuOpen.value = null
+    }
+  },
+  { immediate: true },
+)
+onBeforeUnmount(() => {
+  if (phoneSubmenuOpen.value === props.linkIndex) {
+    phoneSubmenuOpen.value = null
+  }
+})
+
 async function toggleSubtree() {
   subtreeOpen.value = !subtreeOpen.value
   // On phones the submenu covers the menu, so focus moves onto it.
@@ -145,13 +166,15 @@ async function toggleSubtree() {
   }
 }
 
-function closeAndFocusToggle(event: Event) {
+async function closeAndFocusToggle(event: Event) {
   if (!subtreeOpen.value) {
     return
   }
   // Escape closes only the submenu, not the whole mobile menu.
   event.stopPropagation()
   subtreeOpen.value = false
+  // The toggle is inert while a phone submenu covers it.
+  await nextTick()
   toggleButton.value?.focus()
 }
 
