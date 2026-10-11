@@ -33,8 +33,6 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
 
   private const PUBLISHED = '2026-03-06';
 
-  private const ISO_DATE_TIME_WITH_OFFSET = '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/';
-
   /**
    * {@inheritdoc}
    */
@@ -91,7 +89,7 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
   }
 
   /**
-   * An article is a NewsArticle with its title, dates, URL and organisation.
+   * An article is a NewsArticle with its title, date, URL and organisation.
    */
   public function testArticleHasNewsArticleData(): void {
     $node = $this->createArticle('Keynotes confirmed');
@@ -101,7 +99,6 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
     $this->assertSame('NewsArticle', $article['@type']);
     $this->assertSame('Keynotes confirmed', $article['headline']);
     $this->assertSame(self::PUBLISHED, $article['datePublished']);
-    $this->assertMatchesRegularExpression(self::ISO_DATE_TIME_WITH_OFFSET, $article['dateModified']);
     $this->assertSame($node->toUrl()->setAbsolute()->toString(), $article['mainEntityOfPage']);
     foreach (['author', 'publisher'] as $role) {
       $this->assertSame('Organization', $article[$role]['@type']);
@@ -111,16 +108,22 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
   }
 
   /**
-   * The Open Graph article times carry the same dates.
+   * The Open Graph published time is the same date.
    */
-  public function testArticleTimesMatchTheStructuredData(): void {
+  public function testPublishedTimeMatchesTheStructuredData(): void {
     $elements = $this->elements($this->createArticle('Keynotes confirmed'));
 
     $this->assertSame(self::PUBLISHED, $elements['article_published_time']['#attributes']['content']);
-    $this->assertMatchesRegularExpression(
-      self::ISO_DATE_TIME_WITH_OFFSET,
-      $elements['article_modified_time']['#attributes']['content'],
-    );
+  }
+
+  /**
+   * No modified date is sent: a node's changed time is not an editorial one.
+   */
+  public function testArticleStatesNoModifiedDate(): void {
+    $node = $this->createArticle('Keynotes confirmed');
+
+    $this->assertArrayNotHasKey('dateModified', $this->newsArticle($node));
+    $this->assertArrayNotHasKey('article_modified_time', $this->elements($node));
   }
 
   /**
