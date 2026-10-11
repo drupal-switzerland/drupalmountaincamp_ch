@@ -66,6 +66,28 @@ describe('news teaser', () => {
     expect(eager.get('img').attributes('fetchpriority')).toBe('high')
   })
 
+  it('tells the browser its image is 312px wide from md up', async () => {
+    const image = {
+      image: {
+        large: {
+          urlPath: '/sites/default/files/s.webp',
+          width: 480,
+          height: 264,
+        },
+        wide: {
+          urlPath: '/sites/default/files/a.webp',
+          width: 1090,
+          height: 600,
+        },
+      },
+    }
+    const wrapper = await mountSuspended(Teaser, { props: { ...props, image } })
+
+    expect(wrapper.get('img').attributes('sizes')).toBe(
+      '(min-width: 1024px) 312px, 100vw',
+    )
+  })
+
   it('keeps date and teaser in the article, outside the link', async () => {
     const wrapper = await mountSuspended(Teaser, { props })
     const article = wrapper.get('article')
