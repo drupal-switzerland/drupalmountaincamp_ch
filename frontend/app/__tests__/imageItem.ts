@@ -83,4 +83,23 @@ describe('ImageItem', () => {
     expect(preloaded.get('img').attributes('fetchpriority')).toBe('high')
     expect(preloaded.get('img').attributes('loading')).toBe('eager')
   })
+
+  it('takes sizes from the component that knows the layout', async () => {
+    const props = {
+      large: style('large', 480),
+      wide: style('wide', 1090),
+      imageStyle: { type: 'sizes' as const, sizes: { xs: 728, md: 320 } },
+    }
+    const unknown = await mountSuspended(ImageItem, { props })
+    const known = await mountSuspended(ImageItem, {
+      props: { ...props, sizes: '(min-width: 1024px) 312px, 100vw' },
+    })
+
+    expect(unknown.get('img').attributes('sizes')).toBe(
+      '(min-width: 728px) 728px, 100vw',
+    )
+    expect(known.get('img').attributes('sizes')).toBe(
+      '(min-width: 1024px) 312px, 100vw',
+    )
+  })
 })

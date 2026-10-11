@@ -35,7 +35,7 @@ import type { ImageItemFragment } from '#graphql-operations'
 import { RokkaImage } from '#components'
 import { canRenderWithRokka } from '~/helpers/rokka'
 import { toDrupalFilePath } from '~/helpers/drupalFiles'
-import { SCREENS } from '~/tailwind/screens'
+import { fallbackImageSizes } from '~/helpers/imageSizes'
 
 defineOptions({
   name: 'ImageItem',
@@ -54,6 +54,9 @@ const props = withDefaults(
     imgClass?: string
     preload?: boolean
     loading?: 'lazy' | 'eager'
+    // The rendered widths, when the component knows its layout. Only used for
+    // Drupal derivatives; rokka builds its own from the image style.
+    sizes?: string
   }>(),
   {
     file: undefined,
@@ -69,6 +72,7 @@ const props = withDefaults(
     imgClass: '',
     preload: false,
     loading: 'lazy',
+    sizes: undefined,
   },
 )
 
@@ -103,13 +107,9 @@ function configuredWidths(conf: DefineImageStyleConfig | undefined): number[] {
   return []
 }
 
-const sizes = computed(() => {
-  // The layout containers cap out at the largest configured size (or the
-  // 1380px container width) — below that, assume the image spans the viewport.
-  const widths = configuredWidths(styleConfig.value)
-  const max = widths.length ? Math.max(...widths) : SCREENS.xl
-  return `(min-width: ${max}px) ${max}px, 100vw`
-})
+const sizes = computed(
+  () => props.sizes ?? fallbackImageSizes(configuredWidths(styleConfig.value)),
+)
 
 const aspectStyle = computed(() => {
   // rokka would crop to the configured aspect ratio server-side; emulate it

@@ -27,6 +27,7 @@
       <MediaImage
         v-bind="image"
         :image-style="isPortrait ? portraitImageStyle : imageStyle"
+        :sizes="IMAGE_SIZES"
         :loading="preload ? 'eager' : 'lazy'"
         :preload="preload"
         hide-caption
@@ -39,6 +40,8 @@
 
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
+import { buildImageSizes } from '~/helpers/imageSizes'
+import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<
   NodePressReleaseTeaserFragment & {
@@ -55,6 +58,13 @@ const sizes = {
 }
 
 const imageStyle = defineImageStyle({ type: 'sizes', sizes })
+
+// From md up the image floats in a 320px box (max-w-xs) with a 4px border;
+// below it spans the card.
+const FLOATED_IMAGE_WIDTH = 312
+const IMAGE_SIZES = buildImageSizes([
+  { minWidth: SCREENS.md, width: `${FLOATED_IMAGE_WIDTH}px` },
+])
 
 // Landscape and square images keep their ratio; portrait ones are capped at
 // square so a tall image can't stretch the card.

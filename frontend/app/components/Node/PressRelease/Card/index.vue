@@ -6,6 +6,7 @@
       v-if="image"
       v-bind="image"
       :image-style="imageStyle"
+      :sizes="imageSizes"
       hide-caption
     />
     <div
@@ -43,8 +44,14 @@
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
 
 withDefaults(
-  defineProps<NodePressReleaseTeaserFragment & { headingTag?: 'h2' | 'h3' }>(),
-  { headingTag: 'h3' },
+  defineProps<
+    NodePressReleaseTeaserFragment & {
+      headingTag?: 'h2' | 'h3'
+      // How wide the card is in the grid that holds it.
+      imageSizes?: string
+    }
+  >(),
+  { headingTag: 'h3', imageSizes: undefined },
 )
 
 const imageStyle = defineImageStyle({
