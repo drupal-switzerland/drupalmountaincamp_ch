@@ -15,7 +15,10 @@
       </div>
       <ul class="grid gap-6 md:grid-cols-3">
         <li v-for="pressRelease in pressReleases" :key="pressRelease.uuid">
-          <NodePressReleaseCard v-bind="pressRelease" />
+          <NodePressReleaseCard
+            v-bind="pressRelease"
+            :image-sizes="CARD_IMAGE_SIZES"
+          />
         </li>
       </ul>
     </div>
@@ -27,9 +30,20 @@
 
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
+import { buildImageSizes } from '~/helpers/imageSizes'
+import { SCREENS } from '~/tailwind/screens'
 
 const NEWS_PATH = '/news'
 const LATEST_NEWS_LIMIT = 3
+
+// Three cards share the container from md up. At its full 1380px a card is
+// (1380 - 2 x 48px padding - 2 x 24px gap) / 3 wide; below that a third of
+// the viewport is a little more than the card.
+const CARD_MAX_WIDTH = 412
+const CARD_IMAGE_SIZES = buildImageSizes([
+  { minWidth: SCREENS.xl, width: `${CARD_MAX_WIDTH}px` },
+  { minWidth: SCREENS.md, width: '33vw' },
+])
 
 defineBlokkliFragment({
   name: 'latest_news',

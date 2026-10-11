@@ -6,6 +6,7 @@
         :image-style
         :loading="loading"
         :preload="preload"
+        :sizes="sizes"
         class="w-full overflow-hidden"
         :class="imgClass"
       />
@@ -45,6 +46,7 @@ const props = withDefaults(
     hideCaption?: boolean
     preload?: boolean
     loading?: 'lazy' | 'eager'
+    sizes?: string
   }>(),
   {
     name: undefined,
@@ -59,6 +61,7 @@ const props = withDefaults(
     hideCaption: false,
     preload: false,
     loading: 'lazy',
+    sizes: undefined,
   },
 )
 
