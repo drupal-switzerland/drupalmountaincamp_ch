@@ -59,12 +59,21 @@ const sizes = {
 
 const imageStyle = defineImageStyle({ type: 'sizes', sizes })
 
-// From md up the image floats in a 320px box (max-w-xs) with a 4px border;
-// below it spans the card.
-const FLOATED_IMAGE_WIDTH = 312
-const IMAGE_SIZES = buildImageSizes([
-  { minWidth: SCREENS.md, width: `${FLOATED_IMAGE_WIDTH}px` },
-])
+// The image sits inside a 4px border on each side. Its box is sized in rem
+// (max-w-xs, max-w-3xl), so the widths are too: they grow with the reader's
+// font size like the box does.
+const BORDERS = '8px'
+// From md up the image floats in a max-w-xs box.
+const FLOATED_BOX = '20rem'
+// Below md it spans the card: the news list, capped at max-w-3xl in
+// pages/news/index.vue, or the viewport inside the container's 16px padding
+// on each side, whichever is narrower.
+const LIST_MAX_WIDTH = '48rem'
+const CONTAINER_PADDING = '32px'
+const IMAGE_SIZES = buildImageSizes(
+  [{ minWidth: SCREENS.md, width: `calc(${FLOATED_BOX} - ${BORDERS})` }],
+  `min(calc(${LIST_MAX_WIDTH} - ${BORDERS}), calc(100vw - ${CONTAINER_PADDING} - ${BORDERS}))`,
+)
 
 // Landscape and square images keep their ratio; portrait ones are capped at
 // square so a tall image can't stretch the card.

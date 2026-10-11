@@ -66,7 +66,7 @@ describe('news teaser', () => {
     expect(eager.get('img').attributes('fetchpriority')).toBe('high')
   })
 
-  it('tells the browser its image is 312px wide from md up', async () => {
+  it('tells the browser how wide its image is at each breakpoint', async () => {
     const image = {
       image: {
         large: {
@@ -84,7 +84,7 @@ describe('news teaser', () => {
     const wrapper = await mountSuspended(Teaser, { props: { ...props, image } })
 
     expect(wrapper.get('img').attributes('sizes')).toBe(
-      '(min-width: 1024px) 312px, 100vw',
+      '(min-width: 1024px) calc(20rem - 8px), min(calc(48rem - 8px), calc(100vw - 32px - 8px))',
     )
   })
 

@@ -7,16 +7,23 @@ export type ImageSizesRule = {
   width: string
 }
 
+const VIEWPORT_WIDTH = '100vw'
+
 /**
- * The `sizes` attribute of an image that spans the viewport below its
- * narrowest rule. The widths must not be smaller than the image is rendered:
- * the browser picks the file from them before layout.
+ * The `sizes` attribute of an image: one width per breakpoint rule, and
+ * `narrowWidth` below the narrowest rule. A width must be at least as wide as
+ * the image is rendered there, and as close to it as the layout allows: the
+ * browser picks the file from it before layout, and a width that is too large
+ * makes it pick a larger file than the image needs.
  */
-export function buildImageSizes(rules: ImageSizesRule[]): string {
+export function buildImageSizes(
+  rules: ImageSizesRule[],
+  narrowWidth: string = VIEWPORT_WIDTH,
+): string {
   return [...rules]
     .sort((a, b) => b.minWidth - a.minWidth)
     .map((rule) => `(min-width: ${rule.minWidth}px) ${rule.width}`)
-    .concat('100vw')
+    .concat(narrowWidth)
     .join(', ')
 }
 

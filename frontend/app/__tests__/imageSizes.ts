@@ -17,6 +17,15 @@ describe('buildImageSizes', () => {
     expect(buildImageSizes([])).toBe('100vw')
   })
 
+  it('ends with the width given for narrow viewports', () => {
+    expect(
+      buildImageSizes(
+        [{ minWidth: 1024, width: '312px' }],
+        'calc(100vw - 40px)',
+      ),
+    ).toBe('(min-width: 1024px) 312px, calc(100vw - 40px)')
+  })
+
   it('leaves the rules it was given in their order', () => {
     const rules = [
       { minWidth: 1024, width: '33vw' },
