@@ -1,21 +1,23 @@
 <template>
   <figure v-if="image">
-    <ImageItem
-      v-bind="image"
-      :image-style
-      :loading="loading"
-      :preload="preload"
-      class="w-full overflow-hidden"
-      :class="imgClass"
-    />
+    <ImageCredit :copyright="hasCreditOnImage ? copyright : ''">
+      <ImageItem
+        v-bind="image"
+        :image-style
+        :loading="loading"
+        :preload="preload"
+        class="w-full overflow-hidden"
+        :class="imgClass"
+      />
+    </ImageCredit>
     <figcaption
-      v-if="!hideCaption && (caption || copyright)"
+      v-if="!hideCaption && (caption || hasCreditBelow)"
       class="mx-auto mt-2 text-sm"
     >
       <div v-if="caption" class="float-start ms-1">
         {{ caption }}
       </div>
-      <div v-if="copyright" class="float-end me-1 text-gray-600">
+      <div v-if="hasCreditBelow" class="float-end me-1 text-gray-600">
         &copy; {{ copyright }}
       </div>
     </figcaption>
@@ -31,7 +33,7 @@ defineOptions({
   name: 'MediaImage',
 })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     name?: string
     mid?: number
@@ -59,4 +61,9 @@ withDefaults(
     loading: 'lazy',
   },
 )
+
+const isCreditOnImage = useImageCreditOnImage()
+const hasCredit = computed(() => !props.hideCaption && !!props.copyright)
+const hasCreditOnImage = computed(() => hasCredit.value && isCreditOnImage)
+const hasCreditBelow = computed(() => hasCredit.value && !isCreditOnImage)
 </script>
