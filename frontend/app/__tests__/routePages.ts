@@ -13,6 +13,9 @@ const { query, navigate } = vi.hoisted(() => ({
 
 mockNuxtImport('useGraphqlQuery', () => query)
 mockNuxtImport('navigateTo', () => navigate)
+mockNuxtImport('useEasyTexts', () => () => ({
+  $texts: (key: string) => key,
+}))
 
 // Each node component is replaced by a marker that shows which one rendered
 // and with which title.
@@ -131,6 +134,37 @@ describe('route pages', () => {
     const [target, options] = navigate.mock.calls[0]!
     expect(target.path).toBe('/new-path')
     expect(options.redirectCode).toBe(302)
+  })
+})
+
+describe('news article breadcrumb', () => {
+  const home = { title: 'Home', url: { path: '/' } }
+
+  beforeEach(() => {
+    clearNuxtData()
+    clearNuxtState()
+    query.mockReset()
+  })
+
+  it('leads through the news overview, which Drupal does not know', async () => {
+    const article = found('NodePressRelease')
+    query.mockResolvedValue({
+      data: { route: { ...article.data.route, breadcrumb: [home] } },
+    })
+
+    await mountPage(NewsArticlePage)
+
+    const trail = useBreadcrumbLinks().value
+    expect(trail.map((link) => link.url?.path)).toEqual(['/', '/news'])
+    expect(trail.at(-1)?.title).toBeTruthy()
+  })
+
+  it('stays empty for an article that does not exist', async () => {
+    query.mockResolvedValue(notFound)
+
+    await errorOf(NewsArticlePage)
+
+    expect(useBreadcrumbLinks().value).toEqual([])
   })
 })
 
