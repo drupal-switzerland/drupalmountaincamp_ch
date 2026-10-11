@@ -3,7 +3,12 @@ import { createHead as createServerHead, renderSSRHead } from 'unhead/server'
 import { createHead as createClientHead, renderDOMHead } from 'unhead/client'
 import type { ResolvableHead as HeadInput } from 'unhead/types'
 import { registerShareTags } from '../helpers/shareTags'
-import { SHARE_IMAGE_ALT, SHARE_IMAGE_PATH } from '../helpers/site'
+import {
+  SHARE_IMAGE_ALT,
+  SHARE_IMAGE_HEIGHT,
+  SHARE_IMAGE_PATH,
+  SHARE_IMAGE_WIDTH,
+} from '../helpers/site'
 
 // unhead's real head, hook and renderers: an upgrade that renames the hook,
 // drops dedupeKey or stops reading a tag's _d fails here.
@@ -71,6 +76,30 @@ describe('share tags in a real head, rendered on the server', () => {
     })
 
     expect(count(html, 'og:image:alt')).toBe(0)
+  })
+
+  it('gives the size of the default share image, once each', () => {
+    const html = renderOnServer({
+      meta: [{ property: 'og:image', content: SHARE_IMAGE_PATH }],
+    })
+
+    expect(html).toContain(
+      `<meta property="og:image:width" content="${SHARE_IMAGE_WIDTH}">`,
+    )
+    expect(html).toContain(
+      `<meta property="og:image:height" content="${SHARE_IMAGE_HEIGHT}">`,
+    )
+    expect(count(html, 'og:image:width')).toBe(1)
+    expect(count(html, 'og:image:height')).toBe(1)
+  })
+
+  it("adds no size next to a page's own image", () => {
+    const html = renderOnServer({
+      meta: [{ property: 'og:image', content: 'https://example.org/own.jpg' }],
+    })
+
+    expect(count(html, 'og:image:width')).toBe(0)
+    expect(count(html, 'og:image:height')).toBe(0)
   })
 })
 

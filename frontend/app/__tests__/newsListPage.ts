@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import { renderDOMHead } from 'unhead/client'
 import NewsPage from '../pages/news/index.vue'
 
 const PAGE_SIZE = 10
@@ -101,6 +102,20 @@ describe('news list page', () => {
     ])
     expect(listRequests()).toEqual([{ limit: PAGE_SIZE, offset: 0 }])
     expect(useError().value).toBeFalsy()
+  })
+
+  it('advertises the news feed by absolute URL', async () => {
+    drupal({ total: 1, items: articles(1) })
+
+    await mountNews('/news')
+
+    renderDOMHead(await useNuxtApp().runWithContext(() => injectHead()))
+
+    const feed = document.head.querySelector('link[rel="alternate"]')
+    expect(feed?.getAttribute('type')).toBe('application/rss+xml')
+    expect(feed?.getAttribute('href')).toMatch(
+      /^https?:\/\/[^/]+\/news\/planet_drupal\.xml$/,
+    )
   })
 
   it('marks only the first article for an eager image', async () => {
