@@ -4,6 +4,7 @@ import {
   setBreadcrumbLinks,
   setBreadcrumbLinksFromRoute,
   useBreadcrumbLinks,
+  withBreadcrumbLink,
 } from '../composables/breadcrumb'
 import { setLanguageLinksFromRoute } from '../composables/languageLinks'
 import useSiteOrigin from '../composables/useSiteOrigin'
@@ -51,6 +52,22 @@ describe('breadcrumb links', () => {
 
     setBreadcrumbLinks(null)
     expect(useBreadcrumbLinks().value).toEqual([])
+  })
+})
+
+describe('a breadcrumb link added by the frontend', () => {
+  it('goes at the end of the trail', () => {
+    expect(withBreadcrumbLink([home], news)).toEqual([home, news])
+    expect(withBreadcrumbLink([], news)).toEqual([news])
+  })
+
+  it('is left out when the trail already leads there', () => {
+    const fromDrupal = { title: 'Latest', url: { path: '/news' } }
+
+    expect(withBreadcrumbLink([home, fromDrupal], news)).toEqual([
+      home,
+      fromDrupal,
+    ])
   })
 })
 

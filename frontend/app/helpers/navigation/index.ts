@@ -1,6 +1,9 @@
 /** Main menu link rendered as the Tickets button. */
 export const TICKETS_PATH = '/tickets'
 
+/** The news overview, parent of the news articles. */
+export const NEWS_OVERVIEW_PATH = '/news'
+
 /** RSS feed of the news, served by Drupal (views.view.news). */
 export const NEWS_FEED_PATH = '/news/planet_drupal.xml'
 export const NEWS_FEED_TITLE = 'Drupal Mountain Camp'
