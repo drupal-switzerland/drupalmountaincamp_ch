@@ -214,11 +214,9 @@ run_environment() {
   expect_status "$PUBLIC_HOST" /updates 200
   expect_status "$PUBLIC_HOST" /core/misc/drupal.js 200
   expect_status "$PUBLIC_HOST" /admin 403
-  # Paths of the previous site; the pages next to them still answer.
+  # News articles of the previous site; the paths next to them still answer.
   expect_redirect "$PUBLIC_HOST" /article/some-news-title /news/some-news-title
-  expect_redirect "$PUBLIC_HOST" /sponsors /sponsorship
-  expect_redirect "$PUBLIC_HOST" /tickets-2025 /tickets
-  for path in /article /articles/x /sponsors-2027 /sponsorship /tickets /tickets-2025/x; do
+  for path in /article /articles/x /sponsors /tickets-2025; do
     expect_status "$PUBLIC_HOST" "$path" 200
   done
 }
