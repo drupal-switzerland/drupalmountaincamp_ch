@@ -1,3 +1,18 @@
+# The two derivatives SponsorTile puts in its srcset; logos render at most
+# 260px wide.
+fragment sponsorLogo on FieldItemTypeImage {
+  large: derivative(style: LARGE) {
+    urlPath
+    width
+    height
+  }
+  wide: derivative(style: WIDE) {
+    urlPath
+    width
+    height
+  }
+}
+
 fragment nodeSponsor on NodeSponsor {
   uuid
   title
@@ -15,7 +30,7 @@ fragment nodeSponsor on NodeSponsor {
       entity {
         ... on MediaImage {
           image: fieldMediaImage {
-            ...imageItem
+            ...sponsorLogo
           }
         }
         ... on MediaIcon {
@@ -26,8 +41,7 @@ fragment nodeSponsor on NodeSponsor {
   }
 }
 
-# ponytail: one unfiltered query, grouped client-side — a few dozen sponsors
-# per decade; add a year variable if the list ever gets big.
+# Every year, for the Sponsor List paragraph, which groups client-side.
 query sponsorList {
   entityQuery(
     entityType: NODE
@@ -42,6 +56,28 @@ query sponsorList {
       { field: "field_year", direction: DESC }
       { field: "title", direction: ASC }
     ]
+  ) {
+    items {
+      ... on NodeSponsor {
+        ...nodeSponsor
+      }
+    }
+  }
+}
+
+# One edition, for the footer and the homepage card on every page.
+query sponsorsOfYear($year: String!) {
+  entityQuery(
+    entityType: NODE
+    limit: 500
+    filter: {
+      conditions: [
+        { field: "type", value: ["sponsor"] }
+        { field: "status", value: ["1"] }
+        { field: "field_year", value: [$year] }
+      ]
+    }
+    sort: [{ field: "title", direction: ASC }]
   ) {
     items {
       ... on NodeSponsor {

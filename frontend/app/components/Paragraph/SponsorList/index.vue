@@ -67,7 +67,7 @@ const TIERS: Record<string, string> = {
 }
 const TIER_ORDER = Object.keys(TIERS)
 
-const { sponsors: allSponsors } = await useSponsors()
+const { sponsors: allSponsors } = await useAllSponsors()
 
 const groups = computed(() => {
   const sponsors = allSponsors.value.filter(
