@@ -3,7 +3,7 @@
     <section
       v-if="links.length || currentTitle"
       ref="scroller"
-      class="relative mobile-only:overflow-hidden"
+      class="breadcrumb-scroller relative mobile-only:overflow-hidden"
     >
       <nav
         class="breadcrumb"
@@ -22,12 +22,16 @@
             itemscope
             itemtype="http://schema.org/ListItem"
           >
-            <component :is="link.tag" v-bind="link.props" itemprop="item">
+            <component
+              :is="link.tag"
+              v-bind="link.props"
+              :itemprop="link.props.to ? 'item' : undefined"
+            >
               <span itemprop="name">
                 {{ link.title }}
               </span>
             </component>
-            <meta itemprop="position" :content="`${index + 2}`" />
+            <meta itemprop="position" :content="`${index + 1}`" />
           </li>
           <li
             v-if="currentTitle"
@@ -38,7 +42,7 @@
             <span itemprop="name" aria-current="page">{{ currentTitle }}</span>
             <meta
               itemprop="position"
-              :content="`${linksComputed.length + 2}`"
+              :content="`${linksComputed.length + 1}`"
             />
           </li>
         </ol>
@@ -93,11 +97,23 @@ watch([linksComputed, () => props.currentTitle], scrollToLastItem)
 </script>
 
 <style lang="postcss">
+/* Where the trail is clipped, room for the focus ring of its links. */
+.breadcrumb-scroller {
+  @media screen and (max-width: theme('screens.md')) {
+    --focus-ring-room: calc(var(--focus-ring-width) + var(--focus-ring-offset));
+    margin: calc(var(--focus-ring-room) * -1);
+    padding: var(--focus-ring-room);
+  }
+}
+
 .breadcrumb {
   li {
     @apply h-6 text-gray-600;
     &:not(:first-child):before {
       content: '›';
+      /* Empty alternative text: screen readers skip the separator. Browsers
+         without support keep the declaration above. */
+      content: '›' / '';
       @apply me-4 ms-4 text-2xl;
       line-height: 0;
     }
