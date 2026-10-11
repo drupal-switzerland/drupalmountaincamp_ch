@@ -160,6 +160,16 @@ expect_status() {
   fi
 }
 
+# expect_redirect <host> <path> <expected Location>
+expect_redirect() {
+  local host="$1" path="$2" expected="$3" actual
+  actual="$(curl -sS -o /dev/null -w '%{http_code} %header{location}' -H "Host: $host" "$BASE_URL$path")"
+  echo "--- redirect | $host$path -> $actual"
+  if [[ "$REPORT_ONLY" != true ]]; then
+    expect "redirect of $path" "$actual" "301 $expected"
+  fi
+}
+
 DEFAULT_CSP="frame-ancestors 'self'"
 # 200, 307 (/user/register) and 403 (/admin) answers, with and without a
 # language prefix.
@@ -204,6 +214,13 @@ run_environment() {
   expect_status "$PUBLIC_HOST" /updates 200
   expect_status "$PUBLIC_HOST" /core/misc/drupal.js 200
   expect_status "$PUBLIC_HOST" /admin 403
+  # Paths of the previous site; the pages next to them still answer.
+  expect_redirect "$PUBLIC_HOST" /article/some-news-title /news/some-news-title
+  expect_redirect "$PUBLIC_HOST" /sponsors /sponsorship
+  expect_redirect "$PUBLIC_HOST" /tickets-2025 /tickets
+  for path in /article /articles/x /sponsors-2027 /sponsorship /tickets /tickets-2025/x; do
+    expect_status "$PUBLIC_HOST" "$path" 200
+  done
 }
 
 # Production: only the admin paths are kept out of search engines.
