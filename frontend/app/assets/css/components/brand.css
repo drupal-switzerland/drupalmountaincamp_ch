@@ -217,6 +217,16 @@
     @apply text-primary-100;
   }
 
+  /* Text paragraph "Navy band": .brand-hero fades to blue, where sky fails as
+     body text too. Heading highlights stay sky, as large text. */
+  .navy-band .ck-content .highlight {
+    @apply text-primary-100;
+  }
+
+  .navy-band .ck-content :is(h2, h3) .highlight {
+    @apply text-primary-300;
+  }
+
   /* The one oversized call to action: Get tickets in the hero bar and footer. */
   .ticket-button {
     @apply inline-flex min-h-14 items-center justify-center gap-[10px] rounded-full bg-primary-500 px-9 text-lg font-bold text-white transition-colors duration-250 hover:bg-primary-400 motion-reduce:transition-none;

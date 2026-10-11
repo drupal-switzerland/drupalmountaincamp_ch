@@ -82,6 +82,31 @@
       a.button.is-outline {
         @apply border-white bg-transparent text-white hover:bg-white hover:text-primary-500;
       }
+
+      /* A table keeps its white panel on dark sections, so its text takes the
+         colours of a light section again. */
+      figure.table,
+      & > table,
+      & > [data-scrollable-table='wrapper'] {
+        @apply text-primary-500;
+
+        a:not(.button) {
+          @apply text-link hover:text-link-hover;
+        }
+
+        .highlight {
+          @apply text-primary-400;
+        }
+      }
+
+      [data-scrollable-table]:focus-visible {
+        @apply outline-white;
+      }
+    }
+
+    /* Blue fails on the lilac end of the theme card; navy holds across it. */
+    .is-theme & a:not(.button) {
+      @apply text-primary-500;
     }
 
     ol,
