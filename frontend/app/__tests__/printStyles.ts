@@ -7,16 +7,32 @@ const read = (path: string) => readFileSync(join(process.cwd(), path), 'utf8')
 const PRINT_CSS = read('app/assets/css/components/print.css')
 const ENTRY_CSS = read('app/assets/css/tailwind.css')
 
-// Sections that are light text on a dark fill on screen. Printed without
-// backgrounds, their text has to turn dark.
+// Sections that are light text on a dark fill on screen, with the class that
+// carries the fill. The print rules remove fills from .on-dark and turn the
+// text inside it navy, so the marker has to sit on the element with the fill.
 const DARK_SECTIONS = [
-  ['inner-page hero', 'app/components/PageHero/index.vue'],
-  ['homepage hero', 'app/components/HomeHero/index.vue'],
-  ['footer', 'app/components/PageFooter/index.vue'],
-  ['navy text band', 'app/components/Paragraph/Text/index.vue'],
-  ['week timeline band', 'app/components/Paragraph/IconTextList/index.vue'],
-  ['day card header', 'app/components/Paragraph/IconTextItem/index.vue'],
+  ['inner-page hero', 'app/components/PageHero/index.vue', 'brand-hero'],
+  ['homepage hero', 'app/components/HomeHero/index.vue', 'home-hero'],
+  ['footer', 'app/components/PageFooter/index.vue', 'brand-hero'],
+  [
+    'footer bottom bar',
+    'app/components/PageFooter/index.vue',
+    'bg-primary-500',
+  ],
+  ['navy text band', 'app/components/Paragraph/Text/index.vue', 'navy-band'],
+  [
+    'week timeline band',
+    'app/components/Paragraph/IconTextList/index.vue',
+    'week-band',
+  ],
+  [
+    'day card header',
+    'app/components/Paragraph/IconTextItem/index.vue',
+    'brand-card-header',
+  ],
 ] as const
+
+const withoutComments = (css: string) => css.replace(/\/\*[\s\S]*?\*\//g, '')
 
 describe('print styles', () => {
   it('are part of the stylesheet', () => {
@@ -24,37 +40,37 @@ describe('print styles', () => {
   })
 
   it('apply in print only', () => {
-    const outside = PRINT_CSS.replace(/\/\*[\s\S]*?\*\//g, '').split(
-      '@media print',
-    )[0]!
-
-    expect(outside.trim()).toBe('')
+    expect(withoutComments(PRINT_CSS).split('@media print')[0]!.trim()).toBe('')
   })
 
-  it('print text in dark sections and on filled buttons in navy', () => {
-    const declaration = 'color: theme(colors.brand.navy) !important;'
-    const beforeDeclaration = PRINT_CSS.split(declaration)[0]!
-    const selectors = beforeDeclaration
-      .slice(beforeDeclaration.lastIndexOf('@media print {'))
-      .replace('@media print {', '')
-      .replace('{', '')
-      .split(',')
-      .map((selector) => selector.trim())
+  it('remove the fill and darken the text of the same sections', () => {
+    const css = withoutComments(PRINT_CSS)
 
-    expect(PRINT_CSS).toContain(declaration)
-    expect(selectors).toEqual([
-      '.on-dark',
-      '.on-dark *',
-      '.button.is-filled',
-      '.ticket-button',
-      "[aria-current='page']",
-    ])
+    expect(css).toMatch(
+      /\.on-dark,[^{}]*\{\s*color: theme\(colors\.brand\.navy\) !important;/,
+    )
+    expect(css).toMatch(
+      /\.on-dark,[^{}]*\.on-dark \*::after,[^{}]*\{\s*background: none !important;/,
+    )
   })
 
   it.each(DARK_SECTIONS)(
-    '%s is marked on-dark, which the print rule keys on',
-    (_name, path) => {
-      expect(read(path)).toMatch(/['" ]on-dark['" ]/)
+    '%s carries on-dark on the element with its fill',
+    (_name, path, fill) => {
+      const classLists = [
+        ...read(path).matchAll(/class="([^"]*)"|return \[([^\]]*)\]/g),
+      ].map((match) => (match[1] ?? match[2] ?? '').replace(/['",]/g, ' '))
+      const marked = classLists.filter((list) =>
+        list.split(/\s+/).includes('on-dark'),
+      )
+
+      expect(marked.some((list) => list.split(/\s+/).includes(fill))).toBe(true)
     },
   )
+
+  it('prints the current pagination page without its navy disc', () => {
+    expect(read('app/components/Pagination/index.vue')).toContain(
+      'bg-primary-500 text-white print:bg-transparent print:text-primary-500',
+    )
+  })
 })

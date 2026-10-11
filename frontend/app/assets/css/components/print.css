@@ -1,16 +1,31 @@
-/* Browsers print without backgrounds unless the reader asks for them, so text
-   that is light on a dark fill on screen would print light on white paper.
-   On paper it is navy, like the rest of the page. Marked !important because
-   these have to win over colour utilities such as text-white, which come
-   later in the stylesheet with the same specificity. The current page in the
-   pagination is one of them: a navy disc with a white number. */
+/* On paper, sections that are light text on a dark fill on screen become navy
+   text on white. Both halves are needed: browsers drop backgrounds unless the
+   reader ticks "Background graphics", so the text has to turn dark, and when
+   the reader does tick it the dark fills must not come back under that text.
+   The rules key on .on-dark, which sits on the element that carries the fill.
+   Marked !important because they have to win over utilities such as
+   text-white and bg-primary-500, which come later in the stylesheet with the
+   same specificity, and over the hero glow's inline background. */
 @media print {
   .on-dark,
   .on-dark *,
   .button.is-filled,
-  .ticket-button,
-  [aria-current='page'] {
+  .ticket-button {
     color: theme(colors.brand.navy) !important;
+  }
+
+  /* Gradients, the heroes' sky layers and glow included. The ridge and the
+     plus marks are SVG, not backgrounds: the ridge stays as light art, the
+     marks take the text colour. */
+  .on-dark,
+  .on-dark::before,
+  .on-dark::after,
+  .on-dark *,
+  .on-dark *::before,
+  .on-dark *::after,
+  .button.is-filled,
+  .ticket-button {
+    background: none !important;
   }
 
   /* Borders drawn in white or ice: the hero's pill, outline buttons, rules. */
