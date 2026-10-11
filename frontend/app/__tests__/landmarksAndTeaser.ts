@@ -45,6 +45,27 @@ describe('news teaser', () => {
     expect(links[0]!.element.closest('h2')).not.toBeNull()
   })
 
+  it('loads its image lazily unless it is the preloaded teaser', async () => {
+    const image = {
+      image: {
+        wide: {
+          urlPath: '/sites/default/files/a.webp',
+          width: 1090,
+          height: 600,
+        },
+      },
+    }
+    const lazy = await mountSuspended(Teaser, { props: { ...props, image } })
+    const eager = await mountSuspended(Teaser, {
+      props: { ...props, image, preload: true },
+    })
+
+    expect(lazy.get('img').attributes('loading')).toBe('lazy')
+    expect(lazy.get('img').attributes('fetchpriority')).toBeUndefined()
+    expect(eager.get('img').attributes('loading')).toBe('eager')
+    expect(eager.get('img').attributes('fetchpriority')).toBe('high')
+  })
+
   it('keeps date and teaser in the article, outside the link', async () => {
     const wrapper = await mountSuspended(Teaser, { props })
     const article = wrapper.get('article')
