@@ -29,6 +29,7 @@
 
 <script lang="ts" setup>
 import type { NodePressReleaseFragment } from '#graphql-operations'
+import { IMAGE_CREDIT_BELOW_IMAGE } from '~/composables/imageCreditDisplay'
 
 const props = defineProps<{
   uuid?: string
@@ -39,6 +40,8 @@ const props = defineProps<{
   date?: NodePressReleaseFragment['date']
   blokkliProps: NodePressReleaseFragment['blokkliProps']
 }>()
+
+provide(IMAGE_CREDIT_BELOW_IMAGE, true)
 
 const imageStyle = defineImageStyle({
   type: 'sizes',

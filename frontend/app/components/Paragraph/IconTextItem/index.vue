@@ -50,12 +50,12 @@
   >
     <!-- Optional photo across the top of the card. -->
     <div v-if="image || isEditing" v-blokkli-droppable:field_image>
-      <MediaImage
+      <ImageCredit
         v-if="image"
-        v-bind="image"
-        :image-style="cardImageStyle"
-        hide-caption
-      />
+        :copyright="isCreditOnImage ? image.copyright : ''"
+      >
+        <MediaImage v-bind="image" :image-style="cardImageStyle" hide-caption />
+      </ImageCredit>
     </div>
     <div class="flex grow flex-col gap-3 p-6 md:p-8">
       <h3
@@ -72,7 +72,10 @@
         class="ck-content hyphens-auto lg:hyphens-none"
         v-html="text"
       />
-      <p v-if="image?.copyright" class="mt-auto text-sm text-gray-600">
+      <p
+        v-if="image?.copyright && !isCreditOnImage"
+        class="mt-auto text-sm text-gray-600"
+      >
         &copy; {{ image.copyright }}
       </p>
     </div>
@@ -125,6 +128,7 @@ const { index } = defineBlokkli({
 
 const { $texts } = useEasyTexts()
 const isEditing = import.meta.blokkliEditing
+const isCreditOnImage = useImageCreditOnImage()
 
 const display = inject(
   ICON_TEXT_LIST_DISPLAY,
