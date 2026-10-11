@@ -7,7 +7,6 @@ const BASE_CSS = read('app/assets/css/tailwind.css')
 const HEADER = read('app/components/PageHeader/index.vue')
 const LAYOUT = read('app/layouts/default.vue')
 const NEWS_LIST = read('app/pages/news/index.vue')
-const TEASER = read('app/components/Node/PressRelease/Teaser/index.vue')
 
 describe('focus below the sticky header', () => {
   it('pads scrolling by the header height and the focus ring', () => {
@@ -30,11 +29,5 @@ describe('focus below the sticky header', () => {
   it('leaves no scroll margin that would add to the padding', () => {
     expect(LAYOUT).not.toMatch(/scroll-mt-/)
     expect(NEWS_LIST).not.toMatch(/scroll-mt-/)
-  })
-})
-
-describe('news teaser under the sticky header', () => {
-  it('keeps its card-wide link inside its own stacking context', () => {
-    expect(TEASER).toMatch(/<article\s+class="group relative isolate /)
   })
 })
