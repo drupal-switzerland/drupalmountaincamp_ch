@@ -16,14 +16,14 @@ const NUXT_REQUEST_HOST = process.env.NUXT_REQUEST_HOST
 
 const LANGCODES = [{ code: 'en', prefix: '' }]
 
-// The latin files of Source Sans 3 (regular) and Zilla Slab (bold): the text
+// The latin file of Source Sans 3 (regular) and ZT Gatha (bold): the text
 // painted above the fold. Preloaded so it is not laid out in a fallback font
-// first. @nuxt/fonts names the files after their Google Fonts source, so a
-// font revision changes them; app/__tests__/fontPreload.ts checks them against
-// the built CSS.
+// first. @nuxt/fonts names its file after the Google Fonts source, so a font
+// revision changes it; app/__tests__/fontPreload.ts checks both against the
+// CSS.
 export const FONT_PRELOADS = [
   '/_fonts/xX2IuaztV6Veya6fGSX_iAosSJkDMK2U6FhK0n9e07w-cfMQXOQyn6tL_1piVO9rQp36Q6mfXvv3KeoWZvC5yfQ.woff2',
-  '/_fonts/SEOmRThb2Psq0XusDlw1LDAr8on2QzL5qdFSNlLPTO0-FM5wJsxd2OZXJM_lk_N9rRXqW-1F-VsvN_P8QjqlOO4.woff2',
+  '/fonts/ZTGatha-Bold.woff2',
 ]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -167,12 +167,11 @@ export default defineNuxtConfig({
         weights: [400, 600, 700],
         styles: ['normal', 'italic'],
       },
-      {
-        name: 'Zilla Slab',
-        provider: 'google',
-        weights: [600, 700],
-        styles: ['normal'],
-      },
+      // Declared by hand in app/assets/css/typography.css; the module's local
+      // provider finds only the bold file in public/fonts.
+      { name: 'ZT Gatha', provider: 'none' },
+      { name: 'ZT Gatha Fallback Arial', provider: 'none' },
+      { name: 'ZT Gatha Fallback Roboto', provider: 'none' },
     ],
   },
 

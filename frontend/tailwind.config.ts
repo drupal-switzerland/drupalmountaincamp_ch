@@ -183,7 +183,12 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['"Source Sans 3"', ...defaultTheme.fontFamily.sans],
-        heading: ['"Zilla Slab"', ...defaultTheme.fontFamily.serif],
+        heading: [
+          '"ZT Gatha"',
+          '"ZT Gatha Fallback Arial"',
+          '"ZT Gatha Fallback Roboto"',
+          ...defaultTheme.fontFamily.sans,
+        ],
       },
       transitionDuration: {
         250: '250ms',
