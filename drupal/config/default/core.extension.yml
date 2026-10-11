@@ -134,6 +134,7 @@ module:
   role_delegation: 0
   roleassign: 0
   scheduler: 0
+  schema_article: 0
   schema_metatag: 0
   schema_place: 0
   search_api: 0
