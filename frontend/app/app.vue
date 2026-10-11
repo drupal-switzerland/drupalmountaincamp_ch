@@ -6,10 +6,10 @@
         v-if="drupalUser.accessToolbar && !isEditing"
         class="hidden border-b border-b-gray-100 bg-white lg:block"
       >
-        <VuepalAdminToolbar :key="language" />
+        <LazyVuepalAdminToolbar :key="language" />
         <div class="flex">
           <div class="mx-auto w-auto bg-white py-8 xl:min-w-[1174px]">
-            <VuepalLocalTasks />
+            <LazyVuepalLocalTasks />
           </div>
         </div>
       </div>
