@@ -9,6 +9,9 @@ type RouteRule = {
 
 const ONE_YEAR = 31_536_000
 const ONE_DAY = 86_400
+// The plugin import test starts a Node process: 0.5s to 1.5s as a rule, 11.5s
+// once on the first run after an install, past vitest's 5s default.
+const PLUGIN_IMPORT_TIMEOUT_MS = 60_000
 
 type MultiCacheConfig = {
   route: { enabled: boolean }
@@ -93,19 +96,25 @@ describe('PostCSS plugins', () => {
   // strictly than require(): a directory such as 'tailwindcss/nesting' fails,
   // and the build then runs without the plugin. Asked of Node itself, because
   // the test runner's own resolver accepts directories.
-  it('are all importable as ES modules', () => {
-    const enabled = Object.keys(postcssPlugins).filter(
-      (name) => postcssPlugins[name],
-    )
-    expect(enabled).toContain('tailwindcss')
+  it(
+    'are all importable as ES modules',
+    () => {
+      const enabled = Object.keys(postcssPlugins).filter(
+        (name) => postcssPlugins[name],
+      )
+      expect(enabled).toContain('tailwindcss')
 
-    const script = `for (const name of ${JSON.stringify(enabled)}) await import(name)`
-    expect(() =>
-      execFileSync(process.execPath, ['--input-type=module', '-e', script], {
-        stdio: 'pipe',
-      }),
-    ).not.toThrow()
-  })
+      const script = `for (const name of ${JSON.stringify(enabled)}) await import(name)`
+      expect(() =>
+        execFileSync(process.execPath, ['--input-type=module', '-e', script], {
+          stdio: 'pipe',
+          // A hung child would block this worker past vitest's own timer.
+          timeout: PLUGIN_IMPORT_TIMEOUT_MS,
+        }),
+      ).not.toThrow()
+    },
+    PLUGIN_IMPORT_TIMEOUT_MS,
+  )
 
   it('flatten nested rules before Tailwind runs', () => {
     const enabled = Object.keys(postcssPlugins).filter(
