@@ -138,6 +138,8 @@ describe('route pages', () => {
 })
 
 describe('news article breadcrumb', () => {
+  // The mocked $texts returns the key it is asked for.
+  const NEWS_TITLE_KEY = 'news.title'
   const home = { title: 'Home', url: { path: '/' } }
 
   beforeEach(() => {
@@ -156,13 +158,15 @@ describe('news article breadcrumb', () => {
 
     const trail = useBreadcrumbLinks().value
     expect(trail.map((link) => link.url?.path)).toEqual(['/', '/news'])
-    expect(trail.at(-1)?.title).toBeTruthy()
+    expect(trail.at(-1)?.title).toBe(NEWS_TITLE_KEY)
   })
 
-  it('stays empty for an article that does not exist', async () => {
-    query.mockResolvedValue(notFound)
+  it('gets no news link while Drupal redirects to another path', async () => {
+    query.mockResolvedValue({
+      data: { route: { path: '/new-path', redirect: { statusCode: 302 } } },
+    })
 
-    await errorOf(NewsArticlePage)
+    await mountPage(NewsArticlePage)
 
     expect(useBreadcrumbLinks().value).toEqual([])
   })
