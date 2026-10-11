@@ -4,7 +4,7 @@
 
     <div class="snow-blocks">
       <div class="container">
-        <div ref="results" tabindex="-1" class="mx-auto max-w-3xl scroll-mt-28">
+        <div ref="results" tabindex="-1" class="mx-auto max-w-3xl">
           <p v-if="listFailed" class="text-lg">
             {{
               $texts(

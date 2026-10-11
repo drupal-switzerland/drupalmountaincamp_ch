@@ -84,4 +84,10 @@ describe('news teaser', () => {
       expect.arrayContaining(['after:absolute', 'after:inset-0']),
     )
   })
+
+  it('keeps the card-wide link in its own stacking context, below the sticky header', async () => {
+    const wrapper = await mountSuspended(Teaser, { props })
+
+    expect(wrapper.get('article').classes()).toContain('isolate')
+  })
 })
