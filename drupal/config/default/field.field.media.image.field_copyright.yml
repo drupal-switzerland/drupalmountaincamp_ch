@@ -15,7 +15,7 @@ field_name: field_copyright
 entity_type: media
 bundle: image
 label: Copyright
-description: ''
+description: 'Photographer or source. Shown under the image in news articles and behind a © button in page content. Not shown on cards, in lists and in the page header image. Do not put it in the alternative text.'
 required: false
 translatable: true
 default_value: {  }

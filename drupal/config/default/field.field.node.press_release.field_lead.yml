@@ -16,7 +16,7 @@ field_name: field_lead
 entity_type: node
 bundle: press_release
 label: Lead
-description: 'Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.'
+description: 'Optional introduction shown under the title on the page. Do not repeat the first paragraphs of the text.'
 required: false
 translatable: true
 default_value: {  }
