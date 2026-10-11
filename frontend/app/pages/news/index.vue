@@ -46,6 +46,7 @@ import {
   totalPages,
 } from '~/helpers/pagination'
 import { BACKEND_UNAVAILABLE_STATUS } from '~/helpers/backendUnavailable'
+import { NEWS_FEED_PATH, NEWS_FEED_TITLE } from '~/helpers/navigation'
 import { SITE_NAME, shareMeta } from '~/helpers/site'
 
 const PAGE_SIZE = 10
@@ -168,7 +169,15 @@ const share = computed(() =>
 )
 useHead({
   title: () => `${pageTitle.value} | ${SITE_NAME}`,
-  link: [{ rel: 'canonical', href: () => share.value.ogUrl }],
+  link: [
+    { rel: 'canonical', href: () => share.value.ogUrl },
+    {
+      rel: 'alternate',
+      type: 'application/rss+xml',
+      title: NEWS_FEED_TITLE,
+      href: () => new URL(NEWS_FEED_PATH, origin.value).href,
+    },
+  ],
 })
 useSeoMeta({
   description: () => share.value.ogDescription,

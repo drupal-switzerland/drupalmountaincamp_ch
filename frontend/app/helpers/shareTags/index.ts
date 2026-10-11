@@ -1,5 +1,10 @@
 import { dedupeKey } from 'unhead/utils'
-import { SHARE_IMAGE_ALT, SHARE_IMAGE_PATH } from '~/helpers/site'
+import {
+  SHARE_IMAGE_ALT,
+  SHARE_IMAGE_HEIGHT,
+  SHARE_IMAGE_PATH,
+  SHARE_IMAGE_WIDTH,
+} from '~/helpers/site'
 
 type HeadTagLike = { tag: string; props: Record<string, string> }
 type MetaTag = { tag: 'meta'; props: Record<string, string> }
@@ -36,6 +41,14 @@ function isImageAt(url: string | undefined, path: string): boolean {
   return new URL(url, ANY_ORIGIN).pathname === path
 }
 
+function isOnlyShareImage(tags: HeadTagLike[], path: string): boolean {
+  const images = tags.filter((tag) => isMeta(tag, 'property', 'og:image'))
+  return (
+    images.length > 0 &&
+    images.every((tag) => isImageAt(tag.props.content, path))
+  )
+}
+
 /**
  * The alt tags to add to a resolved head when its only share image is the
  * site's default one: og:image:alt, and twitter:image:alt if the page sends
@@ -47,11 +60,7 @@ export function shareImageAltTags(
   defaultImagePath: string,
   alt: string,
 ): MetaTag[] {
-  const images = tags.filter((tag) => isMeta(tag, 'property', 'og:image'))
-  const onlyDefault =
-    images.length > 0 &&
-    images.every((tag) => isImageAt(tag.props.content, defaultImagePath))
-  if (!onlyDefault) {
+  if (!isOnlyShareImage(tags, defaultImagePath)) {
     return []
   }
   const added: MetaTag[] = []
@@ -74,6 +83,32 @@ export function shareImageAltTags(
     })
   }
   return added
+}
+
+type ImageSize = { width: number; height: number }
+
+/**
+ * og:image:width and og:image:height to add to a resolved head when its only
+ * share image is the site's default one, whose size is known. An editor's
+ * image gets none: its size isn't known here. Sizes already set are kept.
+ */
+export function shareImageSizeTags(
+  tags: HeadTagLike[],
+  defaultImagePath: string,
+  size: ImageSize,
+): MetaTag[] {
+  if (!isOnlyShareImage(tags, defaultImagePath)) {
+    return []
+  }
+  return (['width', 'height'] as const)
+    .filter(
+      (side) =>
+        !tags.some((tag) => isMeta(tag, 'property', `og:image:${side}`)),
+    )
+    .map((side) => ({
+      tag: 'meta',
+      props: { property: `og:image:${side}`, content: String(size[side]) },
+    }))
 }
 
 type ResolvingHead = {
@@ -100,6 +135,10 @@ export function registerShareTags(head: ResolvingHead) {
         SHARE_IMAGE_PATH,
         SHARE_IMAGE_ALT,
       ),
+      ...shareImageSizeTags(context.tags, SHARE_IMAGE_PATH, {
+        width: SHARE_IMAGE_WIDTH,
+        height: SHARE_IMAGE_HEIGHT,
+      }),
     ]
     // The key unhead gives its own tags: the browser matches the tag the
     // server rendered by it, instead of adding a second one, and removes it

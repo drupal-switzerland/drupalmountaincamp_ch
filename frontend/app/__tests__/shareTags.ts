@@ -1,6 +1,10 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
-import { ogDescriptionFallback, shareImageAltTags } from '../helpers/shareTags'
+import {
+  ogDescriptionFallback,
+  shareImageAltTags,
+  shareImageSizeTags,
+} from '../helpers/shareTags'
 
 const meta = (props: Record<string, string>) => ({ tag: 'meta', props })
 const description = meta({ name: 'description', content: 'Page description' })
@@ -108,5 +112,44 @@ describe('shareImageAltTags', () => {
       all.filter((tag) => tag.props.property === 'og:image:alt'),
     ).toHaveLength(1)
     expect(alts(all)).toEqual([])
+  })
+})
+
+describe('shareImageSizeTags', () => {
+  const PATH = '/images/share.jpg'
+  const SIZE = { width: 1200, height: 630 }
+  const image = (url: string) => meta({ property: 'og:image', content: url })
+  const width = meta({ property: 'og:image:width', content: '1200' })
+  const height = meta({ property: 'og:image:height', content: '630' })
+  const sizes = (tags: { tag: string; props: Record<string, string> }[]) =>
+    shareImageSizeTags(tags, PATH, SIZE)
+
+  it('gives the size of the default share image', () => {
+    expect(sizes([image(`https://drupalmountaincamp.ch${PATH}`)])).toEqual([
+      width,
+      height,
+    ])
+  })
+
+  it("gives nothing for a page's own image, whose size is unknown", () => {
+    expect(
+      sizes([image('https://drupalmountaincamp.ch/files/own.jpg')]),
+    ).toEqual([])
+    expect(
+      sizes([
+        image('https://drupalmountaincamp.ch/files/own.jpg'),
+        image(PATH),
+      ]),
+    ).toEqual([])
+  })
+
+  it('gives nothing without an og:image', () => {
+    expect(sizes([ogTitle])).toEqual([])
+  })
+
+  it('keeps sizes that are already there, so each stays single', () => {
+    const fromDrupal = meta({ property: 'og:image:width', content: '800' })
+    expect(sizes([image(PATH), fromDrupal])).toEqual([height])
+    expect(sizes([image(PATH), width, height])).toEqual([])
   })
 })
