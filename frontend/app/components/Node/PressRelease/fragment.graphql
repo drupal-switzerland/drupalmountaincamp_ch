@@ -3,6 +3,7 @@ fragment nodePressRelease on NodePressRelease {
   uuid
   date: fieldDate {
     formatted(drupalDateFormat: OLIVERO_MEDIUM)
+    value
   }
   blokkliProps {
     ...blokkliProps

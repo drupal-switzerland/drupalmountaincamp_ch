@@ -3,7 +3,10 @@
     <div class="grid-container">
       <div class="grid-container-8 pb-4">
         <p v-if="date" class="font-bold text-primary-500">
-          {{ date?.formatted }}
+          <time v-if="date.value" :datetime="date.value">
+            {{ date.formatted }}
+          </time>
+          <template v-else>{{ date.formatted }}</template>
         </p>
         <h1 v-blokkli-editable:title class="pb-3 text-4xl lg:pb-6 lg:text-7xl">
           {{ entity?.title || title }}
@@ -17,6 +20,8 @@
           v-blokkli-droppable:field_image
           v-bind="entity?.image || image"
           :image-style="imageStyle"
+          preload
+          :loading="'eager'"
           class="mb-10"
         />
       </div>
