@@ -62,6 +62,10 @@ export default defineNuxtConfig({
           content: 'SCUdRugj-xdUAPc-l5QvGazhSoLCk41JiDAOoztuT8I',
         },
         {
+          name: 'msvalidate.01',
+          content: '43CC5D0A5D1436DBF68D869408DF0A34',
+        },
+        {
           name: 'description',
           content:
             'Mountain Camp 2027 is the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
