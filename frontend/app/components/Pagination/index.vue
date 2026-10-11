@@ -25,7 +25,7 @@
           class="inline-flex size-11 items-center justify-center rounded-full border-2 font-bold"
           :class="
             page === currentPage
-              ? 'border-primary-500 bg-primary-500 text-white'
+              ? 'border-primary-500 bg-primary-500 text-white print:bg-transparent print:text-primary-500'
               : 'border-primary-100 text-primary-500 hover:border-primary-400'
           "
           @click="onClick($event, page)"
