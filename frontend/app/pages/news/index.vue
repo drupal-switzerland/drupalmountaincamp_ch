@@ -15,9 +15,10 @@
           </p>
           <div v-else class="space-y-10">
             <NodePressReleaseTeaser
-              v-for="item in pressReleases"
+              v-for="(item, index) in pressReleases"
               :key="item.uuid"
               v-bind="item"
+              :preload="index === 0"
             />
           </div>
         </div>

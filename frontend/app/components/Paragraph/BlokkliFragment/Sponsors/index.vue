@@ -88,7 +88,7 @@ const headingId = useId()
 const platinumId = useId()
 const newTabHintId = useId()
 
-const { currentByTier } = await useSponsors()
+const { currentByTier } = await useCurrentSponsors()
 const platinum = computed(() => currentByTier.value.platinum ?? [])
 const openSpots = computed(() =>
   Math.max(0, PLATINUM_SPOTS - platinum.value.length),

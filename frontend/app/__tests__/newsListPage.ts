@@ -14,8 +14,12 @@ mockNuxtImport('useEasyTexts', () => () => ({
 
 const Teaser = defineComponent({
   inheritAttrs: false,
-  props: { title: { type: String, default: '' } },
-  setup: (props) => () => h('article', props.title),
+  props: {
+    title: { type: String, default: '' },
+    preload: { type: Boolean, default: false },
+  },
+  setup: (props) => () =>
+    h('article', { 'data-preload': String(props.preload) }, props.title),
 })
 
 // Rendered as nothing: only the list matters here.
@@ -97,6 +101,16 @@ describe('news list page', () => {
     ])
     expect(listRequests()).toEqual([{ limit: PAGE_SIZE, offset: 0 }])
     expect(useError().value).toBeFalsy()
+  })
+
+  it('marks only the first article for an eager image', async () => {
+    drupal({ total: 3, items: articles(3) })
+
+    const wrapper = await mountNews('/news')
+
+    expect(
+      wrapper.findAll('article').map((el) => el.attributes('data-preload')),
+    ).toEqual(['true', 'false', 'false'])
   })
 
   it('asks for the second ten on ?page=2', async () => {

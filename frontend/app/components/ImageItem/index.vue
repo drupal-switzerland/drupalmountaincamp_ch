@@ -20,6 +20,7 @@
     :alt="alt"
     :title="title"
     :loading="loading"
+    :fetchpriority="preload ? 'high' : undefined"
     :width="wide?.width"
     :height="wide?.height"
     :style="aspectStyle"

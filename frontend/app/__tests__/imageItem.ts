@@ -70,4 +70,17 @@ describe('ImageItem', () => {
       /large\S* 480w, \S*medium_wide\S* 600w$/,
     )
   })
+
+  it('asks for a high fetch priority only when preload is set', async () => {
+    const props = { wide: style('wide', 1090) }
+    const plain = await mountSuspended(ImageItem, { props })
+    const preloaded = await mountSuspended(ImageItem, {
+      props: { ...props, preload: true, loading: 'eager' as const },
+    })
+
+    expect(plain.get('img').attributes('fetchpriority')).toBeUndefined()
+    expect(plain.get('img').attributes('loading')).toBe('lazy')
+    expect(preloaded.get('img').attributes('fetchpriority')).toBe('high')
+    expect(preloaded.get('img').attributes('loading')).toBe('eager')
+  })
 })

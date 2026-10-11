@@ -143,7 +143,7 @@ const copyright =
 const sponsorsTitleId = useId()
 const ctaTitleId = useId()
 const ticketsLink = await useTicketsLink()
-const { currentByTier } = await useSponsors()
+const { currentByTier } = await useCurrentSponsors()
 
 const STANDARD_TILE = 'h-[72px] w-[200px]'
 
