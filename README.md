@@ -51,8 +51,8 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 
 ## Tests
 
-- Frontend: `ddev bun run test:ci` (vitest). CI runs the same in
-  `.github/workflows/frontend-tests.yml`.
+- Frontend: `ddev bun run test:ci` (vitest). CI runs the suite with coverage,
+  `bun run test:coverage`, in `.github/workflows/frontend-tests.yml`.
 - Backend:
   `ddev exec -d /var/www/html/drupal env -u SIMPLETEST_BASE_URL vendor/bin/phpunit`.
   - `env -u SIMPLETEST_BASE_URL` makes phpunit use the `http://localhost`
@@ -65,7 +65,8 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 ## Lint
 
 - Frontend: `ddev bun run lint`, `ddev bun run prettier` and
-  `ddev bun run typecheck` (what `scripts/ci/lint-tests.sh` runs).
+  `ddev bun run typecheck` (also steps of the `checks` job in
+  `.github/workflows/frontend-tests.yml`).
 - Backend: `ddev exec vendor/bin/phpcs` and `ddev exec vendor/bin/phpstan`
   (run from `drupal/`).
 

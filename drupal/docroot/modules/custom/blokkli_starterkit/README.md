@@ -13,7 +13,7 @@ Currently you just need to enable the module.
 
 ## MAINTAINERS
 
-Current maintainers for Drupal 10:
+Current maintainers:
 
 - ayalon - https://www.drupal.org/u/ayalon
 
