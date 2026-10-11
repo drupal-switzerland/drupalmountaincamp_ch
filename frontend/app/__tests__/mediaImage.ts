@@ -178,4 +178,19 @@ describe('MediaImage', () => {
     expect(keydownListeners(added)).toBe(1)
     expect(keydownListeners(removed)).toBe(1)
   })
+
+  it('prints the credit as dark text under the image, without its background', async () => {
+    const { button, credit } = await mountWithCredit()
+    const chip = button.element.parentElement!
+
+    expect(credit.element.parentElement).toBe(chip)
+    expect([...chip.classList]).toEqual(
+      expect.arrayContaining([
+        'print:static',
+        'print:bg-transparent',
+        'print:text-gray-600',
+      ]),
+    )
+    expect(credit.classes()).toContain('print:inline')
+  })
 })

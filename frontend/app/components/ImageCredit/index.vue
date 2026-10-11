@@ -7,7 +7,7 @@
     <slot />
     <div
       v-if="copyright"
-      class="absolute bottom-2 end-2 flex max-w-[calc(100%-1rem)] items-center rounded-xl bg-primary-500/90 text-sm text-white"
+      class="absolute bottom-2 end-2 flex max-w-[calc(100%-1rem)] items-center rounded-xl bg-primary-500/90 text-sm text-white print:static print:max-w-none print:justify-end print:bg-transparent print:text-gray-600"
     >
       <button
         type="button"

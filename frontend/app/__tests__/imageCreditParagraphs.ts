@@ -73,3 +73,14 @@ describe.each([
     expect(wrapper.text()).toContain(`© ${copyright}`)
   })
 })
+
+describe('image credit in the quote', () => {
+  it('lets the printed credit flow under the fixed-size photo', async () => {
+    const wrapper = await mountQuote(false)
+    const photo = wrapper.get('button').element.parentElement!.parentElement!
+
+    expect([...photo.classList]).toEqual(
+      expect.arrayContaining(['print:h-auto', 'print:overflow-visible']),
+    )
+  })
+})

@@ -15,7 +15,7 @@
             <ImageCredit
               v-if="image"
               :copyright="isCreditOnImage ? copyright : ''"
-              class="mx-auto size-[207px] overflow-hidden sm:me-0"
+              class="mx-auto size-[207px] overflow-hidden sm:me-0 print:h-auto print:overflow-visible"
               :class="{
                 'sm:me-0': options.alignment === 'left',
                 'sm:ms-0': options.alignment === 'right',
