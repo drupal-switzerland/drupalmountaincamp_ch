@@ -10,6 +10,7 @@
 @import './components/brand.css';
 @import './components/week-timeline.css';
 @import './components/loading-indicator.css';
+@import './components/print.css';
 
 @tailwind base;
 @tailwind components;

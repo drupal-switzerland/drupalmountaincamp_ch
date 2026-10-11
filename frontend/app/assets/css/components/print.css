@@ -1,0 +1,26 @@
+/* Browsers print without backgrounds unless the reader asks for them, so text
+   that is light on a dark fill on screen would print light on white paper.
+   On paper it is navy, like the rest of the page. Marked !important because
+   these have to win over colour utilities such as text-white, which come
+   later in the stylesheet with the same specificity. The current page in the
+   pagination is one of them: a navy disc with a white number. */
+@media print {
+  .on-dark,
+  .on-dark *,
+  .button.is-filled,
+  .ticket-button,
+  [aria-current='page'] {
+    color: theme(colors.brand.navy) !important;
+  }
+
+  /* Borders drawn in white or ice: the hero's pill, outline buttons, rules. */
+  .on-dark * {
+    border-color: currentColor !important;
+  }
+
+  /* Without its fill a call to action is plain text; the outline keeps it a button. */
+  .ticket-button {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+}
