@@ -29,7 +29,7 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
 
   private const CONFIG_DIRECTORY = DRUPAL_ROOT . '/../config/default';
 
-  private const EVENT_SCHEMA_FILE = DRUPAL_ROOT . '/../../frontend/app/helpers/eventSchema/index.ts';
+  private const ORGANISATION = 'Drupal Events Switzerland';
 
   private const PUBLISHED = '2026-03-06';
 
@@ -105,7 +105,7 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
     $this->assertSame($node->toUrl()->setAbsolute()->toString(), $article['mainEntityOfPage']);
     foreach (['author', 'publisher'] as $role) {
       $this->assertSame('Organization', $article[$role]['@type']);
-      $this->assertSame($this->eventOrganizer(), $article[$role]['name']);
+      $this->assertSame(self::ORGANISATION, $article[$role]['name']);
       $this->assertStringStartsWith('http', $article[$role]['url']);
     }
   }
@@ -210,15 +210,6 @@ class PressReleaseStructuredDataTest extends KernelTestBase {
     $graph = json_decode($this->jsonLd($node), TRUE)['@graph'];
     $this->assertCount(1, $graph);
     return $graph[0];
-  }
-
-  /**
-   * The organiser the frontend's Event structured data names.
-   */
-  private function eventOrganizer(): string {
-    $source = (string) file_get_contents(self::EVENT_SCHEMA_FILE);
-    $this->assertSame(1, preg_match("/^\s*organizer: '([^']+)',$/m", $source, $matches));
-    return $matches[1];
   }
 
   /**
