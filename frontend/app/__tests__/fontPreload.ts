@@ -12,11 +12,11 @@ const ASSETS_URL = 'http://localhost/_nuxt/'
 // What the preloaded files have to be, in the order of FONT_PRELOADS.
 const PRELOADED_FACES = [
   { family: 'Source Sans 3', weight: 400, style: 'normal' },
-  { family: 'Zilla Slab', weight: 700, style: 'normal' },
+  { family: 'ZT Gatha', weight: 700, style: 'normal' },
 ]
 
-// The @font-face rules @nuxt/fonts wrote into the entry CSS of a production
-// build, minified by lightningcss.
+// The @font-face rules in the entry CSS of a production build, minified by
+// lightningcss: those @nuxt/fonts wrote and those of typography.css.
 const CAPTURED_CSS = readFileSync(
   resolve(import.meta.dirname, 'fixtures/generatedFontFaces.css.txt'),
   'utf8',
@@ -59,7 +59,7 @@ describe('font preloads', () => {
     )
   })
 
-  it('are the latin files of Source Sans 3 regular and Zilla Slab bold', () => {
+  it('are the latin files of Source Sans 3 regular and ZT Gatha bold', () => {
     expect(latinFiles(CAPTURED_CSS)).toEqual({ files: preloads, missing: [] })
   })
 
@@ -87,7 +87,7 @@ function face(url: string, declarations: string) {
 
 describe('pickFontFiles', () => {
   it('reports a face that is not in the CSS and still returns the others', () => {
-    const absent = { family: 'Zilla Slab', weight: 300, style: 'normal' }
+    const absent = { family: 'ZT Gatha', weight: 300, style: 'normal' }
     const [sourceSans] = PRELOADED_FACES
     const { urls, missing } = pickFontFiles(CAPTURED_CSS, [sourceSans!, absent])
 
@@ -126,5 +126,35 @@ describe('pickFontFiles', () => {
     const css = face('italic.woff2', 'font-weight: 700; font-style: italic;')
 
     expect(pickFontFiles(css, [BODY]).missing).toEqual([BODY])
+  })
+})
+
+describe('heading font', () => {
+  const HEADING_WEIGHTS = ['600', '700']
+  const faces = [
+    ...readFileSync(
+      resolve(FRONTEND, 'app/assets/css/typography.css'),
+      'utf8',
+    ).matchAll(/@font-face\s*\{([^}]*)\}/g),
+  ]
+    .map(([, block = '']) => block)
+    .filter((block) => /font-family:\s*'ZT Gatha';/.test(block))
+
+  it('has one self-hosted file for each weight headings use', () => {
+    const weights = faces.map(
+      (block) => /font-weight:\s*(\d+)/.exec(block)?.[1],
+    )
+    const files = faces.map((block) => /url\('([^']+)'\)/.exec(block)?.[1])
+
+    expect(weights.sort()).toEqual(HEADING_WEIGHTS)
+    for (const file of files) {
+      expect(existsSync(resolve(FRONTEND, `public${file}`)), file).toBe(true)
+    }
+  })
+
+  it('swaps in over the fallback instead of hiding the text', () => {
+    for (const block of faces) {
+      expect(block).toMatch(/font-display:\s*swap/)
+    }
   })
 })

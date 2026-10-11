@@ -1,4 +1,45 @@
 /*
- * Brand fonts ("Source Sans 3" body, "Zilla Slab" display headings) are
- * loaded from Google Fonts via app.head.link in nuxt.config.ts.
+ * Headings are set in ZT Gatha, the Drupal brand typeface, served from
+ * public/fonts. Body text is "Source Sans 3", which @nuxt/fonts self-hosts
+ * (nuxt.config.ts).
  */
+@font-face {
+  font-family: 'ZT Gatha';
+  src: url('/fonts/ZTGatha-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ZT Gatha';
+  src: url('/fonts/ZTGatha-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * Local sans-serif fonts scaled to ZT Gatha Bold, so headings keep their size
+ * and line breaks when the web font swaps in: Arial on Windows, macOS and iOS,
+ * Roboto on Android. Computed with fontaine's generateFontFace() from the bold
+ * file's metrics (ascent 900, descent 330, 1000 units per em, average width
+ * 477).
+ */
+@font-face {
+  font-family: 'ZT Gatha Fallback Arial';
+  src: local('Arial');
+  size-adjust: 106.9985%;
+  ascent-override: 84.1134%;
+  descent-override: 30.8416%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ZT Gatha Fallback Roboto';
+  src: local('Roboto');
+  size-adjust: 107.2334%;
+  ascent-override: 83.9291%;
+  descent-override: 30.774%;
+  line-gap-override: 0%;
+}
