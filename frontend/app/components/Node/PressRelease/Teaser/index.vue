@@ -27,6 +27,8 @@
       <MediaImage
         v-bind="image"
         :image-style="isPortrait ? portraitImageStyle : imageStyle"
+        :loading="preload ? 'eager' : 'lazy'"
+        :preload="preload"
         hide-caption
       />
     </div>
@@ -38,7 +40,12 @@
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
 
-const props = defineProps<NodePressReleaseTeaserFragment>()
+const props = defineProps<
+  NodePressReleaseTeaserFragment & {
+    // For the one teaser whose image is in the first viewport.
+    preload?: boolean
+  }
+>()
 
 const sizes = {
   xs: 728,
