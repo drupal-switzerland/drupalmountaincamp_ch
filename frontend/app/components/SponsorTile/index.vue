@@ -16,6 +16,8 @@
           :src="toDrupalFilePath(image.urlPath)"
           :srcset="srcset || undefined"
           :sizes="srcset ? logoStyle.width : undefined"
+          :width="renderedSize?.width"
+          :height="renderedSize?.height"
           alt=""
           class="size-full object-contain"
           loading="lazy"
@@ -71,6 +73,13 @@ const intrinsicSize = computed(() => {
     : null
 })
 
+// The size the logo is laid out at; also the <img>'s width and height, so the
+// browser knows its ratio before the file loads.
+const renderedSize = computed(() => {
+  const size = intrinsicSize.value
+  return size ? logoSize(size.width, size.height, props.box) : null
+})
+
 // Width plus aspect ratio (not a fixed height) so a logo can shrink with
 // max-width on narrow screens without distorting.
 const logoStyle = computed(() => {
@@ -83,7 +92,9 @@ const logoStyle = computed(() => {
       height: `${props.box.maxHeight}px`,
     }
   }
-  const { width } = logoSize(size.width, size.height, props.box)
-  return { width: `${width}px`, aspectRatio: `${size.width} / ${size.height}` }
+  return {
+    width: `${renderedSize.value?.width}px`,
+    aspectRatio: `${size.width} / ${size.height}`,
+  }
 })
 </script>
