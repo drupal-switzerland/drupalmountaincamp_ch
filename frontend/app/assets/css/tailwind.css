@@ -17,8 +17,24 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --page-header-height: theme(spacing.12);
+  }
+
+  @screen md {
+    :root {
+      --page-header-height: theme(spacing.20);
+    }
+  }
+
   html {
     @apply hyphens-auto bg-white font-sans text-primary-500;
+    /* Focus and anchor scrolling stop below the sticky header, with room for
+       the focus ring. */
+    scroll-padding-top: calc(
+      var(--page-header-height) + var(--focus-ring-width) +
+        var(--focus-ring-offset)
+    );
   }
 
   h1,

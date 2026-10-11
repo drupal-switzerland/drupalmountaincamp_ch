@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group relative rounded-sm border-4 border-primary-500 p-4 text-body transition-colors duration-500 ease-in-out hover:border-primary-400 has-[:focus-visible]:border-primary-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-[3px] has-[:focus-visible]:outline-primary-500"
+    class="group relative isolate rounded-sm border-4 border-primary-500 p-4 text-body transition-colors duration-500 ease-in-out hover:border-primary-400 has-[:focus-visible]:border-primary-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-[3px] has-[:focus-visible]:outline-primary-500"
   >
     <p v-if="date" class="font-bold text-primary-500">
       {{ date.formatted }}
