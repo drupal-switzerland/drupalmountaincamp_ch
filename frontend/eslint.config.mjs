@@ -95,7 +95,6 @@ export default withNuxt([
             'paragraph-expand-section',
             'search-input',
             'pagination-buttons',
-            'formkit-.*',
             'breadcrumb',
             'editor_image',
             'close-icon-.*',
