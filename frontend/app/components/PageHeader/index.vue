@@ -10,7 +10,6 @@
       'fixed w-full': isGlobalSticky,
       sticky: !isGlobalSticky,
     }"
-    @keydown.esc="closeMenuAndFocusToggle"
   >
     <div class="page-header-grid container mx-auto grid max-w-none">
       <div class="grid-area-logo h-7 md:h-20">
@@ -49,7 +48,7 @@
         <button
           ref="menuToggle"
           type="button"
-          class="flex size-11 items-center justify-center gap-3 leading-none md:hidden"
+          class="flex size-11 items-center justify-center gap-3 leading-none [--focus-ring-offset:calc(var(--focus-ring-width)_*_-1)] md:hidden"
           :aria-label="$texts('menu', 'Menu')"
           :aria-expanded="isMenuOpen"
           aria-controls="global-menu"
@@ -70,6 +69,7 @@
 </template>
 
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
 
 const route = useRoute()
@@ -127,6 +127,19 @@ function closeMenuAndFocusToggle() {
   closeMenu()
   menuToggle.value?.focus()
 }
+
+// On window: with the page behind the menu inert, focus can leave the header
+// for the browser's own controls. An open phone submenu takes Escape first.
+const phoneSubmenuOpen = usePhoneSubmenuOpen()
+useEventListener(
+  () => (isMenuOpen.value ? window : null),
+  'keydown',
+  (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && phoneSubmenuOpen.value === null) {
+      closeMenuAndFocusToggle()
+    }
+  },
+)
 
 function openMenu() {
   isMenuOpen.value = true
