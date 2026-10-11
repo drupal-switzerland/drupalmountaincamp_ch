@@ -1,6 +1,8 @@
 import type { NuxtConfig } from '@nuxt/schema'
 const IS_DEV = process.env.NODE_ENV === 'development'
 
+export const CDN_CACHE_CONTROL_HEADER = 'CDN-Cache-Control'
+
 const multiCache: NuxtConfig['multiCache'] = {
   component: {
     enabled: false,
@@ -21,7 +23,7 @@ const multiCache: NuxtConfig['multiCache'] = {
   },
   cdn: {
     enabled: true,
-    cacheControlHeader: 'CDN-Cache-Control',
+    cacheControlHeader: CDN_CACHE_CONTROL_HEADER,
     cacheTagHeader: 'Cache-Tag',
   },
   debug: IS_DEV,
