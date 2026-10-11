@@ -27,12 +27,7 @@
       </PageDependency>
 
       <!-- tabindex lets the skip link move focus here, not only scroll. -->
-      <!-- scroll-mt keeps main's top below the sticky header. -->
-      <main
-        id="main-content"
-        tabindex="-1"
-        class="page-content scroll-mt-12 outline-none md:scroll-mt-20"
-      >
+      <main id="main-content" tabindex="-1" class="page-content outline-none">
         <ClientOnly>
           <DrupalMessages v-if="!isEditing" />
         </ClientOnly>

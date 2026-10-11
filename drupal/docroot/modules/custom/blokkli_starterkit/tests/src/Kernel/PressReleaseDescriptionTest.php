@@ -36,6 +36,8 @@ class PressReleaseDescriptionTest extends KernelTestBase {
     'metatag_open_graph',
     'metatag_twitter_cards',
     'node',
+    'schema_article',
+    'schema_metatag',
     'system',
     'text',
     'token',

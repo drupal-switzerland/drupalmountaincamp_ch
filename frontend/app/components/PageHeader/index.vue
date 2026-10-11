@@ -1,11 +1,11 @@
 <template>
   <header
     ref="container"
-    class="top-0 z-10 border-b-2 border-b-primary-500 bg-white text-primary-500 transition-all duration-250 ease-in-out md:h-20"
+    class="top-0 z-10 border-b-2 border-b-primary-500 bg-white text-primary-500 transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
     :class="{
       '-translate-y-10 md:translate-y-[-50px]':
         isHeaderShiftedUp && !isMenuOpen,
-      'h-12 md:max-h-screen': !isMenuOpen,
+      'h-[var(--page-header-height)] md:max-h-screen': !isMenuOpen,
       'h-screen overflow-y-auto': isMenuOpen,
       'fixed w-full': isGlobalSticky,
       sticky: !isGlobalSticky,
