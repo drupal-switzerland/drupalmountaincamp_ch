@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { createError } from '#app'
 import ErrorPage from '../error.vue'
+import { SITE_NAME } from '../helpers/site'
 
 // The easy-texts build transform strips the default text from $texts()
 // calls, so the mock answers with the key the component asked for.
@@ -37,6 +38,20 @@ describe('error page', () => {
   it('names a missing page as not found', async () => {
     const wrapper = await mountError(404)
     expect(wrapper.get('h1').text()).toBe('error.notFoundTitle')
+  })
+
+  it('titles the tab like the other pages', async () => {
+    await mountError(404)
+    await vi.waitFor(() =>
+      expect(document.title).toBe(`error.notFoundTitle | ${SITE_NAME}`),
+    )
+  })
+
+  it('announces the title to assistive technology', async () => {
+    const wrapper = await mountError(404)
+    const region = wrapper.get('.nuxt-route-announcer [aria-live="polite"]')
+
+    expect(region.attributes('role')).toBe('status')
   })
 
   it('shows fixed copy for server errors, not the error message', async () => {
