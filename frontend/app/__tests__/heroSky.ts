@@ -376,16 +376,16 @@ describe('homepage hero text on what the layers put behind it', () => {
   const year = textColourAfter(HOME_HERO, 'v-if="titleParts.year"')
   const badgeLabel = textColourAfter(
     BRAND_CSS,
-    '  .label {\n    @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;\n\n    .on-dark & {',
+    '  .label {\n    @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;\n\n    .on-dark\n',
   )
   const highlight = textColourAfter(
     BRAND_CSS,
-    '.on-dark .ck-content.home-hero-lead .highlight',
+    '.on-dark\n    .ck-content.home-hero-lead\n    .highlight:not(',
   )
-  const leadLink = textColourAfter(CK_CONTENT_CSS, '      a:not(.button) {')
+  const leadLink = textColourAfter(CK_CONTENT_CSS, '      a:not(.button):not(')
   const outlineButton = textColourAfter(
     CK_CONTENT_CSS,
-    '      a.button.is-outline {',
+    '      a.button.is-outline:not(',
   )
 
   it('reads the colours the hero really uses', () => {

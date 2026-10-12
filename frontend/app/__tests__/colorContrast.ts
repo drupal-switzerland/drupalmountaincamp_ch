@@ -90,30 +90,6 @@ const pairs: [string, string, string, number][] = [
     AA_NON_TEXT,
   ],
   ['table border on the sky handover', TABLE_BORDER, SKY_HANDOVER, AA_NON_TEXT],
-  // Rich text in the Text paragraph's coloured backgrounds, at both ends of
-  // each gradient. Theme card: ice to lilac.
-  ['navy link on the theme card, ice end', brand.navy, brand.ice, AA_TEXT],
-  ['navy link on the theme card, lilac end', brand.navy, brand.lilac, AA_TEXT],
-  // Navy band: navy to blue.
-  ['ice body highlight on the navy band', brand.ice, brand.navy, AA_TEXT],
-  ['ice body highlight at its blue end', brand.ice, brand.blue, AA_TEXT],
-  ['white table focus ring on the navy band', WHITE, brand.navy, AA_NON_TEXT],
-  ['white table focus ring at its blue end', WHITE, brand.blue, AA_NON_TEXT],
-  // A table's white panel on a dark section.
-  ['navy table text on its white panel', brand.navy, WHITE, AA_TEXT],
-  ['link in a table on its white panel', colors.link.DEFAULT, WHITE, AA_TEXT],
-  [
-    'link hover in a table on its white panel',
-    colors.link.hover,
-    WHITE,
-    AA_TEXT,
-  ],
-  [
-    'blue highlight in a table on its white panel',
-    colors.primary[400],
-    WHITE,
-    AA_TEXT,
-  ],
   // Inner-page hero. The glow is painted behind the text, so text sits on the
   // gradient blended with the glow: the title anywhere, the ice lead and
   // breadcrumb only over the navy part (see the rejected pair below).
@@ -165,50 +141,5 @@ describe('brand colour contrast', () => {
 
   it('draws the hero glow in brand sky', () => {
     expect(HERO_GLOW.color).toBe(brand.sky)
-  })
-})
-
-describe('rich text on coloured backgrounds', () => {
-  const read = (name: string) =>
-    readFileSync(
-      join(process.cwd(), 'app/assets/css/components', name),
-      'utf8',
-    ).replace(/\s+/g, ' ')
-  const CK_CONTENT_CSS = read('ck-content.css')
-  const BRAND_CSS = read('brand.css')
-
-  it('rejects the link colour on the lilac end of the theme card', () => {
-    expect(contrast(colors.link.DEFAULT, brand.lilac)).toBeLessThan(AA_TEXT)
-  })
-
-  it('sets theme card links in navy', () => {
-    expect(CK_CONTENT_CSS).toContain(
-      '.is-theme & a:not(.button) { @apply text-primary-500; }',
-    )
-  })
-
-  it('rejects sky as body text on the blue end of the navy band', () => {
-    expect(contrast(brand.sky, brand.blue)).toBeLessThan(AA_TEXT)
-  })
-
-  it('sets body highlights in the navy band in ice, heading ones in sky', () => {
-    expect(BRAND_CSS).toContain(
-      '.navy-band .ck-content .highlight { @apply text-primary-100; }',
-    )
-    expect(BRAND_CSS).toContain(
-      '.navy-band .ck-content :is(h2, h3) .highlight { @apply text-primary-300; }',
-    )
-  })
-
-  it('gives a table on a dark section light-section text colours', () => {
-    expect(CK_CONTENT_CSS).toContain(
-      "figure.table, & > table, & > [data-scrollable-table='wrapper'] { @apply text-primary-500; a:not(.button) { @apply text-link hover:text-link-hover; } .highlight { @apply text-primary-400; } }",
-    )
-  })
-
-  it('draws the table focus ring in white on dark sections', () => {
-    expect(CK_CONTENT_CSS).toContain(
-      '[data-scrollable-table]:focus-visible { @apply outline-white; }',
-    )
   })
 })

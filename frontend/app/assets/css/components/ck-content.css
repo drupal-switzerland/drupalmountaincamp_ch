@@ -59,44 +59,71 @@
       @apply text-primary-500;
     }
 
+    /* A button sets the colour of everything in it, in every state. */
+    a.button .highlight {
+      color: inherit;
+    }
+
+    /* A table keeps its white panel on dark sections. The dark-section colours
+       stop at the panel, so the rules above apply inside it; each rule here
+       leaves out what is in a panel, and brand.css does the same. */
     .on-dark & {
-      h2,
-      h3,
-      h4,
-      h5 {
+      :is(h2, h3, h4, h5):not(
+        :where(.ck-content > table *, [data-scrollable-table] *, figure.table *)
+      ) {
         @apply text-white;
       }
 
-      a:not(.button) {
+      a:not(.button):not(
+          :where(
+            .ck-content > table *,
+            [data-scrollable-table] *,
+            figure.table *
+          )
+        ) {
         @apply text-white hover:text-primary-100;
       }
 
-      .highlight {
+      .highlight:not(
+        :where(
+          .ck-content > table *,
+          [data-scrollable-table] *,
+          figure.table *,
+          a.button *
+        )
+      ) {
         @apply text-primary-300;
       }
 
-      a.button.is-filled {
+      a.button.is-filled:not(
+          :where(
+            .ck-content > table *,
+            [data-scrollable-table] *,
+            figure.table *
+          )
+        ) {
         @apply border-white bg-white text-primary-500 hover:border-primary-100 hover:bg-primary-100 hover:text-primary-500;
       }
 
-      a.button.is-outline {
+      a.button.is-outline:not(
+          :where(
+            .ck-content > table *,
+            [data-scrollable-table] *,
+            figure.table *
+          )
+        ) {
         @apply border-white bg-transparent text-white hover:bg-white hover:text-primary-500;
       }
 
-      /* A table keeps its white panel on dark sections, so its text takes the
-         colours of a light section again. */
       figure.table,
       & > table,
       & > [data-scrollable-table='wrapper'] {
         @apply text-primary-500;
+      }
 
-        a:not(.button) {
-          @apply text-link hover:text-link-hover;
-        }
-
-        .highlight {
-          @apply text-primary-400;
-        }
+      :is(.ck-content > table, [data-scrollable-table], figure.table)
+        :focus-visible {
+        outline-color: theme(colors.brand.navy);
       }
 
       [data-scrollable-table]:focus-visible {
