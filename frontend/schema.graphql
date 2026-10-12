@@ -2033,10 +2033,14 @@ type MediaImage implements Entity & EntityLinkable & EntityRevisionable & Entity
   """{field: field_caption} """
   fieldCaptionRawField: FieldItemListString
 
-  """{value} {field: field_copyright} """
+  """
+  {value} {field: field_copyright} Photographer or source. Shown under the image in news articles and behind a © button in page content. Not shown on cards, in lists and in the page header image. Do not put it in the alternative text.
+  """
   fieldCopyright: String
 
-  """{field: field_copyright} """
+  """
+  {field: field_copyright} Photographer or source. Shown under the image in news articles and behind a © button in page content. Not shown on cards, in lists and in the page header image. Do not put it in the alternative text.
+  """
   fieldCopyrightRawField: FieldItemListString
 
   """{value} {field: field_media_image} """
@@ -2971,12 +2975,12 @@ type NodePage implements Entity & EntityLinkable & EntityRevisionable & EntityTr
   fieldImageRawField: FieldItemListEntityReference
 
   """
-  {value} {field: field_lead} Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.
+  {value} {field: field_lead} Optional introduction shown under the title on the page. Do not repeat the first paragraphs of the text.
   """
   fieldLead: String
 
   """
-  {field: field_lead} Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.
+  {field: field_lead} Optional introduction shown under the title on the page. Do not repeat the first paragraphs of the text.
   """
   fieldLeadRawField: FieldItemListTextLong
 
@@ -2987,12 +2991,12 @@ type NodePage implements Entity & EntityLinkable & EntityRevisionable & EntityTr
   fieldParagraphsRawField: FieldItemListEntityReferenceRevisions
 
   """
-  {value} {field: field_teaser} Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.
+  {value} {field: field_teaser} One or two plain sentences that say what the page is about. Plain text only, no links or formatting: the whole teaser card is one link. Used for search results and shared links, and shown in teasers on other pages.
   """
   fieldTeaser: String
 
   """
-  {field: field_teaser} Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.
+  {field: field_teaser} One or two plain sentences that say what the page is about. Plain text only, no links or formatting: the whole teaser card is one link. Used for search results and shared links, and shown in teasers on other pages.
   """
   fieldTeaserRawField: FieldItemListTextLong
 
@@ -3175,12 +3179,12 @@ type NodePressRelease implements Entity & EntityLinkable & EntityRevisionable & 
   fieldImageRawField: FieldItemListEntityReference
 
   """
-  {value} {field: field_lead} Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.
+  {value} {field: field_lead} Optional introduction shown under the title on the page. Do not repeat the first paragraphs of the text.
   """
   fieldLead: String
 
   """
-  {field: field_lead} Ein Text, der unterhalb des Titels angezeigt wird, falls vorhanden.
+  {field: field_lead} Optional introduction shown under the title on the page. Do not repeat the first paragraphs of the text.
   """
   fieldLeadRawField: FieldItemListTextLong
 
@@ -3191,12 +3195,12 @@ type NodePressRelease implements Entity & EntityLinkable & EntityRevisionable & 
   fieldParagraphsRawField: FieldItemListEntityReferenceRevisions
 
   """
-  {value} {field: field_teaser} Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.
+  {value} {field: field_teaser} One or two plain sentences that say what the article is about. Plain text only, no links or formatting: the whole teaser card is one link. Used for search results and shared links, and shown in the news list and on news cards.
   """
   fieldTeaser: String
 
   """
-  {field: field_teaser} Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.
+  {field: field_teaser} One or two plain sentences that say what the article is about. Plain text only, no links or formatting: the whole teaser card is one link. Used for search results and shared links, and shown in the news list and on news cards.
   """
   fieldTeaserRawField: FieldItemListTextLong
 

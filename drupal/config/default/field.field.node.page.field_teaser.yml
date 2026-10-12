@@ -17,7 +17,7 @@ field_name: field_teaser
 entity_type: node
 bundle: page
 label: Teaser
-description: 'Ein Teasertext, damit Teaser, die auf die Seite verweisen, den Text anzeigen können.'
+description: 'One or two plain sentences that say what the page is about. Plain text only, no links or formatting: the whole teaser card is one link. Used for search results and shared links, and shown in teasers on other pages.'
 required: true
 translatable: true
 default_value: {  }
