@@ -3,8 +3,12 @@ import { defineComponent, h } from 'vue'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { renderDOMHead } from 'unhead/client'
 import NewsPage from '../pages/news/index.vue'
+import { sizesProblems } from './support/sizes'
 
 const PAGE_SIZE = 10
+
+const TEASER_SIZES =
+  '(min-width: 1024px) calc(20rem - 8px), (min-width: 50.5rem) calc(48rem - 8px), calc(100vw - 40px)'
 
 const { query } = vi.hoisted(() => ({ query: vi.fn() }))
 
@@ -18,9 +22,17 @@ const Teaser = defineComponent({
   props: {
     title: { type: String, default: '' },
     preload: { type: Boolean, default: false },
+    imageSizes: { type: String, default: '' },
   },
   setup: (props) => () =>
-    h('article', { 'data-preload': String(props.preload) }, props.title),
+    h(
+      'article',
+      {
+        'data-preload': String(props.preload),
+        'data-image-sizes': props.imageSizes,
+      },
+      props.title,
+    ),
 })
 
 // Rendered as nothing: only the list matters here.
@@ -126,6 +138,18 @@ describe('news list page', () => {
     expect(
       wrapper.findAll('article').map((el) => el.attributes('data-preload')),
     ).toEqual(['true', 'false', 'false'])
+  })
+
+  it('tells every teaser how wide its image is in the list', async () => {
+    drupal({ total: 2, items: articles(2) })
+
+    const wrapper = await mountNews('/news')
+    const sizes = wrapper
+      .findAll('article')
+      .map((el) => el.attributes('data-image-sizes'))
+
+    expect(sizes).toEqual([TEASER_SIZES, TEASER_SIZES])
+    expect(sizesProblems(TEASER_SIZES)).toEqual([])
   })
 
   it('asks for the second ten on ?page=2', async () => {
