@@ -6,7 +6,16 @@
       'opacity-0': !isLoaded,
     }"
   >
-    <Swiper v-bind="options" @swiper="getRef">
+    <!-- The element spans the whole strip the carousel root clips to (padding
+         with an equal negative margin leaves the slide width alone), so a
+         press beside the active slide lands on it and starts a swipe. -->
+    <Swiper
+      v-bind="options"
+      class="!-mx-[100vw] !px-[100vw]"
+      @swiper="getRef"
+      @after-init="exposeActiveSlideOnly"
+      @active-index-change="exposeActiveSlideOnly"
+    >
       <SwiperSlide v-for="(slide, i) in slidesToRender" :key="'first_' + i">
         <BlokkliItem v-bind="slide" />
       </SwiperSlide>
@@ -61,6 +70,15 @@ function getRef(swiperInstance: SwiperClass) {
   swiper.value = swiperInstance
 }
 
+// The loop needs every slide several times over. Only the active one is left
+// to the keyboard and to assistive technology. An inert slide takes no
+// pointer either, which is why touches go to the container (see options).
+function exposeActiveSlideOnly(swiperInstance: SwiperClass) {
+  swiperInstance.slides.forEach((slide, index) => {
+    slide.toggleAttribute('inert', index !== swiperInstance.activeIndex)
+  })
+}
+
 function goNext() {
   if (swiper.value) {
     swiper.value.slideNext()
@@ -78,6 +96,7 @@ const options = computed<SwiperProps>(() => {
   return {
     speed: 600,
     modules: [Parallax],
+    touchEventsTarget: 'container',
     initialSlide: props.slides.length - 0,
     slidesPerView: 1,
     spaceBetween: 0,
