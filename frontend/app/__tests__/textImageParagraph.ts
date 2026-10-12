@@ -59,6 +59,8 @@ describe('text image paragraph', () => {
     expect(await headings('Community', 'carousel')).toEqual(['Community'])
     expect(await headings(undefined)).toEqual([])
     expect(await headings('', 'carousel')).toEqual([])
+    expect(await headings('  \n')).toEqual([])
+    expect(await headings('  \n', 'carousel')).toEqual([])
     expect(await headings(undefined, 'carousel')).toEqual([])
   })
 

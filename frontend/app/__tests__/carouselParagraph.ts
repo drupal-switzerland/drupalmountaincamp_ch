@@ -16,6 +16,7 @@ describe('carousel paragraph', () => {
   it('has a heading only when it has a title', async () => {
     expect(await headings('Impressions')).toEqual(['Impressions'])
     expect(await headings('')).toEqual([])
+    expect(await headings('  \n')).toEqual([])
     expect(await headings(undefined)).toEqual([])
   })
 })
