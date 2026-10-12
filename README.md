@@ -69,8 +69,14 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 - Frontend: `ddev bun run lint`, `ddev bun run prettier` and
   `ddev bun run typecheck` (also steps of the `checks` job in
   `.github/workflows/frontend-tests.yml`).
-- Backend: `ddev exec vendor/bin/phpcs` and `ddev exec vendor/bin/phpstan`
-  (run from `drupal/`).
+- Backend: `ddev exec vendor/bin/phpcs` and `ddev exec vendor/bin/phpstan`.
+  They run in `drupal/`: `working_dir` in `.ddev/config.yaml` puts `ddev exec`
+  there.
+  - That phpcs run reads `drupal/phpcs.xml`: the `Drupal` standard with some
+    sniffs switched off, on custom modules and themes. CI is stricter, with
+    `Drupal` and `DrupalPractice` and nothing switched off, so code can pass
+    here and fail the pull request. The CI command is in
+    [AGENTS.md](AGENTS.md), section "Gates".
 
 ## Deploy
 
