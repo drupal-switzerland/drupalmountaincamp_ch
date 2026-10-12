@@ -1,0 +1,17 @@
+uuid: 2f80ceaf-df5a-4a27-9e24-c8aacba18781
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+name: share
+label: 'Share image (1200x630)'
+effects:
+  15714267-6a55-4062-b502-60a76f43dc41:
+    uuid: 15714267-6a55-4062-b502-60a76f43dc41
+    id: focal_point_scale_and_crop
+    weight: 1
+    data:
+      width: 1200
+      height: 630
+      crop_type: focal_point
