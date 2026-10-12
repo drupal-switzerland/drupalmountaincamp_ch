@@ -11,14 +11,14 @@
         <BlokkliItem v-bind="slide" />
       </SwiperSlide>
     </Swiper>
-    <div class="mt-6 hidden grid-cols-12 gap-3 sm:grid">
+    <div class="mt-6 grid grid-cols-12 gap-3">
       <div class="col-span-7">
         <div class="flex gap-4 md:justify-end">
-          <button @click="goPrev">
+          <button type="button" @click="goPrev">
             <SpriteSymbol name="arrow-left" class="size-7 text-primary-500" />
             <span class="sr-only">{{ $texts('slides.prev', 'Previous') }}</span>
           </button>
-          <button @click="goNext">
+          <button type="button" @click="goNext">
             <SpriteSymbol name="arrow-right" class="size-7 text-primary-500" />
             <span class="sr-only">{{ $texts('slides.next', 'Next') }}</span>
           </button>
