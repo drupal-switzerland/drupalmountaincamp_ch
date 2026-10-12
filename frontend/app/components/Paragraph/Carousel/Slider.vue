@@ -6,12 +6,13 @@
       'opacity-0': !isLoaded,
     }"
   >
-    <!-- The element spans the whole strip the carousel root clips to (padding
-         with an equal negative margin leaves the slide width alone), so a
-         press beside the active slide lands on it and starts a swipe. -->
+    <!-- A pseudo-element spans the whole strip the carousel root clips to, so
+         a press beside the active slide lands on the container and starts a
+         swipe. The container's own box stays the slide's width: the slide
+         animation measures it (Animation.ts). -->
     <Swiper
       v-bind="options"
-      class="!-mx-[100vw] !px-[100vw]"
+      class="before:absolute before:inset-x-[-100vw] before:inset-y-0 before:content-['']"
       @swiper="getRef"
       @after-init="exposeActiveSlideOnly"
       @active-index-change="exposeActiveSlideOnly"
@@ -74,8 +75,11 @@ function getRef(swiperInstance: SwiperClass) {
 // to the keyboard and to assistive technology. An inert slide takes no
 // pointer either, which is why touches go to the container (see options).
 function exposeActiveSlideOnly(swiperInstance: SwiperClass) {
-  swiperInstance.slides.forEach((slide, index) => {
-    slide.toggleAttribute('inert', index !== swiperInstance.activeIndex)
+  const active = swiperInstance.slides[swiperInstance.activeIndex]
+  swiperInstance.slides.forEach((slide) => {
+    // Without a known active slide nothing is hidden: better every copy
+    // reachable than none.
+    slide.toggleAttribute('inert', !!active && slide !== active)
   })
 }
 
