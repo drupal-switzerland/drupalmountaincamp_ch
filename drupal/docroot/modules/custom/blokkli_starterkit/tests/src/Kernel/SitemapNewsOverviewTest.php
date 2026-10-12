@@ -37,7 +37,12 @@ class SitemapNewsOverviewTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installSchema('simple_sitemap', ['simple_sitemap']);
     $this->installConfig(['system', 'simple_sitemap']);
-    $this->config('simple_sitemap.settings')->set('base_url', self::PUBLIC_URL)->save();
+    // Without a time limit: under load the default ten seconds can end the
+    // generation before the sitemap is published.
+    $this->config('simple_sitemap.settings')
+      ->set('base_url', self::PUBLIC_URL)
+      ->set('generate_duration', 0)
+      ->save();
   }
 
   /**
