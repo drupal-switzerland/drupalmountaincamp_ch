@@ -40,17 +40,27 @@
       />
     </div>
 
-    <nav v-if="isSliderDesktop" class="container mx-auto mt-6 hidden md:block">
+    <!-- Shown from the width at which the list becomes a slider (see
+         shouldMountSwiper), so it is never a slider without its buttons. -->
+    <div v-if="isSliderDesktop" class="container mx-auto mt-6 hidden sm:block">
       <div class="flex justify-end">
-        <button :aria-label="$texts('slides.prev', 'Previous')" @click="prev">
+        <button
+          type="button"
+          :aria-label="$texts('slides.prev', 'Previous')"
+          @click="prev"
+        >
           <SpriteSymbol name="arrow-left" class="size-7 text-primary-500" />
         </button>
 
-        <button :aria-label="$texts('slides.next', 'Next')" @click="next">
+        <button
+          type="button"
+          :aria-label="$texts('slides.next', 'Next')"
+          @click="next"
+        >
           <SpriteSymbol name="arrow-right" class="size-7 text-primary-500" />
         </button>
       </div>
-    </nav>
+    </div>
   </div>
 </template>
 
