@@ -40,10 +40,16 @@ const LATEST_NEWS_LIMIT = 3
 // (1380 - 2 x 48px padding - 2 x 24px gap) / 3 wide; below that a third of
 // the viewport is a little more than the card.
 const CARD_MAX_WIDTH = 412
-const CARD_IMAGE_SIZES = buildImageSizes([
-  { minWidth: SCREENS.xl, width: `${CARD_MAX_WIDTH}px` },
-  { minWidth: SCREENS.md, width: '33vw' },
-])
+// Below md a card spans the viewport inside the container's 16px padding and
+// its own 3px border.
+const SINGLE_COLUMN_INSET = 38
+const CARD_IMAGE_SIZES = buildImageSizes(
+  [
+    { minWidth: SCREENS.xl, width: `${CARD_MAX_WIDTH}px` },
+    { minWidth: SCREENS.md, width: '33vw' },
+  ],
+  `calc(100vw - ${SINGLE_COLUMN_INSET}px)`,
+)
 
 defineBlokkliFragment({
   name: 'latest_news',
