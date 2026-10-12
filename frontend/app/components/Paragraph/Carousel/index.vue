@@ -1,6 +1,6 @@
 <template>
   <div class="my-12 overflow-hidden">
-    <div v-if="title?.trim() || isEditing" class="container">
+    <div v-if="hasText(title) || isEditing" class="container">
       <h2
         v-blokkli-editable:field_title
         class="mb-10 text-3xl md:text-4xl lg:mb-14"
@@ -29,6 +29,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphCarouselFragment } from '#graphql-operations'
+import { hasText } from '~/helpers/text'
 
 defineProps<{
   slides: ParagraphCarouselFragment['slides']

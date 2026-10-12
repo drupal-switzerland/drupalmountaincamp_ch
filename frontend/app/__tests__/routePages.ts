@@ -7,7 +7,12 @@ import NewsArticlePage from '../pages/news/[...slug]/index.vue'
 import NodePage from '../pages/node/[nid]/index.vue'
 
 const { query, navigate } = vi.hoisted(() => ({
-  query: vi.fn(),
+  // The app itself queries Drupal while it starts (init data, the user),
+  // before any test has said what Drupal answers.
+  query: vi.fn(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (..._args: any[]): Promise<any> => ({ data: {} }),
+  ),
   navigate: vi.fn(),
 }))
 

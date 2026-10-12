@@ -1,7 +1,7 @@
 <template>
   <div class="my-7 md:mb-12 lg:mb-20">
     <Container>
-      <h2 v-if="title" class="mb-10 text-3xl md:text-4xl lg:mb-14">
+      <h2 v-if="hasText(title)" class="mb-10 text-3xl md:text-4xl lg:mb-14">
         {{ title }}
       </h2>
       <p v-else-if="isEditing && !groups.length" class="text-gray-600">
@@ -35,6 +35,7 @@ import type {
   ParagraphSponsorListFragment,
 } from '#graphql-operations'
 import { LOGO_BOXES } from '~/helpers/sponsors'
+import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
   title?: ParagraphSponsorListFragment['title']

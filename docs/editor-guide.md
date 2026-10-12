@@ -71,9 +71,9 @@ The **Lead** field is on the same form.
   does not open a page about another.
 - A link inside a text takes an address only, for example `/tickets`. The
   link field there offers no suggestions.
-- A page gets a new address when its title changes, and the old address stops
-  working. Links in texts are not updated. After renaming a page, fix the
-  links that point to it.
+- A page gets a new address when its title changes. The old address then
+  forwards to the new one. Still update links you know of: if another page
+  later takes the old address, old links open that page.
 - The **Link** field of a button block is different: start typing the title
   of the page and choose it from the suggestions. A link chosen this way
   follows the page to its new address.

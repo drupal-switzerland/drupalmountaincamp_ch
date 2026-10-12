@@ -3,7 +3,7 @@
     <span class="week-stop-node" aria-hidden="true">{{ stopNumber }}</span>
     <p class="label">{{ dayLabel }}</p>
     <h3
-      v-if="title || isEditing"
+      v-if="hasText(title) || isEditing"
       v-blokkli-editable:field_title
       class="text-2xl"
     >
@@ -28,7 +28,7 @@
     >
       <p class="label">{{ dayLabel }}</p>
       <h3
-        v-if="title || isEditing"
+        v-if="hasText(title) || isEditing"
         v-blokkli-editable:field_title
         class="text-2xl"
       >
@@ -59,7 +59,7 @@
     </div>
     <div class="flex grow flex-col gap-3 p-6 md:p-8">
       <h3
-        v-if="title || isEditing"
+        v-if="hasText(title) || isEditing"
         v-blokkli-editable:field_title
         class="text-2xl"
       >
@@ -94,7 +94,7 @@
     </div>
     <div class="grid">
       <h3
-        v-if="title || isEditing"
+        v-if="hasText(title) || isEditing"
         v-blokkli-editable:field_title
         class="col-span-7 mb-2 text-3xl"
       >
@@ -114,6 +114,7 @@
 <script lang="ts" setup>
 import type { ParagraphIconTextItemFragment } from '#graphql-operations'
 import { dayNumber } from '~/helpers/programme'
+import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
   icon: ParagraphIconTextItemFragment['icon']
