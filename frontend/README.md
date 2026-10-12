@@ -14,19 +14,11 @@ Nuxt app for the site. Setup, the dev server and tests are in the
   `http://` port of the ddev web container and
   `DRUPAL_GRAPHQL_TOKEN=local-development`; see the root README.
 
-## Add a route template only for a specific content type bundle
+## A route template for one content type
 
-Create a new folder with an alias. On Drupal you will have to setup the matching
-Alias pattern:
-
-```
-definePageMeta({
-    path: '/medienmitteilung/:slug(.*)*',
-    languageMapping: {
-      fr: '/fr/communiques-de-presse/:slug(.*)*',
-      en: '/en/press-release/:slug(.*)*',
-    },
-})
-```
-
-Now you can add a route fragment that only contains the page related fragments.
+A folder under `app/pages/` named after a path prefix renders the Drupal paths
+with that prefix. `app/pages/news/[...slug]/index.vue` does this for press
+releases: it runs its own query, `query.routeNodePressRelease.graphql`, next to
+it. Drupal has to give the content type aliases with the same prefix; for press
+releases that is
+`drupal/config/default/pathauto.pattern.node_press_release_en.yml`.
