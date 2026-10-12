@@ -1,0 +1,24 @@
+name: Docs
+
+on:
+  pull_request:
+    branches: [prod]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  doc-paths:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # The repository paths ARCHITECTURE.md and AGENTS.md name still exist.
+      - run: scripts/ci/check-doc-paths.sh
