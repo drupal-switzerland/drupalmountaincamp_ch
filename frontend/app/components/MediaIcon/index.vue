@@ -1,5 +1,11 @@
 <template>
-  <svg :aria-label="alt" :width="width" :height="height">
+  <svg
+    :role="alt ? 'img' : undefined"
+    :aria-label="alt || undefined"
+    :aria-hidden="alt ? undefined : 'true'"
+    :width="width"
+    :height="height"
+  >
     <use :xlink:href="url" width="100%" height="100%" />
   </svg>
 </template>
