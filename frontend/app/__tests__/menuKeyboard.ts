@@ -240,6 +240,19 @@ describe('main menu submenu panel', () => {
 })
 
 describe('Drupal messages', () => {
+  it('adds a message to a live region that is already there', async () => {
+    useDrupalMessages().messages.value = []
+    const wrapper = await mountSuspended(DrupalMessages)
+    const region = wrapper.get('[aria-live="polite"]')
+    expect(region.element.childElementCount).toBe(0)
+
+    useDrupalMessages().messages.value = [{ type: 'status', message: 'Saved' }]
+    await nextTick()
+
+    expect(wrapper.get('[aria-live="polite"]').element).toBe(region.element)
+    expect(region.text()).toContain('Saved')
+  })
+
   it('dismisses one message with a named button', async () => {
     useDrupalMessages().messages.value = [
       { type: 'status', message: 'First' },
