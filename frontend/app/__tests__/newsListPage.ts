@@ -6,7 +6,14 @@ import NewsPage from '../pages/news/index.vue'
 
 const PAGE_SIZE = 10
 
-const { query } = vi.hoisted(() => ({ query: vi.fn() }))
+// The app itself queries Drupal while it starts (init data, the user), before
+// any test has said what Drupal answers.
+const { query } = vi.hoisted(() => ({
+  query: vi.fn(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (..._args: any[]): Promise<any> => ({ data: {} }),
+  ),
+}))
 
 mockNuxtImport('useGraphqlQuery', () => query)
 mockNuxtImport('useEasyTexts', () => () => ({
