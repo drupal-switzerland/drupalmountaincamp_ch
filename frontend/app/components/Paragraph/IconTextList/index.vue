@@ -2,13 +2,13 @@
   <section
     v-if="display === 'timeline'"
     class="week-band on-dark bg-primary-500 py-16 text-white lg:py-24"
-    :aria-labelledby="title ? headingId : undefined"
+    :aria-labelledby="hasText(title) ? headingId : undefined"
   >
     <!-- Week timeline: a full-width navy band. The intro text is the opening
          stop (e.g. the pre-conference), the items are the numbered days. -->
     <div class="container !my-0">
       <h2
-        v-if="title || isEditing"
+        v-if="hasText(title) || isEditing"
         :id="headingId"
         v-blokkli-editable:field_title
         class="mb-10 text-3xl lg:mb-14 lg:text-5xl"
@@ -37,7 +37,7 @@
   <div v-else class="grid-container" :class="paragraphClassList">
     <div class="col-span-4 sm:col-span-6 md:col-span-8 lg:col-span-12">
       <h2
-        v-if="title || isEditing"
+        v-if="hasText(title) || isEditing"
         v-blokkli-editable:field_title
         class="mb-5 text-3xl lg:text-4xl"
       >
@@ -61,6 +61,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphIconTextListFragment } from '#graphql-operations'
+import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
   text: ParagraphIconTextListFragment['text']
