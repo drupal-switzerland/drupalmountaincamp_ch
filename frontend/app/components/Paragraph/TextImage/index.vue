@@ -3,7 +3,7 @@
     <div class="grid gap-8 md:grid-cols-2 md:items-start lg:gap-16">
       <div class="min-w-0">
         <h2
-          v-if="title?.trim() || isEditing"
+          v-if="hasText(title) || isEditing"
           v-blokkli-editable:field_title
           class="mb-4 text-3xl lg:text-4xl"
         >
@@ -55,7 +55,7 @@
       class="2xl:pl-10 col-start-8 col-end-[-1] mt-7 sm:mt-0 sm:pl-6 lg:mt-6 xl:pl-9"
     >
       <div class="swiper-carousel-content">
-        <h2 v-if="title?.trim()" class="mb-4 text-2xl md:text-4xl">
+        <h2 v-if="hasText(title)" class="mb-4 text-2xl md:text-4xl">
           {{ title }}
         </h2>
         <div ref="content" class="ck-content hyphens-auto" v-html="text" />
@@ -67,6 +67,7 @@
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
 import { IS_FRONT_PAGE } from '~/composables/frontPage'
+import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
   title?: string
