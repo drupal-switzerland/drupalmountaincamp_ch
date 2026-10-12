@@ -55,7 +55,7 @@
       class="2xl:pl-10 col-start-8 col-end-[-1] mt-7 sm:mt-0 sm:pl-6 lg:mt-6 xl:pl-9"
     >
       <div class="swiper-carousel-content">
-        <h2 class="mb-4 text-2xl md:text-4xl">
+        <h2 v-if="title" class="mb-4 text-2xl md:text-4xl">
           {{ title }}
         </h2>
         <div ref="content" class="ck-content hyphens-auto" v-html="text" />
