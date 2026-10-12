@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHero :title="entity?.title || 'News'" />
+    <PageHero :title="entity?.title || $texts('news.title', 'News')" />
 
     <div class="snow-blocks">
       <div class="container">
@@ -149,7 +149,7 @@ watch(pressReleases, async () => {
 // The overview has no Drupal metatags of its own; same pattern as node pages.
 const origin = useSiteOrigin()
 const pageTitle = computed(() => {
-  const title = unref(entity)?.title || 'News'
+  const title = unref(entity)?.title || $texts('news.title', 'News')
   const page =
     currentPage.value > 1
       ? ` – ${$texts('pagination.page', 'Page')} ${currentPage.value}`

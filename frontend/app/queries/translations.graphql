@@ -23,7 +23,6 @@ fragment easyTexts on TextsLoader {
   iframe__title: getText(key: "title", context: "iframe", default: "Embedded content")
   imageCredit__toggle: getText(key: "toggle", context: "imageCredit", default: "Photo credit")
   latestNews__all: getText(key: "all", context: "latestNews", default: "All news")
-  latestNews__title: getText(key: "title", context: "latestNews", default: "News")
   layout__skipToContent: getText(key: "skipToContent", context: "layout", default: "Skip to content")
   mainNavigation: getText(key: "mainNavigation", default: "Main")
   menu__back: getText(key: "back", context: "menu", default: "Back")

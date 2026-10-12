@@ -102,4 +102,19 @@ describe('ImageItem', () => {
       '(min-width: 1024px) 312px, 100vw',
     )
   })
+
+  it('renders no sizes for an image without a srcset, even when given one', async () => {
+    // Without the prop, Vue would pass an undeclared `sizes` straight on to
+    // the <img>.
+    const wrapper = await mountSuspended(ImageItem, {
+      props: {
+        file: { uri: 'public://media/images/photo.png' },
+        sizes: '(min-width: 1024px) 312px, 100vw',
+      },
+    })
+    const img = wrapper.get('img')
+
+    expect(img.attributes('srcset')).toBeUndefined()
+    expect(img.attributes('sizes')).toBeUndefined()
+  })
 })
