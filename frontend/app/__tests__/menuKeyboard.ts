@@ -269,4 +269,76 @@ describe('Drupal messages', () => {
       { type: 'error', message: 'Second' },
     ])
   })
+
+  // A live region reads text that changes. Reusing the first message's
+  // element for the second would read the second one out again.
+  it('keeps the element of a message when the one before it is dismissed', async () => {
+    useDrupalMessages().messages.value = [
+      { type: 'status', message: 'First' },
+      { type: 'error', message: 'Second' },
+    ]
+    const wrapper = await mountSuspended(DrupalMessages)
+    const second = wrapper.get('[aria-live="polite"]').element.children[1]
+
+    await wrapper.findAll('button')[0]!.trigger('click')
+
+    expect(wrapper.get('[aria-live="polite"]').element.children[0]).toBe(second)
+  })
+
+  it('says the type of an error or a warning in words, not only by colour', async () => {
+    useDrupalMessages().messages.value = [
+      { type: 'error', message: 'Not saved' },
+      { type: 'warning', message: 'Check the date' },
+      { type: 'status', message: 'Saved' },
+    ]
+    const wrapper = await mountSuspended(DrupalMessages)
+    const rows = wrapper.get('[aria-live="polite"]').element.children
+    const prefix = (row: Element) =>
+      row.querySelector('.sr-only')?.textContent?.trim()
+
+    expect(prefix(rows[0]!)).toBe('messages.error:')
+    expect(prefix(rows[1]!)).toBe('messages.warning:')
+    expect(prefix(rows[2]!)).toBeUndefined()
+  })
+
+  it('moves focus to the next message, then to main, when a focused Dismiss button goes away', async () => {
+    const main = document.createElement('main')
+    main.id = 'main-content'
+    main.tabIndex = -1
+    document.body.append(main)
+    useDrupalMessages().messages.value = [
+      { type: 'status', message: 'First' },
+      { type: 'error', message: 'Second' },
+    ]
+    const wrapper = await mountSuspended(DrupalMessages, {
+      attachTo: document.body,
+    })
+
+    const first = wrapper.findAll('button')[0]!
+    ;(first.element as HTMLElement).focus()
+    await first.trigger('click')
+    await nextTick()
+    const remaining = wrapper.findAll('button')
+    expect(remaining).toHaveLength(1)
+    expect(document.activeElement).toBe(remaining[0]!.element)
+
+    await remaining[0]!.trigger('click')
+    await nextTick()
+    expect(document.activeElement).toBe(main)
+    wrapper.unmount()
+    main.remove()
+  })
+
+  it('leaves focus alone when a message is dismissed without focus on its button', async () => {
+    useDrupalMessages().messages.value = [{ type: 'status', message: 'Saved' }]
+    const wrapper = await mountSuspended(DrupalMessages, {
+      attachTo: document.body,
+    })
+
+    await wrapper.get('button').trigger('click')
+    await nextTick()
+
+    expect(document.activeElement).toBe(document.body)
+    wrapper.unmount()
+  })
 })
