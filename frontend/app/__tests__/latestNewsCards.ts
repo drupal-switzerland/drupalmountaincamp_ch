@@ -6,7 +6,14 @@ import Card from '../components/Node/PressRelease/Card/index.vue'
 const CARD_SIZES =
   '(min-width: 1380px) 412px, (min-width: 1024px) 33vw, calc(100vw - 38px)'
 
-const { query } = vi.hoisted(() => ({ query: vi.fn() }))
+// The app itself queries Drupal while it starts (init data, the user), before
+// any test has said what Drupal answers.
+const { query } = vi.hoisted(() => ({
+  query: vi.fn(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (..._args: any[]): Promise<any> => ({ data: {} }),
+  ),
+}))
 
 mockNuxtImport('useGraphqlQuery', () => query)
 mockNuxtImport('useEasyTexts', () => () => ({
