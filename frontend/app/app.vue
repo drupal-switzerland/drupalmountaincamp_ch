@@ -14,6 +14,7 @@
         </div>
       </div>
     </ClientOnly>
+    <NuxtRouteAnnouncer />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

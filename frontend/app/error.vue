@@ -1,4 +1,5 @@
 <template>
+  <NuxtRouteAnnouncer />
   <NuxtLayout>
     <div class="container flex flex-col items-start gap-5 py-16 lg:py-24">
       <p class="label">{{ $texts('error.code', 'Error') }} {{ statusCode }}</p>
@@ -13,6 +14,7 @@
 
 <script lang="ts" setup>
 import type { NuxtError } from '#app'
+import { SITE_NAME } from '~/helpers/site'
 
 // Error pages render outside <NuxtPage>, so the template opts into the layout
 // itself; without <NuxtLayout> a 404 or 500 has no header, menu or footer.
@@ -43,7 +45,7 @@ const text = computed(() =>
       ),
 )
 
-useHead({ title })
+useHead({ title: () => `${title.value} | ${SITE_NAME}` })
 
 function goHome() {
   clearError({ redirect: '/' })
