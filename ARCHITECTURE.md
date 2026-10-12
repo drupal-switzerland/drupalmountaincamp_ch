@@ -199,10 +199,11 @@ within a second and once more six seconds later:
 - Global CSS: `frontend/app/assets/css/tailwind.css`,
   `frontend/app/assets/css/typography.css` and
   `frontend/app/assets/css/components/`.
-- Fonts: `fonts` and `FONT_PRELOADS` in `frontend/nuxt.config.ts`. The
-  heading font's `@font-face` rules are in
-  `frontend/app/assets/css/typography.css`, its files in
-  `frontend/public/fonts/`.
+- Fonts: both fonts' `@font-face` rules are in
+  `frontend/app/assets/css/typography.css`. The body font's files come from
+  the `@fontsource-variable/source-sans-3` package, the heading font's are in
+  `frontend/public/fonts/`. One file of each is preloaded:
+  `HEADING_FONT_PRELOAD` and `BODY_FONT_PRELOAD` in `frontend/nuxt.config.ts`.
 - `frontend/app/assets/css/backend.css` and
   `frontend/app/assets/css/ckeditor.css` are compiled into Drupal by the
   `styles` scripts in `frontend/package.json`.

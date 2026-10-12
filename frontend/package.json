@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@blokkli/editor": "^2.0.0-alpha.73",
+    "@fontsource-variable/source-sans-3": "5.3.1",
     "@lunarisapp/readability": "^1.1.1",
-    "@nuxt/fonts": "^0.14.0",
     "@rokka-io/nuxt": "^1.0.2",
     "@vueuse/core": "^15.0.0",
     "nuxt-easy-texts": "^2.2.0",

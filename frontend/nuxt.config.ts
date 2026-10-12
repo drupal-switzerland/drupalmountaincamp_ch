@@ -16,15 +16,16 @@ const NUXT_REQUEST_HOST = process.env.NUXT_REQUEST_HOST
 
 const LANGCODES = [{ code: 'en', prefix: '' }]
 
-// The latin file of Source Sans 3 (regular) and ZT Gatha (bold): the text
-// painted above the fold. Preloaded so it is not laid out in a fallback font
-// first. @nuxt/fonts names its file after the Google Fonts source, so a font
-// revision changes it; app/__tests__/fontPreload.ts checks both against the
-// CSS.
-export const FONT_PRELOADS = [
-  '/_fonts/xX2IuaztV6Veya6fGSX_iAosSJkDMK2U6FhK0n9e07w-cfMQXOQyn6tL_1piVO9rQp36Q6mfXvv3KeoWZvC5yfQ.woff2',
-  '/fonts/ZTGatha-Bold.woff2',
-]
+// The files of the text painted above the fold, preloaded so it is not laid
+// out in a fallback font first: ZT Gatha bold for headings, and the latin
+// file of Source Sans 3 for body text. The heading font has a fixed path. The
+// body font gets a content-hashed name from the build, so it is marked as a
+// preload in the build manifest (hooks, below), which puts the link into
+// every HTML response: pages, error pages and the shell for logged-in users.
+// The dev server preloads the heading font only.
+export const HEADING_FONT_PRELOAD = '/fonts/ZTGatha-Bold.woff2'
+export const BODY_FONT_PRELOAD =
+  /^source-sans-3-latin-wght-normal\.[\w-]+\.woff2$/
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -48,13 +49,15 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
-      link: FONT_PRELOADS.map((href) => ({
-        rel: 'preload',
-        as: 'font',
-        type: 'font/woff2',
-        href,
-        crossorigin: 'anonymous',
-      })),
+      link: [
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: HEADING_FONT_PRELOAD,
+          crossorigin: 'anonymous',
+        },
+      ],
       meta: [
         { name: 'theme-color', content: '#184759' },
         {
@@ -78,7 +81,6 @@ export default defineNuxtConfig({
    * Nuxt.js modules
    */
   modules: [
-    '@nuxt/fonts',
     '@nuxt/test-utils/module',
     '@nuxtjs/tailwindcss',
     'nuxt-graphql-middleware',
@@ -153,27 +155,6 @@ export default defineNuxtConfig({
     },
   },
 
-  // Self-hosted at build time (served from /_fonts with long caching) instead
-  // of a render-blocking Google Fonts stylesheet; only the weights in use.
-  fonts: {
-    defaults: {
-      subsets: ['latin', 'latin-ext'],
-    },
-    families: [
-      {
-        name: 'Source Sans 3',
-        provider: 'google',
-        weights: [400, 600, 700],
-        styles: ['normal', 'italic'],
-      },
-      // Declared by hand in app/assets/css/typography.css; the module's local
-      // provider finds only the bold file in public/fonts.
-      { name: 'ZT Gatha', provider: 'none' },
-      { name: 'ZT Gatha Fallback Arial', provider: 'none' },
-      { name: 'ZT Gatha Fallback Roboto', provider: 'none' },
-    ],
-  },
-
   sourcemap: true,
 
   nitro: {
@@ -181,6 +162,26 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    'build:manifest'(manifest) {
+      // The dev server calls this hook too, with entries that list no assets.
+      if (process.env.NODE_ENV === 'development') {
+        return
+      }
+      const entry = Object.values(manifest).find((chunk) => chunk.isEntry)
+      const file = entry?.assets?.find((asset) => BODY_FONT_PRELOAD.test(asset))
+      // No preload is a slower first paint on every page; better no build.
+      if (!file) {
+        throw new Error(
+          'The latin file of Source Sans 3 is not among the entry assets, so it cannot be preloaded.',
+        )
+      }
+      manifest[file] = {
+        file,
+        resourceType: 'font',
+        mimeType: 'font/woff2',
+        preload: true,
+      }
+    },
     'vite:extend'({ config }) {
       if (config.server?.hmr && typeof config.server.ws === 'object') {
         config.server.ws.protocol = 'wss'
@@ -263,12 +264,6 @@ export default defineNuxtConfig({
       },
       headers: {
         'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR}`,
-      },
-    },
-    // Self-hosted fonts from @nuxt/fonts; file names contain a content hash.
-    '/_fonts/**': {
-      headers: {
-        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR},immutable`,
       },
     },
     // public/images has no content hash in its file names: short browser cache,
