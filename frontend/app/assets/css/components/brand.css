@@ -213,7 +213,31 @@
 
   /* The lead sits on the rising blue, where the sky colour that highlights
      take on dark sections fails as text. Ice holds 4.5:1 on full blue. */
-  .on-dark .ck-content.home-hero-lead .highlight {
+  .on-dark
+    .ck-content.home-hero-lead
+    .highlight:not(
+      :where(
+        .ck-content > table *,
+        [data-scrollable-table] *,
+        figure.table *,
+        a.button *
+      )
+    ) {
+    @apply text-primary-100;
+  }
+
+  /* Text paragraph "Navy band": .brand-hero fades to blue, where sky fails at
+     any text size. Not in a table's white panel or a button (ck-content.css). */
+  .navy-band
+    .ck-content
+    .highlight:not(
+      :where(
+        .ck-content > table *,
+        [data-scrollable-table] *,
+        figure.table *,
+        a.button *
+      )
+    ) {
     @apply text-primary-100;
   }
 
@@ -339,7 +363,10 @@
   .label {
     @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;
 
-    .on-dark & {
+    .on-dark
+      &:not(
+        :where(.ck-content > table *, [data-scrollable-table] *, figure.table *)
+      ) {
       @apply text-primary-100;
     }
   }

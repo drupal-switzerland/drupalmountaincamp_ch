@@ -52,6 +52,9 @@ describe('error page', () => {
     const region = wrapper.get('.nuxt-route-announcer [aria-live="polite"]')
 
     expect(region.attributes('role')).toBe('status')
+    await vi.waitFor(() =>
+      expect(region.text()).toBe(`error.notFoundTitle | ${SITE_NAME}`),
+    )
   })
 
   it('shows fixed copy for server errors, not the error message', async () => {

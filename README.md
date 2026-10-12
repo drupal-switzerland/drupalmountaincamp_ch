@@ -52,7 +52,9 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 ## Tests
 
 - Frontend: `ddev bun run test:ci` (vitest). CI runs the suite with coverage,
-  `bun run test:coverage`, in `.github/workflows/frontend-tests.yml`.
+  `bun run test:coverage`, in `.github/workflows/frontend-tests.yml`, and
+  fails below the thresholds in `frontend/vitest.config.mts`. `test:ci` can
+  pass while that fails; `ddev bun run test:coverage` checks both.
 - Backend:
   `ddev exec -d /var/www/html/drupal env -u SIMPLETEST_BASE_URL vendor/bin/phpunit`.
   - `env -u SIMPLETEST_BASE_URL` makes phpunit use the `http://localhost`

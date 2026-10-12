@@ -2,9 +2,9 @@
 
 Where things are and how a request is answered. Setup, commands and deploy are
 in [README.md](README.md). Paths are relative to the repository root.
-Statements are read from the named file. The two blocks marked "Observed" are
-dated observations of the production site, with the command used; the
-repository cannot confirm them.
+Statements are read from the named file. The block marked "Observed" in
+"Caching" is a dated observation of the production site, with the command
+used; the repository cannot confirm it.
 
 The frontend is a Nuxt app in `frontend/` (versions: `frontend/package.json`),
 the backend is Drupal in `drupal/` (versions: `drupal/composer.json`). The
@@ -19,30 +19,26 @@ directory layout is in [AGENTS.md](AGENTS.md).
 - `.lagoon/nginx-lagoon.conf` answers a request itself, or sends it to Nuxt
   (`@frontend`, `frontend:3000`) or to Drupal (`@drupal`, php-fpm):
 
-| Path                                                             | Answer                         |
-| :--------------------------------------------------------------- | :----------------------------- |
-| The `www` hostname (second `server` block)                       | 301 to the bare hostname       |
-| `/article/<slug>`                                                | 301 to `/news/<slug>`          |
-| Dotfiles except `/.well-known`                                   | Denied                         |
-| Files ending in `md`, `txt`, `yml`, `yaml`, `lock`, `dist`       | Denied outside `system/files`  |
-| `update.php`, `core/install.php` and other `.php` entry points   | 404                            |
-| `/graphql`                                                       | Drupal                         |
-| The admin and system prefix list (`user`, `admin`, `media`, ...) | Drupal                         |
-| `node/add`, `node/<id>/edit` and the other entity form routes    | Drupal                         |
-| `/news/planet_drupal.xml`                                        | Drupal                         |
-| `/sites/default/files`                                           | File on disk, else Drupal      |
-| Static file extensions (`js`, `css`, images, fonts)              | File in the docroot, else Nuxt |
-| `/robots.txt`                                                    | Nuxt (`frontend/public/`)      |
-| Other paths (`location /`)                                       | File in the docroot, else Nuxt |
+| Path                                                             | Answer                          |
+| :--------------------------------------------------------------- | :------------------------------ |
+| The `www` hostname (second `server` block)                       | 301 to the bare hostname        |
+| `/article/<slug>`                                                | 301 to `/news/<slug>`           |
+| Dotfiles except `/.well-known`                                   | Denied                          |
+| Files ending in `md`, `txt`, `yml`, `yaml`, `lock`, `dist`       | Denied, with exemptions (below) |
+| `update.php`, `core/install.php` and other `.php` entry points   | 404                             |
+| `/graphql`                                                       | Drupal                          |
+| The admin and system prefix list (`user`, `admin`, `media`, ...) | Drupal                          |
+| `node/add`, `node/<id>/edit` and the other entity form routes    | Drupal                          |
+| `/news/planet_drupal.xml`                                        | Drupal                          |
+| `/sites/default/files`                                           | File on disk, else Drupal       |
+| Static file extensions (`js`, `css`, images, fonts)              | File in the docroot, else Nuxt  |
+| `/robots.txt`                                                    | Nuxt (`frontend/public/`)       |
+| Other paths (`location /`)                                       | File in the docroot, else Nuxt  |
 
-- The table lists the rules by kind. The file is the reference for their
-  order and exact patterns.
+- The file is the reference for the order and exact patterns of the rules.
+- The extension rule exempts `system/files` and `/.well-known/`, and does not
+  apply under `/sites/default/files`, which has its own location.
 - A new Drupal route under a new prefix needs an entry in the prefix list.
-
-Observed 2026-10-11 with
-`curl -s -o /dev/null -D - https://drupalmountaincamp.ch/`: responses carry
-`x-served-by` and `server-timing: ... fastly` headers, so Fastly is in front
-of Lagoon. No Fastly configuration is in this repository.
 
 ### Local (DDEV)
 
@@ -66,17 +62,14 @@ of Lagoon. No Fastly configuration is in this repository.
   `frontend/config/graphqlMiddleware/index.ts`.
 - Operations are `.graphql` files next to the component or page that uses
   them, named `query.<name>.graphql`, `fragment.graphql` or
-  `fragment.<name>.graphql`. Shared ones are in `frontend/app/queries/`. The
-  module collects the files matched by `autoImportPatterns`.
+  `fragment.<name>.graphql`. Shared ones are in `frontend/app/queries/`; two
+  files there, `blokkli.graphql` and `translations.graphql`, do not follow
+  the naming. The module collects the files matched by `autoImportPatterns`.
 - The browser and the server renderer both call
   `/api/graphql/query/<operation name>` on the Nuxt server. Nuxt forwards the
   operation to Drupal's `/graphql`.
-- `frontend/server/graphqlMiddleware.serverOptions.ts` sets the Drupal
-  endpoint, the request headers that are passed on, the timeout, and the
-  status returned when Drupal does not answer.
-- `frontend/app/plugins/graphqlMiddleware.ts` adds language and build id to
-  each request made from the app and collects Drupal messages from the
-  responses.
+- Server side of that call: `frontend/server/graphqlMiddleware.serverOptions.ts`.
+  App side: `frontend/app/plugins/graphqlMiddleware.ts`.
 - `frontend/schema.graphql` is the Drupal schema. A build reads it from
   disk; the dev server downloads it from the backend (see
   [AGENTS.md](AGENTS.md)).
@@ -85,8 +78,7 @@ of Lagoon. No Fastly configuration is in this repository.
   `frontend/app/queries/fragment.routeQuery.graphql`) and passes the result to
   vuepal's `useDrupalRoute`, which handles redirects, metatags and the 404.
 - Menus and other site-wide data: `frontend/app/composables/useInitData.ts`.
-- Interface texts: `nuxt-easy-texts`; `$texts()` calls are extracted into
-  `frontend/app/queries/translations.graphql` (see `easyTexts` in
+- Interface texts: `nuxt-easy-texts` (`easyTexts` in
   `frontend/nuxt.config.ts`).
 
 ## Page rendering
@@ -115,9 +107,8 @@ The components named in the right column are under
   add are listed in `frontend/app/composables/pageFragments.ts`; the Drupal
   paragraph type is
   `drupal/config/default/paragraphs.paragraphs_type.blokkli_fragment.yml`.
-- The build writes the paragraph options to
-  `drupal/docroot/modules/custom/blokkli_starterkit/data/schema.json`
-  (`schemaOptionsPath` in `frontend/nuxt.config.ts`).
+- The build writes the paragraph options to the path in `schemaOptionsPath`
+  (`frontend/nuxt.config.ts`).
 - A request with a Drupal session cookie is not rendered on the server:
   `frontend/server/middleware/spa.ts`.
 
@@ -125,11 +116,21 @@ The components named in the right column are under
 
 - `frontend/config/multiCache/index.ts`: data cache on, CDN headers on, purge
   API on, route cache off, component cache off.
-- During a server render, each GraphQL response carries Drupal's cacheability
-  (`frontend/server/utils/cacheability.ts`; in a production build, requests
-  from the browser do not get it). The page writes it to `CDN-Cache-Control` and `Cache-Tag`
-  (`frontend/app/helpers/graphqlCacheability/index.ts`). The lowest max age
-  wins, and a page stays private once one response was private.
+- `frontend/server/graphqlMiddleware.serverOptions.ts` adds Drupal's
+  cacheability (`frontend/server/utils/cacheability.ts`) to a GraphQL response
+  when the request comes from a server render, or in development.
+- The page passes it to nuxt-multi-cache's CDN helper
+  (`frontend/app/helpers/graphqlCacheability/index.ts`), which writes
+  `CDN-Cache-Control` and `Cache-Tag`. The helper keeps the lowest max age
+  and stays private once one response was private.
+- The tags for `Cache-Tag` are read from Drupal's `surrogate-key` response
+  header, or from `x-drupal-cache-tags`. On production Drupal sends neither:
+  `drupal/composer.json` has no Fastly module, and
+  `http.response.debug_cacheability_headers` is false in
+  `drupal/docroot/sites/default/services.yml`. So production pages carry no
+  `Cache-Tag`. A Lagoon development environment also loads
+  `drupal/docroot/sites/default/development.services.yml`, which turns that
+  setting on, so its pages do.
 - A thrown error or a response status of 400 and above gets
   `CDN-Cache-Control: private`:
   `frontend/server/plugins/errorNotCacheable.ts`.
@@ -145,9 +146,11 @@ Observed 2026-10-11 with
 `curl -s -o /dev/null -D - https://drupalmountaincamp.ch/news`, run twice
 within a second and once more six seconds later:
 
+- `x-served-by` and `server-timing: ... fastly`: Fastly is in front of
+  Lagoon. No Fastly configuration is in this repository.
 - `cache-control: public, max-age=1` next to
-  `cdn-cache-control: max-age=31536000, public`, and no `Cache-Tag`. Where
-  `max-age=1` is set was not found in this repository.
+  `cdn-cache-control: max-age=31536000, public`. Where `max-age=1` is set was
+  not found in this repository.
 - `x-cache` ended in `MISS`, then `HIT`, then `MISS`: the page was kept for
   about a second, so `CDN-Cache-Control` did not decide how long it was kept.
 
@@ -166,9 +169,8 @@ within a second and once more six seconds later:
   `frontend/app/helpers/imageSizes/index.ts`. Otherwise it is capped at the
   largest width of an image style given as an object, or at the `xl`
   breakpoint for a style given by name.
-- rokka renders an image only when the file has a rokka hash and a rokka host
-  is set (`frontend/app/helpers/rokka/index.ts`); otherwise the Drupal
-  derivatives are used.
+- rokka renders an image only when `frontend/app/helpers/rokka/index.ts`
+  allows it; otherwise the Drupal derivatives are used.
 
 ## Head and SEO
 
@@ -197,10 +199,10 @@ within a second and once more six seconds later:
 - Global CSS: `frontend/app/assets/css/tailwind.css`,
   `frontend/app/assets/css/typography.css` and
   `frontend/app/assets/css/components/`.
-- Fonts: `fonts` in `frontend/nuxt.config.ts`. The heading font's
-  `@font-face` rules are in `frontend/app/assets/css/typography.css` and its
-  files in `frontend/public/fonts/`. The two preloaded files are
-  `FONT_PRELOADS` in `frontend/nuxt.config.ts`.
+- Fonts: `fonts` and `FONT_PRELOADS` in `frontend/nuxt.config.ts`. The
+  heading font's `@font-face` rules are in
+  `frontend/app/assets/css/typography.css`, its files in
+  `frontend/public/fonts/`.
 - `frontend/app/assets/css/backend.css` and
   `frontend/app/assets/css/ckeditor.css` are compiled into Drupal by the
   `styles` scripts in `frontend/package.json`.
@@ -216,8 +218,9 @@ within a second and once more six seconds later:
 
 ## Deploy
 
-Lagoon builds the images of `.lagoon/Dockerfile` for the services in
-`docker-compose.yml`. The `post-rollout` tasks in `.lagoon.yml` run on the
+The services are in `docker-compose.yml`. Those with a `dockerfile` entry are
+built from `.lagoon/Dockerfile`; `mariadb` uses a published image. The
+`post-rollout` tasks in `.lagoon.yml` run on the
 `cli` service: `drush updb`, `drush cr`, `drush cim`, `drush cr` and
 `drush search-api:index`. The same file sets the cron job and the routes.
 

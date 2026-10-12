@@ -81,10 +81,10 @@ Run in `drupal/` inside DDEV: `ddev exec -d /var/www/html/drupal <command>`.
 ### Documentation
 
 - `scripts/ci/check-doc-paths.sh` on the host
-  (`.github/workflows/docs.yml`). It checks the paths in
-  [ARCHITECTURE.md](ARCHITECTURE.md) and this file that are written from the
-  repository root in inline code, and the relative links. For a path with a
-  placeholder it checks the directory before the placeholder. It does not
+  (`.github/workflows/docs.yml`). It checks that the paths in
+  [ARCHITECTURE.md](ARCHITECTURE.md) and this file are tracked by git: inline
+  code written from the repository root, and relative links. For a path with
+  a placeholder it checks the directory before the placeholder. It does not
   check paths written relative to another directory, or anything else the
   text says.
 
@@ -139,13 +139,13 @@ one, and each has a test.
 
 ## Traps
 
-| Trap                                                                 | Cause                                                                                                                                                                                      |
-| :------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The dev server rewrites `frontend/schema.graphql`.                   | `downloadSchema: IS_DEV` in `frontend/config/graphqlMiddleware/index.ts` downloads the schema of the local Drupal. Commit it only when the schema change is intended.                      |
-| Only one frontend is reachable through the DDEV hostname.            | `frontend_port` in `scripts/nginx-conf-generator/config/ddev.yml` is 3000, and the generated `@frontend` location proxies to `localhost:3000`. A second server is reached on its own port. |
-| Regenerating the DDEV nginx config changes other files.              | `scripts/nginx-conf-generator/index.js` also writes `lando/nginx/custom.conf` and `deploy/nginx/ci/ci.conf`.                                                                               |
-| A build changes files under `drupal/`.                               | `bun run build` writes the CSS named in the `styles` scripts of `frontend/package.json`, the blökkli options file and `drupal/config/default/frontend_routing.settings.yml`.               |
-| A build passes although a dependency was removed.                    | The package is still in the `node_modules` directory of `frontend/`. Delete that directory, run `bun install --frozen-lockfile`, build again.                                              |
-| phpstan reports hundreds of unknown Drupal classes and functions.    | Its extensions were not registered. Seen once after the first `composer install` in a new checkout; a second `composer install` fixed it. Cause not verified.                              |
-| The local database differs from `drupal/config/default`.             | Configuration is imported by `drush cim` or `drush deploy`, not by pulling code. `ddev drush config:status` lists the differences.                                                         |
-| A routing change works locally and not on production, or the reverse | The two nginx configs are separate files with different rules (see [ARCHITECTURE.md](ARCHITECTURE.md), "Request path").                                                                    |
+| Trap                                                                 | Cause                                                                                                                                                                                                                                                           |
+| :------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The dev server rewrites `frontend/schema.graphql`.                   | `downloadSchema: IS_DEV` in `frontend/config/graphqlMiddleware/index.ts` downloads the schema of the local Drupal. Commit it only when the schema change is intended.                                                                                           |
+| Only one frontend is reachable through the DDEV hostname.            | `frontend_port` in `scripts/nginx-conf-generator/config/ddev.yml` is 3000, and the generated `@frontend` location proxies to `localhost:3000`. A second server answers only on its own port, on the host or in the container it was started in.                 |
+| Regenerating the DDEV nginx config changes other files.              | `scripts/nginx-conf-generator/index.js` also writes `lando/nginx/custom.conf` and `deploy/nginx/ci/ci.conf`.                                                                                                                                                    |
+| A build changes files under `drupal/`.                               | `bun run build` writes the CSS named in the `styles` scripts of `frontend/package.json`, the blökkli options file and `drupal/config/default/frontend_routing.settings.yml`.                                                                                    |
+| A build passes although a dependency was removed.                    | Seen after `bun remove`: packages no longer in `frontend/bun.lock` stayed in the `node_modules` directory of `frontend/`, also after `bun install --frozen-lockfile`. Delete that directory, install and build again.                                           |
+| phpstan reports hundreds of unknown Drupal classes and functions.    | Seen once after the first `composer install` in a new checkout: the `phpstan/extension-installer` plugin (allowed in `drupal/composer.json`) had not listed the Drupal extension. A second `composer install` fixed it. Why the first run did not is not known. |
+| The local database differs from `drupal/config/default`.             | Configuration is imported by `drush cim` or `drush deploy`, not by pulling code. `ddev drush config:status` lists the differences.                                                                                                                              |
+| A routing change works locally and not on production, or the reverse | The two nginx configs are separate files with different rules (see [ARCHITECTURE.md](ARCHITECTURE.md), "Request path").                                                                                                                                         |

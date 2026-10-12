@@ -7,9 +7,9 @@
     <div class="container !my-0 flex flex-col gap-10">
       <div class="flex flex-wrap items-baseline justify-between gap-4">
         <h2 :id="headingId" class="text-3xl lg:text-4xl">
-          {{ $texts('latestNews.title', 'News') }}
+          {{ $texts('news.title', 'News') }}
         </h2>
-        <VuepalLink :to="NEWS_PATH" class="link font-bold">
+        <VuepalLink :to="NEWS_OVERVIEW_PATH" class="link font-bold">
           {{ $texts('latestNews.all', 'All news') }}
         </VuepalLink>
       </div>
@@ -31,19 +31,25 @@
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
 import { buildImageSizes } from '~/helpers/imageSizes'
+import { NEWS_OVERVIEW_PATH } from '~/helpers/navigation'
 import { SCREENS } from '~/tailwind/screens'
 
-const NEWS_PATH = '/news'
 const LATEST_NEWS_LIMIT = 3
 
 // Three cards share the container from md up. At its full 1380px a card is
 // (1380 - 2 x 48px padding - 2 x 24px gap) / 3 wide; below that a third of
 // the viewport is a little more than the card.
 const CARD_MAX_WIDTH = 412
-const CARD_IMAGE_SIZES = buildImageSizes([
-  { minWidth: SCREENS.xl, width: `${CARD_MAX_WIDTH}px` },
-  { minWidth: SCREENS.md, width: '33vw' },
-])
+// Below md a card spans the viewport inside the container's 16px padding and
+// its own 3px border.
+const SINGLE_COLUMN_INSET = 38
+const CARD_IMAGE_SIZES = buildImageSizes(
+  [
+    { minWidth: SCREENS.xl, width: `${CARD_MAX_WIDTH}px` },
+    { minWidth: SCREENS.md, width: '33vw' },
+  ],
+  `calc(100vw - ${SINGLE_COLUMN_INSET}px)`,
+)
 
 defineBlokkliFragment({
   name: 'latest_news',

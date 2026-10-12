@@ -1,6 +1,9 @@
 <template>
+  <!-- Always rendered: a live region only announces what is added after it
+       exists. aria-live without role="status" reads the new message alone,
+       not every message again. -->
   <div
-    v-if="messages.length"
+    aria-live="polite"
     class="fixed bottom-0 left-0 z-[9999999] w-full text-white"
   >
     <div
