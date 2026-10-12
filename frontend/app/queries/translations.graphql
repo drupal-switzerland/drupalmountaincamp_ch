@@ -29,6 +29,8 @@ fragment easyTexts on TextsLoader {
   menu__submenu: getText(key: "submenu", context: "menu", default: "submenu")
   menu: getText(key: "menu", default: "Menu")
   messages__dismiss: getText(key: "dismiss", context: "messages", default: "Dismiss message")
+  messages__error: getText(key: "error", context: "messages", default: "Error")
+  messages__warning: getText(key: "warning", context: "messages", default: "Warning")
   more_information: getText(key: "more_information", default: "More information")
   news__loadError: getText(key: "loadError", context: "news", default: "The news could not be loaded. Please try again later.")
   news__metaDescription: getText(key: "metaDescription", context: "news", default: "News and updates from Drupal Mountain Camp 2027 in Davos")
