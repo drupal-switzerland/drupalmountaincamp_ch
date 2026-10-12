@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import GlobalMenuLinkGroup from '../components/PageHeader/GlobalMenuLinkGroup.vue'
+import PageHeader from '../components/PageHeader/index.vue'
 import DrupalMessages from '../components/DrupalMessages/index.vue'
 
 const { viewport } = vi.hoisted(() => ({ viewport: { isLessThanMd: false } }))
@@ -22,6 +23,8 @@ mockNuxtImport(
     }),
 )
 
+mockNuxtImport('useTicketsLink', () => async () => ref(null))
+
 mockNuxtImport('useViewport', () => () => ({
   isLessThanMd: computed(() => viewport.isLessThanMd),
 }))
@@ -32,6 +35,60 @@ async function mountGroup() {
     attachTo: document.body,
   })
 }
+
+function pressEscapeOnWindow() {
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+}
+
+describe('phone menu', () => {
+  async function mountHeader() {
+    return mountSuspended(PageHeader, {
+      attachTo: document.body,
+      global: { stubs: { PageHeaderGlobalMenu: true } },
+    })
+  }
+
+  beforeEach(() => {
+    useMainMenuOpen().value = false
+    usePhoneSubmenuOpen().value = null
+  })
+
+  it('closes on Escape wherever focus is, and focuses the toggle', async () => {
+    const wrapper = await mountHeader()
+    const toggle = wrapper.get('button[aria-controls="global-menu"]')
+
+    await toggle.trigger('click')
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+
+    pressEscapeOnWindow()
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(toggle.element)
+    wrapper.unmount()
+  })
+
+  it('leaves Escape to an open phone submenu', async () => {
+    const wrapper = await mountHeader()
+    const toggle = wrapper.get('button[aria-controls="global-menu"]')
+
+    await toggle.trigger('click')
+    usePhoneSubmenuOpen().value = 0
+    pressEscapeOnWindow()
+    await nextTick()
+
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+    wrapper.unmount()
+  })
+
+  it('draws the toggle focus ring inside the button', async () => {
+    const wrapper = await mountHeader()
+
+    expect(
+      wrapper.get('button[aria-controls="global-menu"]').classes(),
+    ).toContain('[--focus-ring-offset:calc(var(--focus-ring-width)_*_-1)]')
+    wrapper.unmount()
+  })
+})
 
 describe('main menu submenu toggle', () => {
   beforeEach(() => {
@@ -63,6 +120,39 @@ describe('main menu submenu toggle', () => {
     expect(submenu().attributes('inert')).toBeUndefined()
 
     await submenu().get('a').trigger('keydown', { key: 'Escape' })
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(toggle.element)
+    wrapper.unmount()
+  })
+
+  it('opened by hover, closes on Escape without taking focus', async () => {
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    const row = wrapper.get('a[href="/news"]').element.parentElement!
+
+    row.dispatchEvent(new MouseEvent('mouseenter'))
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+
+    pressEscapeOnWindow()
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(document.body)
+    wrapper.unmount()
+  })
+
+  it('closes on Escape after focus left the open phone submenu', async () => {
+    viewport.isLessThanMd = true
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+
+    await toggle.trigger('click')
+    await nextTick()
+    ;(document.activeElement as HTMLElement).blur()
+
+    pressEscapeOnWindow()
+    await nextTick()
+    await nextTick()
     expect(toggle.attributes('aria-expanded')).toBe('false')
     expect(document.activeElement).toBe(toggle.element)
     wrapper.unmount()

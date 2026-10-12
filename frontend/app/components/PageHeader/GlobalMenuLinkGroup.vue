@@ -92,6 +92,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useEventListener } from '@vueuse/core'
 import { isActivePath } from '~/helpers/navigation'
 
 const props = defineProps<{
@@ -179,6 +180,24 @@ async function closeAndFocusToggle(event: Event) {
   await nextTick()
   toggleButton.value?.focus()
 }
+
+// WCAG 1.4.13: a submenu opened by hover has to be dismissible without moving
+// the pointer. Escape pressed inside the group stops at closeAndFocusToggle,
+// so this only sees it when focus is elsewhere.
+useEventListener(
+  () => (subtreeOpen.value ? window : null),
+  'keydown',
+  (event: KeyboardEvent) => {
+    if (event.key !== 'Escape') {
+      return
+    }
+    if (isLessThanMd.value) {
+      closeAndFocusToggle(event)
+    } else {
+      subtreeOpen.value = false
+    }
+  },
+)
 
 // Only focus moving to another element closes the submenu. A tap on the
 // panel's empty area blurs to nothing, and click-away handles real clicks
