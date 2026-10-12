@@ -42,6 +42,7 @@
     <div
       v-if="link.subtree"
       :id="submenuId"
+      ref="submenu"
       :inert="!subtreeOpen || undefined"
       :class="{
         'pointer-events-none -translate-x-full md:translate-x-0 md:scale-y-0 md:overflow-hidden':
@@ -135,10 +136,15 @@ const clickAway = () => {
 
 const { $texts } = useEasyTexts()
 const submenuId = useId()
+const submenu = ref<HTMLElement | null>(null)
 const toggleButton = ref<HTMLButtonElement | null>(null)
 const backButton = ref<HTMLButtonElement | null>(null)
 
 watch(() => route.path, clickAway)
+
+// A submenu open on one side of the breakpoint is a different thing on the
+// other: a dropdown under its link, or a panel over the whole phone menu.
+watch(isLessThanMd, clickAway)
 
 // On phones the open submenu covers this row and the other menu items.
 const phoneSubmenuOpen = usePhoneSubmenuOpen()
@@ -175,7 +181,14 @@ async function closeAndFocusToggle(event: Event) {
   }
   // Escape closes only the submenu, not the whole mobile menu.
   event.stopPropagation()
+  // Focus has to leave a panel that is about to become inert. On desktop,
+  // Escape pressed on the parent link or the toggle leaves focus where it is.
+  const focusNeedsNewHome =
+    isLessThanMd.value || !!submenu.value?.contains(event.target as Node | null)
   subtreeOpen.value = false
+  if (!focusNeedsNewHome) {
+    return
+  }
   // The toggle is inert while a phone submenu covers it.
   await nextTick()
   toggleButton.value?.focus()
