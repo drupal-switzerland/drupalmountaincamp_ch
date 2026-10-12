@@ -7,6 +7,10 @@ import { hasDrupalSessionCookie } from '~/helpers/drupalSession'
  */
 export default defineNuxtPlugin({
   name: 'drupal-user',
+  // Its query selects messengerMessages, which Drupal hands out once: the
+  // plugin that collects them from a response (and adds language and build id
+  // to the request) has to be set up before the query runs.
+  dependsOn: ['graphql-fetch-options'],
   async setup() {
     const drupalUser = useDrupalUser()
 
