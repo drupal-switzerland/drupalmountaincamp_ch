@@ -3,12 +3,15 @@ import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import TextImage from '../components/Paragraph/TextImage/index.vue'
 import { IS_FRONT_PAGE } from '../composables/frontPage'
 
-const { paragraph } = vi.hoisted(() => ({ paragraph: { index: 0 } }))
+const { paragraph } = vi.hoisted(() => ({
+  paragraph: { index: 0, parentType: undefined as string | undefined },
+}))
 
-// A top-level paragraph, at the position set per test.
+// A top-level paragraph unless a test sets a parent, at the position set per
+// test.
 mockNuxtImport('defineBlokkli', () => () => ({
   index: ref(paragraph.index),
-  parentType: ref(undefined),
+  parentType: ref(paragraph.parentType),
   options: ref({ imagePosition: 'right', spacing: 'none' }),
 }))
 
@@ -37,9 +40,26 @@ async function imageLoading(isFrontPage?: boolean) {
   return wrapper.get('img').attributes('loading')
 }
 
+async function headings(title: string | undefined, parentType?: string) {
+  paragraph.parentType = parentType
+  const wrapper = await mountSuspended(TextImage, {
+    props: { title, text: '<p>Text</p>', image },
+  })
+  return wrapper.findAll('h2').map((heading) => heading.text())
+}
+
 describe('text image paragraph', () => {
   beforeEach(() => {
     paragraph.index = 0
+    paragraph.parentType = undefined
+  })
+
+  it('has a heading only when it has a title, on a page and as a carousel slide', async () => {
+    expect(await headings('Community')).toEqual(['Community'])
+    expect(await headings('Community', 'carousel')).toEqual(['Community'])
+    expect(await headings(undefined)).toEqual([])
+    expect(await headings('', 'carousel')).toEqual([])
+    expect(await headings(undefined, 'carousel')).toEqual([])
   })
 
   it('loads the first paragraph image eagerly on an inner page, where it is in the first viewport', async () => {

@@ -1,6 +1,6 @@
 <template>
   <div class="my-12 overflow-hidden">
-    <div class="container">
+    <div v-if="title || isEditing" class="container">
       <h2
         v-blokkli-editable:field_title
         class="mb-10 text-3xl md:text-4xl lg:mb-14"
