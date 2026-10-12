@@ -24,10 +24,6 @@
   },
   "dependencies": {
     "@blokkli/editor": "^2.0.0-alpha.73",
-    "@formkit/addons": "^2.1.2",
-    "@formkit/icons": "^2.1.2",
-    "@formkit/inputs": "^2.1.2",
-    "@formkit/nuxt": "^2.1.2",
     "@lunarisapp/readability": "^1.1.1",
     "@nuxt/fonts": "^0.14.0",
     "@rokka-io/nuxt": "^1.0.2",

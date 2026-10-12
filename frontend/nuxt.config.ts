@@ -80,7 +80,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/fonts',
     '@nuxt/test-utils/module',
-    '@formkit/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-graphql-middleware',
     'nuxt-easy-texts',
@@ -208,10 +207,6 @@ export default defineNuxtConfig({
         noUncheckedIndexedAccess: false,
       },
     },
-  },
-
-  formkit: {
-    autoImport: true,
   },
 
   languageNegotiation: {

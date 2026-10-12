@@ -138,10 +138,6 @@ const config: Config = {
     './app/pages/**/*.{vue,ts,js}',
     './app/layouts/**/*.{vue,ts,js}',
     './app/helpers/**/*.{vue,ts,js}',
-
-    // We also need to check the formkit config to not
-    // purge classes away that are only used there.
-    './formkit.config.ts',
   ],
   // CKEditor marks rich text tables with class="table"; the display: table
   // utility would disable their overflow scrolling.
