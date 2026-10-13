@@ -34,8 +34,8 @@
 import type { ParagraphAccordeonFragment } from '#graphql-operations'
 
 defineProps<{
-  title: ParagraphAccordeonFragment['title']
-  paragraphs: ParagraphAccordeonFragment['paragraphs']
+  title?: ParagraphAccordeonFragment['title']
+  paragraphs?: ParagraphAccordeonFragment['paragraphs']
 
   /**
    * Force the accordion to be always open.

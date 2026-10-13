@@ -117,10 +117,10 @@ import { dayNumber } from '~/helpers/programme'
 import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
-  icon: ParagraphIconTextItemFragment['icon']
+  icon?: ParagraphIconTextItemFragment['icon']
   image?: ParagraphIconTextItemFragment['image']
-  text: ParagraphIconTextItemFragment['text']
-  title: ParagraphIconTextItemFragment['title']
+  text?: ParagraphIconTextItemFragment['text']
+  title?: ParagraphIconTextItemFragment['title']
 }>()
 
 const { index } = defineBlokkli({

@@ -32,7 +32,7 @@ describe('/node/<nid>', () => {
     query.mockResolvedValue({
       data: {
         route: {
-          entity: { title: 'A title' },
+          entity: { uuid: 'node-uuid', title: 'A title', blokkliProps: {} },
           entityGlobal: { __typename: 'NodePage' },
         },
       },

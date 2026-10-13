@@ -72,7 +72,7 @@ import { hasText } from '~/helpers/text'
 const props = defineProps<{
   title?: string
   text?: string
-  image: ParagraphTextImageFragment['image']
+  image?: ParagraphTextImageFragment['image']
 }>()
 
 const imageStyle = defineImageStyle({

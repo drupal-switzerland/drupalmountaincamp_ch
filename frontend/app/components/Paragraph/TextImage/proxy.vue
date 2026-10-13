@@ -22,7 +22,7 @@ import type { ParagraphTextImageFragment } from '#graphql-operations'
 defineProps<{
   title?: string
   text?: string
-  image: ParagraphTextImageFragment['image']
+  image?: ParagraphTextImageFragment['image']
 }>()
 
 const imageStyle = defineImageStyle({

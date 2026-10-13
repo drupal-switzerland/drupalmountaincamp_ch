@@ -32,8 +32,8 @@ import type { ParagraphCarouselFragment } from '#graphql-operations'
 import { hasText } from '~/helpers/text'
 
 defineProps<{
-  slides: ParagraphCarouselFragment['slides']
-  title: ParagraphCarouselFragment['title']
+  slides?: ParagraphCarouselFragment['slides']
+  title?: ParagraphCarouselFragment['title']
 }>()
 
 const isEditing = import.meta.blokkliEditing
