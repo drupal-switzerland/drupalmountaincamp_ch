@@ -36,19 +36,18 @@ import { SCREENS } from '~/tailwind/screens'
 
 const LATEST_NEWS_LIMIT = 3
 
-// Three cards share the container from md up. At its full 1380px a card is
-// (1380 - 2 x 48px padding - 2 x 24px gap) / 3 wide; below that a third of
-// the viewport is a little more than the card.
-const CARD_MAX_WIDTH = 412
-// Below md a card spans the viewport inside the container's 16px padding and
-// its own 3px border.
-const SINGLE_COLUMN_INSET = 38
+// Width of a card's image, inside the card's 3px border on each side.
+// - Three cards share the container from md up, with two 24px gaps. The
+//   container has 32px padding from md, 48px from lg, and is 1380px wide
+//   from xl: (1380 - 96 - 48) / 3 - 6 = 406.
+// - Below md a card spans the viewport inside the 16px padding.
 const CARD_IMAGE_SIZES = buildImageSizes(
   [
-    { minWidth: SCREENS.xl, width: `${CARD_MAX_WIDTH}px` },
-    { minWidth: SCREENS.md, width: '33vw' },
+    { minWidth: SCREENS.xl, width: '406px' },
+    { minWidth: SCREENS.lg, width: 'calc((100vw - 144px) / 3 - 6px)' },
+    { minWidth: SCREENS.md, width: 'calc((100vw - 112px) / 3 - 6px)' },
   ],
-  `calc(100vw - ${SINGLE_COLUMN_INSET}px)`,
+  'calc(100vw - 38px)',
 )
 
 defineBlokkliFragment({

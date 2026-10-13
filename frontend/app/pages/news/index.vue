@@ -19,6 +19,7 @@
               :key="item.uuid"
               v-bind="item"
               :preload="index === 0"
+              :image-sizes="TEASER_IMAGE_SIZES"
             />
           </div>
         </div>
@@ -46,10 +47,28 @@ import {
   totalPages,
 } from '~/helpers/pagination'
 import { BACKEND_UNAVAILABLE_STATUS } from '~/helpers/backendUnavailable'
+import { buildImageSizes } from '~/helpers/imageSizes'
 import { NEWS_FEED_PATH, NEWS_FEED_TITLE } from '~/helpers/navigation'
 import { SITE_NAME, shareMeta } from '~/helpers/site'
+import { SCREENS } from '~/tailwind/screens'
 
 const PAGE_SIZE = 10
+
+// Width of a teaser's image in this list, inside the teaser's 4px borders.
+// The boxes are sized in rem, so the widths are too: they grow with the
+// reader's font size as the boxes do.
+// - From md up the image floats in the teaser's max-w-xs box.
+// - Below md it spans the teaser: the list, capped at max-w-3xl above, once
+//   the viewport is wider than the cap plus the container's 16px padding on
+//   each side; the breakpoint leaves 2.5rem for that padding.
+// - Narrower than that, the viewport inside the padding.
+const TEASER_IMAGE_SIZES = buildImageSizes(
+  [
+    { minWidth: SCREENS.md, width: 'calc(20rem - 8px)' },
+    { minWidth: '50.5rem', width: 'calc(48rem - 8px)' },
+  ],
+  'calc(100vw - 40px)',
+)
 
 defineOptions({
   name: 'PageNewsOverview',

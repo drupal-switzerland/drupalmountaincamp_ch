@@ -1,8 +1,8 @@
 import { SCREENS } from '~/tailwind/screens'
 
 export type ImageSizesRule = {
-  /** Viewport width in px from which the rule applies. */
-  minWidth: number
+  /** Viewport width from which the rule applies: px, or a CSS length. */
+  minWidth: number | string
   /** Width of the image there, as a CSS length. */
   width: string
 }
@@ -11,18 +11,22 @@ const VIEWPORT_WIDTH = '100vw'
 
 /**
  * The `sizes` attribute of an image: one width per breakpoint rule, and
- * `narrowWidth` below the narrowest rule. A width must be at least as wide as
- * the image is rendered there, and as close to it as the layout allows: the
- * browser picks the file from it before layout, and a width that is too large
- * makes it pick a larger file than the image needs.
+ * `narrowWidth` below the narrowest rule. The browser takes the first rule
+ * that matches, so the rules are given widest breakpoint first. A width must
+ * be at least as wide as the image is rendered there, and as close to it as
+ * the layout allows: the browser picks the file from it before layout, and a
+ * width that is too large makes it pick a larger file than the image needs.
  */
 export function buildImageSizes(
   rules: ImageSizesRule[],
   narrowWidth: string = VIEWPORT_WIDTH,
 ): string {
-  return [...rules]
-    .sort((a, b) => b.minWidth - a.minWidth)
-    .map((rule) => `(min-width: ${rule.minWidth}px) ${rule.width}`)
+  return rules
+    .map((rule) => {
+      const minWidth =
+        typeof rule.minWidth === 'number' ? `${rule.minWidth}px` : rule.minWidth
+      return `(min-width: ${minWidth}) ${rule.width}`
+    })
     .concat(narrowWidth)
     .join(', ')
 }

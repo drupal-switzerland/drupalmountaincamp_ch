@@ -2,9 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import LatestNews from '../components/Paragraph/BlokkliFragment/LatestNews/index.vue'
 import Card from '../components/Node/PressRelease/Card/index.vue'
+import { sizesProblems } from './support/sizes'
 
 const CARD_SIZES =
-  '(min-width: 1380px) 412px, (min-width: 1024px) 33vw, calc(100vw - 38px)'
+  '(min-width: 1380px) 406px, (min-width: 1280px) calc((100vw - 144px) / 3 - 6px), (min-width: 1024px) calc((100vw - 112px) / 3 - 6px), calc(100vw - 38px)'
 
 // The app itself queries Drupal while it starts (init data, the user), before
 // any test has said what Drupal answers.
@@ -57,6 +58,7 @@ describe('homepage news cards', () => {
     const sizes = wrapper.findAll('img').map((img) => img.attributes('sizes'))
 
     expect(sizes).toEqual([CARD_SIZES, CARD_SIZES, CARD_SIZES])
+    expect(sizesProblems(CARD_SIZES)).toEqual([])
   })
 })
 

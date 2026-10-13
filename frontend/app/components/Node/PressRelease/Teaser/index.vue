@@ -27,7 +27,7 @@
       <MediaImage
         v-bind="image"
         :image-style="isPortrait ? portraitImageStyle : imageStyle"
-        :sizes="IMAGE_SIZES"
+        :sizes="imageSizes"
         :loading="preload ? 'eager' : 'lazy'"
         :preload="preload"
         hide-caption
@@ -40,13 +40,13 @@
 
 <script lang="ts" setup>
 import type { NodePressReleaseTeaserFragment } from '#graphql-operations'
-import { buildImageSizes } from '~/helpers/imageSizes'
-import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<
   NodePressReleaseTeaserFragment & {
     // For the one teaser whose image is in the first viewport.
     preload?: boolean
+    // How wide the image is in the list that holds the teaser.
+    imageSizes?: string
   }
 >()
 
@@ -58,22 +58,6 @@ const sizes = {
 }
 
 const imageStyle = defineImageStyle({ type: 'sizes', sizes })
-
-// The image sits inside a 4px border on each side. Its box is sized in rem
-// (max-w-xs, max-w-3xl), so the widths are too: they grow with the reader's
-// font size like the box does.
-const BORDERS = '8px'
-// From md up the image floats in a max-w-xs box.
-const FLOATED_BOX = '20rem'
-// Below md it spans the card: the news list, capped at max-w-3xl in
-// pages/news/index.vue, or the viewport inside the container's 16px padding
-// on each side, whichever is narrower.
-const LIST_MAX_WIDTH = '48rem'
-const CONTAINER_PADDING = '32px'
-const IMAGE_SIZES = buildImageSizes(
-  [{ minWidth: SCREENS.md, width: `calc(${FLOATED_BOX} - ${BORDERS})` }],
-  `min(calc(${LIST_MAX_WIDTH} - ${BORDERS}), calc(100vw - ${CONTAINER_PADDING} - ${BORDERS}))`,
-)
 
 // Landscape and square images keep their ratio; portrait ones are capped at
 // square so a tall image can't stretch the card.
