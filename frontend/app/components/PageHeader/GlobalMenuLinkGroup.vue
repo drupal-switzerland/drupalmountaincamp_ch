@@ -145,10 +145,20 @@ watch(() => route.path, clickAway)
 // A submenu open on one side of the breakpoint is a different thing on the
 // other: a dropdown under its link, or a panel over the whole phone menu.
 // The watcher runs before the DOM changes, while focus is still where it was.
-watch(isLessThanMd, () => {
-  if (subtreeOpen.value) {
-    closeSubtree(!!submenu.value?.contains(document.activeElement))
+const menuToggleFocusRequests = useMainMenuToggleFocusRequests()
+watch(isLessThanMd, (isPhone) => {
+  if (!subtreeOpen.value) {
+    return
   }
+  const focusIsInPanel = !!submenu.value?.contains(document.activeElement)
+  if (isPhone && focusIsInPanel) {
+    // On phones the menu is hidden until it is opened, and this group's
+    // toggle with it, so focus goes to the button that opens the menu.
+    subtreeOpen.value = false
+    menuToggleFocusRequests.value++
+    return
+  }
+  closeSubtree(focusIsInPanel)
 })
 
 // On phones the open submenu covers this row and the other menu items.

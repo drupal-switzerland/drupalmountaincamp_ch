@@ -49,6 +49,7 @@ beforeEach(() => {
   viewport.isLessThanMd = false
   useMainMenuOpen().value = false
   usePhoneSubmenuOpen().value = null
+  useMainMenuToggleFocusRequests().value = 0
   useDrupalMessages().messages.value = []
 })
 
@@ -100,6 +101,59 @@ describe('header with its menu', () => {
     pressEscapeOnWindow()
     await nextTick()
     expect(menuToggle.attributes('aria-expanded')).toBe('false')
+    wrapper.unmount()
+  })
+
+  // On phones the menu is hidden until it is opened, so the button that opens
+  // it is the nearest thing that can take focus.
+  it('moves focus from a desktop submenu link to the menu button when the viewport becomes a phone', async () => {
+    const { wrapper, menuToggle, submenuToggle } = await mountHeaderWithMenu()
+
+    await submenuToggle.trigger('click')
+    ;(wrapper.get('a[href="/news/a"]').element as HTMLElement).focus()
+
+    viewport.isLessThanMd = true
+    await nextTick()
+    await nextTick()
+    expect(submenuToggle.attributes('aria-expanded')).toBe('false')
+    expect(menuToggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(menuToggle.element)
+    wrapper.unmount()
+  })
+
+  it('leaves focus alone at that change when it was not in the submenu', async () => {
+    const { wrapper, submenuToggle } = await mountHeaderWithMenu()
+    const link = wrapper.get('a[href="/news"]')
+
+    link.element.parentElement!.dispatchEvent(new MouseEvent('mouseenter'))
+    ;(link.element as HTMLElement).focus()
+    await nextTick()
+    expect(submenuToggle.attributes('aria-expanded')).toBe('true')
+
+    viewport.isLessThanMd = true
+    await nextTick()
+    await nextTick()
+    expect(submenuToggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(link.element)
+    wrapper.unmount()
+  })
+
+  it('moves focus from Back to the submenu toggle, not the menu button, when a phone becomes a desktop', async () => {
+    viewport.isLessThanMd = true
+    const { wrapper, menuToggle, submenuToggle } = await mountHeaderWithMenu()
+
+    await menuToggle.trigger('click')
+    await submenuToggle.trigger('click')
+    await nextTick()
+    expect(document.activeElement).toBe(
+      wrapper.get('button[aria-label="menu.back"]').element,
+    )
+
+    viewport.isLessThanMd = false
+    await nextTick()
+    await nextTick()
+    expect(submenuToggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(submenuToggle.element)
     wrapper.unmount()
   })
 })
@@ -299,13 +353,12 @@ describe('main menu submenu at a breakpoint change', () => {
     wrapper.unmount()
   })
 
-  // In a browser the whole menu is hidden on phones until it is opened, so
-  // the toggle cannot take focus there and focus ends on the page. The test
-  // DOM has no layout; what holds in both is that focus leaves the panel.
-  it('closes a desktop submenu on phones and takes focus out of the panel', async () => {
+  // On phones the whole menu is hidden until it is opened, so this group's
+  // toggle cannot take focus there. The group asks the header instead (see
+  // 'header with its menu' for where focus lands).
+  it('closes a desktop submenu on phones and asks for focus on the menu button', async () => {
     const wrapper = await mountGroup()
     const toggle = wrapper.get('button[aria-controls]')
-    const submenu = wrapper.get(`#${toggle.attributes('aria-controls')}`)
 
     await toggle.trigger('click')
     ;(wrapper.get('a[href="/news/a"]').element as HTMLElement).focus()
@@ -314,7 +367,8 @@ describe('main menu submenu at a breakpoint change', () => {
     await nextTick()
     await nextTick()
     expect(toggle.attributes('aria-expanded')).toBe('false')
-    expect(submenu.element.contains(document.activeElement)).toBe(false)
+    expect(useMainMenuToggleFocusRequests().value).toBe(1)
+    expect(document.activeElement).not.toBe(toggle.element)
     wrapper.unmount()
   })
 

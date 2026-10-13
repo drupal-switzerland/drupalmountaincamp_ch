@@ -13,3 +13,11 @@ export function useMainMenuOpen() {
 export function usePhoneSubmenuOpen() {
   return useState<number | null>('phoneSubmenuOpen', () => null)
 }
+
+/**
+ * Counts the requests to move keyboard focus to the button that opens the
+ * phone menu. The page header owns that button and answers each request.
+ */
+export function useMainMenuToggleFocusRequests() {
+  return useState<number>('mainMenuToggleFocusRequests', () => 0)
+}

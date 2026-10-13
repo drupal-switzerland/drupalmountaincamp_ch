@@ -141,6 +141,11 @@ useEventListener(
   },
 )
 
+// After the DOM update, so a submenu that asked while closing is closed.
+watch(useMainMenuToggleFocusRequests(), () => menuToggle.value?.focus(), {
+  flush: 'post',
+})
+
 function openMenu() {
   isMenuOpen.value = true
   isGlobalSticky.value = true
