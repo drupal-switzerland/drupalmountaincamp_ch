@@ -29,9 +29,9 @@ const image = {
   },
 }
 
-async function imageLoading(isFrontPage?: boolean) {
+async function imageLoading(isFrontPage?: boolean, isInViewAtLoad?: boolean) {
   const wrapper = await mountSuspended(TextImage, {
-    props: { title: 'Community', text: '<p>Text</p>', image },
+    props: { title: 'Community', text: '<p>Text</p>', image, isInViewAtLoad },
     global:
       isFrontPage === undefined
         ? {}
@@ -78,5 +78,21 @@ describe('text image paragraph', () => {
 
     expect(await imageLoading()).toBe('lazy')
     expect(await imageLoading(true)).toBe('lazy')
+  })
+
+  // Every slide has a first position among its siblings; which one is on
+  // screen is the carousel's to say.
+  it('as a carousel slide, loads its image eagerly only when the carousel says it is in view', async () => {
+    paragraph.parentType = 'carousel'
+
+    expect(await imageLoading()).toBe('lazy')
+    expect(await imageLoading(false, false)).toBe('lazy')
+    expect(await imageLoading(false, true)).toBe('eager')
+  })
+
+  it('ignores that flag on a page', async () => {
+    paragraph.index = 2
+
+    expect(await imageLoading(false, true)).toBe('lazy')
   })
 })

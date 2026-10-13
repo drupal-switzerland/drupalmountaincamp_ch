@@ -60,9 +60,27 @@ describe('text image paragraph as a carousel slide', () => {
     }
   })
 
-  // This pins what the slider does now, not what it should end up doing: the
-  // slide that is active at load is in view and should load eagerly.
-  it('loads no slide image eagerly', async () => {
+  // Two slides are rendered three times over, so the first slide has three
+  // copies. Only the copy the slider starts on is on screen.
+  it('loads only the image of the copy it starts on eagerly, in the first viewport', async () => {
+    wrapper = await mountSuspended(Slider, {
+      props: { slides: slides as never, eagerFirstSlide: true },
+      attachTo: document.body,
+    })
+    await nextTick()
+    const images = wrapper.findAll('.swiper-slide img')
+    const eager = images.filter((img) => img.attributes('loading') === 'eager')
+
+    expect(images).toHaveLength(SLIDE_COUNT * 3)
+    expect(eager).toHaveLength(1)
+    expect(eager[0]!.attributes('fetchpriority')).toBe('high')
+    expect(eager[0]!.element.closest('.swiper-slide')!.classList).toContain(
+      'swiper-slide-active',
+    )
+    expect(wrapper.get('.swiper-slide-active h2').text()).toBe('Slide 0')
+  })
+
+  it('loads no slide image eagerly below the first viewport', async () => {
     wrapper = await mountSuspended(Slider, {
       props: { slides: slides as never },
       attachTo: document.body,
@@ -72,7 +90,7 @@ describe('text image paragraph as a carousel slide', () => {
       .findAll('.swiper-slide img')
       .map((img) => img.attributes('loading'))
 
-    expect(loading.length).toBeGreaterThanOrEqual(SLIDE_COUNT)
+    expect(loading).toHaveLength(SLIDE_COUNT * 3)
     expect(new Set(loading)).toEqual(new Set(['lazy']))
   })
 })

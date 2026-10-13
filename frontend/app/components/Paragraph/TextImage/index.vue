@@ -73,6 +73,8 @@ const props = defineProps<{
   title?: string
   text?: string
   image?: ParagraphTextImageFragment['image']
+  // Set by the carousel on the one slide it starts on.
+  isInViewAtLoad?: boolean
 }>()
 
 const imageStyle = defineImageStyle({
@@ -140,10 +142,12 @@ useScrollableTables(content, {
 })
 
 // The first paragraph's image is in the first viewport on inner pages. On the
-// homepage the tall hero and the edition bar push it below the fold.
+// homepage the tall hero and the edition bar push it below the fold. In a
+// carousel the carousel decides: its other slides and their copies are off
+// screen.
 const isFrontPage = inject(IS_FRONT_PAGE, false)
-const preload = computed(
-  () => index.value === 0 && !parentType.value && !isFrontPage,
+const preload = computed(() =>
+  parentType.value ? !!props.isInViewAtLoad : index.value === 0 && !isFrontPage,
 )
 
 const loading = computed(() => (preload.value ? 'eager' : 'lazy'))

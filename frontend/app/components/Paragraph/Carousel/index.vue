@@ -18,6 +18,7 @@
         <LazyParagraphCarouselSlider
           :key="items.map((v) => v.uuid).join('-')"
           :slides="items"
+          :eager-first-slide="isInFirstViewport"
           :class="{
             'pointer-events-none': isEditing,
           }"
@@ -29,6 +30,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphCarouselFragment } from '#graphql-operations'
+import { IS_FRONT_PAGE } from '~/composables/frontPage'
 import { hasText } from '~/helpers/text'
 
 defineProps<{
@@ -37,7 +39,7 @@ defineProps<{
 }>()
 
 const isEditing = import.meta.blokkliEditing
-defineBlokkli({
+const { index, parentType } = defineBlokkli({
   bundle: 'carousel',
   propsFieldMapping: {
     title: { type: 'editable', name: 'field_title' },
@@ -47,6 +49,14 @@ defineBlokkli({
     editTitle: (el) => el.querySelector('h2')?.textContent,
   },
 })
+
+// The same rule as for a text image placed on a page: the first paragraph is
+// in the first viewport on inner pages, on the homepage the hero pushes it
+// below the fold.
+const isFrontPage = inject(IS_FRONT_PAGE, false)
+const isInFirstViewport = computed(
+  () => index.value === 0 && !parentType.value && !isFrontPage,
+)
 </script>
 
 <style lang="postcss">
