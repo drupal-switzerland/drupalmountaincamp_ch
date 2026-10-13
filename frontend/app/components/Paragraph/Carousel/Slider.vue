@@ -6,9 +6,26 @@
       'opacity-0': !isLoaded,
     }"
   >
-    <Swiper v-bind="options" @swiper="getRef">
+    <!-- A pseudo-element spans the whole strip the carousel root clips to, so
+         a press beside the active slide lands on the container and starts a
+         swipe. The container's own box stays the slide's width: the slide
+         animation measures it (Animation.ts). -->
+    <Swiper
+      v-bind="options"
+      class="before:absolute before:inset-x-[-100vw] before:inset-y-0 before:content-['']"
+      @swiper="getRef"
+      @after-init="exposeActiveSlideOnly"
+      @active-index-change="exposeActiveSlideOnly"
+    >
       <SwiperSlide v-for="(slide, i) in slidesToRender" :key="'first_' + i">
-        <BlokkliItem v-bind="slide" />
+        <!-- The field is in proxy mode, so blökkli does not render the items
+             and they get their parent and position here. Every copy of a
+             slide carries the position of the slide it repeats. -->
+        <BlokkliItem
+          v-bind="slide"
+          :parent-type="PARENT_BUNDLE"
+          :index="i % slides.length"
+        />
       </SwiperSlide>
     </Swiper>
     <div class="mt-6 grid grid-cols-12 gap-3">
@@ -39,6 +56,8 @@ const props = defineProps<{
   slides: FieldListItemTyped[]
 }>()
 
+const PARENT_BUNDLE = 'carousel'
+
 const isLoaded = ref(false)
 const { $texts } = useEasyTexts()
 
@@ -61,6 +80,18 @@ function getRef(swiperInstance: SwiperClass) {
   swiper.value = swiperInstance
 }
 
+// The loop needs every slide several times over. Only the active one is left
+// to the keyboard and to assistive technology. An inert slide takes no
+// pointer either, which is why touches go to the container (see options).
+function exposeActiveSlideOnly(swiperInstance: SwiperClass) {
+  const active = swiperInstance.slides[swiperInstance.activeIndex]
+  swiperInstance.slides.forEach((slide) => {
+    // Without a known active slide nothing is hidden: better every copy
+    // reachable than none.
+    slide.toggleAttribute('inert', !!active && slide !== active)
+  })
+}
+
 function goNext() {
   if (swiper.value) {
     swiper.value.slideNext()
@@ -78,6 +109,7 @@ const options = computed<SwiperProps>(() => {
   return {
     speed: 600,
     modules: [Parallax],
+    touchEventsTarget: 'container',
     initialSlide: props.slides.length - 0,
     slidesPerView: 1,
     spaceBetween: 0,
