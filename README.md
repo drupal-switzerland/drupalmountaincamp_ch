@@ -77,6 +77,9 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
     `Drupal` and `DrupalPractice` and nothing switched off, so code can pass
     here and fail the pull request. The CI command is in
     [AGENTS.md](AGENTS.md), section "Gates".
+  - CI checks `drupal/docroot/modules/custom` only. A theme in
+    `drupal/docroot/themes/custom` is checked by the local run and not by CI;
+    that directory holds no theme at present.
 
 ## Deploy
 
