@@ -18,7 +18,14 @@
       @active-index-change="exposeActiveSlideOnly"
     >
       <SwiperSlide v-for="(slide, i) in slidesToRender" :key="'first_' + i">
-        <BlokkliItem v-bind="slide" />
+        <!-- The field is in proxy mode, so blökkli does not render the items
+             and they get their parent and position here. Every copy of a
+             slide carries the position of the slide it repeats. -->
+        <BlokkliItem
+          v-bind="slide"
+          :parent-type="PARENT_BUNDLE"
+          :index="i % slides.length"
+        />
       </SwiperSlide>
     </Swiper>
     <div class="mt-6 grid grid-cols-12 gap-3">
@@ -48,6 +55,8 @@ import type { FieldListItemTyped } from '#blokkli-build/generated-types'
 const props = defineProps<{
   slides: FieldListItemTyped[]
 }>()
+
+const PARENT_BUNDLE = 'carousel'
 
 const isLoaded = ref(false)
 const { $texts } = useEasyTexts()

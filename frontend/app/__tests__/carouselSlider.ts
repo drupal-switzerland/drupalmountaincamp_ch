@@ -9,9 +9,18 @@ mockNuxtImport('useEasyTexts', () => () => ({
 }))
 
 const SlideStub = defineComponent({
-  props: { uuid: { type: String, default: '' } },
+  props: {
+    uuid: { type: String, default: '' },
+    parentType: { type: String, default: '' },
+    index: { type: Number, default: -1 },
+  },
   setup(props) {
-    return () => h('p', props.uuid)
+    return () =>
+      h(
+        'p',
+        { 'data-parent-type': props.parentType, 'data-index': props.index },
+        props.uuid,
+      )
   },
 })
 
@@ -100,6 +109,36 @@ describe('carousel slides', () => {
     expect(classes.filter((name) => /^!?-?[mp][xlrse]?-/.test(name))).toEqual(
       [],
     )
+  })
+})
+
+// The slides field is in proxy mode: blökkli renders no item itself, so the
+// slider is the only place a slide can learn its parent and its position.
+describe('what the slider tells blökkli about a slide', () => {
+  it('gives every copy the carousel as parent', async () => {
+    const mounted = await mountSlider(2)
+    const parents = mounted
+      .findAll('.swiper-slide p')
+      .map((slide) => slide.attributes('data-parent-type'))
+
+    expect(parents).toHaveLength(6)
+    expect(new Set(parents)).toEqual(new Set(['carousel']))
+  })
+
+  it('gives every copy the position of the slide it repeats', async () => {
+    const mounted = await mountSlider(3)
+    const slides = mounted
+      .findAll('.swiper-slide p')
+      .map((slide) => `${slide.text()}@${slide.attributes('data-index')}`)
+
+    expect(slides.toSorted()).toEqual([
+      'slide-0@0',
+      'slide-0@0',
+      'slide-1@1',
+      'slide-1@1',
+      'slide-2@2',
+      'slide-2@2',
+    ])
   })
 })
 
