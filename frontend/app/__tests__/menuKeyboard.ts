@@ -277,6 +277,66 @@ describe('main menu submenu toggle', () => {
   })
 })
 
+// Crossing the breakpoint closes an open submenu, and a closed one is inert.
+describe('main menu submenu at a breakpoint change', () => {
+  it('closes a phone submenu on desktop and moves focus from Back to the toggle', async () => {
+    viewport.isLessThanMd = true
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+
+    await toggle.trigger('click')
+    await nextTick()
+    expect(document.activeElement).toBe(
+      wrapper.get('button[aria-label="menu.back"]').element,
+    )
+
+    viewport.isLessThanMd = false
+    await nextTick()
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(usePhoneSubmenuOpen().value).toBeNull()
+    expect(document.activeElement).toBe(toggle.element)
+    wrapper.unmount()
+  })
+
+  // In a browser the whole menu is hidden on phones until it is opened, so
+  // the toggle cannot take focus there and focus ends on the page. The test
+  // DOM has no layout; what holds in both is that focus leaves the panel.
+  it('closes a desktop submenu on phones and takes focus out of the panel', async () => {
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    const submenu = wrapper.get(`#${toggle.attributes('aria-controls')}`)
+
+    await toggle.trigger('click')
+    ;(wrapper.get('a[href="/news/a"]').element as HTMLElement).focus()
+
+    viewport.isLessThanMd = true
+    await nextTick()
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(submenu.element.contains(document.activeElement)).toBe(false)
+    wrapper.unmount()
+  })
+
+  it('leaves focus alone when it is not in the submenu', async () => {
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    const link = wrapper.get('a[href="/news"]')
+
+    link.element.parentElement!.dispatchEvent(new MouseEvent('mouseenter'))
+    ;(link.element as HTMLElement).focus()
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+
+    viewport.isLessThanMd = true
+    await nextTick()
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(link.element)
+    wrapper.unmount()
+  })
+})
+
 describe('main menu submenu panel', () => {
   it('stays open when a tap on the panel blurs focus to nothing', async () => {
     viewport.isLessThanMd = true
