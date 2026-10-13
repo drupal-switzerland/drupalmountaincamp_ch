@@ -33,7 +33,7 @@ final class ImageAltHelp {
    * The help text.
    */
   public static function description(): TranslatableMarkup {
-    return new TranslatableMarkup('Describe in one sentence what this picture shows. Each picture gets its own description. Do not put the photographer or source here.');
+    return new TranslatableMarkup('Describe in one sentence what this picture shows. Read aloud by screen readers. Each picture gets its own description. Do not put the photographer or source here.');
   }
 
   /**
