@@ -73,8 +73,8 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bun run build
 
-      # The preloaded font files are named in nuxt.config.ts; this fails when
-      # the build no longer produces them.
+      # nuxt.config.ts names the preloaded font files; this fails when the
+      # build no longer produces them or no longer marks them as preloads.
       - if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: bun run test:ci app/__tests__/fontPreload.ts
         env:

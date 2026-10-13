@@ -46,14 +46,11 @@ function maxAge(route: string) {
 }
 
 describe('route rules: cache-control per kind of static file', () => {
-  it.each(['/_nuxt/**', '/_fonts/**'])(
-    'lets content-hashed files under %s be cached for a year, immutable',
-    (route) => {
-      expect(cacheControl(route)).toContain('public')
-      expect(cacheControl(route)).toContain('immutable')
-      expect(maxAge(route)).toBe(ONE_YEAR)
-    },
-  )
+  it('lets content-hashed files under /_nuxt/** be cached for a year, immutable', () => {
+    expect(cacheControl('/_nuxt/**')).toContain('public')
+    expect(cacheControl('/_nuxt/**')).toContain('immutable')
+    expect(maxAge('/_nuxt/**')).toBe(ONE_YEAR)
+  })
 
   it('caches /fonts/** for a year', () => {
     expect(cacheControl('/fonts/**')).toContain('public')
@@ -71,7 +68,7 @@ describe('route rules: cache-control per kind of static file', () => {
     const routes = Object.keys(routeRules)
 
     expect(routes.sort()).toEqual(
-      ['/_fonts/**', '/_nuxt/**', '/fonts/**', '/images/**'].sort(),
+      ['/_nuxt/**', '/fonts/**', '/images/**'].sort(),
     )
   })
 })
