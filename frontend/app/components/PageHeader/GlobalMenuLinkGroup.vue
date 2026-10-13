@@ -144,7 +144,12 @@ watch(() => route.path, clickAway)
 
 // A submenu open on one side of the breakpoint is a different thing on the
 // other: a dropdown under its link, or a panel over the whole phone menu.
-watch(isLessThanMd, clickAway)
+// The watcher runs before the DOM changes, while focus is still where it was.
+watch(isLessThanMd, () => {
+  if (subtreeOpen.value) {
+    closeSubtree(!!submenu.value?.contains(document.activeElement))
+  }
+})
 
 // On phones the open submenu covers this row and the other menu items.
 const phoneSubmenuOpen = usePhoneSubmenuOpen()
@@ -183,8 +188,13 @@ async function closeAndFocusToggle(event: Event) {
   event.stopPropagation()
   // Focus has to leave a panel that is about to become inert. On desktop,
   // Escape pressed on the parent link or the toggle leaves focus where it is.
-  const focusNeedsNewHome =
-    isLessThanMd.value || !!submenu.value?.contains(event.target as Node | null)
+  await closeSubtree(
+    isLessThanMd.value ||
+      !!submenu.value?.contains(event.target as Node | null),
+  )
+}
+
+async function closeSubtree(focusNeedsNewHome: boolean) {
   subtreeOpen.value = false
   if (!focusNeedsNewHome) {
     return
