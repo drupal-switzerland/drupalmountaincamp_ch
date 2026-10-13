@@ -64,9 +64,9 @@ import type { ParagraphIconTextListFragment } from '#graphql-operations'
 import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
-  text: ParagraphIconTextListFragment['text']
-  title: ParagraphIconTextListFragment['title']
-  paragraphs: ParagraphIconTextListFragment['paragraphs']
+  text?: ParagraphIconTextListFragment['text']
+  title?: ParagraphIconTextListFragment['title']
+  paragraphs?: ParagraphIconTextListFragment['paragraphs']
 }>()
 
 const isEditing = import.meta.blokkliEditing

@@ -20,8 +20,8 @@
 import type { ParagraphButtonFragment } from '#graphql-operations'
 
 defineProps<{
-  label: ParagraphButtonFragment['label']
-  link: ParagraphButtonFragment['link']
+  label?: ParagraphButtonFragment['label']
+  link?: ParagraphButtonFragment['link']
 }>()
 
 const { options, parentType } = defineBlokkli({

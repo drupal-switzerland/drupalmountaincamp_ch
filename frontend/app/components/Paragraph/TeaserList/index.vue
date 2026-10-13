@@ -1,6 +1,6 @@
 <template>
   <div class="my-7 overflow-hidden md:mb-12 lg:mb-20">
-    <Container class="mx-auto">
+    <Container v-if="hasText(title)" class="mx-auto">
       <h2 class="col-span-12 mb-10 text-3xl md:text-4xl lg:mb-14">
         {{ title }}
       </h2>
@@ -69,6 +69,7 @@ import type { ParagraphTeaserListFragment } from '#graphql-operations'
 import type Swiper from 'swiper'
 // Slide layout styles stay static so slides don't shift while the JS loads.
 import 'swiper/css'
+import { hasText } from '~/helpers/text'
 
 defineProps<{
   title?: string
@@ -151,15 +152,20 @@ async function initSwiper() {
   if (!shouldMountSwiper.value || !container.value) {
     return
   }
-  const { default: SwiperClass } = await import('swiper')
-  // The option or viewport may have changed, or the list unmounted, meanwhile.
-  if (!shouldMountSwiper.value || !container.value) {
-    return
+  try {
+    const { default: SwiperClass } = await import('swiper')
+    // The option or viewport may have changed, or the list unmounted, meanwhile.
+    if (!shouldMountSwiper.value || !container.value) {
+      return
+    }
+    swiperInstance?.destroy()
+    swiperInstance = new SwiperClass(container.value, {
+      slidesPerView: isMdUpwards.value ? 3 : 2,
+    })
+  } catch (error) {
+    // Without Swiper the list is a static row that cannot be moved.
+    console.error('The teaser slider could not be started.', error)
   }
-  swiperInstance?.destroy()
-  swiperInstance = new SwiperClass(container.value, {
-    slidesPerView: isMdUpwards.value ? 3 : 2,
-  })
 }
 
 function prev() {

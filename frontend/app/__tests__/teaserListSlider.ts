@@ -18,13 +18,24 @@ mockNuxtImport('useViewport', () => () => ({
   isMdUpwards: computed(() => false),
 }))
 
-async function mountList(teaserStyle: string) {
+async function mountList(teaserStyle: string, title = 'More news') {
   list.teaserStyle = teaserStyle
   return mountSuspended(TeaserList, {
-    props: { title: 'More news', paragraphs: [] },
+    props: { title, paragraphs: [] },
     global: { stubs: { BlokkliField: true } },
   })
 }
+
+describe('teaser list', () => {
+  it('has a heading only for a title with text', async () => {
+    const headings = async (title: string) =>
+      (await mountList('grid', title)).findAll('h2').length
+
+    expect(await headings('More news')).toBe(1)
+    expect(await headings('')).toBe(0)
+    expect(await headings('  \n')).toBe(0)
+  })
+})
 
 describe('teaser list as a slider', () => {
   beforeEach(() => {
