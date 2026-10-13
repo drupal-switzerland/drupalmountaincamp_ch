@@ -106,7 +106,9 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 
 - Drupal and the frontend share <https://mountaincamp.ddev.site>; nginx sends
   each path to the right app (`.ddev/nginx_full/nginx-site.conf`).
-- If the frontend isn't running, frontend paths fall back to Drupal.
+- If the frontend isn't running, frontend paths fall back to Drupal. The build
+  assets under `/_nuxt` and `/__nuxt` do not: they answer 502 with
+  `Cache-Control: no-store`.
 - To send another path to Drupal: add it to
   `scripts/nginx-conf-generator/config/base.yml`, run
   `ddev regenerate-nginx-config`, then `ddev restart`.
