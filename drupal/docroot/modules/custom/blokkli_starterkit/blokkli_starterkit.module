@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\blokkli_starterkit\ImageAltHelp;
+use Drupal\blokkli_starterkit\RedirectFreshness;
 use Drupal\blokkli_starterkit\RokkaFileMigration;
 use Drupal\blokkli_starterkit\SitemapLinks;
 use Drupal\Core\Access\AccessResult;
@@ -20,6 +21,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field_group\FormatterHelper;
 use Drupal\paragraphs_blokkli\Form\ParagraphsBlokkliFormBase;
+use Drupal\path_alias\PathAliasInterface;
 use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
 use Drupal\user\UserInterface;
 use Drupal\webform\Entity\Webform;
@@ -225,4 +227,25 @@ function blokkli_starterkit_simple_sitemap_arbitrary_links_alter(array &$arbitra
   }
   $base_url = \Drupal::config('simple_sitemap.settings')->get('base_url') ?: $GLOBALS['base_url'];
   $arbitrary_links[] = ['url' => $base_url . SitemapLinks::NEWS_OVERVIEW_PATH];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for path_alias.
+ */
+function blokkli_starterkit_path_alias_insert(PathAliasInterface $path_alias) {
+  RedirectFreshness::aliasChanged($path_alias);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for path_alias.
+ */
+function blokkli_starterkit_path_alias_update(PathAliasInterface $path_alias) {
+  RedirectFreshness::aliasChanged($path_alias);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for path_alias.
+ */
+function blokkli_starterkit_path_alias_delete(PathAliasInterface $path_alias) {
+  RedirectFreshness::aliasChanged($path_alias);
 }
