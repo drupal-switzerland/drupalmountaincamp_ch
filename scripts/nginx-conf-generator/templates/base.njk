@@ -483,8 +483,12 @@ server {
 
   # Build assets are the frontend's alone, so they do not fall back to Drupal
   # when no frontend is listening. Drupal would answer 404 with its page cache
-  # lifetime, and a browser replays that 404 for the same file name from the
-  # next build. The 502 here is not cacheable.
+  # lifetime (measured: "max-age=31536000, public" from a local database with
+  # an old system.performance value; 300 with the exported config), and a
+  # browser replays that 404 for the same file name from the next build. The
+  # 502 here is not cacheable. The /_nuxt and /__nuxt locations carry "^~" so
+  # that no regex location (fonts, favicon and logo names) takes a build asset
+  # and sends it to @frontend.
   location @frontend_assets {
     error_page 502 = @no_frontend;
     proxy_pass {{ proxy_pass_frontend }};
@@ -576,7 +580,7 @@ server {
     access_log off;
   }
 
-  location /__nuxt {
+  location {{ '^~ ' if fallback }}/__nuxt {
     auth_basic off;
     access_log off;
     expires 365d;
@@ -584,7 +588,7 @@ server {
     try_files $uri $uri/ {{ '@frontend_assets' if fallback else '@frontend' }};
   }
 
-  location /_nuxt {
+  location {{ '^~ ' if fallback }}/_nuxt {
     expires 365d;
     auth_basic off;
     access_log off;
