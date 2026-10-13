@@ -35,7 +35,10 @@ function legacyExtractSymbol(source = '') {
 }
 /* eslint-enable sonarjs/super-linear-regex */
 
-const LINEAR_TIME_BUDGET_MS = 1000
+const ADVERSARIAL_REPEATS = 2000
+const ADVERSARIAL_SIZE_FACTOR = 4
+// Linear work grows by the size factor, quadratic work by its square.
+const MAX_LINEAR_GROWTH = ADVERSARIAL_SIZE_FACTOR * 2
 const RANDOM_SEED = 0x5eed
 const RANDOM_CASES = 5000
 const MAX_RANDOM_TOKENS = 40
@@ -142,6 +145,27 @@ const ADVERSARIAL_SYMBOL_CASES = [
   "<SvG a='1'>x</sVg>",
   '<svg a="1" b c=d>x</svg>',
 ]
+
+function adversarialColorMarkup(repeats: number) {
+  return '<a' + ' '.repeat(repeats) + 'fill="' + '<b '.repeat(repeats)
+}
+
+/**
+ * A string that counts how often something is read from it: a character, its
+ * length or a method. Work is counted instead of timed, so the result does not
+ * depend on how busy the machine is.
+ */
+function countingString(text: string) {
+  let reads = 0
+  const counted = new Proxy(Object(text), {
+    get(target, key) {
+      reads++
+      const value = Reflect.get(target, key)
+      return typeof value === 'function' ? value.bind(target) : value
+    },
+  })
+  return { markup: counted as string, reads: () => reads }
+}
 
 function legacyReplaceColorsSamples() {
   return [...EXISTING_COLOR_CASES, ...ADVERSARIAL_COLOR_CASES, ...randomCases()]
@@ -361,10 +385,19 @@ describe('equivalence with the legacy regex implementation', () => {
   })
 
   it('replaceColors stays linear on long adversarial input', () => {
-    const markup = '<a' + ' '.repeat(50_000) + 'fill="' + '<b '.repeat(50_000)
-    const started = performance.now()
-    replaceColors(markup)
-    expect(performance.now() - started).toBeLessThan(LINEAR_TIME_BUDGET_MS)
+    // Only the fill pass reads the counted string: the stroke pass gets the
+    // plain string the fill pass returns. Both are the same function.
+    const readsFor = (repeats: number) => {
+      const plain = adversarialColorMarkup(repeats)
+      const { markup, reads } = countingString(plain)
+      expect(replaceColors(markup)).toBe(replaceColors(plain))
+      return reads()
+    }
+    const small = readsFor(ADVERSARIAL_REPEATS)
+    const large = readsFor(ADVERSARIAL_REPEATS * ADVERSARIAL_SIZE_FACTOR)
+
+    expect(small).toBeGreaterThan(ADVERSARIAL_REPEATS)
+    expect(large / small).toBeLessThan(MAX_LINEAR_GROWTH)
   })
 })
 
