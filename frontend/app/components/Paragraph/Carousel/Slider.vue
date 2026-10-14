@@ -23,6 +23,10 @@
              slide carries the position of the slide it repeats. -->
         <BlokkliItem
           v-bind="slide"
+          :props="{
+            ...slide.props,
+            isInViewAtLoad: eagerFirstSlide && i === startIndex,
+          }"
           :parent-type="PARENT_BUNDLE"
           :index="i % slides.length"
         />
@@ -54,6 +58,8 @@ import type { FieldListItemTyped } from '#blokkli-build/generated-types'
 
 const props = defineProps<{
   slides: FieldListItemTyped[]
+  // The carousel is in the first viewport, so the slide it starts on is too.
+  eagerFirstSlide?: boolean
 }>()
 
 const PARENT_BUNDLE = 'carousel'
@@ -73,6 +79,12 @@ const slidesToRender = computed(() => {
   // Create a new array with repeated slides
   return Array(repetitionsNeeded).fill(props.slides).flat()
 })
+
+// The one rendered copy the slider starts on (see initialSlide): the first
+// slide of the second round, or of the only round when nothing is repeated.
+const startIndex = computed(
+  () => props.slides.length % slidesToRender.value.length,
+)
 
 const swiper = ref<SwiperClass | null>(null)
 
