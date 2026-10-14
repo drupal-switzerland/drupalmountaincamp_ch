@@ -41,6 +41,13 @@ let headingFontPreload: string
 let bodyFontPreload: RegExp
 let headLinks: Record<string, string>[]
 let markBodyFontPreload: (manifest: Manifest) => void
+let bodyFontPreloadModule: (options: unknown, nuxt: FakeNuxt) => void
+let modules: unknown[]
+
+type FakeNuxt = {
+  options: { dev: boolean }
+  hook: ReturnType<typeof vi.fn>
+}
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -49,12 +56,19 @@ beforeAll(async () => {
   const module = await import('../../nuxt.config')
   const config = module.default as unknown as {
     app: { head: { link: Record<string, string>[] } }
-    hooks: { 'build:manifest': (manifest: Manifest) => void }
+    modules: unknown[]
   }
   headingFontPreload = module.HEADING_FONT_PRELOAD
   bodyFontPreload = module.BODY_FONT_PRELOAD
   headLinks = config.app.head.link
-  markBodyFontPreload = config.hooks['build:manifest']
+  modules = config.modules
+  markBodyFontPreload = module.markBodyFontPreload as unknown as (
+    manifest: Manifest,
+  ) => void
+  bodyFontPreloadModule = module.bodyFontPreloadModule as unknown as (
+    options: unknown,
+    nuxt: FakeNuxt,
+  ) => void
   vi.unstubAllGlobals()
 })
 
@@ -135,35 +149,40 @@ describe('font preloads', () => {
     expect(() => markBodyFontPreload(manifest)).toThrow(/cannot be preloaded/)
   })
 
-  // The dev server's manifest has entries without assets.
-  it('leave the manifest of the dev server alone', () => {
-    const manifest = entryWithAssets([])
-    const before = structuredClone(manifest)
+  it('are marked by a module that the config loads', () => {
+    expect(modules).toContain(bodyFontPreloadModule)
+  })
+
+  it.each([
+    ['a build', false, 1],
+    ['the dev server, whose manifest has entries without assets', true, 0],
+  ])('are marked in %s', (_, dev, registered) => {
+    const nuxt = { options: { dev }, hook: vi.fn() }
+
+    bodyFontPreloadModule({}, nuxt)
+
+    expect(nuxt.hook).toHaveBeenCalledTimes(registered)
+    if (registered) {
+      expect(nuxt.hook).toHaveBeenCalledWith(
+        'build:manifest',
+        markBodyFontPreload,
+      )
+    }
+  })
+
+  // The dev flag decides, not the environment a build happens to run in.
+  it('are marked in a build that runs with NODE_ENV=development', () => {
+    const nuxt = { options: { dev: false }, hook: vi.fn() }
     vi.stubEnv('NODE_ENV', 'development')
 
     try {
-      markBodyFontPreload(manifest)
+      bodyFontPreloadModule({}, nuxt)
     } finally {
       vi.unstubAllEnvs()
     }
 
-    expect(manifest).toEqual(before)
+    expect(nuxt.hook).toHaveBeenCalledOnce()
   })
-
-  it.each(['production', ''])(
-    'stop a build without the file when NODE_ENV is "%s"',
-    (mode) => {
-      vi.stubEnv('NODE_ENV', mode)
-
-      try {
-        expect(() => markBodyFontPreload(entryWithAssets([]))).toThrow(
-          /cannot be preloaded/,
-        )
-      } finally {
-        vi.unstubAllEnvs()
-      }
-    },
-  )
 
   // Needs `nuxt build` first. CI sets REQUIRE_BUILT_FONTS so a missing build
   // fails instead of skipping.

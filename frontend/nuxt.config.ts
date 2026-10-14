@@ -1,4 +1,5 @@
 import { resolve } from 'node:path'
+import type { Nuxt, NuxtHooks } from '@nuxt/schema'
 import {
   pathPrefix,
   acceptLanguage,
@@ -20,12 +21,39 @@ const LANGCODES = [{ code: 'en', prefix: '' }]
 // out in a fallback font first: ZT Gatha bold for headings, and the latin
 // file of Source Sans 3 for body text. The heading font has a fixed path. The
 // body font gets a content-hashed name from the build, so it is marked as a
-// preload in the build manifest (hooks, below), which puts the link into
-// every HTML response: pages, error pages and the shell for logged-in users.
-// The dev server preloads the heading font only.
+// preload in the build manifest, which puts the link into every HTML
+// response: pages, error pages and the shell for logged-in users. The dev
+// server preloads the heading font only.
 export const HEADING_FONT_PRELOAD = '/fonts/ZTGatha-Bold.woff2'
 export const BODY_FONT_PRELOAD =
   /^source-sans-3-latin-wght-normal\.[\w-]+\.woff2$/
+
+type BuildManifest = Parameters<NuxtHooks['build:manifest']>[0]
+
+export function markBodyFontPreload(manifest: BuildManifest) {
+  const entry = Object.values(manifest).find((chunk) => chunk.isEntry)
+  const file = entry?.assets?.find((asset) => BODY_FONT_PRELOAD.test(asset))
+  // No preload is a slower first paint on every page; better no build.
+  if (!file) {
+    throw new Error(
+      'The latin file of Source Sans 3 is not among the entry assets, so it cannot be preloaded.',
+    )
+  }
+  manifest[file] = {
+    file,
+    resourceType: 'font',
+    mimeType: 'font/woff2',
+    preload: true,
+  }
+}
+
+// The dev server calls build:manifest too, with entries that list no assets.
+export function bodyFontPreloadModule(_options: unknown, nuxt: Nuxt) {
+  if (nuxt.options.dev) {
+    return
+  }
+  nuxt.hook('build:manifest', markBodyFontPreload)
+}
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -93,6 +121,7 @@ export default defineNuxtConfig({
     'nuxt-svg-icon-sprite',
     '@blokkli/editor',
     '@nuxt/eslint',
+    bodyFontPreloadModule,
   ],
 
   tailwindcss: {
@@ -162,26 +191,6 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'build:manifest'(manifest) {
-      // The dev server calls this hook too, with entries that list no assets.
-      if (process.env.NODE_ENV === 'development') {
-        return
-      }
-      const entry = Object.values(manifest).find((chunk) => chunk.isEntry)
-      const file = entry?.assets?.find((asset) => BODY_FONT_PRELOAD.test(asset))
-      // No preload is a slower first paint on every page; better no build.
-      if (!file) {
-        throw new Error(
-          'The latin file of Source Sans 3 is not among the entry assets, so it cannot be preloaded.',
-        )
-      }
-      manifest[file] = {
-        file,
-        resourceType: 'font',
-        mimeType: 'font/woff2',
-        preload: true,
-      }
-    },
     'vite:extend'({ config }) {
       if (config.server?.hmr && typeof config.server.ws === 'object') {
         config.server.ws.protocol = 'wss'
