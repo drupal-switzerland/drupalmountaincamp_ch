@@ -9,5 +9,7 @@ tags:
   description: '[node:field_teaser:value]'
   title: '[node:title] | [site:name]'
   og_description: '[node:field_teaser:value]'
-  og_image: '[node:field_image:entity:field_media_image:entity:url|"https://drupalmountaincamp.ch/images/mountain-camp-og-1200x630.jpg"]'
+  og_image: '[node:field_image:entity:field_media_image:share:url|"https://drupalmountaincamp.ch/images/mountain-camp-og-1200x630.jpg"]'
   og_image_alt: '[node:field_image:entity:field_media_image:alt]'
+  og_image_width: '[node:field_image:entity:field_media_image:share:width|"1200"]'
+  og_image_height: '[node:field_image:entity:field_media_image:share:height|"630"]'
