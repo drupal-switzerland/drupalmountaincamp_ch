@@ -74,6 +74,8 @@ The **Lead** field is on the same form.
 - A page gets a new address when its title changes. The old address then
   forwards to the new one. Still update links you know of: if another page
   later takes the old address, old links open that page.
+- Renaming a page while it is unpublished drops its old addresses. They no
+  longer forward, also after the page is published again.
 - The **Link** field of a button block is different: start typing the title
   of the page and choose it from the suggestions. A link chosen this way
   follows the page to its new address.

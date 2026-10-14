@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\blokkli_starterkit\Kernel;
 
+use Drupal\blokkli_starterkit\UnpublishedPageRedirects;
 use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\pathauto\Entity\PathautoPattern;
+use Drupal\pathauto\PathautoState;
 use Drupal\redirect\Entity\Redirect;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Tests that a renamed page stays reachable at its old address.
@@ -179,10 +185,262 @@ class RenamedPageRedirectTest extends KernelTestBase {
   }
 
   /**
+   * An article that was never published has no redirect after a rename.
+   *
+   * A redirect would tell visitors of the old address the new one.
+   */
+  public function testUnpublishedPageGetsNoRedirect(): void {
+    $node = $this->createArticle('First name', FALSE);
+    $this->rename($node, 'Second name');
+
+    $this->assertSame('/news/second-name', $this->aliasOf($node));
+    $this->assertNull($this->redirectFrom('news/first-name'));
+    $this->assertSame([], $this->container->get('entity_type.manager')->getStorage('redirect')->loadMultiple());
+  }
+
+  /**
+   * Renaming a page after unpublishing it removes its earlier redirects too.
+   *
+   * They would be answered with the page's new address.
+   */
+  public function testRenameWhileUnpublishedRemovesEarlierRedirects(): void {
+    $node = $this->createArticle('First name');
+    $this->rename($node, 'Second name');
+    $this->assertNotNull($this->redirectFrom('news/first-name'));
+
+    $node->setUnpublished()->save();
+    $this->rename($node, 'Third name');
+
+    $this->assertNull($this->redirectFrom('news/first-name'));
+    $this->assertNull($this->redirectFrom('news/second-name'));
+  }
+
+  /**
+   * Unpublishing and publishing again without a rename keeps the redirects.
+   */
+  public function testUnpublishingAloneKeepsRedirects(): void {
+    $node = $this->createArticle('First name');
+    $this->rename($node, 'Second name');
+
+    $node->setUnpublished()->save();
+    $node->setPublished()->save();
+
+    $this->assertNotNull($this->redirectFrom('news/first-name'));
+  }
+
+  /**
+   * Redirects of other pages are left alone.
+   */
+  public function testRedirectsOfOtherPagesAreKept(): void {
+    $published = $this->createArticle('Public first');
+    $this->rename($published, 'Public second');
+    $draft = $this->createArticle('Draft first', FALSE);
+
+    $this->rename($draft, 'Draft second');
+
+    $this->assertNotNull($this->redirectFrom('news/public-first'));
+    $this->assertNull($this->redirectFrom('news/draft-first'));
+  }
+
+  /**
+   * Unpublishing and changing a hand-written address in one save.
+   *
+   * As the node form does: the saved object is a clone of the loaded one, so
+   * the entity cache still holds the published node while the alias is
+   * written.
+   */
+  public function testUnpublishAndManualAliasChangeInOneSave(): void {
+    $node = Node::create([
+      'type' => 'press_release',
+      'title' => 'Speaker confirmed',
+      'path' => ['alias' => '/speaker-confirmed', 'pathauto' => PathautoState::SKIP],
+    ]);
+    $node->save();
+
+    $edited = clone $this->container->get('entity_type.manager')->getStorage('node')->load($node->id());
+    $edited->setUnpublished();
+    $edited->get('path')->alias = '/speaker-cancelled';
+    $edited->save();
+
+    $this->assertSame('/speaker-cancelled', $this->aliasOf($node));
+    $this->assertNull($this->redirectFrom('speaker-confirmed'));
+  }
+
+  /**
+   * Publishing and changing a hand-written address in one save keeps it.
+   */
+  public function testPublishAndManualAliasChangeInOneSave(): void {
+    $node = Node::create([
+      'type' => 'press_release',
+      'title' => 'Speaker confirmed',
+      'status' => 0,
+      'path' => ['alias' => '/speaker-draft', 'pathauto' => PathautoState::SKIP],
+    ]);
+    $node->save();
+
+    $edited = clone $this->container->get('entity_type.manager')->getStorage('node')->load($node->id());
+    $edited->setPublished();
+    $edited->get('path')->alias = '/speaker-confirmed';
+    $edited->save();
+
+    $this->assertNotNull($this->redirectFrom('speaker-draft'));
+  }
+
+  /**
+   * A hand-made redirect without a language is removed with the others.
+   */
+  public function testRedirectWithoutLanguageIsRemovedToo(): void {
+    $node = $this->createArticle('First name');
+    $by_hand = Redirect::create();
+    $by_hand->setSource('tickets');
+    $by_hand->setRedirect('node/' . $node->id());
+    $by_hand->setLanguage('und');
+    $by_hand->setStatusCode(301);
+    $by_hand->save();
+    $this->assertNotNull(Redirect::load($by_hand->id()));
+
+    $node->setUnpublished()->save();
+    $this->rename($node, 'Second name');
+
+    $this->assertNull($this->redirectFrom('tickets'));
+    $this->assertNull($this->redirectFrom('news/first-name'));
+  }
+
+  /**
+   * Retitling a draft tells its editor nothing: nothing they had is lost.
+   */
+  public function testRetitledDraftGivesNoMessage(): void {
+    $this->someoneIsAtTheScreen();
+    $node = $this->createArticle('First name', FALSE);
+
+    $this->rename($node, 'Second name');
+
+    $this->assertNull($this->redirectFrom('news/first-name'));
+    $this->assertSame([], $this->warnings());
+  }
+
+  /**
+   * An address with an umlaut or a space is recognised as the one replaced.
+   *
+   * Otherwise the redirect of an ordinary save would count as made by hand.
+   */
+  public function testChangedDraftAddressWithSpecialCharactersGivesNoMessage(): void {
+    $this->someoneIsAtTheScreen();
+    $node = Node::create([
+      'type' => 'press_release',
+      'title' => 'About us',
+      'status' => 0,
+      'path' => ['alias' => '/über uns', 'pathauto' => PathautoState::SKIP],
+    ]);
+    $node->save();
+
+    $edited = $this->container->get('entity_type.manager')->getStorage('node')->load($node->id());
+    $edited->get('path')->alias = '/about-us';
+    $edited->save();
+
+    $this->assertSame('/about-us', $this->aliasOf($node));
+    $this->assertSame([], $this->container->get('entity_type.manager')->getStorage('redirect')->loadMultiple());
+    $this->assertSame([], $this->warnings());
+  }
+
+  /**
+   * Losing earlier redirects is said, with their number.
+   */
+  public function testRemovedOlderRedirectsAreReported(): void {
+    $this->someoneIsAtTheScreen();
+    $node = $this->createArticle('First name');
+    $this->rename($node, 'Second name');
+    $node->setUnpublished()->save();
+
+    $this->rename($node, 'Third name');
+
+    $warnings = $this->warnings();
+    $this->assertCount(1, $warnings);
+    $this->assertStringStartsWith('One older redirect to "Third name" was removed', $warnings[0]);
+  }
+
+  /**
+   * A hand-made redirect to an unpublished page is not kept, and that is said.
+   */
+  public function testHandMadeRedirectToDraftIsReported(): void {
+    $this->someoneIsAtTheScreen();
+    $node = $this->createArticle('Launch page', FALSE);
+
+    $by_hand = Redirect::create();
+    $by_hand->setSource('tickets');
+    $by_hand->setRedirect('node/' . $node->id());
+    $by_hand->setLanguage('und');
+    $by_hand->setStatusCode(301);
+    $by_hand->save();
+
+    $this->assertNull(Redirect::load($by_hand->id()));
+    $warnings = $this->warnings();
+    $this->assertCount(1, $warnings);
+    $this->assertStringStartsWith('The redirect to "Launch page" was not kept', $warnings[0]);
+  }
+
+  /**
+   * Without a session there is nobody to tell, and the rule still applies.
+   *
+   * Queuing a message without a session throws.
+   */
+  public function testNoMessageWithoutSomeoneAtTheScreen(): void {
+    $node = $this->createArticle('First name');
+    $this->rename($node, 'Second name');
+    $node->setUnpublished()->save();
+
+    // The test's own teardown needs the request with a session back.
+    $requests = $this->container->get('request_stack');
+    $requests->push(Request::create('/'));
+    try {
+      $this->rename($node, 'Third name');
+    }
+    finally {
+      $requests->pop();
+    }
+
+    $this->assertSame('/news/third-name', $this->aliasOf($node));
+    $this->assertNull($this->redirectFrom('news/first-name'));
+    $this->assertNull($this->redirectFrom('news/second-name'));
+  }
+
+  /**
+   * Which messages a removal gives.
+   */
+  public function testMessageKinds(): void {
+    $this->assertSame([], UnpublishedPageRedirects::messageKinds(0, TRUE));
+    $this->assertSame([UnpublishedPageRedirects::OLDER_REMOVED], UnpublishedPageRedirects::messageKinds(2, TRUE));
+    $this->assertSame([UnpublishedPageRedirects::BY_HAND_NOT_KEPT], UnpublishedPageRedirects::messageKinds(0, FALSE));
+    $this->assertSame(
+      [UnpublishedPageRedirects::BY_HAND_NOT_KEPT, UnpublishedPageRedirects::OLDER_REMOVED],
+      UnpublishedPageRedirects::messageKinds(1, FALSE),
+    );
+  }
+
+  /**
+   * Gives the current request a session, as a request from a browser has.
+   */
+  private function someoneIsAtTheScreen(): void {
+    $request = Request::create('/');
+    $request->setSession(new Session(new MockArraySessionStorage()));
+    $this->container->get('request_stack')->push($request);
+  }
+
+  /**
+   * The warning messages queued for the person at the screen.
+   *
+   * @return string[]
+   *   The messages as text.
+   */
+  private function warnings(): array {
+    return array_map('strval', $this->container->get('messenger')->messagesByType(MessengerInterface::TYPE_WARNING));
+  }
+
+  /**
    * Creates a saved news article.
    */
-  private function createArticle(string $title): Node {
-    $node = Node::create(['type' => 'press_release', 'title' => $title]);
+  private function createArticle(string $title, bool $published = TRUE): Node {
+    $node = Node::create(['type' => 'press_release', 'title' => $title, 'status' => (int) $published]);
     $node->save();
     return $node;
   }
