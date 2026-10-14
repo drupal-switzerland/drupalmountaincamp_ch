@@ -13,6 +13,17 @@ describe('buildImageSizes', () => {
     ).toBe('(min-width: 1380px) 412px, (min-width: 1024px) 33vw, 100vw')
   })
 
+  // The first matching rule wins in a browser, so the caller's order is the
+  // meaning: a sort here would change which width is chosen.
+  it('does not sort rules given smallest first', () => {
+    expect(
+      buildImageSizes([
+        { minWidth: 1024, width: '33vw' },
+        { minWidth: 1380, width: '412px' },
+      ]),
+    ).toBe('(min-width: 1024px) 33vw, (min-width: 1380px) 412px, 100vw')
+  })
+
   it('takes a breakpoint in another unit as written', () => {
     expect(
       buildImageSizes([{ minWidth: '50.5rem', width: 'calc(48rem - 8px)' }]),

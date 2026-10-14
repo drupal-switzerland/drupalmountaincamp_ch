@@ -19,34 +19,100 @@ function splitAtTopLevelCommas(value: string): string[] {
   return parts
 }
 
-function hasBalancedParentheses(value: string): boolean {
-  let depth = 0
-  for (const char of value) {
-    if (char === '(') {
-      depth++
-    } else if (char === ')' && --depth < 0) {
-      return false
-    }
+type Kind = 'length' | 'number'
+type Token = Kind | '+' | '-' | '*' | '/' | '(' | ')'
+
+const CALC_TOKEN = /\s*(?:(\d+(?:\.\d+)?)([a-z]*)|([-+*/()]))/y
+const LENGTH_UNITS = ['px', 'rem', 'vw']
+
+function valueKind(unit: string): Kind | undefined {
+  if (unit === '') {
+    return 'number'
   }
-  return depth === 0
+  return LENGTH_UNITS.includes(unit) ? 'length' : undefined
 }
 
-/** A plain length, or a calc() whose + and - have a space on both sides. */
+/** The tokens of a calc() body, or undefined when it has a part CSS rejects. */
+function calcTokens(body: string): Token[] | undefined {
+  const tokens: Token[] = []
+  CALC_TOKEN.lastIndex = 0
+  while (CALC_TOKEN.lastIndex < body.trimEnd().length) {
+    const start = CALC_TOKEN.lastIndex
+    const match = CALC_TOKEN.exec(body)
+    if (!match) {
+      return undefined
+    }
+    const [text, number, unit = '', symbol] = match
+    const token = number === undefined ? (symbol as Token) : valueKind(unit)
+    const end = start + text.length
+    // CSS reads + and - as operators only with white space on both sides.
+    const isSpaced = /\s/.test(text[0] ?? '') && /\s/.test(body[end] ?? '')
+    if (!token || ((token === '+' || token === '-') && !isSpaced)) {
+      return undefined
+    }
+    tokens.push(token)
+  }
+  return tokens
+}
+
+/**
+ * The kind of value a calc() body gives, by the type rules of CSS: sums need
+ * two operands of one kind, a product at most one length, a division a plain
+ * number on the right.
+ */
+function calcKind(tokens: Token[]): Kind | undefined {
+  let position = 0
+  const take = () => tokens[position++]
+  const peek = () => tokens[position]
+
+  function operand(): Kind | undefined {
+    const token = take()
+    if (token !== '(') {
+      return token === 'length' || token === 'number' ? token : undefined
+    }
+    const inner = sum()
+    return take() === ')' ? inner : undefined
+  }
+
+  function product(): Kind | undefined {
+    let left = operand()
+    while (left && (peek() === '*' || peek() === '/')) {
+      const operator = take()
+      const right = operand()
+      if (operator === '/') {
+        left = right === 'number' ? left : undefined
+      } else if (!right || (left === 'length' && right === 'length')) {
+        left = undefined
+      } else {
+        left = left === 'length' ? left : right
+      }
+    }
+    return left
+  }
+
+  function sum(): Kind | undefined {
+    let left = product()
+    while (left && (peek() === '+' || peek() === '-')) {
+      take()
+      left = product() === left ? left : undefined
+    }
+    return left
+  }
+
+  const kind = sum()
+  return position === tokens.length ? kind : undefined
+}
+
+/** A plain length, or a calc() that CSS reads as a length. */
 function isWidth(value: string): boolean {
   if (LENGTH.test(value)) {
     return true
   }
-  if (!value.startsWith('calc(') || !hasBalancedParentheses(value)) {
+  if (!value.startsWith('calc(') || !value.endsWith(')')) {
     return false
   }
-  const terms = value
-    .replace(/calc\(|[()]/g, ' ')
-    .split(/ +/)
-    .filter(Boolean)
-  return terms.every(
-    (term) =>
-      ['+', '-', '*', '/'].includes(term) || /^\d+(\.\d+)?[a-z]*$/.test(term),
-  )
+  const tokens = calcTokens(value.slice('calc('.length, -1))
+  return tokens !== undefined && calcKind(tokens) === 'length'
 }
 
 /**
@@ -54,9 +120,9 @@ function isWidth(value: string): boolean {
  * A browser drops an entry it cannot parse and falls back to 100vw without
  * any error, so a typo only shows as a larger download.
  *
- * Structural only: the forms this project writes (min-width conditions in
- * px or rem; px, rem or vw lengths; calc() without nested functions). A real
- * browser has the last word; the measurement script parses each value there.
+ * Covers the forms this project writes: min-width conditions in px or rem;
+ * px, rem or vw lengths; calc() of those without nested functions or signed
+ * numbers. Anything else is reported, also where a browser would accept it.
  */
 export function sizesProblems(sizes: string): string[] {
   const entries = splitAtTopLevelCommas(sizes)
