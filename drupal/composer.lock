@@ -2845,16 +2845,16 @@
         },
         {
             "name": "drupal/artifact_deployment",
-            "version": "1.0.0-beta3",
+            "version": "1.0.0-beta4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/artifact_deployment.git",
-                "reference": "c5aa0699c9b7342771d807e8f797e561fc2d8b16"
+                "reference": "60686cfeb0cbb9228fa89ff692e0403541491954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fartifact_deployment/repository/archive.zip?sha=c5aa0699c9b7342771d807e8f797e561fc2d8b16",
-                "reference": "c5aa0699c9b7342771d807e8f797e561fc2d8b16",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fartifact_deployment/repository/archive.zip?sha=60686cfeb0cbb9228fa89ff692e0403541491954",
+                "reference": "60686cfeb0cbb9228fa89ff692e0403541491954",
                 "shasum": ""
             },
             "require": {
@@ -2862,6 +2862,9 @@
             },
             "conflict": {
                 "drush/drush": "<11.0"
+            },
+            "require-dev": {
+                "drush/drush": "^11 || ^12 || ^13 || ^14"
             },
             "type": "drupal-drush",
             "autoload": {
@@ -2884,9 +2887,9 @@
             "homepage": "https://www.drupal.org/project/artifact_deployment",
             "support": {
                 "issues": "https://www.drupal.org/project/issues/artifact_deployment",
-                "source": "http://cgit.drupalcode.org/artifact_deployment"
+                "source": "https://git.drupalcode.org/project/artifact_deployment/-/tree/1.0.x"
             },
-            "time": "2025-01-22T11:38:06+00:00"
+            "time": "2026-10-01T14:15:34+00:00"
         },
         {
             "name": "drupal/bca",
@@ -23304,7 +23307,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/ai_context": 10,
-        "drupal/artifact_deployment": 20,
         "drupal/config_patch": 20,
         "drupal/devel_entity_updates": 20,
         "drupal/entity_usage": 10,
