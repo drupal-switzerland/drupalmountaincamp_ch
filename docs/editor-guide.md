@@ -53,9 +53,9 @@ The **Lead** field is on the same form.
 - Inside a block that has its own title, start one level below that title.
   In an accordion or a text with image block that is **Heading 3**. In an
   icon text item it is **Heading 4**.
-- A text with image slide in a carousel that has a title sits one level
-  lower: its title is a Heading 3, so its text starts at **Heading 4**. In a
-  carousel without a title it starts at **Heading 3**.
+- In a carousel that has its own title, a slide's title is a Heading 3, so
+  the slide text starts at **Heading 4**. In a carousel without a title it
+  starts at **Heading 3**.
 - Never skip a level, and never pick a heading for its size.
 - A line that names the section below it is a heading. Do not use bold text or
   a plain paragraph for it. The **Label** style is the exception: it is the
