@@ -58,7 +58,7 @@
         <component
           :is="slideHeading"
           v-if="hasText(title)"
-          class="mb-4 text-2xl md:text-4xl"
+          class="mb-4 text-2xl font-bold md:text-4xl"
         >
           {{ title }}
         </component>

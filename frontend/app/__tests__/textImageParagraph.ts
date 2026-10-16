@@ -100,6 +100,23 @@ describe('text image paragraph', () => {
     expect(await headingTags('carousel')).toEqual(['h2 Community'])
   })
 
+  // The base styles set h3 in a lighter weight than h2; the slide title keeps
+  // its weight at either level.
+  it('as a carousel slide, sets its title bold at either level', async () => {
+    paragraph.parentType = 'carousel'
+    for (const level of ['h2', 'h3'] as const) {
+      const wrapper = await mountSuspended(TextImage, {
+        props: { title: 'Community', text: '<p>Text</p>', image },
+        global: {
+          provide: {
+            [CAROUSEL_SLIDE_HEADING as symbol]: computed(() => level),
+          },
+        },
+      })
+      expect(wrapper.get(level).classes()).toContain('font-bold')
+    }
+  })
+
   it('stays an h2 on a page, whatever a carousel around it says', async () => {
     expect(await headingTags(undefined, 'h3')).toEqual(['h2 Community'])
   })
