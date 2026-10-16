@@ -20,7 +20,10 @@
       <SwiperSlide v-for="(slide, i) in slidesToRender" :key="'first_' + i">
         <!-- The field is in proxy mode, so blökkli does not render the items
              and they get their parent and position here. Every copy of a
-             slide carries the position of the slide it repeats. -->
+             slide carries the position of the slide it repeats. The
+             isInViewAtLoad flag only reaches a block that declares it as a
+             prop (text_image, the only block slides allow); on another block
+             it would land on its root element as an attribute. -->
         <BlokkliItem
           v-bind="slide"
           :props="{
@@ -80,10 +83,16 @@ const slidesToRender = computed(() => {
   return Array(repetitionsNeeded).fill(props.slides).flat()
 })
 
-// The one rendered copy the slider starts on (see initialSlide): the first
-// slide of the second round, or of the only round when nothing is repeated.
-const startIndex = computed(
-  () => props.slides.length % slidesToRender.value.length,
+// The one rendered copy the slider starts on: the first slide of the second
+// round. initialSlide names it as slides.length, which is past the end when
+// nothing is repeated (six slides or more); Swiper then rotates the loop so the
+// last slide peeks left of the first, and the copy active is rendered index 0
+// (checked in a browser with 6 and 7 slides). The peek is part of the layout,
+// so initialSlide stays as it is and this says which copy that is.
+const startIndex = computed(() =>
+  slidesToRender.value.length
+    ? props.slides.length % slidesToRender.value.length
+    : 0,
 )
 
 const swiper = ref<SwiperClass | null>(null)

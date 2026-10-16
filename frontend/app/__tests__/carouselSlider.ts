@@ -13,12 +13,17 @@ const SlideStub = defineComponent({
     uuid: { type: String, default: '' },
     parentType: { type: String, default: '' },
     index: { type: Number, default: -1 },
+    props: { type: Object, default: () => ({}) },
   },
   setup(props) {
     return () =>
       h(
         'p',
-        { 'data-parent-type': props.parentType, 'data-index': props.index },
+        {
+          'data-parent-type': props.parentType,
+          'data-index': props.index,
+          'data-in-view-at-load': String(!!props.props.isInViewAtLoad),
+        },
         props.uuid,
       )
   },
@@ -27,12 +32,12 @@ const SlideStub = defineComponent({
 type Mounted = VueWrapper
 let wrapper: Mounted | undefined
 
-async function mountSlider(slideCount = 2) {
+async function mountSlider(slideCount = 2, eagerFirstSlide = false) {
   const slides = Array.from({ length: slideCount }, (_, i) => ({
     uuid: `slide-${i}`,
   }))
   wrapper = await mountSuspended(Slider, {
-    props: { slides: slides as never },
+    props: { slides: slides as never, eagerFirstSlide },
     global: { stubs: { BlokkliItem: SlideStub } },
     attachTo: document.body,
   })
@@ -73,15 +78,37 @@ describe('carousel slides', () => {
     },
   )
 
-  // With six slides the test DOM, which has no layout, ends up with an
-  // active index that no slide has. A browser does not (checked there); the
-  // rule for that case is to hide nothing rather than everything.
+  // Swiper always reports an active slide that exists; the rule for the case
+  // it does not is to hide nothing rather than everything.
   it('hides no slide when none is known to be active', async () => {
     const mounted = await mountSlider(6)
+    const slides = mounted
+      .findAll('.swiper-slide')
+      .map((slide) => slide.element)
 
-    expect(mounted.find('.swiper-slide-active').exists()).toBe(false)
+    mounted
+      .findComponent({ name: 'Swiper' })
+      .vm.$emit('activeIndexChange', { slides, activeIndex: slides.length })
     expect(exposedSlides(mounted)).toHaveLength(6)
   })
+
+  // startIndex and initialSlide are two expressions for the same copy. The
+  // test DOM shows the copy Swiper marks active for one to five slides; with
+  // six or more initialSlide is past the end, the test DOM marks none, and the
+  // match rests on a browser check (rendered index 0 for six and seven).
+  it.each([1, 2, 3, 4, 5])(
+    'marks the copy Swiper starts on as in view at load, with %i slides',
+    async (slideCount) => {
+      const mounted = await mountSlider(slideCount, true)
+      const marked = mounted.findAll('[data-in-view-at-load="true"]')
+
+      expect(marked).toHaveLength(1)
+      expect(marked[0]!.element.closest('.swiper-slide')!.classList).toContain(
+        'swiper-slide-active',
+      )
+      expect(marked[0]!.text()).toBe('slide-0')
+    },
+  )
 
   // Inert slides take no pointer, so the swipe must not depend on them.
   it('takes touches on the container', async () => {
