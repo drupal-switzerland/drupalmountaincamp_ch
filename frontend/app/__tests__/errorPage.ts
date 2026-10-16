@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { createError } from '#app'
@@ -19,12 +19,26 @@ const LayoutStub = defineComponent({
   },
 })
 
+const unmounts: (() => void)[] = []
+
 async function mountError(statusCode: number) {
-  return mountSuspended(ErrorPage, {
+  const wrapper = await mountSuspended(ErrorPage, {
     props: { error: createError({ statusCode, message: 'internal detail' }) },
     global: { stubs: { NuxtLayout: LayoutStub } },
   })
+  unmounts.push(() => wrapper.unmount())
+  return wrapper
 }
+
+// The tab title and the route announcer outlive a mounted page, so each test
+// starts without the ones an earlier test left.
+beforeEach(() => {
+  document.title = ''
+})
+
+afterEach(() => {
+  unmounts.splice(0).forEach((unmount) => unmount())
+})
 
 describe('error page', () => {
   it.each([404, 500])('renders a %i inside the site layout', async (code) => {

@@ -80,7 +80,7 @@ function textColour(body: string): string {
 }
 
 function outlineColour(body: string): string {
-  if (/\boutline-white\b/.test(body)) {
+  if (/\boutline-white\b|outline-color: theme\(colors\.white\)/.test(body)) {
     return WHITE
   }
   const match = body.match(/outline-color: theme\(colors\.brand\.(\w+)\)/)
@@ -195,6 +195,13 @@ describe("a table's white panel on a dark section", () => {
 
   it('draws its own scroll ring in a colour visible on the band', () => {
     const ring = outlineColour(bodyOf(CK_CONTENT, PANEL_RULES[4]!))
+
+    expect(contrast(ring, brand.navy)).toBeGreaterThanOrEqual(AA_NON_TEXT)
+    expect(contrast(ring, brand.blue)).toBeGreaterThanOrEqual(AA_NON_TEXT)
+  })
+
+  it('draws the global focus ring of a dark section in a colour visible on the band', () => {
+    const ring = outlineColour(bodyOf(BRAND, PANEL_RULES[5]!))
 
     expect(contrast(ring, brand.navy)).toBeGreaterThanOrEqual(AA_NON_TEXT)
     expect(contrast(ring, brand.blue)).toBeGreaterThanOrEqual(AA_NON_TEXT)
