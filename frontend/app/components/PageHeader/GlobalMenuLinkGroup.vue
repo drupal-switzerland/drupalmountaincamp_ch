@@ -2,6 +2,7 @@
   <!-- display: contents keeps the original layout; the wrapper only groups
        focus, Escape and click-away handling for the row and its submenu. -->
   <div
+    ref="group"
     v-click-away="clickAway"
     class="contents"
     @keydown.esc="closeAndFocusToggle"
@@ -121,8 +122,10 @@ const menuHoverOpen = function () {
     subtreeOpen.value = true
   }
 }
+// With keyboard focus inside, the pointer leaving would make the panel inert
+// under it and drop focus to the body; it closes when focus leaves instead.
 const menuHoverClose = function () {
-  if (!isLessThanMd.value) {
+  if (!isLessThanMd.value && !group.value?.contains(document.activeElement)) {
     subtreeOpen.value = false
   }
 }
@@ -136,6 +139,7 @@ const clickAway = () => {
 
 const { $texts } = useEasyTexts()
 const submenuId = useId()
+const group = ref<HTMLElement | null>(null)
 const submenu = ref<HTMLElement | null>(null)
 const toggleButton = ref<HTMLButtonElement | null>(null)
 const backButton = ref<HTMLButtonElement | null>(null)

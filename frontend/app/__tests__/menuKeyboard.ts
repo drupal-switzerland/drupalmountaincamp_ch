@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import GlobalMenuLinkGroup from '../components/PageHeader/GlobalMenuLinkGroup.vue'
 import PageHeader from '../components/PageHeader/index.vue'
@@ -403,6 +403,65 @@ describe('main menu submenu panel', () => {
     expect(panel().classes()).toContain('pointer-events-auto')
     expect(panel().classes()).not.toContain('pointer-events-none')
     wrapper.unmount()
+  })
+})
+
+describe('main menu submenu when the pointer leaves on desktop', () => {
+  let unmount = () => {}
+
+  afterEach(() => {
+    unmount()
+    unmount = () => {}
+  })
+
+  async function mountGroupWithParts() {
+    const wrapper = await mountGroup()
+    unmount = () => wrapper.unmount()
+    const toggle = wrapper.get('button[aria-controls]')
+    return {
+      wrapper,
+      toggle,
+      row: wrapper.get('a[href="/news"]').element.parentElement!,
+      panel: wrapper.get(`#${toggle.attributes('aria-controls')}`).element,
+    }
+  }
+
+  it.each(['row', 'panel'] as const)(
+    'stays open while keyboard focus is in the submenu, when it leaves the %s',
+    async (area) => {
+      const { wrapper, toggle, ...areas } = await mountGroupWithParts()
+      await toggle.trigger('click')
+      const subLink = wrapper.get('a[href="/news/a"]').element as HTMLElement
+      subLink.focus()
+
+      areas[area].dispatchEvent(new MouseEvent('mouseleave'))
+      await nextTick()
+      expect(toggle.attributes('aria-expanded')).toBe('true')
+      expect(document.activeElement).toBe(subLink)
+
+      // Then focus leaving the group closes it.
+      subLink.dispatchEvent(
+        new FocusEvent('focusout', {
+          bubbles: true,
+          relatedTarget: document.body,
+        }),
+      )
+      await nextTick()
+      expect(toggle.attributes('aria-expanded')).toBe('false')
+    },
+  )
+
+  it('closes a submenu opened by hover while focus is elsewhere', async () => {
+    const { toggle, row } = await mountGroupWithParts()
+
+    row.dispatchEvent(new MouseEvent('mouseenter'))
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+
+    row.dispatchEvent(new MouseEvent('mouseleave'))
+    await nextTick()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(document.body)
   })
 })
 
