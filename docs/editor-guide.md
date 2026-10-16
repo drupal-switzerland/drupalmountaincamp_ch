@@ -71,11 +71,24 @@ The **Lead** field is on the same form.
   does not open a page about another.
 - A link inside a text takes an address only, for example `/tickets`. The
   link field there offers no suggestions.
-- A page gets a new address when its title changes. The old address then
-  forwards to the new one. Still update links you know of: if another page
-  later takes the old address, old links open that page.
-- Renaming a page while it is unpublished drops its old addresses. They no
-  longer forward, also after the page is published again.
+- A news article's address comes from its title, for example
+  `/news/keynote-speakers-announced`. Saving it with a new title gives it a
+  new address.
+- A page's address comes from its place in the main menu: the titles of the
+  menu items above it, then its own **Menu link title**, for example
+  `/program/workshops`. Saving it with a new menu link title or a new place in
+  **Menu settings** gives it a new address. A page without a menu link takes
+  its title instead, and a new title gives it a new address.
+- A change made elsewhere comes later: a menu item renamed or moved outside
+  the page's edit form, or a page above it in the menu that was renamed or
+  moved. The page's address changes the next time the page itself is saved.
+- After a change, the old address forwards to the new one. Still update links
+  you know of: if another page later takes the old address, old links open
+  that page.
+- A change of address while the news article or page is unpublished drops all
+  of its old addresses. They no longer forward, also after it is published
+  again. If addresses that already forwarded are dropped, a message after
+  saving says so.
 - The **Link** field of a button block is different: start typing the title
   of the page and choose it from the suggestions. A link chosen this way
   follows the page to its new address.
@@ -134,8 +147,12 @@ This field is required.
 
 - The **Image** field of a news article and the **Teaser Image** field of a
   page are also the picture shown when the link is shared.
-- Social networks show that picture at about 1200 x 630 pixels and crop the
-  rest. A wide image with the subject in the middle works best.
+- Social networks show that picture at 1200 x 630 pixels. The site cuts it to
+  that shape around the image's focal point.
+- Set the focal point on the edit form of the media item, under **Content** ›
+  **Media**: move the cross on the image onto the subject. The upload window of
+  the media library has no focal point; until it is set, the middle of the
+  image is used.
 - Without an image, the general Mountain Camp picture is used.
 
 ## Tables
