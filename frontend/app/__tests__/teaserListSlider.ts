@@ -37,33 +37,17 @@ describe('teaser list', () => {
   })
 })
 
-describe('teaser list as a slider', () => {
+// The slider style below the slider width: Swiper never starts here.
+describe('teaser list in the slider style without a running slider', () => {
   beforeEach(() => {
     list.teaserStyle = 'grid'
   })
 
-  it('has named previous and next buttons that are not a navigation landmark', async () => {
+  it('is the grid, without previous and next buttons', async () => {
     const wrapper = await mountList('sliderDesktop')
-    const buttons = wrapper.findAll('button')
 
-    expect(buttons.map((button) => button.attributes('aria-label'))).toEqual([
-      'slides.prev',
-      'slides.next',
-    ])
-    for (const button of buttons) {
-      expect(button.attributes('type')).toBe('button')
-    }
-    expect(wrapper.find('nav').exists()).toBe(false)
-  })
-
-  // Swiper starts at the sm breakpoint (shouldMountSwiper): from there on the
-  // list can only be moved by its buttons or a swipe.
-  it('shows the buttons from the width at which it becomes a slider', async () => {
-    const wrapper = await mountList('sliderDesktop')
-    const row = wrapper.get('button').element.closest('.hidden')
-
-    expect(row?.classList.contains('sm:block')).toBe(true)
-    expect(row?.classList.contains('md:block')).toBe(false)
+    expect(wrapper.findAll('button')).toHaveLength(0)
+    expect(wrapper.find('.is-slider-desktop').exists()).toBe(false)
   })
 
   it('has no buttons as a grid', async () => {

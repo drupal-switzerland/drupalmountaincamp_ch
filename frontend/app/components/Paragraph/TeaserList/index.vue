@@ -10,7 +10,8 @@
       class="paragraph-teaser-list container relative mx-auto"
       :class="{
         'is-slider-mobile': options.sliderStyle === 'sliderMobile',
-        'is-slider-desktop': options.teaserStyle === 'sliderDesktop',
+        // Only once Swiper runs: until then, and without it, a plain grid.
+        'is-slider-desktop': isSliderActive,
         'is-staggered': options.teaserStyle === 'staggered',
       }"
     >
@@ -40,9 +41,8 @@
       />
     </div>
 
-    <!-- Shown from the width at which the list becomes a slider (see
-         shouldMountSwiper), so it is never a slider without its buttons. -->
-    <div v-if="isSliderDesktop" class="container mx-auto mt-6 hidden sm:block">
+    <!-- Only with a running slider: without one there is nothing to move. -->
+    <div v-if="isSliderActive" class="container mx-auto mt-6">
       <div class="flex justify-end">
         <button
           type="button"
@@ -69,9 +69,14 @@ import type { ParagraphTeaserListFragment } from '#graphql-operations'
 import type Swiper from 'swiper'
 // Slide layout styles stay static so slides don't shift while the JS loads.
 import 'swiper/css'
+import { loadSwiper } from '~/helpers/swiper'
 import { hasText } from '~/helpers/text'
+import { SCREENS } from '~/tailwind/screens'
 
-defineProps<{
+const SLIDES_PER_VIEW = 2
+const SLIDES_PER_VIEW_MD = 3
+
+const props = defineProps<{
   title?: string
   paragraphs?: ParagraphTeaserListFragment['paragraphs']
 }>()
@@ -131,17 +136,34 @@ const isSliderDesktop = computed(
 )
 
 let swiperInstance: Swiper | null = null
+const isSliderActive = ref(false)
+
+// One view's worth of teasers is shown as the grid: there is nothing to slide.
+const hasMoreThanOneView = computed(
+  () =>
+    (props.paragraphs?.length ?? 0) >
+    (isMdUpwards.value ? SLIDES_PER_VIEW_MD : SLIDES_PER_VIEW),
+)
 
 const shouldMountSwiper = computed(() => {
   return (
-    container.value && isSliderDesktop.value && isSmUpwards.value && !isEditing
+    container.value &&
+    isSliderDesktop.value &&
+    isSmUpwards.value &&
+    hasMoreThanOneView.value &&
+    !isEditing
   )
 })
 
+function destroySwiper() {
+  swiperInstance?.destroy()
+  swiperInstance = null
+  isSliderActive.value = false
+}
+
+// Also starts the slider once the container is mounted.
 watch(shouldMountSwiper, function (shouldMount) {
-  if (swiperInstance) {
-    swiperInstance.destroy()
-  }
+  destroySwiper()
   if (shouldMount) {
     initSwiper()
   }
@@ -153,17 +175,21 @@ async function initSwiper() {
     return
   }
   try {
-    const { default: SwiperClass } = await import('swiper')
+    const SwiperClass = await loadSwiper()
     // The option or viewport may have changed, or the list unmounted, meanwhile.
     if (!shouldMountSwiper.value || !container.value) {
       return
     }
-    swiperInstance?.destroy()
+    destroySwiper()
     swiperInstance = new SwiperClass(container.value, {
-      slidesPerView: isMdUpwards.value ? 3 : 2,
+      slidesPerView: SLIDES_PER_VIEW,
+      // Keyed like useViewport, so a resize across md changes the view too.
+      breakpoints: { [SCREENS.md]: { slidesPerView: SLIDES_PER_VIEW_MD } },
     })
+    isSliderActive.value = true
   } catch (error) {
-    // Without Swiper the list is a static row that cannot be moved.
+    // Without Swiper the list stays the grid.
+    destroySwiper()
     console.error('The teaser slider could not be started.', error)
   }
 }
@@ -180,15 +206,7 @@ function next() {
   }
 }
 
-onMounted(() => {
-  initSwiper()
-})
-
-onBeforeUnmount(() => {
-  if (swiperInstance) {
-    swiperInstance.destroy()
-  }
-})
+onBeforeUnmount(destroySwiper)
 </script>
 
 <style lang="postcss">
