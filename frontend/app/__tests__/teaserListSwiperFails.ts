@@ -33,7 +33,7 @@ describe('teaser list when its slider cannot be started', () => {
     vi.restoreAllMocks()
   })
 
-  it('logs the failure and stays the grid, without buttons', async () => {
+  it('logs the failure and stays a natively scrolling row, without buttons', async () => {
     const logged = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const wrapper = await mountSuspended(TeaserList, {
@@ -56,7 +56,7 @@ describe('teaser list when its slider cannot be started', () => {
       ),
     ).toContain(LOAD_ERROR)
     expect(wrapper.find('h2').text()).toBe('More news')
-    expect(wrapper.find('.is-slider-desktop').exists()).toBe(false)
+    expect(wrapper.find('.is-swiper-running').exists()).toBe(false)
     expect(wrapper.findAll('button')).toHaveLength(0)
     wrapper.unmount()
   })

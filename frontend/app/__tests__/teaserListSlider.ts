@@ -43,11 +43,13 @@ describe('teaser list in the slider style without a running slider', () => {
     list.teaserStyle = 'grid'
   })
 
-  it('is the grid, without previous and next buttons', async () => {
+  it('is a natively scrolling row, without previous and next buttons', async () => {
     const wrapper = await mountList('sliderDesktop')
 
     expect(wrapper.findAll('button')).toHaveLength(0)
-    expect(wrapper.find('.is-slider-desktop').exists()).toBe(false)
+    expect(wrapper.find('.is-swiper-running').exists()).toBe(false)
+    // The row is in the markup from the first byte, so nothing moves on load.
+    expect(wrapper.find('.is-slider-desktop').exists()).toBe(true)
   })
 
   it('has no buttons as a grid', async () => {

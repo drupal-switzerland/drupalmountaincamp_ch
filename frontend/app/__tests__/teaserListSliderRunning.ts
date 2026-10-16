@@ -71,7 +71,7 @@ describe('teaser list as a running slider', () => {
     const wrapper = await mountList(4)
     const buttons = wrapper.findAll('button')
 
-    expect(wrapper.find('.is-slider-desktop').exists()).toBe(true)
+    expect(wrapper.find('.is-swiper-running').exists()).toBe(true)
     expect(buttons.map((button) => button.attributes('aria-label'))).toEqual([
       'slides.prev',
       'slides.next',
@@ -90,15 +90,16 @@ describe('teaser list as a running slider', () => {
     expect(started).toHaveLength(1)
     expect(started[0]!.options).toMatchObject({
       slidesPerView: 2,
+      spaceBetween: expect.any(Number),
       breakpoints: { [SCREENS.md]: { slidesPerView: 3 } },
     })
   })
 
-  it('is the grid without buttons when one view holds every teaser', async () => {
+  it('runs no slider and shows no buttons when one view holds every teaser', async () => {
     const wrapper = await mountList(3)
 
     expect(started).toHaveLength(0)
-    expect(wrapper.find('.is-slider-desktop').exists()).toBe(false)
+    expect(wrapper.find('.is-swiper-running').exists()).toBe(false)
     expect(wrapper.findAll('button')).toHaveLength(0)
   })
 

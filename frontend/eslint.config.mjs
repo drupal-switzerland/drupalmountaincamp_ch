@@ -104,6 +104,7 @@ export default withNuxt([
             'paragraph-.*',
             'is-slider-mobile',
             'is-slider-desktop',
+            'is-swiper-running',
             'is-staggered',
           ],
         },
