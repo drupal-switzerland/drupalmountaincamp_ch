@@ -112,15 +112,37 @@ class ShareImageTest extends KernelTestBase {
   }
 
   /**
-   * An old upload with a space in its name is shared in the style too.
+   * An old PNG upload with a space in its name is shared as a JPEG.
    */
-  public function testOldFilePathIsSharedInTheShareStyle(): void {
+  public function testPngIsSharedAsJpeg(): void {
     $tags = $this->shareImageTags('press_release', 'public://field/image/image 360.png');
 
-    $this->assertStringContainsString('/styles/share/public/field/image/image%20360.png', $tags['og_image_0']);
-    $this->assertStringNotContainsString('.webp', $tags['og_image_0']);
+    $this->assertStringContainsString('/styles/share/public/field/image/image%20360.png.jpg?', $tags['og_image_0']);
     $this->assertSame(self::WIDTH, $tags['og_image_width']);
     $this->assertSame(self::HEIGHT, $tags['og_image_height']);
+  }
+
+  /**
+   * A JPEG keeps its share URL; only the .jpeg spelling gains .jpg.
+   */
+  #[DataProvider('jpegPaths')]
+  public function testJpegShareUrl(string $uri, string $expected): void {
+    $tags = $this->shareImageTags('press_release', $uri);
+
+    $this->assertStringContainsString($expected, $tags['og_image_0']);
+  }
+
+  /**
+   * JPEG sources and the share URL each gets.
+   *
+   * @return array<string, array{string, string}>
+   *   Source URI and expected URL part per case.
+   */
+  public static function jpegPaths(): array {
+    return [
+      'jpg' => ['public://media/images/keynote.jpg', '/styles/share/public/media/images/keynote.jpg?'],
+      'jpeg' => ['public://field/image/keynotes.jpeg', '/styles/share/public/field/image/keynotes.jpeg.jpg?'],
+    ];
   }
 
   /**
