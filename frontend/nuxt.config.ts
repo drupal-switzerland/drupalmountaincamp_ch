@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import type { Nuxt, NuxtHooks } from '@nuxt/schema'
+import type { Nuxt, NuxtHooks } from 'nuxt/schema'
 import {
   pathPrefix,
   acceptLanguage,
