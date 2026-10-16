@@ -232,6 +232,25 @@ function blokkli_starterkit_simple_sitemap_arbitrary_links_alter(array &$arbitra
 }
 
 /**
+ * Implements hook_views_data_alter().
+ */
+function blokkli_starterkit_views_data_alter(array &$data) {
+  $translation_links_field = [
+    'title' => t('Translations'),
+    'field' => [
+      'title' => t('Translations'),
+      'help' => t('Views field plugin to display a list of translation links.'),
+      'id' => 'translation_links_field',
+    ],
+  ];
+
+  $data['node']['translation_links_field'] = $translation_links_field;
+  $data['block_content']['translation_links_field'] = $translation_links_field;
+  $data['media']['translation_links_field'] = $translation_links_field;
+  $data['taxonomy_term_field_data']['translation_links_field'] = $translation_links_field;
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert() for redirect.
  */
 function blokkli_starterkit_redirect_insert(Redirect $redirect) {
