@@ -36,14 +36,6 @@ import type { ParagraphAccordeonFragment } from '#graphql-operations'
 defineProps<{
   title?: ParagraphAccordeonFragment['title']
   paragraphs?: ParagraphAccordeonFragment['paragraphs']
-
-  /**
-   * Force the accordion to be always open.
-   *
-   * We mostly use this in the editor, so that the contents of the accordion
-   * are visible.
-   */
-  alwaysOpen?: boolean
 }>()
 
 const isEditing = import.meta.blokkliEditing

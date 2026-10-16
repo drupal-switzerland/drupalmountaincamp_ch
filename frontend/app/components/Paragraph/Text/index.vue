@@ -4,7 +4,7 @@
     <div class="text-lg lg:text-xl" :class="paragraphClassList">
       <div :class="columnClassList">
         <div
-          ref="content"
+          ref="blokkliDraggable"
           v-blokkli-editable:field_text
           class="ck-content hyphens-auto lg:hyphens-none"
           :class="{ 'text-center': alignment === 'center' }"
@@ -18,14 +18,14 @@
 <script lang="ts" setup>
 const props = defineProps<{ text?: string }>()
 
-const content = ref<HTMLElement | null>(null)
+// Also the element the editor drags the block by.
+const blokkliDraggable = ref<HTMLElement | null>(null)
 
 const { options, parentType } = defineBlokkli({
   bundle: 'text',
   editor: {
     addBehaviour: 'no-form',
     editTitle: (el) => el.textContent,
-    getDraggableElement: (el) => el.querySelector('.ck-content'),
     determineVisibleOptions: (ctx) => {
       if (!ctx.parentType) {
         return ['spacing', 'width', 'background', 'alignment']
@@ -94,7 +94,7 @@ const alignment = computed(() =>
   isTopLevel.value ? options.value.alignment : 'left',
 )
 
-useScrollableTables(content, {
+useScrollableTables(blokkliDraggable, {
   breakout: () =>
     isTopLevel.value &&
     ['none', 'navy', 'themeBand'].includes(background.value),

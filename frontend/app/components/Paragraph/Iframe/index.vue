@@ -18,6 +18,9 @@ const { $texts } = useEasyTexts()
 const { options } = defineBlokkli({
   bundle: 'iframe',
   globalOptions: ['spacing'],
+  editor: {
+    noPreview: true,
+  },
 })
 
 const props = defineProps<{

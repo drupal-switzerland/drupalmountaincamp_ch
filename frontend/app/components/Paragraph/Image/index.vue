@@ -7,6 +7,7 @@
     ]"
   >
     <div
+      ref="blokkliDraggable"
       v-blokkli-droppable:field_image
       :class="[parentType ? layoutClassesInner : layoutClasses]"
     >
@@ -35,7 +36,6 @@ const { parentType, options } = defineBlokkli({
       const img = el.querySelector('img')
       return img?.alt || img?.title
     },
-    getDraggableElement: (el) => el.querySelector('figure'),
     determineVisibleOptions: (ctx) => {
       if (!ctx.parentType) {
         return ['imageFormat', 'spacing']

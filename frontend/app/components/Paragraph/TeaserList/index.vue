@@ -87,13 +87,13 @@ const { options } = defineBlokkli({
   options: {
     teaserStyle: {
       type: 'radios',
-      label: 'Darstellung',
+      label: 'Display',
       default: 'grid',
       displayAs: 'icons',
       options: {
         grid: { label: 'grid', icon: 'bk_mdi_grid_view' },
         staggered: {
-          label: 'Versetzt',
+          label: 'Staggered',
           icon: 'bk_mdi_dashboard',
         },
         sliderDesktop: {
@@ -104,11 +104,11 @@ const { options } = defineBlokkli({
     },
     sliderStyle: {
       type: 'radios',
-      label: 'Slider Darstellung',
+      label: 'Mobile display',
       default: 'stack',
       displayAs: 'icons',
       options: {
-        stack: { label: 'Stapel', icon: 'bk_mdi_view_agenda' },
+        stack: { label: 'Stack', icon: 'bk_mdi_view_agenda' },
         sliderMobile: {
           label: 'Slider mobile',
           icon: 'bk_mdi_swipe',
@@ -117,6 +117,7 @@ const { options } = defineBlokkli({
     },
   },
   editor: {
+    noPreview: true,
     editTitle: (el) => el.querySelector('h2')?.innerText,
     addBehaviour: 'no-form',
   },
