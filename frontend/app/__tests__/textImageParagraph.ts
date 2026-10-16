@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import TextImage from '../components/Paragraph/TextImage/index.vue'
+import {
+  CAROUSEL_SLIDE_HEADING,
+  type CarouselSlideHeading,
+} from '../composables/carouselSlideHeading'
 import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '../composables/firstViewport'
 
 const { paragraph } = vi.hoisted(() => ({
@@ -52,6 +56,28 @@ async function headings(title: string | undefined, parentType?: string) {
   return wrapper.findAll('h2').map((heading) => heading.text())
 }
 
+async function headingTags(
+  parentType: string | undefined,
+  slideHeading?: CarouselSlideHeading,
+) {
+  paragraph.parentType = parentType
+  const wrapper = await mountSuspended(TextImage, {
+    props: { title: 'Community', text: '<p>Text</p>', image },
+    global: slideHeading
+      ? {
+          provide: {
+            [CAROUSEL_SLIDE_HEADING as symbol]: computed(() => slideHeading),
+          },
+        }
+      : {},
+  })
+  return wrapper
+    .findAll('h2, h3')
+    .map(
+      (heading) => `${heading.element.tagName.toLowerCase()} ${heading.text()}`,
+    )
+}
+
 describe('text image paragraph', () => {
   beforeEach(() => {
     paragraph.index = 0
@@ -66,6 +92,33 @@ describe('text image paragraph', () => {
     expect(await headings('  \n')).toEqual([])
     expect(await headings('  \n', 'carousel')).toEqual([])
     expect(await headings(undefined, 'carousel')).toEqual([])
+  })
+
+  it('as a carousel slide, takes its heading level from the carousel', async () => {
+    expect(await headingTags('carousel', 'h3')).toEqual(['h3 Community'])
+    expect(await headingTags('carousel', 'h2')).toEqual(['h2 Community'])
+    expect(await headingTags('carousel')).toEqual(['h2 Community'])
+  })
+
+  // The base styles set h3 in a lighter weight than h2; the slide title keeps
+  // its weight at either level.
+  it('as a carousel slide, sets its title bold at either level', async () => {
+    paragraph.parentType = 'carousel'
+    for (const level of ['h2', 'h3'] as const) {
+      const wrapper = await mountSuspended(TextImage, {
+        props: { title: 'Community', text: '<p>Text</p>', image },
+        global: {
+          provide: {
+            [CAROUSEL_SLIDE_HEADING as symbol]: computed(() => level),
+          },
+        },
+      })
+      expect(wrapper.get(level).classes()).toContain('font-bold')
+    }
+  })
+
+  it('stays an h2 on a page, whatever a carousel around it says', async () => {
+    expect(await headingTags(undefined, 'h3')).toEqual(['h2 Community'])
   })
 
   it('loads the first paragraph image eagerly when nothing is above it', async () => {
