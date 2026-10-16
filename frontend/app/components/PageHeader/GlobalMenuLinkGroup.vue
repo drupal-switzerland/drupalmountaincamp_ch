@@ -125,7 +125,7 @@ const menuHoverOpen = function () {
 // With keyboard focus inside, the pointer leaving would make the panel inert
 // under it and drop focus to the body; it closes when focus leaves instead.
 // A mouse click also focuses the toggle, but without :focus-visible, so a
-// clicked group still closes and two dropdowns never stay open side by side.
+// group opened by a click still closes on mouseleave.
 const menuHoverClose = function () {
   const focused = document.activeElement
   const hasKeyboardFocus =
