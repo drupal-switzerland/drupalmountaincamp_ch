@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac34f277fa9f2791a953867898b500e2",
+    "content-hash": "5689f7d0fd63eaa245762cb8ae45e092",
     "packages": [
         {
             "name": "amazeeio/drupal_integrations",
@@ -18148,12 +18148,12 @@
             "version": "v5.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
+                "url": "https://github.com/phpdotenv/phpdotenv.git",
                 "reference": "301c07936b16d88628b126b01d082ba153cf4c40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/301c07936b16d88628b126b01d082ba153cf4c40",
+                "url": "https://api.github.com/repos/phpdotenv/phpdotenv/zipball/301c07936b16d88628b126b01d082ba153cf4c40",
                 "reference": "301c07936b16d88628b126b01d082ba153cf4c40",
                 "shasum": ""
             },
@@ -23307,6 +23307,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/ai_context": 10,
+        "drupal/artifact_deployment": 20,
         "drupal/config_patch": 20,
         "drupal/devel_entity_updates": 20,
         "drupal/entity_usage": 10,
