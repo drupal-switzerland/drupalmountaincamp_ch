@@ -1,7 +1,8 @@
 <template>
   <!-- Always rendered: a live region only announces what is added after it
        exists. aria-live without role="status" reads the new message alone,
-       not every message again. -->
+       not every message again. The messages are put in only once the region
+       is in the page (see isRegionReady). -->
   <div
     ref="region"
     aria-live="polite"
@@ -11,7 +12,7 @@
          the next message would move into a dismissed one's element and be
          read out again. -->
     <div
-      v-for="(message, i) in messages"
+      v-for="(message, i) in isRegionReady ? messages : []"
       :key="message.message"
       class="flex items-center justify-between rounded p-6 font-medium"
       :class="classes[message.type]"
@@ -44,6 +45,19 @@ const MAIN_CONTENT_ID = 'main-content'
 const { messages, removeMessage } = useDrupalMessages()
 const { $texts } = useEasyTexts()
 const region = ref<HTMLElement | null>(null)
+
+// Messages that came with the page (after a save, say) are already in the
+// state when the region mounts. They go in two frames later, so that they are
+// added to a region that is on the page rather than arriving with it. On the
+// SPA shell for logged-in users the whole page is attached after this
+// component's onMounted, so a tick or the load event would still put them in
+// with the region (measured).
+const isRegionReady = ref(false)
+onMounted(() => {
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => (isRegionReady.value = true)),
+  )
+})
 
 const classes: Record<DrupalMessageType, string> = {
   error: 'bg-error-100 text-error-800',

@@ -19,9 +19,7 @@
 
       <!-- tabindex lets the skip link move focus here, not only scroll. -->
       <main id="main-content" tabindex="-1" class="page-content outline-none">
-        <ClientOnly>
-          <DrupalMessages v-if="!isEditing" />
-        </ClientOnly>
+        <DrupalMessages v-if="!isEditing" />
 
         <slot />
       </main>
