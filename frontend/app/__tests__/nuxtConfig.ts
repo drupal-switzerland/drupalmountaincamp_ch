@@ -52,11 +52,6 @@ describe('route rules: cache-control per kind of static file', () => {
     expect(maxAge('/_nuxt/**')).toBe(ONE_YEAR)
   })
 
-  it('caches /fonts/** for a year', () => {
-    expect(cacheControl('/fonts/**')).toContain('public')
-    expect(maxAge('/fonts/**')).toBe(ONE_YEAR)
-  })
-
   it('keeps /images/**, whose file names carry no hash, to a day and never immutable', () => {
     expect(cacheControl('/images/**')).toContain('public')
     expect(cacheControl('/images/**')).not.toContain('immutable')
@@ -67,9 +62,7 @@ describe('route rules: cache-control per kind of static file', () => {
   it('sets no cache rule on pages or on the API', () => {
     const routes = Object.keys(routeRules)
 
-    expect(routes.sort()).toEqual(
-      ['/_nuxt/**', '/fonts/**', '/images/**'].sort(),
-    )
+    expect(routes.sort()).toEqual(['/_nuxt/**', '/images/**'].sort())
   })
 })
 

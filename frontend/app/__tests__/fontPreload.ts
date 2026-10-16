@@ -37,11 +37,11 @@ type ManifestRecord = {
 }
 type Manifest = Record<string, ManifestRecord>
 
-let headingFontPreload: string
+let headingFontPreload: RegExp
 let bodyFontPreload: RegExp
-let headLinks: Record<string, string>[]
-let markBodyFontPreload: (manifest: Manifest) => void
-let bodyFontPreloadModule: (options: unknown, nuxt: FakeNuxt) => void
+let headLinks: Record<string, string>[] | undefined
+let markFontPreloads: (manifest: Manifest) => void
+let fontPreloadModule: (options: unknown, nuxt: FakeNuxt) => void
 let modules: unknown[]
 
 type FakeNuxt = {
@@ -55,17 +55,17 @@ beforeAll(async () => {
   vi.stubGlobal('defineNuxtConfig', (config: unknown) => config)
   const module = await import('../../nuxt.config')
   const config = module.default as unknown as {
-    app: { head: { link: Record<string, string>[] } }
+    app: { head: { link?: Record<string, string>[] } }
     modules: unknown[]
   }
-  headingFontPreload = module.HEADING_FONT_PRELOAD
-  bodyFontPreload = module.BODY_FONT_PRELOAD
+  headingFontPreload = module.FONT_PRELOADS['ZT Gatha bold']
+  bodyFontPreload = module.FONT_PRELOADS['the latin file of Source Sans 3']
   headLinks = config.app.head.link
   modules = config.modules
-  markBodyFontPreload = module.markBodyFontPreload as unknown as (
+  markFontPreloads = module.markFontPreloads as unknown as (
     manifest: Manifest,
   ) => void
-  bodyFontPreloadModule = module.bodyFontPreloadModule as unknown as (
+  fontPreloadModule = module.fontPreloadModule as unknown as (
     options: unknown,
     nuxt: FakeNuxt,
   ) => void
@@ -73,6 +73,18 @@ beforeAll(async () => {
 })
 
 const fileName = (url: string) => url.split('/').pop() ?? ''
+
+// The build puts a content hash before the extension.
+const hashed = (url: string) =>
+  fileName(url).replace(/\.woff2$/, '.Bo_j9asI.woff2')
+
+const HEADING = 'ZTGatha-Bold.CnYz0x1A.woff2'
+const BODY_LATIN = 'source-sans-3-latin-wght-normal.Bo_j9asI.woff2'
+const PRELOAD_RECORD = {
+  resourceType: 'font',
+  mimeType: 'font/woff2',
+  preload: true,
+}
 
 // The body font's rules of one style, in declaration order.
 function bodyFontRules(css: string, style: string) {
@@ -99,58 +111,55 @@ function entryWithAssets(assets: string[]): Manifest {
 }
 
 describe('font preloads', () => {
-  it('have the heading font as a cross-origin woff2 preload in every page head', () => {
-    expect(headLinks.filter((link) => link.as === 'font')).toEqual([
-      {
-        rel: 'preload',
-        as: 'font',
-        type: 'font/woff2',
-        href: headingFontPreload,
-        crossorigin: 'anonymous',
-      },
-    ])
+  it('are not written into the page head, where the hashed names are unknown', () => {
+    expect((headLinks ?? []).filter((link) => link.as === 'font')).toEqual([])
   })
 
   it('are the latin files of Source Sans 3 regular and ZT Gatha bold in typography.css', () => {
     const { urls, missing } = pickFontFiles(TYPOGRAPHY_CSS, PRELOADED_FACES)
-    const [body = '', heading] = urls
-    // The build puts a content hash before the extension.
-    const built = fileName(body).replace(/\.woff2$/, '.Bo_j9asI.woff2')
+    const [body = '', heading = ''] = urls
 
     expect(missing).toEqual([])
-    expect(heading).toBe(headingFontPreload)
-    expect(built).toMatch(bodyFontPreload)
+    expect(hashed(heading)).toMatch(headingFontPreload)
+    expect(hashed(body)).toMatch(bodyFontPreload)
   })
 
-  it('mark the latin upright body font file of the build as a preload', () => {
-    const latin = 'source-sans-3-latin-wght-normal.Bo_j9asI.woff2'
+  it('mark the heading font and the latin upright body font file of the build as preloads', () => {
     const others = [
       'source-sans-3-latin-ext-wght-normal.C8iNium2.woff2',
       'source-sans-3-latin-wght-italic.DLiStKT6.woff2',
+      'ZTGatha-SemiBold.D9fQx2kL.woff2',
     ]
-    const manifest = entryWithAssets([others[0]!, latin, others[1]!])
+    const manifest = entryWithAssets([
+      others[0]!,
+      BODY_LATIN,
+      others[1]!,
+      HEADING,
+      others[2]!,
+    ])
 
-    markBodyFontPreload(manifest)
+    markFontPreloads(manifest)
 
-    expect(manifest[latin]).toEqual({
-      file: latin,
-      resourceType: 'font',
-      mimeType: 'font/woff2',
-      preload: true,
+    expect(manifest[HEADING]).toEqual({ file: HEADING, ...PRELOAD_RECORD })
+    expect(manifest[BODY_LATIN]).toEqual({
+      file: BODY_LATIN,
+      ...PRELOAD_RECORD,
     })
     expect(others.filter((file) => manifest[file]?.preload)).toEqual([])
   })
 
-  it('stop the build when the body font file is not among the entry assets', () => {
-    const manifest = entryWithAssets([
-      'source-sans-3-latin-wght-italic.a.woff2',
-    ])
-
-    expect(() => markBodyFontPreload(manifest)).toThrow(/cannot be preloaded/)
-  })
+  it.each([
+    ['the body font', [HEADING], /Source Sans 3 is not among/],
+    ['the heading font', [BODY_LATIN], /ZT Gatha bold is not among/],
+  ])(
+    'stop the build when %s is not among the entry assets',
+    (_, assets, message) => {
+      expect(() => markFontPreloads(entryWithAssets(assets))).toThrow(message)
+    },
+  )
 
   it('are marked by a module that the config loads', () => {
-    expect(modules).toContain(bodyFontPreloadModule)
+    expect(modules).toContain(fontPreloadModule)
   })
 
   it.each([
@@ -159,14 +168,11 @@ describe('font preloads', () => {
   ])('are marked in %s', (_, dev, registered) => {
     const nuxt = { options: { dev }, hook: vi.fn() }
 
-    bodyFontPreloadModule({}, nuxt)
+    fontPreloadModule({}, nuxt)
 
     expect(nuxt.hook).toHaveBeenCalledTimes(registered)
     if (registered) {
-      expect(nuxt.hook).toHaveBeenCalledWith(
-        'build:manifest',
-        markBodyFontPreload,
-      )
+      expect(nuxt.hook).toHaveBeenCalledWith('build:manifest', markFontPreloads)
     }
   })
 
@@ -176,7 +182,7 @@ describe('font preloads', () => {
     vi.stubEnv('NODE_ENV', 'development')
 
     try {
-      bodyFontPreloadModule({}, nuxt)
+      fontPreloadModule({}, nuxt)
     } finally {
       vi.unstubAllEnvs()
     }
@@ -201,18 +207,21 @@ describe('font preloads', () => {
       )
 
       expect(missing, STALE_BUILD).toEqual([])
-      expect(heading).toBe(headingFontPreload)
+      expect(fileName(heading), STALE_BUILD).toMatch(headingFontPreload)
       expect(fileName(body), STALE_BUILD).toMatch(bodyFontPreload)
-      expect(
-        existsSync(resolve(FRONTEND, '.output/public', `.${body}`)),
-        STALE_BUILD,
-      ).toBe(true)
-      // The server renders a preload link for every manifest record that
-      // carries `preload`.
-      const record = new RegExp(
-        `\\{[^{}]*file:"${fileName(body)}"[^{}]*preload:true[^{}]*\\}`,
-      )
-      expect(readFileSync(BUILT_MANIFEST, 'utf8'), STALE_BUILD).toMatch(record)
+      const manifest = readFileSync(BUILT_MANIFEST, 'utf8')
+      for (const path of [body, heading]) {
+        expect(
+          existsSync(resolve(FRONTEND, '.output/public', `.${path}`)),
+          STALE_BUILD,
+        ).toBe(true)
+        // The server renders a preload link for every manifest record that
+        // carries `preload`.
+        const record = new RegExp(
+          `\\{[^{}]*file:"${fileName(path)}"[^{}]*preload:true[^{}]*\\}`,
+        )
+        expect(manifest, STALE_BUILD).toMatch(record)
+      }
     })
 
     it.each(STYLES)(
@@ -240,7 +249,6 @@ describe('font preloads', () => {
 
   it('come from no other origin and from no build-time download', () => {
     expect(TYPOGRAPHY_CSS).not.toMatch(/https?:\/\//)
-    expect(headingFontPreload).toMatch(/^\/fonts\//)
   })
 
   // `bolder` inside bold text asks for 900; the files have it, the site's
@@ -320,7 +328,7 @@ describe('heading font', () => {
     .map(([, block = '']) => block)
     .filter((block) => /font-family:\s*'ZT Gatha';/.test(block))
 
-  it('has one self-hosted file for each weight headings use', () => {
+  it('has one file in the build sources for each weight headings use', () => {
     const weights = faces.map(
       (block) => /font-weight:\s*(\d+)/.exec(block)?.[1],
     )
@@ -328,7 +336,10 @@ describe('heading font', () => {
 
     expect(weights.sort()).toEqual(HEADING_WEIGHTS)
     for (const file of files) {
-      expect(existsSync(resolve(FRONTEND, `public${file}`)), file).toBe(true)
+      expect(
+        existsSync(resolve(FRONTEND, 'app/assets/css', file ?? '')),
+        file,
+      ).toBe(true)
     }
   })
 
