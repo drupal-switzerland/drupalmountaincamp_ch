@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import TextImage from '../components/Paragraph/TextImage/index.vue'
-import { IS_FRONT_PAGE } from '../composables/frontPage'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '../composables/firstViewport'
 
 const { paragraph } = vi.hoisted(() => ({
   paragraph: { index: 0, parentType: undefined as string | undefined },
@@ -29,13 +29,17 @@ const image = {
   },
 }
 
-async function imageLoading(isFrontPage?: boolean, isInViewAtLoad?: boolean) {
+async function imageLoading(belowTopImage?: boolean, isInViewAtLoad?: boolean) {
   const wrapper = await mountSuspended(TextImage, {
     props: { title: 'Community', text: '<p>Text</p>', image, isInViewAtLoad },
     global:
-      isFrontPage === undefined
+      belowTopImage === undefined
         ? {}
-        : { provide: { [IS_FRONT_PAGE as symbol]: isFrontPage } },
+        : {
+            provide: {
+              [FIRST_PARAGRAPH_IN_FIRST_VIEWPORT as symbol]: !belowTopImage,
+            },
+          },
   })
   return wrapper.get('img').attributes('loading')
 }
@@ -64,12 +68,12 @@ describe('text image paragraph', () => {
     expect(await headings(undefined, 'carousel')).toEqual([])
   })
 
-  it('loads the first paragraph image eagerly on an inner page, where it is in the first viewport', async () => {
+  it('loads the first paragraph image eagerly when nothing is above it', async () => {
     expect(await imageLoading()).toBe('eager')
     expect(await imageLoading(false)).toBe('eager')
   })
 
-  it('loads it lazily on the homepage, where the hero pushes it below the fold', async () => {
+  it('loads it lazily below a hero or top image, which takes the first viewport', async () => {
     expect(await imageLoading(true)).toBe('lazy')
   })
 

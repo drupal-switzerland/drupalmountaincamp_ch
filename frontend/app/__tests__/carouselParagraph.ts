@@ -4,7 +4,7 @@ import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { flushPromises } from '@vue/test-utils'
 import Carousel from '../components/Paragraph/Carousel/index.vue'
 import Slider from '../components/Paragraph/Carousel/Slider.vue'
-import { IS_FRONT_PAGE } from '../composables/frontPage'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '../composables/firstViewport'
 
 mockNuxtImport('useEasyTexts', () => () => ({
   $texts: (key: string) => key,
@@ -35,12 +35,14 @@ const FieldStub = defineComponent({
   },
 })
 
-async function eagerFirstSlide(isFrontPage: boolean) {
+async function eagerFirstSlide(belowTopImage: boolean) {
   const wrapper = await mountSuspended(Carousel, {
     props: { title: 'Impressions', slides: [] } as never,
     global: {
       stubs: { BlokkliField: FieldStub },
-      provide: { [IS_FRONT_PAGE as symbol]: isFrontPage },
+      provide: {
+        [FIRST_PARAGRAPH_IN_FIRST_VIEWPORT as symbol]: !belowTopImage,
+      },
     },
   })
   // The slider is loaded on demand.
@@ -61,11 +63,11 @@ describe('carousel paragraph', () => {
     expect(await headings(undefined)).toEqual([])
   })
 
-  it('tells its slider that it is in the first viewport as the first paragraph of an inner page', async () => {
+  it('tells its slider that it is in the first viewport as the first paragraph with nothing above it', async () => {
     expect(await eagerFirstSlide(false)).toBe(true)
   })
 
-  it('does not on the homepage, where the hero pushes it below the fold', async () => {
+  it('does not below a hero or top image, which takes the first viewport', async () => {
     expect(await eagerFirstSlide(true)).toBe(false)
   })
 

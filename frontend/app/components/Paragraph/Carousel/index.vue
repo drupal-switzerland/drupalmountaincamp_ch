@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphCarouselFragment } from '#graphql-operations'
-import { IS_FRONT_PAGE } from '~/composables/frontPage'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { hasText } from '~/helpers/text'
 
 defineProps<{
@@ -50,12 +50,14 @@ const { index, parentType } = defineBlokkli({
   },
 })
 
-// The same rule as for a text image placed on a page: the first paragraph is
-// in the first viewport on inner pages, on the homepage the hero pushes it
-// below the fold.
-const isFrontPage = inject(IS_FRONT_PAGE, false)
+// The same rule as for a text image placed on a page: the first paragraph,
+// unless the node renders a hero or top image above it.
+const firstParagraphInFirstViewport = inject(
+  FIRST_PARAGRAPH_IN_FIRST_VIEWPORT,
+  true,
+)
 const isInFirstViewport = computed(
-  () => index.value === 0 && !parentType.value && !isFrontPage,
+  () => index.value === 0 && !parentType.value && firstParagraphInFirstViewport,
 )
 </script>
 
