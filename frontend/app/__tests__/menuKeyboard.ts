@@ -424,10 +424,40 @@ describe('main menu submenu panel', () => {
   })
 })
 
+// Messages go into the region two animation frames after it mounts.
+async function nextFrames() {
+  await new Promise((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(resolve)),
+  )
+  await nextTick()
+}
+
+async function mountMessages(
+  options: Parameters<typeof mountSuspended>[1] = {},
+) {
+  const wrapper = await mountSuspended(DrupalMessages, options)
+  await nextFrames()
+  return wrapper
+}
+
 describe('Drupal messages', () => {
+  // A region announces what is added to it, not what it holds when it
+  // enters the page: messages that came with the page wait until it is there.
+  it('puts the messages that came with the page into the region only after it is there', async () => {
+    useDrupalMessages().messages.value = [{ type: 'status', message: 'Saved' }]
+    const wrapper = await mountSuspended(DrupalMessages)
+    const region = wrapper.get('[aria-live="polite"]')
+
+    expect(region.element.childElementCount).toBe(0)
+
+    await nextFrames()
+    expect(wrapper.get('[aria-live="polite"]').element).toBe(region.element)
+    expect(region.text()).toContain('Saved')
+  })
+
   it('adds a message to a live region that is already there', async () => {
     useDrupalMessages().messages.value = []
-    const wrapper = await mountSuspended(DrupalMessages)
+    const wrapper = await mountMessages()
     const region = wrapper.get('[aria-live="polite"]')
     expect(region.element.childElementCount).toBe(0)
 
@@ -443,7 +473,7 @@ describe('Drupal messages', () => {
       { type: 'status', message: 'First' },
       { type: 'error', message: 'Second' },
     ]
-    const wrapper = await mountSuspended(DrupalMessages)
+    const wrapper = await mountMessages()
     const buttons = wrapper.findAll('button')
 
     expect(buttons).toHaveLength(2)
@@ -462,7 +492,7 @@ describe('Drupal messages', () => {
       { type: 'status', message: 'First' },
       { type: 'error', message: 'Second' },
     ]
-    const wrapper = await mountSuspended(DrupalMessages)
+    const wrapper = await mountMessages()
     const second = wrapper.get('[aria-live="polite"]').element.children[1]
 
     await wrapper.findAll('button')[0]!.trigger('click')
@@ -476,7 +506,7 @@ describe('Drupal messages', () => {
       { type: 'warning', message: 'Check the date' },
       { type: 'status', message: 'Saved' },
     ]
-    const wrapper = await mountSuspended(DrupalMessages)
+    const wrapper = await mountMessages()
     const rows = wrapper.get('[aria-live="polite"]').element.children
     const prefix = (row: Element) =>
       row.querySelector('.sr-only')?.textContent?.trim()
@@ -495,7 +525,7 @@ describe('Drupal messages', () => {
       { type: 'status', message: 'First' },
       { type: 'error', message: 'Second' },
     ]
-    const wrapper = await mountSuspended(DrupalMessages, {
+    const wrapper = await mountMessages({
       attachTo: document.body,
     })
 
@@ -526,7 +556,7 @@ describe('Drupal messages', () => {
       { type: 'status', message: 'First' },
       { type: 'error', message: 'Second' },
     ]
-    const wrapper = await mountSuspended(DrupalMessages, {
+    const wrapper = await mountMessages({
       attachTo: document.body,
     })
     elsewhere.focus()
