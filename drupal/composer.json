@@ -235,11 +235,6 @@
                 "drush.services.yml": "^9 || ^10 || ^11"
             }
         },
-        "composer-exit-on-patch-failure": false,
-        "patchLevel": {
-            "drupal/core": "-p2"
-        },
-        "enable-patching": true,
         "patches": {
         },
         "drupal-lenient": {
