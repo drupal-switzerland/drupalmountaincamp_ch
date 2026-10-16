@@ -514,16 +514,30 @@ describe('Drupal messages', () => {
     main.remove()
   })
 
+  // With a second message and main on the page, both places focus could be
+  // moved to exist, so only the guard keeps it where it is.
   it('leaves focus alone when a message is dismissed without focus on its button', async () => {
-    useDrupalMessages().messages.value = [{ type: 'status', message: 'Saved' }]
+    const main = document.createElement('main')
+    main.id = 'main-content'
+    main.tabIndex = -1
+    const elsewhere = document.createElement('button')
+    document.body.append(main, elsewhere)
+    useDrupalMessages().messages.value = [
+      { type: 'status', message: 'First' },
+      { type: 'error', message: 'Second' },
+    ]
     const wrapper = await mountSuspended(DrupalMessages, {
       attachTo: document.body,
     })
+    elsewhere.focus()
 
-    await wrapper.get('button').trigger('click')
+    await wrapper.findAll('button')[0]!.trigger('click')
     await nextTick()
 
-    expect(document.activeElement).toBe(document.body)
+    expect(wrapper.findAll('button')).toHaveLength(1)
+    expect(document.activeElement).toBe(elsewhere)
     wrapper.unmount()
+    main.remove()
+    elsewhere.remove()
   })
 })
