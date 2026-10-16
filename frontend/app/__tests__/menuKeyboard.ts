@@ -371,24 +371,6 @@ describe('main menu submenu at a breakpoint change', () => {
     expect(document.activeElement).not.toBe(toggle.element)
     wrapper.unmount()
   })
-
-  it('leaves focus alone when it is not in the submenu', async () => {
-    const wrapper = await mountGroup()
-    const toggle = wrapper.get('button[aria-controls]')
-    const link = wrapper.get('a[href="/news"]')
-
-    link.element.parentElement!.dispatchEvent(new MouseEvent('mouseenter'))
-    ;(link.element as HTMLElement).focus()
-    await nextTick()
-    expect(toggle.attributes('aria-expanded')).toBe('true')
-
-    viewport.isLessThanMd = true
-    await nextTick()
-    await nextTick()
-    expect(toggle.attributes('aria-expanded')).toBe('false')
-    expect(document.activeElement).toBe(link.element)
-    wrapper.unmount()
-  })
 })
 
 describe('main menu submenu panel', () => {

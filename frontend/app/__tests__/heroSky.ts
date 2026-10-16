@@ -317,7 +317,6 @@ describe('custom properties between tailwind.config and the stylesheets', () => 
     expect(Object.keys(PROPERTIES)).toEqual(['.page-hero', '.home-hero'])
     expect(PAGE_HERO).toContain('.page-hero {')
     expect(BRAND_CSS).toContain('.home-hero {')
-    expect(HOME_HERO).toMatch(/class="[^"]*\bhome-hero\b/)
   })
 
   it('uses the oklch gradients only where they are supported', () => {

@@ -37,7 +37,7 @@ describe('ImageItem', () => {
     urls.forEach((url) => expect(url).toMatch(/^\/sites\/default\/files\//))
   })
 
-  it('offers every derivative once, narrowest first', async () => {
+  it('lists the derivatives from large to extra wide, with their widths', async () => {
     const wrapper = await mountSuspended(ImageItem, {
       props: {
         large: style('large', 480),
@@ -55,7 +55,7 @@ describe('ImageItem', () => {
     expect(widths).toEqual(['480w', '768w', '1090w', '2070w'])
   })
 
-  it('leaves out a derivative no wider than the one before it', async () => {
+  it('leaves out a derivative whose width is already listed', async () => {
     // Styles do not upscale: a 600 px source gives 600 px for every wider style.
     const wrapper = await mountSuspended(ImageItem, {
       props: {
