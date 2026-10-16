@@ -66,7 +66,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
-import { IS_FRONT_PAGE } from '~/composables/frontPage'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
@@ -141,13 +141,17 @@ useScrollableTables(content, {
   content: () => props.text,
 })
 
-// The first paragraph's image is in the first viewport on inner pages. On the
-// homepage the tall hero and the edition bar push it below the fold. In a
-// carousel the carousel decides: its other slides and their copies are off
-// screen.
-const isFrontPage = inject(IS_FRONT_PAGE, false)
+// The first paragraph's image is in the first viewport unless the node renders
+// a hero or top image above it. In a carousel the carousel decides: its other
+// slides and their copies are off screen.
+const firstParagraphInFirstViewport = inject(
+  FIRST_PARAGRAPH_IN_FIRST_VIEWPORT,
+  true,
+)
 const preload = computed(() =>
-  parentType.value ? !!props.isInViewAtLoad : index.value === 0 && !isFrontPage,
+  parentType.value
+    ? !!props.isInViewAtLoad
+    : index.value === 0 && firstParagraphInFirstViewport,
 )
 
 const loading = computed(() => (preload.value ? 'eager' : 'lazy'))

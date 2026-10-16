@@ -57,7 +57,7 @@
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
 import { PAGE_FRAGMENTS } from '~/composables/pageFragments'
-import { IS_FRONT_PAGE } from '~/composables/frontPage'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
@@ -71,7 +71,9 @@ const props = defineProps<{
   blokkliProps: NodePageFragment['blokkliProps']
 }>()
 
-provide(IS_FRONT_PAGE, props.isFront ?? false)
+// The homepage hero and the hero image of other pages push the blocks below
+// the fold.
+provide(FIRST_PARAGRAPH_IN_FIRST_VIEWPORT, !props.isFront && !props.hero)
 
 const bigGrid = defineImageStyle({
   type: 'sizes',

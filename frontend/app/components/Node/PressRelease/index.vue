@@ -35,6 +35,7 @@
 <script lang="ts" setup>
 import type { NodePressReleaseFragment } from '#graphql-operations'
 import { IMAGE_CREDIT_BELOW_IMAGE } from '~/composables/imageCreditDisplay'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 
 const props = defineProps<{
   uuid?: string
@@ -47,6 +48,8 @@ const props = defineProps<{
 }>()
 
 provide(IMAGE_CREDIT_BELOW_IMAGE, true)
+// The article image is the first viewport's image when there is one.
+provide(FIRST_PARAGRAPH_IN_FIRST_VIEWPORT, !props.image)
 
 const imageStyle = defineImageStyle({
   type: 'sizes',

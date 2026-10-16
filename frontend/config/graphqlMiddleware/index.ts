@@ -1,4 +1,4 @@
-import type { NuxtConfig } from '@nuxt/schema'
+import type { NuxtConfig } from 'nuxt/schema'
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 
