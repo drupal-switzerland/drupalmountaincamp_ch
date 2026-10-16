@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
 import Slider from '../components/Paragraph/Carousel/Slider.vue'
+import { CAROUSEL_SLIDE_HEADING } from '../composables/carouselSlideHeading'
 
 mockNuxtImport('useEasyTexts', () => () => ({
   $texts: (key: string) => key,
@@ -78,6 +79,22 @@ describe('text image paragraph as a carousel slide', () => {
       'swiper-slide-active',
     )
     expect(wrapper.get('.swiper-slide-active h2').text()).toBe('Slide 0')
+  })
+
+  it('heads each slide at the level the carousel gives it', async () => {
+    wrapper = await mountSuspended(Slider, {
+      props: { slides: slides as never },
+      attachTo: document.body,
+      global: {
+        provide: { [CAROUSEL_SLIDE_HEADING as symbol]: computed(() => 'h3') },
+      },
+    })
+    await nextTick()
+
+    expect(wrapper.findAll('.swiper-slide h2')).toHaveLength(0)
+    expect(wrapper.findAll('.swiper-slide h3').length).toBeGreaterThanOrEqual(
+      SLIDE_COUNT,
+    )
   })
 
   it('loads no slide image eagerly below the first viewport', async () => {

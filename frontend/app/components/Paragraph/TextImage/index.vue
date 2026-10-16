@@ -55,9 +55,13 @@
       class="2xl:pl-10 col-start-8 col-end-[-1] mt-7 sm:mt-0 sm:pl-6 lg:mt-6 xl:pl-9"
     >
       <div class="swiper-carousel-content">
-        <h2 v-if="hasText(title)" class="mb-4 text-2xl md:text-4xl">
+        <component
+          :is="slideHeading"
+          v-if="hasText(title)"
+          class="mb-4 text-2xl md:text-4xl"
+        >
           {{ title }}
-        </h2>
+        </component>
         <div ref="content" class="ck-content hyphens-auto" v-html="text" />
       </div>
     </div>
@@ -66,6 +70,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
+import { CAROUSEL_SLIDE_HEADING } from '~/composables/carouselSlideHeading'
 import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { hasText } from '~/helpers/text'
 
@@ -122,6 +127,11 @@ const { index, parentType, options } = defineBlokkli({
 
 const isEditing = import.meta.blokkliEditing
 const isTopLevel = computed(() => !parentType.value)
+// Under the carousel's own title the slides are one level below it.
+const slideHeading = inject(
+  CAROUSEL_SLIDE_HEADING,
+  computed(() => 'h2' as const),
+)
 
 const spacingClassList = computed(() => {
   if (options.value.spacing === 'small') {
