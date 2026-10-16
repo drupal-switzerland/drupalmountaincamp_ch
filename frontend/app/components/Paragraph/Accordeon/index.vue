@@ -11,9 +11,17 @@
       :force-open="isEditing"
     >
       <template #summary>
-        <h2 v-blokkli-editable:field_title class="text-xl lg:text-2xl">
+        <h2
+          v-if="hasText(title) || isEditing"
+          v-blokkli-editable:field_title
+          class="text-xl lg:text-2xl"
+        >
           {{ title }}
         </h2>
+        <!-- Without a title the summary still needs a name. -->
+        <span v-else class="sr-only">
+          {{ $texts('accordion.details', 'Details') }}
+        </span>
         <SpriteSymbol
           name="chevron-down"
           class="h-6 w-12 text-primary-500 transition-all duration-250 [.open_&]:rotate-180"
@@ -32,6 +40,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphAccordeonFragment } from '#graphql-operations'
+import { hasText } from '~/helpers/text'
 
 defineProps<{
   title?: ParagraphAccordeonFragment['title']
@@ -47,6 +56,7 @@ defineProps<{
 }>()
 
 const isEditing = import.meta.blokkliEditing
+const { $texts } = useEasyTexts()
 const { parentType } = defineBlokkli({
   bundle: 'accordeon',
   propsFieldMapping: {

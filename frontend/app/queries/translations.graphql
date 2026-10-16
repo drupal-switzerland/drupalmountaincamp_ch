@@ -2,6 +2,7 @@
 # Any manual changes will be overwritten.
 
 fragment easyTexts on TextsLoader {
+  accordion__details: getText(key: "details", context: "accordion", default: "Details")
   breadcrumb__home: getText(key: "home", context: "breadcrumb", default: "Home")
   breadcrumb__label: getText(key: "label", context: "breadcrumb", default: "Breadcrumb")
   edition__dates: getText(key: "dates", context: "edition", default: "March 2–4, 2027")
