@@ -21,6 +21,7 @@ type MultiCacheConfig = {
 let routeRules: Record<string, RouteRule>
 let multiCache: MultiCacheConfig
 let postcssPlugins: Record<string, unknown>
+let sourcemap: unknown
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -30,10 +31,12 @@ beforeAll(async () => {
     routeRules: Record<string, RouteRule>
     multiCache: MultiCacheConfig
     postcss: { plugins: Record<string, unknown> }
+    sourcemap: unknown
   }
   routeRules = config.routeRules
   multiCache = config.multiCache
   postcssPlugins = config.postcss.plugins
+  sourcemap = config.sourcemap
   vi.unstubAllGlobals()
 })
 
@@ -123,5 +126,13 @@ describe('PostCSS plugins', () => {
 
     expect(nesting).toBeGreaterThan(-1)
     expect(nesting).toBeLessThan(enabled.indexOf('tailwindcss'))
+  })
+})
+
+describe('source maps', () => {
+  // Client maps are public files under /_nuxt and carry the full source with
+  // its comments; server maps stay for readable stack traces.
+  it('are built for the server only', () => {
+    expect(sourcemap).toEqual({ server: true, client: false })
   })
 })

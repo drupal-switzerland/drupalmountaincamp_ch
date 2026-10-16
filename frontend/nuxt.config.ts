@@ -184,7 +184,7 @@ export default defineNuxtConfig({
     },
   },
 
-  sourcemap: true,
+  sourcemap: { server: true, client: false },
 
   nitro: {
     compressPublicAssets: true,
