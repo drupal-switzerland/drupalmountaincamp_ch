@@ -123,6 +123,10 @@ function isWidth(value: string): boolean {
  * Covers the forms this project writes: min-width conditions in px or rem;
  * px, rem or vw lengths; calc() of those without nested functions or signed
  * numbers. Anything else is reported, also where a browser would accept it.
+ * Types only, no values: `calc(100vw / 0)` passes.
+ *
+ * Do not extend this parser. A value it cannot read is the point to switch to
+ * the lexer of css-tree as a dev dependency.
  */
 export function sizesProblems(sizes: string): string[] {
   const entries = splitAtTopLevelCommas(sizes)
