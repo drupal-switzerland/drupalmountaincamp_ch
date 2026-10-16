@@ -239,6 +239,13 @@ function blokkli_starterkit_redirect_insert(Redirect $redirect) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_update() for redirect.
+ */
+function blokkli_starterkit_redirect_update(Redirect $redirect) {
+  UnpublishedPageRedirects::redirectChanged($redirect);
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert() for path_alias.
  */
 function blokkli_starterkit_path_alias_insert(PathAliasInterface $path_alias) {

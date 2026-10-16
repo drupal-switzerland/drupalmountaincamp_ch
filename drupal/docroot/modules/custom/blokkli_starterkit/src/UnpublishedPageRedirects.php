@@ -17,7 +17,7 @@ use Drupal\redirect\Entity\Redirect;
  * access check. Renaming an unpublished page would so tell every visitor of
  * an old address what the page is called now.
  *
- * The new redirect is deleted inside its own insert hook. Hook
+ * The redirect is deleted inside its own insert or update hook. Hook
  * implementations of other modules that run after this one receive an entity
  * whose row is already gone; entity_usage and the search indexes, the ones
  * that track entities here, don't track redirects.
@@ -34,7 +34,7 @@ final class UnpublishedPageRedirects {
    */
   public const BY_HAND_NOT_KEPT = 'by_hand_not_kept';
 
-  private const NODE_TARGET = '#^(?:internal:/|entity:)node/(\d+)$#';
+  private const NODE_TARGET = '#^(?:internal:/|entity:)node/(\d+)(?:[?\#].*)?$#';
 
   /**
    * The address an alias is being changed from, without the leading slash.
@@ -51,7 +51,7 @@ final class UnpublishedPageRedirects {
    * alphabetical order.
    */
   public static function aliasUpdating(PathAliasInterface $alias): void {
-    $original = $alias->original ?? NULL;
+    $original = $alias->getOriginal();
     self::$aliasBeingReplaced = $original instanceof PathAliasInterface
       ? ltrim($original->getAlias(), '/')
       : NULL;
@@ -69,6 +69,32 @@ final class UnpublishedPageRedirects {
     // Only the first redirect after an alias update can be the automatic one.
     $replaced = self::$aliasBeingReplaced;
     self::$aliasBeingReplaced = NULL;
+    // The stored path, not the generated URL, which is encoded and carries the
+    // base path.
+    $from_alias_change = $replaced !== NULL
+      && ltrim($redirect->getSource()['path'] ?? '', '/') === $replaced;
+    self::removeAllIfUnpublished($redirect, $from_alias_change);
+  }
+
+  /**
+   * The same as on creation, for a redirect pointed at another page.
+   *
+   * Other edits keep it: a page unpublished without a rename keeps its
+   * redirects.
+   */
+  public static function redirectChanged(Redirect $redirect): void {
+    $original = $redirect->getOriginal();
+    $target = $redirect->getRedirect()['uri'] ?? '';
+    if ($original instanceof Redirect && ($original->getRedirect()['uri'] ?? '') === $target) {
+      return;
+    }
+    self::removeAllIfUnpublished($redirect, FALSE);
+  }
+
+  /**
+   * Deletes all redirects to the page of a redirect, if it's unpublished.
+   */
+  private static function removeAllIfUnpublished(Redirect $redirect, bool $from_alias_change): void {
     try {
       $uri = $redirect->getRedirect()['uri'] ?? '';
       if (!preg_match(self::NODE_TARGET, $uri, $match)) {
@@ -78,19 +104,12 @@ final class UnpublishedPageRedirects {
       if (!$node instanceof NodeInterface || $node->isPublished()) {
         return;
       }
-      $redirects = \Drupal::service('redirect.repository')->findByDestinationUri([
-        'internal:/node/' . $node->id(),
-        'entity:node/' . $node->id(),
-      ]);
+      $redirects = self::redirectsTo($node);
       $older = 0;
       foreach ($redirects as $other) {
         $older += (int) ($other->id() !== $redirect->id());
         $other->delete();
       }
-      // The stored path, not the generated URL, which is encoded and carries
-      // the base path.
-      $from_alias_change = $replaced !== NULL
-        && ltrim($redirect->getSource()['path'] ?? '', '/') === $replaced;
       self::report($node, count($redirects), $older, $from_alias_change);
     }
     catch (\Throwable $error) {
@@ -99,6 +118,28 @@ final class UnpublishedPageRedirects {
         ['@message' => $error->getMessage()],
       );
     }
+  }
+
+  /**
+   * Every redirect to a node, disabled ones and ones with a query included.
+   *
+   * A disabled redirect would forward to the page's current address once
+   * enabled.
+   *
+   * @return \Drupal\redirect\Entity\Redirect[]
+   *   The redirects.
+   */
+  private static function redirectsTo(NodeInterface $node): array {
+    $storage = \Drupal::entityTypeManager()->getStorage('redirect');
+    $query = $storage->getQuery()->accessCheck(FALSE);
+    $targets = $query->orConditionGroup();
+    foreach (['internal:/node/', 'entity:node/'] as $prefix) {
+      $uri = $prefix . $node->id();
+      $targets->condition('redirect_redirect.uri', $uri);
+      $targets->condition('redirect_redirect.uri', "$uri?", 'STARTS_WITH');
+      $targets->condition('redirect_redirect.uri', "$uri#", 'STARTS_WITH');
+    }
+    return $storage->loadMultiple($query->condition($targets)->execute());
   }
 
   /**

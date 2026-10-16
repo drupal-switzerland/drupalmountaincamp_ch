@@ -405,6 +405,128 @@ class RenamedPageRedirectTest extends KernelTestBase {
   }
 
   /**
+   * The rule reads the alias before the change without the magic property.
+   *
+   * Drupal 12 removes the property, and every retitled draft would then get
+   * the "not kept" warning.
+   */
+  public function testRenameUsesNoDeprecatedOriginalProperty(): void {
+    $node = $this->createArticle('First name', FALSE);
+
+    $deprecations = $this->ownDeprecationsDuring(fn () => $this->rename($node, 'Second name'));
+
+    $this->assertSame([], $deprecations);
+  }
+
+  /**
+   * A redirect changed to point at an unpublished page is not kept.
+   */
+  public function testRedirectRetargetedToDraftIsRemoved(): void {
+    $this->someoneIsAtTheScreen();
+    $published = $this->createArticle('Published page');
+    $draft = $this->createArticle('Draft page', FALSE);
+    $by_hand = $this->createRedirect('tickets', 'node/' . $published->id());
+
+    $by_hand->setRedirect('node/' . $draft->id());
+    $by_hand->save();
+
+    $this->assertNull(Redirect::load($by_hand->id()));
+    $warnings = $this->warnings();
+    $this->assertCount(1, $warnings);
+    $this->assertStringStartsWith('The redirect to "Draft page" was not kept', $warnings[0]);
+  }
+
+  /**
+   * Editing a redirect without changing its page keeps it.
+   *
+   * A page unpublished without a rename keeps its redirects.
+   */
+  public function testEditingRedirectOfUnpublishedPageKeepsIt(): void {
+    $node = $this->createArticle('First name');
+    $by_hand = $this->createRedirect('tickets', 'node/' . $node->id());
+    $node->setUnpublished()->save();
+
+    $by_hand->setStatusCode(302);
+    $by_hand->save();
+
+    $this->assertNotNull(Redirect::load($by_hand->id()));
+  }
+
+  /**
+   * A disabled redirect goes with the others.
+   *
+   * Enabled later, it would show the new address.
+   */
+  public function testDisabledRedirectIsRemovedToo(): void {
+    $node = $this->createArticle('First name');
+    $disabled = $this->createRedirect('tickets', 'node/' . $node->id());
+    $disabled->setUnpublished();
+    $disabled->save();
+    $node->setUnpublished()->save();
+
+    $this->rename($node, 'Second name');
+
+    $this->assertNull(Redirect::load($disabled->id()));
+  }
+
+  /**
+   * A disabled redirect from the old address counts as an older one.
+   */
+  public function testDisabledRedirectFromOldAddressIsReported(): void {
+    $node = $this->createArticle('First name');
+    $disabled = $this->createRedirect('news/first-name', 'node/' . $node->id());
+    $disabled->setUnpublished();
+    $disabled->save();
+    $node->setUnpublished()->save();
+    $this->someoneIsAtTheScreen();
+
+    $this->rename($node, 'Second name');
+
+    $this->assertNull(Redirect::load($disabled->id()));
+    $warnings = $this->warnings();
+    $this->assertCount(1, $warnings);
+    $this->assertStringStartsWith('One older redirect to "Second name" was removed', $warnings[0]);
+  }
+
+  /**
+   * A redirect to an unpublished page with a query string is not kept.
+   */
+  public function testRedirectWithQueryToDraftIsRemoved(): void {
+    $node = $this->createArticle('Launch page', FALSE);
+
+    $by_hand = $this->createRedirect('tickets', 'node/' . $node->id(), ['ref' => 'newsletter']);
+
+    $this->assertNull(Redirect::load($by_hand->id()));
+  }
+
+  /**
+   * An older redirect with a query string goes with the others on a rename.
+   */
+  public function testOlderRedirectWithQueryIsRemovedOnRename(): void {
+    $node = $this->createArticle('First name');
+    $by_hand = $this->createRedirect('tickets', 'node/' . $node->id(), ['ref' => 'newsletter']);
+    $node->setUnpublished()->save();
+
+    $this->rename($node, 'Second name');
+
+    $this->assertNull(Redirect::load($by_hand->id()));
+  }
+
+  /**
+   * A redirect to another page whose number starts the same is kept.
+   */
+  public function testRedirectToPageWithLongerNumberIsKept(): void {
+    $nodes = array_map(fn ($i) => $this->createArticle("Page $i"), range(1, 10));
+    $kept = $this->createRedirect('tickets', 'node/' . $nodes[9]->id());
+    $nodes[0]->setUnpublished()->save();
+
+    $this->rename($nodes[0], 'Renamed');
+
+    $this->assertSame('10', (string) $nodes[9]->id());
+    $this->assertNotNull(Redirect::load($kept->id()));
+  }
+
+  /**
    * Which messages a removal gives.
    */
   public function testMessageKinds(): void {
@@ -443,6 +565,54 @@ class RenamedPageRedirectTest extends KernelTestBase {
     $node = Node::create(['type' => 'press_release', 'title' => $title, 'status' => (int) $published]);
     $node->save();
     return $node;
+  }
+
+  /**
+   * Creates a saved redirect for all languages.
+   *
+   * @param string $source
+   *   The path redirected from.
+   * @param string $target
+   *   The path redirected to.
+   * @param array<string, string> $query
+   *   Query parameters added to the target.
+   */
+  private function createRedirect(string $source, string $target, array $query = []): Redirect {
+    $redirect = Redirect::create();
+    $redirect->setSource($source);
+    $redirect->setRedirect($target, $query);
+    $redirect->setLanguage('und');
+    $redirect->setStatusCode(301);
+    $redirect->save();
+    return $redirect;
+  }
+
+  /**
+   * Deprecations raised from this module's code while an action runs.
+   *
+   * PHPUnit hides deprecations raised with @trigger_error, as core's magic
+   * property access does, and phpstan cannot see magic properties.
+   *
+   * @return string[]
+   *   The deprecation messages.
+   */
+  private function ownDeprecationsDuring(callable $action): array {
+    $messages = [];
+    set_error_handler(function (int $level, string $message) use (&$messages): bool {
+      $files = array_column(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 'file');
+      $from_here = array_filter($files, fn ($file) => str_contains($file, '/blokkli_starterkit/src/'));
+      if ($level === E_USER_DEPRECATED && $from_here) {
+        $messages[] = $message;
+      }
+      return TRUE;
+    }, E_USER_DEPRECATED);
+    try {
+      $action();
+    }
+    finally {
+      restore_error_handler();
+    }
+    return $messages;
   }
 
   /**
