@@ -48,7 +48,9 @@
   </extensions>
   <!-- Suppressed (@trigger_error) deprecations stay hidden: contrib raises
        them during cache rebuilds, so the count changes from run to run.
-       phpstan-deprecation-rules covers deprecated API use in custom code. -->
+       phpstan-deprecation-rules covers deprecated API use in custom code,
+       except magic properties such as an entity's "original", which are
+       deprecated only at runtime. -->
   <source>
     <include>
       <directory>docroot/modules/custom</directory>
