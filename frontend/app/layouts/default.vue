@@ -10,18 +10,9 @@
     </a>
     <!-- The homepage hero bar shows the same dates and venue. -->
     <PageHeaderEventStrip v-if="route.name !== 'home'" />
-    <PageHeader
-      @menu:open="menuOpen"
-      @menu:close:start="menuCloseStart"
-      @menu:close:finished="menuCloseFinish"
-    />
+    <PageHeader />
 
-    <div
-      :inert="isMainMenuOpen || undefined"
-      :class="{
-        'pt-[100px]': (isMenuOpen || !hasMenuFinishedClosing) && isLessThanLg,
-      }"
-    >
+    <div :inert="isMainMenuOpen || undefined">
       <PageDependency>
         <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
       </PageDependency>
@@ -45,7 +36,6 @@ const { $texts } = useEasyTexts()
 const drupalUser = useDrupalUser()
 const language = useCurrentLanguage()
 const breadcrumb = useDisplayedBreadcrumbLinks()
-const { isLessThanLg } = useViewport()
 
 const isEditing = computed(
   () =>
@@ -59,31 +49,13 @@ const showBreadcrumb = computed(
   () => !route.meta.hideBreadcrumb && !pageHasHero.value,
 )
 
+// The open phone menu covers the page, which is inert behind it. Without the
+// lock a wheel or swipe over the menu scrolls the page away from where the
+// reader was.
 useHead({
   htmlAttrs: {
     lang: language.value,
+    class: computed(() => (isMainMenuOpen.value ? 'overflow-hidden' : '')),
   },
 })
-
-const isMenuOpen = ref(false)
-const hasMenuFinishedClosing = ref(true)
-
-function menuOpen() {
-  window.document.body.classList.add('overflow-y-hidden')
-  isMenuOpen.value = true
-}
-
-function menuCloseStart() {
-  if (isLessThanLg) {
-    isMenuOpen.value = false
-    hasMenuFinishedClosing.value = false
-  }
-}
-
-function menuCloseFinish() {
-  if (isLessThanLg) {
-    window.document.body.classList.remove('overflow-y-hidden')
-    hasMenuFinishedClosing.value = true
-  }
-}
 </script>
