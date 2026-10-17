@@ -8,6 +8,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\rokka\Entity\RokkaMetadata;
 use Drupal\system\Entity\Menu;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\UserInterface;
@@ -174,6 +175,61 @@ class AccessHooksKernelTest extends KernelTestBase {
     $definition = $user->get('roles')->getFieldDefinition();
 
     $this->assertTrue(blokkli_starterkit_entity_field_access('view', $definition, $user, NULL)->isNeutral());
+  }
+
+  /**
+   * Grants that depend on who asks vary by the user, granted or not.
+   *
+   * GraphQL caches results by the cache contexts of the access checks.
+   */
+  public function testOwnAccountGrantsVaryByUser(): void {
+    $user = $this->createUser();
+    $other = $this->createUser();
+
+    foreach (['roles' => 'view', 'mail' => 'edit'] as $field => $operation) {
+      $definition = $user->get($field)->getFieldDefinition();
+      foreach ([$user, $other] as $account) {
+        $result = blokkli_starterkit_entity_field_access($operation, $definition, $account, $user->get($field));
+        $this->assertContains('user', $result->getCacheContexts(), "$field $operation");
+      }
+    }
+  }
+
+  /**
+   * The paragraph type grant varies by being logged in.
+   */
+  public function testParagraphTypeGrantVariesByLogin(): void {
+    $type = ParagraphsType::create(['id' => 'button', 'label' => 'Button']);
+
+    foreach ([$this->createUser(), new AnonymousUserSession()] as $account) {
+      $result = blokkli_starterkit_paragraphs_type_access($type, 'view', $account);
+      $this->assertContains('user.roles:authenticated', $result->getCacheContexts());
+    }
+  }
+
+  /**
+   * The rokka metadata grant varies by permissions.
+   */
+  public function testRokkaMetadataGrantVariesByPermissions(): void {
+    $metadata = RokkaMetadata::create(['uri' => 'rokka://test.jpg', 'hash' => 'abc']);
+
+    foreach ([$this->createUser(['view rokka metadata entities']), $this->createUser()] as $account) {
+      $result = blokkli_starterkit_rokka_metadata_access($metadata, 'view', $account);
+      $this->assertContains('user.permissions', $result->getCacheContexts());
+    }
+  }
+
+  /**
+   * The webform grant is invalidated when the webform changes.
+   */
+  public function testWebformGrantDependsOnTheWebform(): void {
+    $anonymous = new AnonymousUserSession();
+
+    foreach (['open', 'closed'] as $status) {
+      $webform = Webform::create(['id' => "form_$status", 'status' => $status]);
+      $result = blokkli_starterkit_webform_access($webform, 'view', $anonymous);
+      $this->assertContains("config:webform.webform.form_$status", $result->getCacheTags(), $status);
+    }
   }
 
   /**

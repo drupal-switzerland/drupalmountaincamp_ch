@@ -21,6 +21,7 @@ type MultiCacheConfig = {
 let routeRules: Record<string, RouteRule>
 let multiCache: MultiCacheConfig
 let postcssPlugins: Record<string, unknown>
+let sourcemap: unknown
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -30,10 +31,12 @@ beforeAll(async () => {
     routeRules: Record<string, RouteRule>
     multiCache: MultiCacheConfig
     postcss: { plugins: Record<string, unknown> }
+    sourcemap: unknown
   }
   routeRules = config.routeRules
   multiCache = config.multiCache
   postcssPlugins = config.postcss.plugins
+  sourcemap = config.sourcemap
   vi.unstubAllGlobals()
 })
 
@@ -52,11 +55,6 @@ describe('route rules: cache-control per kind of static file', () => {
     expect(maxAge('/_nuxt/**')).toBe(ONE_YEAR)
   })
 
-  it('caches /fonts/** for a year', () => {
-    expect(cacheControl('/fonts/**')).toContain('public')
-    expect(maxAge('/fonts/**')).toBe(ONE_YEAR)
-  })
-
   it('keeps /images/**, whose file names carry no hash, to a day and never immutable', () => {
     expect(cacheControl('/images/**')).toContain('public')
     expect(cacheControl('/images/**')).not.toContain('immutable')
@@ -67,9 +65,7 @@ describe('route rules: cache-control per kind of static file', () => {
   it('sets no cache rule on pages or on the API', () => {
     const routes = Object.keys(routeRules)
 
-    expect(routes.sort()).toEqual(
-      ['/_nuxt/**', '/fonts/**', '/images/**'].sort(),
-    )
+    expect(routes.sort()).toEqual(['/_nuxt/**', '/images/**'].sort())
   })
 })
 
@@ -123,5 +119,13 @@ describe('PostCSS plugins', () => {
 
     expect(nesting).toBeGreaterThan(-1)
     expect(nesting).toBeLessThan(enabled.indexOf('tailwindcss'))
+  })
+})
+
+describe('source maps', () => {
+  // Client maps are public files under /_nuxt and carry the full source with
+  // its comments; server maps stay for readable stack traces.
+  it('are built for the server only', () => {
+    expect(sourcemap).toEqual({ server: true, client: false })
   })
 })

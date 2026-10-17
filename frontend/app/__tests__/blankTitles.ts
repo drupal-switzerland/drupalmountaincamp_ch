@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import Accordeon from '../components/Paragraph/Accordeon/index.vue'
 import IconTextItem from '../components/Paragraph/IconTextItem/index.vue'
 import IconTextList from '../components/Paragraph/IconTextList/index.vue'
 import SponsorList from '../components/Paragraph/SponsorList/index.vue'
@@ -114,5 +115,28 @@ describe('sponsor list', () => {
 
     expect(headings(withTitle)).toBe(1)
     expect(headings(blank)).toBe(0)
+  })
+})
+
+describe('accordion', () => {
+  async function mountAccordion(title: string) {
+    return mountSuspended(Accordeon, {
+      props: { title, paragraphs: [] },
+      global: { stubs: { BlokkliField: true } },
+    })
+  }
+
+  it('has a heading only for a title with text', async () => {
+    expect(headings(await mountAccordion('Travel'))).toBe(1)
+    expect(headings(await mountAccordion(BLANK))).toBe(0)
+  })
+
+  // The summary is the control that opens the accordion: it keeps a name.
+  it('names its summary by the title, or by a fallback text without one', async () => {
+    const summaryText = async (title: string) =>
+      (await mountAccordion(title)).get('summary').text()
+
+    expect(await summaryText('Travel')).toBe('Travel')
+    expect(await summaryText(BLANK)).toBe('accordion.details')
   })
 })
