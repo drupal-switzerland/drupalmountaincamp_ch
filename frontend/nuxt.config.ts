@@ -74,7 +74,6 @@ export default defineNuxtConfig({
 
   app: {
     rootId: 'nuxt-root',
-    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: SITE_TITLE,
       htmlAttrs: {
