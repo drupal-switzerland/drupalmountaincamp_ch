@@ -6,3 +6,10 @@ export type SpeakerListVariant = 'keynote' | 'featured'
 export const SPEAKER_LIST_VARIANT: InjectionKey<
   ComputedRef<SpeakerListVariant>
 > = Symbol('speakerListVariant')
+
+export type SpeakerCardHeading = 'h2' | 'h3'
+
+/** Provided by the Speaker List paragraph: the heading element of its cards. */
+export const SPEAKER_CARD_HEADING: InjectionKey<
+  ComputedRef<SpeakerCardHeading>
+> = Symbol('speakerCardHeading')

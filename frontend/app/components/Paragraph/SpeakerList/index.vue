@@ -5,7 +5,7 @@
     :aria-labelledby="hasText(title) ? headingId : undefined"
   >
     <h2
-      v-if="hasText(title) || isEditing"
+      v-if="hasTitleHeading"
       :id="headingId"
       v-blokkli-editable:field_title
       class="mb-8 text-3xl lg:mb-10 lg:text-5xl"
@@ -23,18 +23,26 @@
 <script lang="ts" setup>
 import type { ParagraphSpeakerListFragment } from '#graphql-operations'
 import {
+  SPEAKER_CARD_HEADING,
   SPEAKER_LIST_VARIANT,
   type SpeakerListVariant,
 } from '~/composables/speakerListVariant'
 import { hasText } from '~/helpers/text'
 
-defineProps<{
+const props = defineProps<{
   title?: ParagraphSpeakerListFragment['title']
   paragraphs?: ParagraphSpeakerListFragment['paragraphs']
 }>()
 
 const isEditing = import.meta.blokkliEditing
 const headingId = useId()
+const hasTitleHeading = computed(() => hasText(props.title) || isEditing)
+
+// Cards are one level below the block title, or take its place without one.
+provide(
+  SPEAKER_CARD_HEADING,
+  computed(() => (hasTitleHeading.value ? 'h3' : 'h2')),
+)
 
 const { options } = defineBlokkli({
   bundle: 'speaker_list',

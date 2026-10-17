@@ -3,7 +3,10 @@ import { defineComponent, h } from 'vue'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import SpeakerCard from '../components/Paragraph/SpeakerCard/index.vue'
 import SpeakerList from '../components/Paragraph/SpeakerList/index.vue'
-import { SPEAKER_LIST_VARIANT } from '../composables/speakerListVariant'
+import {
+  SPEAKER_CARD_HEADING,
+  SPEAKER_LIST_VARIANT,
+} from '../composables/speakerListVariant'
 import { sizesProblems } from './support/sizes'
 
 // The easy-texts build transform strips the default text from $texts()
@@ -41,11 +44,20 @@ const filled = {
   image,
 }
 
-function mountCard(props: Record<string, unknown>, variant = 'featured') {
+function mountCard(
+  props: Record<string, unknown>,
+  variant = 'featured',
+  heading?: 'h2' | 'h3',
+) {
   return mountSuspended(SpeakerCard, {
     props,
     global: {
-      provide: { [SPEAKER_LIST_VARIANT as symbol]: computed(() => variant) },
+      provide: {
+        [SPEAKER_LIST_VARIANT as symbol]: computed(() => variant),
+        ...(heading
+          ? { [SPEAKER_CARD_HEADING as symbol]: computed(() => heading) }
+          : {}),
+      },
     },
   })
 }
@@ -137,6 +149,39 @@ describe('speaker card', () => {
     expect(wrapper.findAll('p')).toHaveLength(0)
   })
 
+  it.each([
+    ['h2', 'featured'],
+    ['h3', 'featured'],
+    ['h2', 'keynote'],
+    ['h3', 'keynote'],
+  ] as const)(
+    'sets the name as %s in the same weight in a %s card',
+    async (heading, variant) => {
+      const wrapper = await mountCard(filled, variant, heading)
+      const name = wrapper.get(heading)
+
+      expect(name.text()).toBe('Speaker name')
+      expect(name.classes()).toEqual(
+        expect.arrayContaining(['font-heading', 'font-medium']),
+      )
+    },
+  )
+
+  it('is an h3 when no list says otherwise', async () => {
+    const wrapper = await mountCard(filled)
+
+    expect(wrapper.find('h3').exists()).toBe(true)
+  })
+
+  // Ice keeps at least 4.69:1 over the whole navy to blue fill; sky would
+  // drop below 4.5:1 towards the blue end.
+  it('sets the keynote label in the on-dark colour, not sky', async () => {
+    const wrapper = await mountCard(filled, 'keynote')
+
+    expect(wrapper.get('article').classes()).toContain('on-dark')
+    expect(wrapper.get('.label').classes()).not.toContain('!text-primary-300')
+  })
+
   it('takes the photo’s alternative text from the media', async () => {
     const wrapper = await mountCard(filled)
 
@@ -176,10 +221,17 @@ describe('speaker list', () => {
     expect(featured.get('article').classes()).toContain('gradient-border')
   })
 
-  it('renders no heading and no label for a blank title', async () => {
-    const wrapper = await mountList('  ', 'featured')
+  it.each(['featured', 'keynote'])(
+    'makes the %s speaker names the h2 when the block has no title',
+    async (variant) => {
+      const wrapper = await mountList('  ', variant)
+      const section = wrapper.get('section')
 
-    expect(wrapper.find('h2').exists()).toBe(false)
-    expect(wrapper.get('section').attributes('aria-labelledby')).toBeUndefined()
-  })
+      expect(section.findAll('h2').map((h) => h.text())).toEqual([
+        'Speaker name',
+      ])
+      expect(section.find('h3').exists()).toBe(false)
+      expect(section.attributes('aria-labelledby')).toBeUndefined()
+    },
+  )
 })

@@ -18,12 +18,14 @@
       class="flex flex-col"
       :class="isKeynote ? 'gap-3 p-6 lg:gap-4 lg:p-9' : 'gap-2 p-5'"
     >
-      <p v-if="isKeynote" class="label !text-primary-300">
+      <p v-if="isKeynote" class="label">
         {{ $texts('speakerCard.keynote', 'Keynote') }}
       </p>
-      <h3
+      <component
+        :is="heading"
         v-if="hasText(name) || isEditing"
         v-blokkli-editable:field_name
+        class="font-heading font-medium"
         :class="
           isKeynote
             ? 'text-4xl text-white lg:text-6xl'
@@ -31,7 +33,7 @@
         "
       >
         {{ name }}
-      </h3>
+      </component>
       <p
         v-if="hasText(sessionTitle) || isEditing"
         class="font-heading font-medium"
@@ -68,7 +70,10 @@
 
 <script lang="ts" setup>
 import type { ParagraphSpeakerCardFragment } from '#graphql-operations'
-import { SPEAKER_LIST_VARIANT } from '~/composables/speakerListVariant'
+import {
+  SPEAKER_CARD_HEADING,
+  SPEAKER_LIST_VARIANT,
+} from '~/composables/speakerListVariant'
 import { buildImageSizes } from '~/helpers/imageSizes'
 import { hasText } from '~/helpers/text'
 import { SCREENS } from '~/tailwind/screens'
@@ -84,7 +89,7 @@ const props = defineProps<{
 defineBlokkli({
   bundle: 'speaker_card',
   editor: {
-    editTitle: (el) => el.querySelector('h3')?.textContent,
+    editTitle: (el) => el.querySelector('h2, h3')?.textContent,
     mockProps: (text) => ({
       name: text || 'Speaker name',
       sessionTitle: 'Session title',
@@ -101,6 +106,10 @@ const variant = inject(
   computed(() => 'featured' as const),
 )
 const isKeynote = computed(() => variant.value === 'keynote')
+const heading = inject(
+  SPEAKER_CARD_HEADING,
+  computed(() => 'h3' as const),
+)
 
 const href = computed(() => props.link?.uri?.path || '')
 const isExternal = computed(() => /^https?:\/\//.test(href.value))
