@@ -32,8 +32,8 @@ if (getenv('LAGOON')) {
   $config['symfony_mailer_lite.symfony_mailer_lite_transport.dsn']['configuration']['dsn'] = 'native://default';
 
   // Keep exception details out of GraphQL responses, which Nuxt can pass on to
-  // visitors. Introspection stays on locally: nuxi dev downloads the schema
-  // with it, while the Lagoon build uses the committed schema.graphql.
+  // visitors. The exported config is already off; this keeps it off on Lagoon
+  // even if a DDEV value is exported by mistake.
   $config['graphql.graphql_servers.graphql']['debug_flag'] = 0;
   $config['graphql.graphql_servers.graphql']['disable_introspection'] = TRUE;
 }
