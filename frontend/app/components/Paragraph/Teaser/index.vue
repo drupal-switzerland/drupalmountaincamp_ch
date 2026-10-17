@@ -1,5 +1,7 @@
 <template>
+  <!-- Nothing to link to (an unpublished or deleted node): no empty box. -->
   <div
+    v-if="(url && title) || isEditing"
     class="flex flex-col border transition-[border-color] duration-250 ease-in-out"
   >
     <TeaserDefault
@@ -27,6 +29,8 @@ const props = defineProps<{
   title?: ParagraphTeaserFragment['title']
   node?: ParagraphTeaserFragment['node']
 }>()
+
+const isEditing = import.meta.blokkliEditing
 
 defineBlokkli({
   bundle: 'teaser',
