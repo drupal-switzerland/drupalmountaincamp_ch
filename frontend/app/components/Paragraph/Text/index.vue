@@ -131,9 +131,21 @@ const columnClassList = computed(() => {
         ]
 
   if (background.value === 'light') {
-    classList.push('gradient-border', 'is-tint', 'rounded-[18px]', 'p-6')
+    classList.push(
+      'gradient-border',
+      'is-tint',
+      'rounded-[18px]',
+      'p-4',
+      'sm:p-6',
+    )
   } else if (background.value === 'theme') {
-    classList.push('gradient-border', 'is-theme', 'rounded-[18px]', 'p-6')
+    classList.push(
+      'gradient-border',
+      'is-theme',
+      'rounded-[18px]',
+      'p-4',
+      'sm:p-6',
+    )
   }
 
   return classList
