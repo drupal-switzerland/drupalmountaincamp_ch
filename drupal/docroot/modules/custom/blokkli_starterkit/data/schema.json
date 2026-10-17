@@ -236,25 +236,6 @@
         }
       },
       "type": "radios"
-    },
-    "variant": {
-      "default": "featured",
-      "label": {
-        "en": "Speakers"
-      },
-      "options": {
-        "featured": {
-          "label": {
-            "en": "Featured"
-          }
-        },
-        "keynote": {
-          "label": {
-            "en": "Keynote"
-          }
-        }
-      },
-      "type": "radios"
     }
   },
   "sponsor_list": {},
