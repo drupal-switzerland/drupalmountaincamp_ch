@@ -64,3 +64,8 @@ jobs:
 
       - if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: vendor/bin/phpunit docroot/modules/custom/blokkli_starterkit/tests/src/Kernel
+
+      # Last, so an advisory never hides the results above. Drupal advisories
+      # come from packages.drupal.org; abandoned packages only report.
+      - if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: composer audit --locked --no-interaction

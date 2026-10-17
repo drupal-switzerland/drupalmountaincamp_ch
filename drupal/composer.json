@@ -171,6 +171,9 @@
             "drupal/texts": "source",
             "drupal/rokka": "source",
             "drupal/media_icon_deliver": "source"
+        },
+        "audit": {
+            "abandoned": "report"
         }
     },
     "extra": {
