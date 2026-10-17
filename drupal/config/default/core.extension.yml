@@ -165,6 +165,7 @@ module:
   toolbar: 0
   translatable_config_pages: 0
   typed_data: 0
+  update: 0
   user: 0
   view_unpublished: 0
   views_bulk_operations: 0

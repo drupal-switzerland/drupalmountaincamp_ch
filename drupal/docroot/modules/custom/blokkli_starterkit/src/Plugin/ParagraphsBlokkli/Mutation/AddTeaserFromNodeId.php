@@ -4,37 +4,44 @@ declare(strict_types=1);
 
 namespace Drupal\blokkli_starterkit\Plugin\ParagraphsBlokkli\Mutation;
 
+use Drupal\Core\Plugin\Context\ContextDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paragraphs_blokkli\Attribute\ParagraphMutation;
 use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
 use Drupal\paragraphs_blokkli\ParagraphMutationPluginBase;
 use Drupal\paragraphs_blokkli\ParagraphProxy;
 
 /**
  * Adds a new teaser paragraph from a node ID.
- *
- * @ParagraphMutation(
- *   id = "add_teaser_from_node_id",
- *   label = @Translation("Add teaser paragraph from a node ID."),
- *   description = @Translation("Adds a new paragraph of type teaser for a node ID."),
- *   arguments = {
- *     "nid" = @ContextDefinition("string",
- *       label = @Translation("The node ID."),
- *     ),
- *     "hostType" = @ContextDefinition("string",
- *       label = @Translation("The entity type of the target host.")
- *     ),
- *     "hostUuid" = @ContextDefinition("string",
- *       label = @Translation("The UUID of the target host.")
- *     ),
- *     "hostFieldName" = @ContextDefinition("string",
- *       label = @Translation("The field name of the target host.")
- *     ),
- *     "afterUuid" = @ContextDefinition("string",
- *       label = @Translation("The UUID of the paragraph after which to add this one."),
- *       required = FALSE,
- *     ),
- *   }
- * )
  */
+#[ParagraphMutation(
+  id: 'add_teaser_from_node_id',
+  label: new TranslatableMarkup('Add teaser paragraph from a node ID.'),
+  description: new TranslatableMarkup('Adds a new paragraph of type teaser for a node ID.'),
+  arguments: [
+    'nid' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The node ID.'),
+    ),
+    'hostType' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The entity type of the target host.'),
+    ),
+    'hostUuid' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The UUID of the target host.'),
+    ),
+    'hostFieldName' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The field name of the target host.'),
+    ),
+    'afterUuid' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The UUID of the paragraph after which to add this one.'),
+      required: FALSE,
+    ),
+  ],
+)]
 class AddTeaserFromNodeId extends ParagraphMutationPluginBase {
 
   /**

@@ -8,6 +8,11 @@ fragment imageItem on FieldItemTypeImage {
     width
     height
   }
+  mediumLarge: derivative(style: MEDIUM_LARGE) {
+    urlPath
+    width
+    height
+  }
   mediumWide: derivative(style: MEDIUM_WIDE) {
     urlPath
     width

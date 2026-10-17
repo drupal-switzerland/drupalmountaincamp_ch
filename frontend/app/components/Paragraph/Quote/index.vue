@@ -37,7 +37,10 @@
           <div class="col-span-4 sm:col-span-8 sm:col-start-3">
             <figure
               class="flex flex-col text-left"
-              :class="`sm:text-${options.alignment}`"
+              :class="{
+                'sm:text-left': options.alignment === 'left',
+                'sm:text-right': options.alignment === 'right',
+              }"
             >
               <blockquote>
                 <span

@@ -1,0 +1,9 @@
+fragment paragraphSpeakerList on ParagraphSpeakerList {
+  title: fieldTitle
+  paragraphs: fieldContent {
+    ...paragraphsFieldItem
+    props {
+      ...paragraphSpeakerCard
+    }
+  }
+}
