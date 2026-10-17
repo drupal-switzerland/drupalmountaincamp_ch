@@ -10,13 +10,14 @@
     <MediaImage
       v-if="image"
       v-bind="image"
-      :image-style="imageStyle"
+      :image-style="isKeynote ? keynoteImageStyle : imageStyle"
       :sizes="isKeynote ? KEYNOTE_IMAGE_SIZES : FEATURED_IMAGE_SIZES"
+      img-class="object-[50%_30%]"
       hide-caption
     />
     <div
       class="flex flex-col"
-      :class="isKeynote ? 'gap-3 p-6 lg:gap-4 lg:p-9' : 'gap-2 p-5'"
+      :class="isKeynote ? 'gap-2 p-5 lg:p-6' : 'gap-2 p-5'"
     >
       <p v-if="isKeynote" class="label">
         {{ $texts('speakerCard.keynote', 'Keynote') }}
@@ -28,7 +29,7 @@
         class="font-heading font-medium"
         :class="
           isKeynote
-            ? 'text-4xl text-white lg:text-6xl'
+            ? 'text-2xl text-white lg:text-4xl'
             : 'text-xl leading-snug text-primary-500'
         "
       >
@@ -39,7 +40,7 @@
         class="font-heading font-medium"
         :class="
           isKeynote
-            ? 'text-xl text-primary-100 lg:text-2xl'
+            ? 'text-lg text-primary-100 lg:text-xl'
             : 'text-lg text-primary-500'
         "
       >
@@ -114,9 +115,22 @@ const heading = inject(
 const href = computed(() => props.link?.uri?.path || '')
 const isExternal = computed(() => /^https?:\/\//.test(href.value))
 
+// Photos are cropped by CSS, keeping the upper part where faces usually are.
+// The ratios leave most of a portrait visible: 4:3 shows 56% of a 3:4
+// portrait's height, 16:9 for the wider keynote card 42%.
 const imageStyle = defineImageStyle({
   type: 'sizes',
-  aspectRatio: 3 / 2,
+  aspectRatio: 4 / 3,
+  sizes: {
+    xs: 640,
+    sm: 768,
+    md: 680,
+  },
+})
+
+const keynoteImageStyle = defineImageStyle({
+  type: 'sizes',
+  aspectRatio: 16 / 9,
   sizes: {
     xs: 640,
     sm: 768,
