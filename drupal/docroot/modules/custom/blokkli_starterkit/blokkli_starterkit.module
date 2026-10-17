@@ -232,6 +232,20 @@ function blokkli_starterkit_simple_sitemap_arbitrary_links_alter(array &$arbitra
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for the redirect add form.
+ */
+function blokkli_starterkit_form_redirect_redirect_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['#validate'][] = [UnpublishedPageRedirects::class, 'validateRedirectForm'];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the redirect edit form.
+ */
+function blokkli_starterkit_form_redirect_redirect_edit_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['#validate'][] = [UnpublishedPageRedirects::class, 'validateRedirectForm'];
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert() for redirect.
  */
 function blokkli_starterkit_redirect_insert(Redirect $redirect) {

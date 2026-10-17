@@ -500,6 +500,73 @@ class RenamedPageRedirectTest extends KernelTestBase {
   }
 
   /**
+   * A redirect to an unpublished page given by its address is not kept.
+   *
+   * The redirect form stores a target typed as the page's address as is.
+   */
+  public function testRedirectToDraftByAliasIsRemoved(): void {
+    $this->someoneIsAtTheScreen();
+    $node = $this->createArticle('Launch page', FALSE);
+    $this->assertSame('/news/launch-page', $this->aliasOf($node));
+
+    $by_hand = $this->createRedirect('tickets', 'news/launch-page');
+
+    $this->assertSame('internal:/news/launch-page', $by_hand->getRedirect()['uri']);
+    $this->assertNull(Redirect::load($by_hand->id()));
+    $warnings = $this->warnings();
+    $this->assertCount(1, $warnings);
+    $this->assertStringStartsWith('The redirect to "Launch page" was not kept', $warnings[0]);
+  }
+
+  /**
+   * The same with a query string and a fragment after the address.
+   */
+  public function testRedirectToDraftByAliasWithQueryAndFragmentIsRemoved(): void {
+    $node = $this->createArticle('Launch page', FALSE);
+
+    $by_hand = $this->createRedirect('tickets', 'news/launch-page', ['ref' => 'newsletter']);
+    $with_fragment = $this->createRedirect('tickets-faq', 'news/launch-page#faq');
+
+    $this->assertSame('/news/launch-page', $this->aliasOf($node));
+    $this->assertNull(Redirect::load($by_hand->id()));
+    $this->assertNull(Redirect::load($with_fragment->id()));
+  }
+
+  /**
+   * A redirect to a published page given by its address is kept.
+   */
+  public function testRedirectToPublishedPageByAliasIsKept(): void {
+    $this->createArticle('Launch page');
+
+    $by_hand = $this->createRedirect('tickets', 'news/launch-page');
+
+    $this->assertNotNull(Redirect::load($by_hand->id()));
+  }
+
+  /**
+   * A redirect changed to point at an unpublished page by its address goes.
+   */
+  public function testRedirectRetargetedToDraftByAliasIsRemoved(): void {
+    $published = $this->createArticle('Published page');
+    $this->createArticle('Draft page', FALSE);
+    $by_hand = $this->createRedirect('tickets', 'node/' . $published->id());
+
+    $by_hand->setRedirect('news/draft-page');
+    $by_hand->save();
+
+    $this->assertNull(Redirect::load($by_hand->id()));
+  }
+
+  /**
+   * A redirect to an address that is no page is left alone.
+   */
+  public function testRedirectToUnknownAddressIsKept(): void {
+    $by_hand = $this->createRedirect('tickets', 'no-such-page');
+
+    $this->assertNotNull(Redirect::load($by_hand->id()));
+  }
+
+  /**
    * An older redirect with a query string goes with the others on a rename.
    */
   public function testOlderRedirectWithQueryIsRemovedOnRename(): void {
