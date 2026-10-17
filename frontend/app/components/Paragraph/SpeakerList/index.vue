@@ -15,7 +15,7 @@
     <BlokkliField
       :list="paragraphs"
       name="field_content"
-      class="grid gap-6 sm:grid-cols-2 md:grid-cols-4"
+      class="grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
     />
   </section>
 </template>

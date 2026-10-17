@@ -1,18 +1,15 @@
 <template>
   <article
-    class="group relative flex h-full flex-col overflow-hidden rounded-[18px] transition-shadow hover:shadow-lg has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-[3px] has-[:focus-visible]:outline-primary-500 motion-reduce:transition-none"
+    class="group relative flex flex-col overflow-hidden rounded-[18px] transition-shadow hover:shadow-lg has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-[3px] has-[:focus-visible]:outline-primary-500 motion-reduce:transition-none"
     :class="
-      isKeynote
-        ? 'speaker-card-keynote on-dark text-white sm:col-span-2'
-        : 'gradient-border'
+      isKeynote ? 'speaker-card-keynote on-dark text-white' : 'gradient-border'
     "
   >
     <MediaImage
       v-if="image"
       v-bind="image"
-      :image-style="isKeynote ? keynoteImageStyle : imageStyle"
+      :image-style="imageStyle"
       :sizes="isKeynote ? KEYNOTE_IMAGE_SIZES : FEATURED_IMAGE_SIZES"
-      img-class="object-[50%_30%]"
       hide-caption
     />
     <div
@@ -29,7 +26,7 @@
         class="font-heading font-medium"
         :class="
           isKeynote
-            ? 'text-2xl text-white lg:text-4xl'
+            ? 'text-2xl text-white lg:text-3xl'
             : 'text-xl leading-snug text-primary-500'
         "
       >
@@ -39,9 +36,7 @@
         v-if="hasText(sessionTitle) || isEditing"
         class="font-heading font-medium"
         :class="
-          isKeynote
-            ? 'text-lg text-primary-100 lg:text-xl'
-            : 'text-lg text-primary-500'
+          isKeynote ? 'text-lg text-primary-100' : 'text-lg text-primary-500'
         "
       >
         <!-- The link's ::after covers the card, so the whole card is clickable
@@ -115,12 +110,10 @@ const heading = inject(
 const href = computed(() => props.link?.uri?.path || '')
 const isExternal = computed(() => /^https?:\/\//.test(href.value))
 
-// Photos are cropped by CSS, keeping the upper part where faces usually are.
-// The ratios leave most of a portrait visible: 4:3 shows 56% of a 3:4
-// portrait's height, 16:9 for the wider keynote card 42%.
+// No aspect ratio: photos are shown whole, at the shape of their source, and
+// the width and height of the derivative reserve their space.
 const imageStyle = defineImageStyle({
   type: 'sizes',
-  aspectRatio: 4 / 3,
   sizes: {
     xs: 640,
     sm: 768,
@@ -128,34 +121,26 @@ const imageStyle = defineImageStyle({
   },
 })
 
-const keynoteImageStyle = defineImageStyle({
-  type: 'sizes',
-  aspectRatio: 16 / 9,
-  sizes: {
-    xs: 640,
-    sm: 768,
-    md: 680,
-  },
-})
-
-// Image widths in the list's grid: four columns with 24px gaps from md, two
+// Image widths in the list's grid: three columns with 24px gaps from lg, two
 // from sm, one below. The container has 16px padding below md, 32px from md,
-// 48px from lg, and is 1380px wide from xl. Featured cards sit inside a 3px
-// border on each side; keynote cards span two columns and have no border.
+// 48px from lg, and is 1380px wide from xl: (1380 - 96 - 48) / 3 = 412.
+// Featured cards sit inside a 3px border on each side; keynote cards have
+// none.
 const FEATURED_IMAGE_SIZES = buildImageSizes(
   [
-    { minWidth: SCREENS.xl, width: '297px' },
-    { minWidth: SCREENS.lg, width: 'calc((100vw - 168px) / 4 - 6px)' },
-    { minWidth: SCREENS.md, width: 'calc((100vw - 136px) / 4 - 6px)' },
+    { minWidth: SCREENS.xl, width: '406px' },
+    { minWidth: SCREENS.lg, width: 'calc((100vw - 144px) / 3 - 6px)' },
+    { minWidth: SCREENS.md, width: 'calc((100vw - 88px) / 2 - 6px)' },
     { minWidth: SCREENS.sm, width: 'calc((100vw - 56px) / 2 - 6px)' },
   ],
   'calc(100vw - 38px)',
 )
 const KEYNOTE_IMAGE_SIZES = buildImageSizes(
   [
-    { minWidth: SCREENS.xl, width: '630px' },
-    { minWidth: SCREENS.lg, width: 'calc((100vw - 168px) / 2 + 24px)' },
-    { minWidth: SCREENS.md, width: 'calc((100vw - 136px) / 2 + 24px)' },
+    { minWidth: SCREENS.xl, width: '412px' },
+    { minWidth: SCREENS.lg, width: 'calc((100vw - 144px) / 3)' },
+    { minWidth: SCREENS.md, width: 'calc((100vw - 88px) / 2)' },
+    { minWidth: SCREENS.sm, width: 'calc((100vw - 56px) / 2)' },
   ],
   'calc(100vw - 32px)',
 )
