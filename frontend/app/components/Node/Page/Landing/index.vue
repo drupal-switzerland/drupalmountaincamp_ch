@@ -10,16 +10,21 @@
         v-else
         class="gradient-overlay relative my-8 max-h-screen overflow-hidden"
       >
-        <MediaImage
-          v-if="hero"
+        <!-- Rendered while editing, so an empty field has a drop target. -->
+        <div
+          v-if="entity?.hero || hero || isEditing"
           v-blokkli-droppable:field_hero_image
-          preload
-          :loading="'eager'"
-          hide-caption
-          v-bind="entity?.hero || hero"
-          :image-style="bigGrid"
-          class="w-full"
-        />
+        >
+          <MediaImage
+            v-if="entity?.hero || hero"
+            preload
+            :loading="'eager'"
+            hide-caption
+            v-bind="entity?.hero || hero"
+            :image-style="bigGrid"
+            class="w-full"
+          />
+        </div>
         <Container class="my-0">
           <div class="grid-container absolute bottom-6 my-0 md:bottom-12">
             <h1
@@ -59,6 +64,8 @@ import type { NodePageFragment } from '#graphql-operations'
 import { PAGE_FRAGMENTS } from '~/composables/pageFragments'
 import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { SCREENS } from '~/tailwind/screens'
+
+const isEditing = import.meta.blokkliEditing
 
 const props = defineProps<{
   uuid: string

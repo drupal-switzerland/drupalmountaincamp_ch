@@ -15,15 +15,20 @@
       </div>
 
       <div class="grid-container-6">
-        <MediaImage
-          v-if="image"
+        <!-- Rendered while editing, so an empty field has a drop target. -->
+        <div
+          v-if="entity?.image || image || isEditing"
           v-blokkli-droppable:field_image
-          v-bind="entity?.image || image"
-          :image-style="imageStyle"
-          preload
-          :loading="'eager'"
-          class="mb-10"
-        />
+        >
+          <MediaImage
+            v-if="entity?.image || image"
+            v-bind="entity?.image || image"
+            :image-style="imageStyle"
+            preload
+            :loading="'eager'"
+            class="mb-10"
+          />
+        </div>
       </div>
     </div>
     <div>
@@ -36,6 +41,8 @@
 import type { NodePressReleaseFragment } from '#graphql-operations'
 import { IMAGE_CREDIT_BELOW_IMAGE } from '~/composables/imageCreditDisplay'
 import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
+
+const isEditing = import.meta.blokkliEditing
 
 const props = defineProps<{
   uuid?: string
