@@ -5050,6 +5050,282 @@ type ParagraphQuote implements Entity & EntityRevisionable & EntityTranslatable 
   wasDefaultRevision: Boolean
 }
 
+"""Speaker card {entity_type: paragraph, bundle: speaker_card}"""
+type ParagraphSpeakerCard implements Entity & EntityRevisionable & Paragraph {
+  """Check entity access for the given operation, defaults to view."""
+  accessCheck(operation: String): Boolean!
+
+  """{value} {field: behavior_settings} The behavior plugin settings"""
+  behaviorSettings: String
+
+  """{field: behavior_settings} The behavior plugin settings"""
+  behaviorSettingsRawField: FieldItemListStringLong
+
+  """{value} {field: created} The time that the Paragraph was created."""
+  created: String
+
+  """{field: created} The time that the Paragraph was created."""
+  createdRawField: FieldItemListCreated
+
+  """
+  {value} {field: default_langcode} A flag indicating whether this is the default translation.
+  """
+  defaultLangcode: Boolean
+
+  """
+  {field: default_langcode} A flag indicating whether this is the default translation.
+  """
+  defaultLangcodeRawField: FieldItemListBoolean
+
+  """The bundle ID of the entity."""
+  entityBundle: String!
+
+  """
+  The revision identifier of the entity, or NULL if the entity does not have a revision identifier.
+  """
+  entityRevisionId: String
+
+  """The entity type ID."""
+  entityTypeId: String!
+
+  """{value} {field: field_image} """
+  fieldImage: MediaImage
+
+  """{field: field_image} """
+  fieldImageRawField: FieldItemListEntityReference
+
+  """{value} {field: field_link} """
+  fieldLink: FieldItemTypeLink
+
+  """{field: field_link} """
+  fieldLinkRawField: FieldItemListLink
+
+  """{value} {field: field_name} """
+  fieldName: String
+
+  """{field: field_name} """
+  fieldNameRawField: FieldItemListString
+
+  """{value} {field: field_summary} """
+  fieldSummary: String
+
+  """{field: field_summary} """
+  fieldSummaryRawField: FieldItemListStringLong
+
+  """{value} {field: field_title} """
+  fieldTitle: String
+
+  """{field: field_title} """
+  fieldTitleRawField: FieldItemListString
+
+  """"""
+  id: String
+
+  """Checks if this entity is the latest revision."""
+  isLatestRevision: Boolean
+
+  """Determines whether the entity is new."""
+  isNew: Boolean!
+
+  """The status of the paragraph."""
+  isPublished: Boolean
+
+  """The label of this entity."""
+  label: String
+
+  """The langcode of this entity."""
+  langcode: String
+
+  """"""
+  paragraphsBlokkliEditContext: ParagraphsBlokkliParagraphEditContext
+
+  """Whether the paragraph should be rendered."""
+  paragraphsBlokkliIsVisible: Boolean!
+
+  """The untyped paragraph options."""
+  paragraphsBlokkliOptions: ParagraphsBlokkliOptions
+
+  """
+  {value} {field: parent_field_name} The entity parent field name to which this entity is referenced.
+  """
+  parentFieldName: String
+
+  """
+  {field: parent_field_name} The entity parent field name to which this entity is referenced.
+  """
+  parentFieldNameRawField: FieldItemListString
+
+  """
+  {value} {field: parent_id} The ID of the parent entity of which this entity is referenced.
+  """
+  parentId: String
+
+  """
+  {field: parent_id} The ID of the parent entity of which this entity is referenced.
+  """
+  parentIdRawField: FieldItemListString
+
+  """
+  {value} {field: parent_type} The entity parent type to which this entity is referenced.
+  """
+  parentType: String
+
+  """
+  {field: parent_type} The entity parent type to which this entity is referenced.
+  """
+  parentTypeRawField: FieldItemListString
+
+  """"""
+  props: Paragraph
+
+  """{value} {field: status} """
+  status: Boolean
+
+  """{field: status} """
+  statusRawField: FieldItemListBoolean
+
+  """{value} {field: type} """
+  type: ParagraphsType
+
+  """{field: type} """
+  typeRawField: FieldItemListEntityReference
+
+  """The unique UUID."""
+  uuid: String!
+
+  """TRUE if the entity object was a revision, FALSE otherwise."""
+  wasDefaultRevision: Boolean
+}
+
+"""Speaker list {entity_type: paragraph, bundle: speaker_list}"""
+type ParagraphSpeakerList implements Entity & EntityRevisionable & Paragraph {
+  """Check entity access for the given operation, defaults to view."""
+  accessCheck(operation: String): Boolean!
+
+  """{value} {field: behavior_settings} The behavior plugin settings"""
+  behaviorSettings: String
+
+  """{field: behavior_settings} The behavior plugin settings"""
+  behaviorSettingsRawField: FieldItemListStringLong
+
+  """{value} {field: created} The time that the Paragraph was created."""
+  created: String
+
+  """{field: created} The time that the Paragraph was created."""
+  createdRawField: FieldItemListCreated
+
+  """
+  {value} {field: default_langcode} A flag indicating whether this is the default translation.
+  """
+  defaultLangcode: Boolean
+
+  """
+  {field: default_langcode} A flag indicating whether this is the default translation.
+  """
+  defaultLangcodeRawField: FieldItemListBoolean
+
+  """The bundle ID of the entity."""
+  entityBundle: String!
+
+  """
+  The revision identifier of the entity, or NULL if the entity does not have a revision identifier.
+  """
+  entityRevisionId: String
+
+  """The entity type ID."""
+  entityTypeId: String!
+
+  """{value} {field: field_content} """
+  fieldContent: [ParagraphSpeakerCard]
+
+  """{field: field_content} """
+  fieldContentRawField: FieldItemListEntityReferenceRevisions
+
+  """{value} {field: field_title} """
+  fieldTitle: String
+
+  """{field: field_title} """
+  fieldTitleRawField: FieldItemListString
+
+  """"""
+  id: String
+
+  """Checks if this entity is the latest revision."""
+  isLatestRevision: Boolean
+
+  """Determines whether the entity is new."""
+  isNew: Boolean!
+
+  """The status of the paragraph."""
+  isPublished: Boolean
+
+  """The label of this entity."""
+  label: String
+
+  """The langcode of this entity."""
+  langcode: String
+
+  """"""
+  paragraphsBlokkliEditContext: ParagraphsBlokkliParagraphEditContext
+
+  """Whether the paragraph should be rendered."""
+  paragraphsBlokkliIsVisible: Boolean!
+
+  """The untyped paragraph options."""
+  paragraphsBlokkliOptions: ParagraphsBlokkliOptions
+
+  """
+  {value} {field: parent_field_name} The entity parent field name to which this entity is referenced.
+  """
+  parentFieldName: String
+
+  """
+  {field: parent_field_name} The entity parent field name to which this entity is referenced.
+  """
+  parentFieldNameRawField: FieldItemListString
+
+  """
+  {value} {field: parent_id} The ID of the parent entity of which this entity is referenced.
+  """
+  parentId: String
+
+  """
+  {field: parent_id} The ID of the parent entity of which this entity is referenced.
+  """
+  parentIdRawField: FieldItemListString
+
+  """
+  {value} {field: parent_type} The entity parent type to which this entity is referenced.
+  """
+  parentType: String
+
+  """
+  {field: parent_type} The entity parent type to which this entity is referenced.
+  """
+  parentTypeRawField: FieldItemListString
+
+  """"""
+  props: Paragraph
+
+  """{value} {field: status} """
+  status: Boolean
+
+  """{field: status} """
+  statusRawField: FieldItemListBoolean
+
+  """{value} {field: type} """
+  type: ParagraphsType
+
+  """{field: type} """
+  typeRawField: FieldItemListEntityReference
+
+  """The unique UUID."""
+  uuid: String!
+
+  """TRUE if the entity object was a revision, FALSE otherwise."""
+  wasDefaultRevision: Boolean
+}
+
 """Sponsor list {entity_type: paragraph, bundle: sponsor_list}"""
 type ParagraphSponsorList implements Entity & EntityRevisionable & EntityTranslatable & Paragraph {
   """Check entity access for the given operation, defaults to view."""
