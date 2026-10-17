@@ -21,7 +21,7 @@
         >
           <nuxt-link :to="{ name: 'home' }" class="flex items-center gap-2">
             <img
-              src="/images/icon-mountain.png"
+              src="/images/icon-mountain.webp"
               alt=""
               width="128"
               height="128"

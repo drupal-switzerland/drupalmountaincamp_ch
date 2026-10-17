@@ -18,6 +18,9 @@ use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
 /**
  * Converts a button paragraph to a text paragraph.
  *
+ * Stays an annotation: the ParagraphConversion attribute has no label, which
+ * ParagraphConversionPluginBase::getLabel() reads.
+ *
  * @ParagraphConversion(
  *   id = "button_to_text",
  *   label = @Translation("Convert a button paragraph to a text paragraph."),

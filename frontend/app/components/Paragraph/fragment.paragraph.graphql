@@ -9,6 +9,8 @@ fragment paragraph on Paragraph {
   ...paragraphAccordeon
   ...paragraphIconTextItem
   ...paragraphIconTextList
+  ...paragraphSpeakerCard
+  ...paragraphSpeakerList
   ...paragraphTeaser
   ...paragraphTeaserList
   ...paragraphSponsorList
