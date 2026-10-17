@@ -107,6 +107,21 @@ describe('speaker card', () => {
     expect(wrapper.get('.label').text()).toBe('speakerCard.keynote')
   })
 
+  // Moderate crops that keep the upper part of the photo, where faces are.
+  it.each([
+    ['keynote', String(16 / 9)],
+    ['featured', String(4 / 3)],
+  ])(
+    'crops the %s photo to an aspect ratio of %s from the upper third',
+    async (variant, ratio) => {
+      const wrapper = await mountCard(filled, variant)
+      const img = wrapper.get('img')
+
+      expect(img.attributes('style')).toContain(`aspect-ratio: ${ratio}`)
+      expect(img.classes()).toContain('object-[50%_30%]')
+    },
+  )
+
   it('makes the session title the one link, and says when it leaves the site', async () => {
     const wrapper = await mountCard(filled)
     const links = wrapper.findAll('a')
