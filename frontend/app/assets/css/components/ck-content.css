@@ -34,6 +34,11 @@
       @apply mt-2;
     }
 
+    /* A label belongs to the heading below it; its own margin is the gap. */
+    .label + :is(h2, h3, h4, h5) {
+      @apply mt-0;
+    }
+
     /* :not(:first-child) outranks the paragraph spacing below. */
     :is(h2, h3, h4, h5) + :is(p, ul, ol):not(:first-child) {
       @apply mt-0;
