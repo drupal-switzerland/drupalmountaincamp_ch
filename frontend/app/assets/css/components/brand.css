@@ -264,6 +264,11 @@
       .button {
         @apply m-0 justify-center px-3 text-sm;
       }
+
+      /* Below 340px two buttons side by side wrap their labels; stack them. */
+      @media (max-width: 339.98px) {
+        @apply grid-cols-1;
+      }
     }
   }
 
