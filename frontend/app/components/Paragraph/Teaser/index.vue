@@ -41,12 +41,8 @@ defineBlokkli({
     editTitle: (el) => el.querySelector('h3')?.innerText,
     mockProps: (text) => {
       return {
-        overrideTitle: text || 'Teaser Titel',
-        link: {
-          uri: {
-            path: '/',
-          },
-        },
+        title: text || 'Teaser title',
+        node: { url: { path: '/' } },
       }
     },
   },

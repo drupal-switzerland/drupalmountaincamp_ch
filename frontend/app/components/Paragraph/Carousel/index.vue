@@ -54,6 +54,7 @@ const { index, parentType } = defineBlokkli({
     slides: { type: 'field', name: 'field_slides' },
   },
   editor: {
+    noPreview: true,
     editTitle: (el) => el.querySelector('h2')?.textContent,
   },
 })

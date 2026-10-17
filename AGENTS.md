@@ -124,7 +124,7 @@ names, headings or focus as well.
 | `frontend/app/__tests__/skipLink.ts`           | The skip link and its target.                                    |
 | `frontend/app/__tests__/menuKeyboard.ts`       | Keyboard use of the main menu, Drupal messages                   |
 | `frontend/app/__tests__/stickyHeaderFocus.ts`  | Focused elements below the sticky header.                        |
-| `frontend/app/__tests__/landmarksAndTeaser.ts` | Navigation landmark name, news teaser link.                      |
+| `frontend/app/__tests__/landmarksAndTeaser.ts` | Navigation landmark name, news card link on /news.               |
 | `frontend/app/__tests__/richTextContrast.ts`   | Contrast of rich text colours on coloured sections.              |
 | `frontend/app/__tests__/routeAnnouncer.ts`     | The route announcer is on every page.                            |
 | `frontend/app/__tests__/errorPage.ts`          | The error page's title is announced to assistive technology.     |

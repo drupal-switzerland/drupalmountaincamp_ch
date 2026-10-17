@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\blokkli_starterkit\Unit;
 
+use Drupal\Component\Serialization\Yaml;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,14 +113,32 @@ class SiteSettingsTest extends UnitTestCase {
   }
 
   /**
-   * Off Lagoon the exported GraphQL server config applies unchanged.
-   *
-   * The Nuxt dev server downloads the schema through introspection.
+   * Outside Lagoon and DDEV the exported GraphQL server config applies.
    */
-  public function testGraphQlServerIsNotOverriddenOffLagoon(): void {
+  public function testGraphQlServerIsNotOverriddenElsewhere(): void {
     $config = $this->loadSettings([])['config'];
 
     $this->assertArrayNotHasKey('graphql.graphql_servers.graphql', $config);
+  }
+
+  /**
+   * In DDEV introspection is on, so nuxi dev can download the schema.
+   */
+  public function testGraphQlIntrospectionIsOnInDdev(): void {
+    $server = $this->loadSettings(['IS_DDEV_PROJECT' => 'true'])['config']['graphql.graphql_servers.graphql'];
+
+    $this->assertSame(1, $server['debug_flag']);
+    $this->assertFalse($server['disable_introspection']);
+  }
+
+  /**
+   * The export fails safe: no debug details and no schema outside DDEV.
+   */
+  public function testExportedGraphQlServerFailsSafe(): void {
+    $server = Yaml::decode((string) file_get_contents($this->root . '/../config/default/graphql.graphql_servers.graphql.yml'));
+
+    $this->assertSame(0, $server['debug_flag']);
+    $this->assertTrue($server['disable_introspection']);
   }
 
   /**

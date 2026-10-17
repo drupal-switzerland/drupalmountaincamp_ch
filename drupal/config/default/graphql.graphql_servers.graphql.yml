@@ -5,11 +5,11 @@ dependencies: {  }
 name: graphql
 label: GraphQL
 endpoint: /graphql
-debug_flag: 1
+debug_flag: 0
 schema: core_composable
 caching: true
 batching: true
-disable_introspection: false
+disable_introspection: true
 query_depth: 0
 query_complexity: 0
 schema_configuration:
