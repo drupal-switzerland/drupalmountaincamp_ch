@@ -8,7 +8,10 @@
           </time>
           <template v-else>{{ date.formatted }}</template>
         </p>
-        <h1 v-blokkli-editable:title class="pb-3 text-4xl lg:pb-6 lg:text-7xl">
+        <h1
+          v-blokkli-editable:title
+          class="pb-3 text-4xl leading-none [text-wrap:balance] lg:pb-6 lg:text-7xl"
+        >
           {{ entity?.title || title }}
         </h1>
         <div class="text-xl md:text-3xl" v-html="entity?.lead || lead" />
