@@ -1,5 +1,9 @@
 <template>
-  <BlokkliProvider v-slot="{ entity }" v-bind="blokkliProps" :entity="props">
+  <BlokkliProvider
+    v-slot="{ entity, isEditing }"
+    v-bind="blokkliProps"
+    :entity="props"
+  >
     <div class="grid-container">
       <div class="grid-container-8 pb-4">
         <p v-if="date" class="font-bold text-primary-500">
@@ -31,6 +35,12 @@
             :loading="'eager'"
             class="mb-10"
           />
+          <p
+            v-else
+            class="mb-10 flex aspect-[3/2] items-center justify-center rounded-xl border-2 border-dashed border-primary-400 px-4 text-center font-bold text-primary-500"
+          >
+            {{ $texts('pressRelease.imageDropHint', 'Drop an image here') }}
+          </p>
         </div>
       </div>
     </div>
@@ -45,7 +55,7 @@ import type { NodePressReleaseFragment } from '#graphql-operations'
 import { IMAGE_CREDIT_BELOW_IMAGE } from '~/composables/imageCreditDisplay'
 import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 
-const isEditing = import.meta.blokkliEditing
+const { $texts } = useEasyTexts()
 
 const props = defineProps<{
   uuid?: string

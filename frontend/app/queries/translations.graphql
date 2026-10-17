@@ -44,6 +44,7 @@ fragment easyTexts on TextsLoader {
   partners__hosting: getText(key: "hosting", context: "partners", default: "Hosting powered by")
   partners__media: getText(key: "media", context: "partners", default: "Media partners")
   partners__title: getText(key: "title", context: "partners", default: "Partners")
+  pressRelease__imageDropHint: getText(key: "imageDropHint", context: "pressRelease", default: "Drop an image here")
   scrollableTable: getText(key: "scrollableTable", default: "Scrollable table")
   slides__next: getText(key: "next", context: "slides", default: "Next")
   slides__prev: getText(key: "prev", context: "slides", default: "Previous")
