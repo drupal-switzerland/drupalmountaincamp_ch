@@ -844,3 +844,10 @@ $ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
 if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
 }
+
+// nuxi dev downloads the schema through introspection. The export keeps both
+// off, so every other environment fails safe.
+if (getenv('IS_DDEV_PROJECT') == 'true') {
+  $config['graphql.graphql_servers.graphql']['debug_flag'] = 1;
+  $config['graphql.graphql_servers.graphql']['disable_introspection'] = FALSE;
+}
