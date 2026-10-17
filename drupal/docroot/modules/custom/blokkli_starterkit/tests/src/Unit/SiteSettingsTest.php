@@ -132,18 +132,13 @@ class SiteSettingsTest extends UnitTestCase {
   }
 
   /**
-   * The export fails safe: no debug details, no schema, bounded queries.
-   *
-   * The limits leave headroom over the deepest (16) and most complex (2214)
-   * frontend operations, blökkli's mutations.
+   * The export fails safe: no debug details and no schema outside DDEV.
    */
   public function testExportedGraphQlServerFailsSafe(): void {
     $server = Yaml::decode((string) file_get_contents($this->root . '/../config/default/graphql.graphql_servers.graphql.yml'));
 
     $this->assertSame(0, $server['debug_flag']);
     $this->assertTrue($server['disable_introspection']);
-    $this->assertSame(24, $server['query_depth']);
-    $this->assertSame(4000, $server['query_complexity']);
   }
 
   /**

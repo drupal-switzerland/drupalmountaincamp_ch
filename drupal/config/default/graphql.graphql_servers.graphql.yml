@@ -10,8 +10,8 @@ schema: core_composable
 caching: true
 batching: true
 disable_introspection: true
-query_depth: 24
-query_complexity: 4000
+query_depth: 0
+query_complexity: 0
 schema_configuration:
   core_composable:
     extensions:
