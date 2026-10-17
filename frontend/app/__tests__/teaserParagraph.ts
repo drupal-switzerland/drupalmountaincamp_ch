@@ -5,14 +5,14 @@ import Teaser from '../components/Paragraph/Teaser/index.vue'
 mockNuxtImport('defineBlokkli', () => () => ({}))
 
 describe('teaser paragraph', () => {
-  it('renders its bordered box with a link to a node', async () => {
+  it('renders its box with a link to a node', async () => {
     const wrapper = await mountSuspended(Teaser, {
       props: {
         node: { url: { path: '/news/a' }, teaserTitle: 'An article' },
       } as never,
     })
 
-    expect(wrapper.find('.border').exists()).toBe(true)
+    expect(wrapper.find('.paragraph-teaser').exists()).toBe(true)
     expect(wrapper.text()).toContain('An article')
   })
 
@@ -25,7 +25,7 @@ describe('teaser paragraph', () => {
     ]) {
       const wrapper = await mountSuspended(Teaser, { props: { node } as never })
 
-      expect(wrapper.find('.border').exists()).toBe(false)
+      expect(wrapper.find('.paragraph-teaser').exists()).toBe(false)
     }
   })
 })

@@ -1,9 +1,12 @@
 <template>
-  <!-- Nothing to link to (an unpublished or deleted node): no empty box. -->
   <div
     v-if="(url && title) || isEditing"
-    class="flex flex-col border transition-[border-color] duration-250 ease-in-out"
+    class="paragraph-teaser flex flex-col"
+    :class="{ border: !(url && title) }"
   >
+    <!-- Nothing to link to (an unpublished or deleted node): no empty box.
+         The card draws its own frame; while editing without one the box
+         keeps a border. -->
     <TeaserDefault
       v-if="url && title"
       :to="url"
