@@ -1,6 +1,8 @@
 <template>
-  <div :class="paragraphClassList">
+  <!-- No URL: no blank frame a full screen high. -->
+  <div v-if="src || isEditing" :class="paragraphClassList">
     <iframe
+      v-if="src"
       :src="src"
       :title="$texts('iframe.title', 'Embedded content')"
       loading="lazy"

@@ -1,0 +1,19 @@
+uuid: 17d00e59-b57b-4bc5-8d91-f81c03f99a55
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - paragraphs.paragraphs_type.speaker_card
+id: paragraph.speaker_card.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: speaker_card
+label: 'Session title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
