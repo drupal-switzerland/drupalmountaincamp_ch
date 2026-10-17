@@ -28,7 +28,6 @@ rsync -a lando /tmp/build
 cp .gitignore /tmp/build
 
 cp drupal/docroot/modules/custom/blokkli_starterkit/css/backend.css /tmp/build/drupal/docroot/modules/custom/blokkli_starterkit/css/backend.css
-cp drupal/docroot/themes/custom/blokkli_starterkit/css/ckeditor.css /tmp/build/drupal/docroot/themes/custom/blokkli_starterkit/css/ckeditor.css
 
 # Rename temporary directory to blt deploy directory.
 mv /tmp/build /tmp/drupal-artifact-build

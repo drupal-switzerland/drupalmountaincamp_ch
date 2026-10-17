@@ -64,6 +64,7 @@ Run in `drupal/` inside DDEV: `ddev exec -d /var/www/html/drupal <command>`.
 | `vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,inc,module,install,info,test,profile,theme docroot/modules/custom` |
 | `vendor/bin/phpunit docroot/modules/custom/blokkli_starterkit/tests/src/Unit`                                                          |
 | `vendor/bin/phpunit docroot/modules/custom/blokkli_starterkit/tests/src/Kernel`                                                        |
+| `composer audit --locked --no-interaction`                                                                                             |
 
 - CI sets `SIMPLETEST_DB=sqlite://localhost/:memory:` for these
   (`.github/workflows/drupal-tests.yml`). DDEV sets it to the local database

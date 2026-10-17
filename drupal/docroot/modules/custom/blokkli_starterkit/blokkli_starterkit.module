@@ -128,12 +128,12 @@ function blokkli_starterkit_entity_field_access(
 
     if ($field_name === 'roles' && $operation === 'view') {
       // Every user can see their own roles.
-      return AccessResult::allowedIf($isSameAccount);
+      return AccessResult::allowedIf($isSameAccount)->cachePerUser();
     }
 
     if ($field_name === 'mail' && $operation === 'edit') {
       // Users are allowed to edit their own email.
-      return AccessResult::allowedIf($isSameAccount);
+      return AccessResult::allowedIf($isSameAccount)->cachePerUser();
     }
 
     return AccessResult::neutral();
@@ -148,8 +148,8 @@ function blokkli_starterkit_entity_field_access(
 function blokkli_starterkit_rokka_metadata_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // Since we don't store sensitive files on rokka we can allow anonymous users
   // access to rokka_metadata entities via this custom permission.
-  if ($operation === 'view' && $account->hasPermission('view rokka metadata entities')) {
-    return AccessResult::allowed();
+  if ($operation === 'view') {
+    return AccessResult::allowedIfHasPermission($account, 'view rokka metadata entities');
   }
   return AccessResult::neutral();
 }
@@ -179,8 +179,8 @@ function blokkli_starterkit_menu_access(EntityInterface $entity, $operation, Acc
  * Implements hook_ENTITY_TYPE_access().
  */
 function blokkli_starterkit_webform_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($operation === 'view' && $entity instanceof Webform && $entity->status()) {
-    return AccessResult::allowed();
+  if ($operation === 'view' && $entity instanceof Webform) {
+    return AccessResult::allowedIf($entity->status())->addCacheableDependency($entity);
   }
   return AccessResult::neutral();
 }
@@ -190,7 +190,7 @@ function blokkli_starterkit_webform_access(EntityInterface $entity, $operation, 
  */
 function blokkli_starterkit_paragraphs_type_access(EntityInterface $entity, $operation, AccountInterface $account) {
   if ($operation === 'view') {
-    return AccessResult::allowedIf($account->isAuthenticated());
+    return AccessResult::allowedIf($account->isAuthenticated())->addCacheContexts(['user.roles:authenticated']);
   }
   return AccessResult::neutral();
 }
@@ -229,6 +229,39 @@ function blokkli_starterkit_simple_sitemap_arbitrary_links_alter(array &$arbitra
   }
   $base_url = \Drupal::config('simple_sitemap.settings')->get('base_url') ?: $GLOBALS['base_url'];
   $arbitrary_links[] = ['url' => $base_url . SitemapLinks::NEWS_OVERVIEW_PATH];
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function blokkli_starterkit_views_data_alter(array &$data) {
+  $translation_links_field = [
+    'title' => t('Translations'),
+    'field' => [
+      'title' => t('Translations'),
+      'help' => t('Views field plugin to display a list of translation links.'),
+      'id' => 'translation_links_field',
+    ],
+  ];
+
+  $data['node']['translation_links_field'] = $translation_links_field;
+  $data['block_content']['translation_links_field'] = $translation_links_field;
+  $data['media']['translation_links_field'] = $translation_links_field;
+  $data['taxonomy_term_field_data']['translation_links_field'] = $translation_links_field;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the redirect add form.
+ */
+function blokkli_starterkit_form_redirect_redirect_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['#validate'][] = [UnpublishedPageRedirects::class, 'validateRedirectForm'];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the redirect edit form.
+ */
+function blokkli_starterkit_form_redirect_redirect_edit_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['#validate'][] = [UnpublishedPageRedirects::class, 'validateRedirectForm'];
 }
 
 /**

@@ -11,6 +11,7 @@ use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rest\Plugin\views\display\RestExport;
 use Drupal\taxonomy\TermInterface;
+use Drupal\views\Attribute\ViewsField;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,9 +20,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a view field to render links to all translations of a node.
  *
  * @ingroup views_field_handlers
- *
- * @ViewsField("translation_links_field")
  */
+#[ViewsField('translation_links_field')]
 class TranslationLinksViewsField extends FieldPluginBase {
 
   /**

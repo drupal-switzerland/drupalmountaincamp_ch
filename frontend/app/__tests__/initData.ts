@@ -26,6 +26,8 @@ mockNuxtImport('useDataCache', () => useDataCacheMock)
 mockNuxtImport('useGraphqlQuery', () => useGraphqlQueryMock)
 // The easy texts plugin loads init data while the test app starts.
 useDataCacheMock.mockImplementation(readCache)
+// So does the drupal-user plugin, which reads the answer's data.
+useGraphqlQueryMock.mockResolvedValue({ data: {} })
 
 describe('useInitData', () => {
   beforeEach(() => {
