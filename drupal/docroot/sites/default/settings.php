@@ -758,8 +758,6 @@ $settings['entity_update_backup'] = TRUE;
  */
 $settings['migrate_node_migrate_type_classic'] = FALSE;
 
-$settings['entity_update_backup'] = TRUE;
-
 $settings['config_sync_directory'] = '../config/default';
 
 $databases['default']['default'] = array (
