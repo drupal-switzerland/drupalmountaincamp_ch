@@ -97,28 +97,27 @@ describe('speaker card', () => {
     expect(wrapper.get('h3').text()).toBe('Speaker name')
   })
 
-  it('shows a keynote speaker on navy, two columns wide, with the keynote label', async () => {
+  it('shows a keynote speaker on navy, one column wide, with the keynote label', async () => {
     const wrapper = await mountCard(filled, 'keynote')
     const article = wrapper.get('article')
 
     expect(article.classes()).toContain('speaker-card-keynote')
-    expect(article.classes()).toContain('sm:col-span-2')
+    expect(article.classes().filter((c) => c.includes('col-span'))).toEqual([])
     expect(article.classes()).not.toContain('gradient-border')
     expect(wrapper.get('.label').text()).toBe('speakerCard.keynote')
   })
 
-  // Moderate crops that keep the upper part of the photo, where faces are.
-  it.each([
-    ['keynote', String(16 / 9)],
-    ['featured', String(4 / 3)],
-  ])(
-    'crops the %s photo to an aspect ratio of %s from the upper third',
-    async (variant, ratio) => {
+  it.each(['keynote', 'featured'])(
+    'shows the %s photo whole, with its own width and height',
+    async (variant) => {
       const wrapper = await mountCard(filled, variant)
       const img = wrapper.get('img')
 
-      expect(img.attributes('style')).toContain(`aspect-ratio: ${ratio}`)
-      expect(img.classes()).toContain('object-[50%_30%]')
+      expect(img.attributes('style') ?? '').not.toContain('aspect-ratio')
+      expect(img.attributes('style') ?? '').not.toContain('object-fit')
+      expect(img.classes().filter((c) => c.startsWith('object-'))).toEqual([])
+      expect(img.attributes('width')).toBe('1090')
+      expect(img.attributes('height')).toBe('727')
     },
   )
 
@@ -225,6 +224,25 @@ describe('speaker list', () => {
         section.get('h2').attributes('id'),
       )
       expect(section.get('h3').text()).toBe('Speaker name')
+    },
+  )
+
+  it.each(['keynote', 'featured'])(
+    'puts %s cards three to a row from lg, top-aligned',
+    async (variant) => {
+      const wrapper = await mountList('Speakers', variant)
+      const grid = wrapper.get('section > div')
+
+      expect(grid.classes()).toEqual(
+        expect.arrayContaining([
+          'grid',
+          'items-start',
+          'sm:grid-cols-2',
+          'lg:grid-cols-3',
+        ]),
+      )
+      // A full-height card would stretch to the tallest one in its row.
+      expect(grid.get('article').classes()).not.toContain('h-full')
     },
   )
 
