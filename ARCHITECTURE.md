@@ -205,9 +205,9 @@ within a second and once more six seconds later:
   `frontend/app/assets/fonts/`. The build gives all of them content-hashed
   names. One file of each is preloaded: `FONT_PRELOADS` in
   `frontend/nuxt.config.ts`.
-- `frontend/app/assets/css/backend.css` and
-  `frontend/app/assets/css/ckeditor.css` are compiled into Drupal by the
-  `styles` scripts in `frontend/package.json`.
+- `frontend/app/assets/css/backend.css` is compiled into the custom module by
+  the `styles` scripts in `frontend/package.json`. The module's library loads
+  it: `drupal/docroot/modules/custom/blokkli_starterkit/blokkli_starterkit.libraries.yml`.
 
 ## Drupal
 
