@@ -207,6 +207,56 @@
       "type": "radios"
     }
   },
+  "speaker_card": {},
+  "speaker_list": {
+    "spacing": {
+      "default": "none",
+      "displayAs": "icons",
+      "label": {
+        "en": "Spacing"
+      },
+      "options": {
+        "large": {
+          "icon": "bk_mdi_density_large",
+          "label": {
+            "en": "large spacing"
+          }
+        },
+        "none": {
+          "icon": "bk_mdi_density_small",
+          "label": {
+            "en": "no spacing"
+          }
+        },
+        "small": {
+          "icon": "bk_mdi_density_medium",
+          "label": {
+            "en": "small spacing"
+          }
+        }
+      },
+      "type": "radios"
+    },
+    "variant": {
+      "default": "featured",
+      "label": {
+        "en": "Speakers"
+      },
+      "options": {
+        "featured": {
+          "label": {
+            "en": "Featured"
+          }
+        },
+        "keynote": {
+          "label": {
+            "en": "Keynote"
+          }
+        }
+      },
+      "type": "radios"
+    }
+  },
   "sponsor_list": {},
   "teaser": {},
   "teaser_list": {

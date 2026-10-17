@@ -47,6 +47,8 @@ fragment easyTexts on TextsLoader {
   scrollableTable: getText(key: "scrollableTable", default: "Scrollable table")
   slides__next: getText(key: "next", context: "slides", default: "Next")
   slides__prev: getText(key: "prev", context: "slides", default: "Previous")
+  speakerCard__external: getText(key: "external", context: "speakerCard", default: "opens an external site")
+  speakerCard__keynote: getText(key: "keynote", context: "speakerCard", default: "Keynote")
   sponsors__cta: getText(key: "cta", context: "sponsors", default: "Become a sponsor")
   sponsors__gold: getText(key: "gold", context: "sponsors", default: "Gold")
   sponsors__label: getText(key: "label", context: "sponsors", default: "Sponsors 2027")
