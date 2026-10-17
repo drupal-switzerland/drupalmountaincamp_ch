@@ -81,13 +81,13 @@ import { SCREENS } from '~/tailwind/screens'
 const { options } = defineBlokkli({
   bundle: 'video',
   editor: {
-    editTitle: (el) => el.querySelector('h2')?.innerText,
+    noPreview: true,
   },
   globalOptions: ['spacing'],
   options: {
     format: {
       type: 'radios',
-      label: 'Bildformat',
+      label: 'Format',
       default: 'full',
       displayAs: 'icons',
       options: {

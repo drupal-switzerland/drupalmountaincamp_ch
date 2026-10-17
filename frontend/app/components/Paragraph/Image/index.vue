@@ -35,7 +35,6 @@ const { parentType, options } = defineBlokkli({
       const img = el.querySelector('img')
       return img?.alt || img?.title
     },
-    getDraggableElement: (el) => el.querySelector('figure'),
     determineVisibleOptions: (ctx) => {
       if (!ctx.parentType) {
         return ['imageFormat', 'spacing']

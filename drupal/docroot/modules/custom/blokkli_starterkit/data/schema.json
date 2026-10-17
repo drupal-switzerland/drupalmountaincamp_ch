@@ -245,7 +245,7 @@
       "default": "stack",
       "displayAs": "icons",
       "label": {
-        "en": "Slider Darstellung"
+        "en": "Mobile display"
       },
       "options": {
         "sliderMobile": {
@@ -257,7 +257,7 @@
         "stack": {
           "icon": "bk_mdi_view_agenda",
           "label": {
-            "en": "Stapel"
+            "en": "Stack"
           }
         }
       },
@@ -267,13 +267,13 @@
       "default": "grid",
       "displayAs": "icons",
       "label": {
-        "en": "Darstellung"
+        "en": "Display"
       },
       "options": {
         "grid": {
           "icon": "bk_mdi_grid_view",
           "label": {
-            "en": "grid"
+            "en": "Grid"
           }
         },
         "sliderDesktop": {
@@ -285,7 +285,7 @@
         "staggered": {
           "icon": "bk_mdi_dashboard",
           "label": {
-            "en": "Versetzt"
+            "en": "Staggered"
           }
         }
       },
@@ -448,7 +448,7 @@
       "default": "full",
       "displayAs": "icons",
       "label": {
-        "en": "Bildformat"
+        "en": "Format"
       },
       "options": {
         "big": {
