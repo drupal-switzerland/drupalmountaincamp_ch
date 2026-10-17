@@ -1,6 +1,6 @@
 <template>
   <div class="my-12 overflow-hidden">
-    <div v-if="hasText(title) || isEditing" class="container">
+    <div v-if="hasTitleHeading" class="container">
       <h2
         v-blokkli-editable:field_title
         class="mb-10 text-3xl md:text-4xl lg:mb-14"
@@ -30,15 +30,23 @@
 
 <script lang="ts" setup>
 import type { ParagraphCarouselFragment } from '#graphql-operations'
-import { IS_FRONT_PAGE } from '~/composables/frontPage'
+import { CAROUSEL_SLIDE_HEADING } from '~/composables/carouselSlideHeading'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { hasText } from '~/helpers/text'
 
-defineProps<{
+const props = defineProps<{
   slides?: ParagraphCarouselFragment['slides']
   title?: ParagraphCarouselFragment['title']
 }>()
 
 const isEditing = import.meta.blokkliEditing
+const hasTitleHeading = computed(() => hasText(props.title) || isEditing)
+
+provide(
+  CAROUSEL_SLIDE_HEADING,
+  computed(() => (hasTitleHeading.value ? 'h3' : 'h2')),
+)
+
 const { index, parentType } = defineBlokkli({
   bundle: 'carousel',
   propsFieldMapping: {
@@ -50,12 +58,14 @@ const { index, parentType } = defineBlokkli({
   },
 })
 
-// The same rule as for a text image placed on a page: the first paragraph is
-// in the first viewport on inner pages, on the homepage the hero pushes it
-// below the fold.
-const isFrontPage = inject(IS_FRONT_PAGE, false)
+// The same rule as for a text image placed on a page: the first paragraph,
+// unless the node renders a hero or top image above it.
+const firstParagraphInFirstViewport = inject(
+  FIRST_PARAGRAPH_IN_FIRST_VIEWPORT,
+  true,
+)
 const isInFirstViewport = computed(
-  () => index.value === 0 && !parentType.value && !isFrontPage,
+  () => index.value === 0 && !parentType.value && firstParagraphInFirstViewport,
 )
 </script>
 

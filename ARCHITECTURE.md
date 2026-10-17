@@ -202,8 +202,9 @@ within a second and once more six seconds later:
 - Fonts: both fonts' `@font-face` rules are in
   `frontend/app/assets/css/typography.css`. The body font's files come from
   the `@fontsource-variable/source-sans-3` package, the heading font's are in
-  `frontend/public/fonts/`. One file of each is preloaded:
-  `HEADING_FONT_PRELOAD` and `BODY_FONT_PRELOAD` in `frontend/nuxt.config.ts`.
+  `frontend/app/assets/fonts/`. The build gives all of them content-hashed
+  names. One file of each is preloaded: `FONT_PRELOADS` in
+  `frontend/nuxt.config.ts`.
 - `frontend/app/assets/css/backend.css` and
   `frontend/app/assets/css/ckeditor.css` are compiled into Drupal by the
   `styles` scripts in `frontend/package.json`.

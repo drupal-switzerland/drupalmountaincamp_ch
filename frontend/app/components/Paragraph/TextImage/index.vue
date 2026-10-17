@@ -55,9 +55,13 @@
       class="2xl:pl-10 col-start-8 col-end-[-1] mt-7 sm:mt-0 sm:pl-6 lg:mt-6 xl:pl-9"
     >
       <div class="swiper-carousel-content">
-        <h2 v-if="hasText(title)" class="mb-4 text-2xl md:text-4xl">
+        <component
+          :is="slideHeading"
+          v-if="hasText(title)"
+          class="mb-4 text-2xl font-bold md:text-4xl"
+        >
           {{ title }}
-        </h2>
+        </component>
         <div ref="content" class="ck-content hyphens-auto" v-html="text" />
       </div>
     </div>
@@ -66,7 +70,8 @@
 
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
-import { IS_FRONT_PAGE } from '~/composables/frontPage'
+import { CAROUSEL_SLIDE_HEADING } from '~/composables/carouselSlideHeading'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
 import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
@@ -122,6 +127,11 @@ const { index, parentType, options } = defineBlokkli({
 
 const isEditing = import.meta.blokkliEditing
 const isTopLevel = computed(() => !parentType.value)
+// Under the carousel's own title the slides are one level below it.
+const slideHeading = inject(
+  CAROUSEL_SLIDE_HEADING,
+  computed(() => 'h2' as const),
+)
 
 const spacingClassList = computed(() => {
   if (options.value.spacing === 'small') {
@@ -141,13 +151,17 @@ useScrollableTables(content, {
   content: () => props.text,
 })
 
-// The first paragraph's image is in the first viewport on inner pages. On the
-// homepage the tall hero and the edition bar push it below the fold. In a
-// carousel the carousel decides: its other slides and their copies are off
-// screen.
-const isFrontPage = inject(IS_FRONT_PAGE, false)
+// The first paragraph's image is in the first viewport unless the node renders
+// a hero or top image above it. In a carousel the carousel decides: its other
+// slides and their copies are off screen.
+const firstParagraphInFirstViewport = inject(
+  FIRST_PARAGRAPH_IN_FIRST_VIEWPORT,
+  true,
+)
 const preload = computed(() =>
-  parentType.value ? !!props.isInViewAtLoad : index.value === 0 && !isFrontPage,
+  parentType.value
+    ? !!props.isInViewAtLoad
+    : index.value === 0 && firstParagraphInFirstViewport,
 )
 
 const loading = computed(() => (preload.value ? 'eager' : 'lazy'))
