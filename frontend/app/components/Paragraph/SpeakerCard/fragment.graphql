@@ -1,0 +1,13 @@
+fragment paragraphSpeakerCard on ParagraphSpeakerCard {
+  name: fieldName
+  sessionTitle: fieldTitle
+  summary: fieldSummary
+  link: fieldLink {
+    uri {
+      path
+    }
+  }
+  image: fieldImage {
+    ...mediaImage
+  }
+}

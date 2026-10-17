@@ -92,6 +92,12 @@ The **Lead** field is on the same form.
   of its old addresses. They no longer forward, also after it is published
   again. If addresses that already forwarded are dropped, a message after
   saving says so.
+- A redirect from a short address such as `/tickets` to a page can only be
+  added once the page is published: a redirect to an unpublished page would
+  show its address. To launch a page at a short address, either publish the
+  page and then add the redirect, or make a published placeholder page at
+  the short address ("Tickets go on sale on …") and at launch fill it in or
+  turn it into a redirect.
 - The **Link** field of a button block is different: start typing the title
   of the page and choose it from the suggestions. A link chosen this way
   follows the page to its new address.

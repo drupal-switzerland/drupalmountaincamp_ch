@@ -11,6 +11,7 @@ dependencies:
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.quote
+    - paragraphs.paragraphs_type.speaker_list
     - paragraphs.paragraphs_type.teaser_list
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.video
@@ -43,6 +44,7 @@ settings:
       quote: quote
       teaser_list: teaser_list
       video: video
+      speaker_list: speaker_list
     negate: 0
     target_bundles_drag_drop:
       accordeon:
@@ -74,6 +76,12 @@ settings:
         enabled: true
       quote:
         weight: -23
+        enabled: true
+      speaker_card:
+        weight: 31
+        enabled: false
+      speaker_list:
+        weight: 30
         enabled: true
       static_node_config_pages:
         weight: -30
