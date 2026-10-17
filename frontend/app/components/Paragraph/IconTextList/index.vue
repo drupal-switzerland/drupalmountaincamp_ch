@@ -80,7 +80,6 @@ const { options } = defineBlokkli({
   },
   editor: {
     editTitle: (el) => el.querySelector('h2')?.textContent,
-    getDraggableElement: (el) => el.querySelector('.paragraph-icon-text-list'),
   },
   globalOptions: ['spacing'],
   options: {

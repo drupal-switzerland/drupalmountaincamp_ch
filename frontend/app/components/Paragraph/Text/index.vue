@@ -25,7 +25,6 @@ const { options, parentType } = defineBlokkli({
   editor: {
     addBehaviour: 'no-form',
     editTitle: (el) => el.textContent,
-    getDraggableElement: (el) => el.querySelector('.ck-content'),
     determineVisibleOptions: (ctx) => {
       if (!ctx.parentType) {
         return ['spacing', 'width', 'background', 'alignment']
