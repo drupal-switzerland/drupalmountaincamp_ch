@@ -1,6 +1,6 @@
 <template>
   <section
-    class="container"
+    class="speaker-list container"
     :class="paragraphClassList"
     :aria-labelledby="hasText(title) ? headingId : undefined"
   >
@@ -22,11 +22,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphSpeakerListFragment } from '#graphql-operations'
-import {
-  SPEAKER_CARD_HEADING,
-  SPEAKER_LIST_VARIANT,
-  type SpeakerListVariant,
-} from '~/composables/speakerListVariant'
+import { SPEAKER_CARD_HEADING } from '~/composables/speakerCardHeading'
 import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
@@ -54,21 +50,7 @@ const { options } = defineBlokkli({
     editTitle: (el) => el.querySelector('h2')?.textContent,
   },
   globalOptions: ['spacing'],
-  options: {
-    variant: {
-      type: 'radios',
-      label: 'Speakers',
-      default: 'featured',
-      options: {
-        keynote: 'Keynote',
-        featured: 'Featured',
-      },
-    },
-  },
 })
-
-const variant = computed(() => options.value.variant as SpeakerListVariant)
-provide(SPEAKER_LIST_VARIANT, variant)
 
 const paragraphClassList = computed(() => {
   if (options.value.spacing === 'small') {
