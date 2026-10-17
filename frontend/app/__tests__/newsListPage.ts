@@ -7,8 +7,8 @@ import { sizesProblems } from './support/sizes'
 
 const PAGE_SIZE = 10
 
-const TEASER_SIZES =
-  '(min-width: 1024px) calc(20rem - 8px), (min-width: 50.5rem) calc(48rem - 8px), calc(100vw - 40px)'
+const CARD_SIZES =
+  '(min-width: 50.5rem) calc(24rem - 18px), (min-width: 768px) calc(50vw - 34px), calc(100vw - 38px)'
 
 // The app itself queries Drupal while it starts (init data, the user), before
 // any test has said what Drupal answers.
@@ -24,12 +24,13 @@ mockNuxtImport('useEasyTexts', () => () => ({
   $texts: (key: string) => key,
 }))
 
-const Teaser = defineComponent({
+const Card = defineComponent({
   inheritAttrs: false,
   props: {
     title: { type: String, default: '' },
     preload: { type: Boolean, default: false },
     imageSizes: { type: String, default: '' },
+    headingTag: { type: String, default: '' },
   },
   setup: (props) => () =>
     h(
@@ -37,6 +38,7 @@ const Teaser = defineComponent({
       {
         'data-preload': String(props.preload),
         'data-image-sizes': props.imageSizes,
+        'data-heading-tag': props.headingTag,
       },
       props.title,
     ),
@@ -55,7 +57,7 @@ async function mountNews(route: string) {
       stubs: {
         PageHero: Nothing,
         Pagination: Nothing,
-        NodePressReleaseTeaser: Teaser,
+        NodePressReleaseCard: Card,
       },
     },
   })
@@ -147,7 +149,7 @@ describe('news list page', () => {
     ).toEqual(['true', 'false', 'false'])
   })
 
-  it('tells every teaser how wide its image is in the list', async () => {
+  it('tells every card how wide its image is in the list', async () => {
     drupal({ total: 2, items: articles(2) })
 
     const wrapper = await mountNews('/news')
@@ -155,8 +157,20 @@ describe('news list page', () => {
       .findAll('article')
       .map((el) => el.attributes('data-image-sizes'))
 
-    expect(sizes).toEqual([TEASER_SIZES, TEASER_SIZES])
-    expect(sizesProblems(TEASER_SIZES)).toEqual([])
+    expect(sizes).toEqual([CARD_SIZES, CARD_SIZES])
+    expect(sizesProblems(CARD_SIZES)).toEqual([])
+  })
+
+  // The page title is the h1, so each card title is an h2 in the list.
+  it('heads every card as an h2, as list items', async () => {
+    drupal({ total: 2, items: articles(2) })
+
+    const wrapper = await mountNews('/news')
+
+    expect(
+      wrapper.findAll('article').map((el) => el.attributes('data-heading-tag')),
+    ).toEqual(['h2', 'h2'])
+    expect(wrapper.findAll('ul > li > article')).toHaveLength(2)
   })
 
   it('asks for the second ten on ?page=2', async () => {

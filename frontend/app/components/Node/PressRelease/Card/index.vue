@@ -7,6 +7,8 @@
       v-bind="image"
       :image-style="imageStyle"
       :sizes="imageSizes"
+      :loading="preload ? 'eager' : 'lazy'"
+      :preload="preload"
       hide-caption
     />
     <div
@@ -49,9 +51,11 @@ withDefaults(
       headingTag?: 'h2' | 'h3'
       // How wide the card is in the grid that holds it.
       imageSizes?: string
+      // For the one card whose image is in the first viewport.
+      preload?: boolean
     }
   >(),
-  { headingTag: 'h3', imageSizes: undefined },
+  { headingTag: 'h3', imageSizes: undefined, preload: false },
 )
 
 const imageStyle = defineImageStyle({
