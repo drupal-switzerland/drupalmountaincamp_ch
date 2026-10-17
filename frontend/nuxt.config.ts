@@ -19,40 +19,43 @@ const LANGCODES = [{ code: 'en', prefix: '' }]
 
 // The files of the text painted above the fold, preloaded so it is not laid
 // out in a fallback font first: ZT Gatha bold for headings, and the latin
-// file of Source Sans 3 for body text. The heading font has a fixed path. The
-// body font gets a content-hashed name from the build, so it is marked as a
-// preload in the build manifest, which puts the link into every HTML
-// response: pages, error pages and the shell for logged-in users. The dev
-// server preloads the heading font only.
-export const HEADING_FONT_PRELOAD = '/fonts/ZTGatha-Bold.woff2'
-export const BODY_FONT_PRELOAD =
-  /^source-sans-3-latin-wght-normal\.[\w-]+\.woff2$/
+// file of Source Sans 3 for body text. The build gives both content-hashed
+// names, so they are marked as preloads in the build manifest, which puts the
+// links into every HTML response: pages, error pages and the shell for
+// logged-in users. The dev server preloads no font.
+export const FONT_PRELOADS = {
+  'ZT Gatha bold': /^ZTGatha-Bold\.[\w-]+\.woff2$/,
+  'the latin file of Source Sans 3':
+    /^source-sans-3-latin-wght-normal\.[\w-]+\.woff2$/,
+}
 
 type BuildManifest = Parameters<NuxtHooks['build:manifest']>[0]
 
-export function markBodyFontPreload(manifest: BuildManifest) {
+export function markFontPreloads(manifest: BuildManifest) {
   const entry = Object.values(manifest).find((chunk) => chunk.isEntry)
-  const file = entry?.assets?.find((asset) => BODY_FONT_PRELOAD.test(asset))
-  // No preload is a slower first paint on every page; better no build.
-  if (!file) {
-    throw new Error(
-      'The latin file of Source Sans 3 is not among the entry assets, so it cannot be preloaded.',
-    )
-  }
-  manifest[file] = {
-    file,
-    resourceType: 'font',
-    mimeType: 'font/woff2',
-    preload: true,
+  for (const [font, pattern] of Object.entries(FONT_PRELOADS)) {
+    const file = entry?.assets?.find((asset) => pattern.test(asset))
+    // No preload is a slower first paint on every page; better no build.
+    if (!file) {
+      throw new Error(
+        `${font} is not among the entry assets, so it cannot be preloaded.`,
+      )
+    }
+    manifest[file] = {
+      file,
+      resourceType: 'font',
+      mimeType: 'font/woff2',
+      preload: true,
+    }
   }
 }
 
 // The dev server calls build:manifest too, with entries that list no assets.
-export function bodyFontPreloadModule(_options: unknown, nuxt: Nuxt) {
+export function fontPreloadModule(_options: unknown, nuxt: Nuxt) {
   if (nuxt.options.dev) {
     return
   }
-  nuxt.hook('build:manifest', markBodyFontPreload)
+  nuxt.hook('build:manifest', markFontPreloads)
 }
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -77,15 +80,6 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
-      link: [
-        {
-          rel: 'preload',
-          as: 'font',
-          type: 'font/woff2',
-          href: HEADING_FONT_PRELOAD,
-          crossorigin: 'anonymous',
-        },
-      ],
       meta: [
         { name: 'theme-color', content: '#184759' },
         {
@@ -121,7 +115,7 @@ export default defineNuxtConfig({
     'nuxt-svg-icon-sprite',
     '@blokkli/editor',
     '@nuxt/eslint',
-    bodyFontPreloadModule,
+    fontPreloadModule,
   ],
 
   tailwindcss: {
@@ -265,14 +259,6 @@ export default defineNuxtConfig({
       },
       headers: {
         'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR},immutable`,
-      },
-    },
-    '/fonts/**': {
-      cache: {
-        maxAge: ONE_YEAR,
-      },
-      headers: {
-        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR}`,
       },
     },
     // public/images has no content hash in its file names: short browser cache,
