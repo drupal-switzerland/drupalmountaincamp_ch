@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\blokkli_starterkit;
 
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\path_alias\PathAliasInterface;
 use Drupal\redirect\Entity\Redirect;
@@ -33,8 +36,6 @@ final class UnpublishedPageRedirects {
    * Message kind: a redirect somebody made by hand was not kept.
    */
   public const BY_HAND_NOT_KEPT = 'by_hand_not_kept';
-
-  private const NODE_TARGET = '#^(?:internal:/|entity:)node/(\d+)(?:[?\#].*)?$#';
 
   /**
    * The address an alias is being changed from, without the leading slash.
@@ -96,15 +97,12 @@ final class UnpublishedPageRedirects {
    */
   private static function removeAllIfUnpublished(Redirect $redirect, bool $from_alias_change): void {
     try {
-      $uri = $redirect->getRedirect()['uri'] ?? '';
-      if (!preg_match(self::NODE_TARGET, $uri, $match)) {
-        return;
-      }
-      $node = \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($match[1]);
+      $node = self::targetNode($redirect->getRedirect()['uri'] ?? '');
       if (!$node instanceof NodeInterface || $node->isPublished()) {
         return;
       }
-      $redirects = self::redirectsTo($node);
+      // One that names the page by its address is not found by its number.
+      $redirects = self::redirectsTo($node) + [$redirect->id() => $redirect];
       $older = 0;
       foreach ($redirects as $other) {
         $older += (int) ($other->id() !== $redirect->id());
@@ -118,6 +116,55 @@ final class UnpublishedPageRedirects {
         ['@message' => $error->getMessage()],
       );
     }
+  }
+
+  /**
+   * Form validation: refuses a target that is an unpublished page.
+   *
+   * The insert and update hooks would delete such a redirect right after the
+   * form saved it; here the editor is told before anything is saved. An edit
+   * that keeps the target is accepted, as the update hook keeps it.
+   */
+  public static function validateRedirectForm(array &$form, FormStateInterface $form_state): void {
+    // The link widget has turned the typed target into a URI by now.
+    $uri = (string) $form_state->getValue(['redirect_redirect', 0, 'uri'], '');
+    $form_object = $form_state->getFormObject();
+    $redirect = $form_object instanceof EntityFormInterface ? $form_object->getEntity() : NULL;
+    if ($redirect instanceof Redirect && !$redirect->isNew() && ($redirect->getRedirect()['uri'] ?? '') === $uri) {
+      return;
+    }
+    $node = self::targetNode($uri);
+    if ($node instanceof NodeInterface && !$node->isPublished()) {
+      $form_state->setErrorByName('redirect_redirect', new TranslatableMarkup(
+        'This page is not published, and a redirect to it would show its address. Add the redirect after the page is published.',
+      ));
+    }
+  }
+
+  /**
+   * The node a redirect target points at, read from storage, if any.
+   *
+   * Takes every form the target is stored in: internal:/node/N, entity:node/N
+   * and the page's address, which the redirect form stores as typed, each
+   * with a query string or a fragment. The address is resolved without an
+   * access check, as the redirect is answered without one.
+   */
+  public static function targetNode(string $uri): ?NodeInterface {
+    try {
+      $url = Url::fromUri($uri);
+    }
+    catch (\InvalidArgumentException) {
+      return NULL;
+    }
+    if (!$url->isRouted() || $url->getRouteName() !== 'entity.node.canonical') {
+      return NULL;
+    }
+    $id = $url->getRouteParameters()['node'] ?? NULL;
+    if (!is_numeric($id)) {
+      return NULL;
+    }
+    $node = \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($id);
+    return $node instanceof NodeInterface ? $node : NULL;
   }
 
   /**
