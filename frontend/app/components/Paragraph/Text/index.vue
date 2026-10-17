@@ -7,7 +7,7 @@
           ref="content"
           v-blokkli-editable:field_text
           class="ck-content hyphens-auto lg:hyphens-none"
-          :class="{ 'text-center': alignment === 'center' }"
+          :class="{ 'is-centered text-center': alignment === 'center' }"
           v-html="text"
         />
       </div>

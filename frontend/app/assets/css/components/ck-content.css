@@ -48,6 +48,18 @@
       max-width: 68ch;
     }
 
+    /* Centred Text paragraphs: capped paragraphs centre under the heading.
+       Lists stay uncapped there, as before, so their bullets do not move. */
+    &.is-centered {
+      p:not(:where(table *, figure *)) {
+        @apply mx-auto;
+      }
+
+      :is(ul, ol):not(:where(table *, figure *)) {
+        max-width: none;
+      }
+    }
+
     a {
       @apply text-link underline hover:text-link-hover;
     }
