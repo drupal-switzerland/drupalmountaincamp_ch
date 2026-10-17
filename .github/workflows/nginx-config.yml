@@ -7,6 +7,13 @@ on:
 permissions:
   contents: read
 
+# actions/checkout runs git init; without a default branch name git prints
+# a 13-line hint about 'master' in every job.
+env:
+  GIT_CONFIG_COUNT: 1
+  GIT_CONFIG_KEY_0: init.defaultBranch
+  GIT_CONFIG_VALUE_0: main
+
 concurrency:
   group: nginx-config-${{ github.ref }}
   cancel-in-progress: true
