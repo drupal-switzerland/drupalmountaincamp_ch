@@ -87,7 +87,7 @@ const { options } = defineBlokkli({
   options: {
     format: {
       type: 'radios',
-      label: 'Image format',
+      label: 'Format',
       default: 'full',
       displayAs: 'icons',
       options: {

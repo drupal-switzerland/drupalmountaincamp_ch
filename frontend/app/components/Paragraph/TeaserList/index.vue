@@ -99,7 +99,7 @@ const { options } = defineBlokkli({
       default: 'grid',
       displayAs: 'icons',
       options: {
-        grid: { label: 'grid', icon: 'bk_mdi_grid_view' },
+        grid: { label: 'Grid', icon: 'bk_mdi_grid_view' },
         staggered: {
           label: 'Staggered',
           icon: 'bk_mdi_dashboard',

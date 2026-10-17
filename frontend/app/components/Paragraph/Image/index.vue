@@ -7,7 +7,6 @@
     ]"
   >
     <div
-      ref="blokkliDraggable"
       v-blokkli-droppable:field_image
       :class="[parentType ? layoutClassesInner : layoutClasses]"
     >

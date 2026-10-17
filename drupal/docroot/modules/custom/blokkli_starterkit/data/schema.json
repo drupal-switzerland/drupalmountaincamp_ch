@@ -273,7 +273,7 @@
         "grid": {
           "icon": "bk_mdi_grid_view",
           "label": {
-            "en": "grid"
+            "en": "Grid"
           }
         },
         "sliderDesktop": {
@@ -448,7 +448,7 @@
       "default": "full",
       "displayAs": "icons",
       "label": {
-        "en": "Image format"
+        "en": "Format"
       },
       "options": {
         "big": {
