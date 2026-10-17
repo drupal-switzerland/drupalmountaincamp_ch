@@ -41,6 +41,7 @@ describe('ImageItem', () => {
     const wrapper = await mountSuspended(ImageItem, {
       props: {
         large: style('large', 480),
+        mediumLarge: style('medium_large', 672),
         mediumWide: style('medium_wide', 768),
         wide: style('wide', 1090),
         extraWide: style('extra_wide', 2070),
@@ -52,7 +53,7 @@ describe('ImageItem', () => {
       .split(', ')
       .map((entry) => entry.split(' ')[1])
 
-    expect(widths).toEqual(['480w', '768w', '1090w', '2070w'])
+    expect(widths).toEqual(['480w', '672w', '768w', '1090w', '2070w'])
   })
 
   it('leaves out a derivative whose width is already listed', async () => {

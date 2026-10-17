@@ -142,7 +142,6 @@ local.settings.php
 .phpcs-cache
 
 docroot/modules/custom/blokkli_starterkit/css/backend.css
-docroot/themes/custom/blokkli_starterkit/css/ckeditor.css
 acli
 rokka.yml
 /.drush-lock-update

@@ -154,6 +154,7 @@ schema_configuration:
         field_quote: field_quote
         field_reusable_paragraph: field_reusable_paragraph
         field_slides: field_slides
+        field_summary: field_summary
         field_text: field_text
         field_title: field_title
         field_video: field_video
@@ -285,6 +286,10 @@ schema_configuration:
         image:
           enabled: true
         quote:
+          enabled: true
+        speaker_card:
+          enabled: true
+        speaker_list:
           enabled: true
         sponsor_list:
           enabled: true

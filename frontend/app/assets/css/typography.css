@@ -65,12 +65,12 @@
 }
 
 /*
- * Headings are set in ZT Gatha, the Drupal brand typeface, served from
- * public/fonts.
+ * Headings are set in ZT Gatha, the Drupal brand typeface. The build copies
+ * the two files from assets/fonts and gives them content-hashed names.
  */
 @font-face {
   font-family: 'ZT Gatha';
-  src: url('/fonts/ZTGatha-SemiBold.woff2') format('woff2');
+  src: url('../fonts/ZTGatha-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -78,7 +78,7 @@
 
 @font-face {
   font-family: 'ZT Gatha';
-  src: url('/fonts/ZTGatha-Bold.woff2') format('woff2');
+  src: url('../fonts/ZTGatha-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
