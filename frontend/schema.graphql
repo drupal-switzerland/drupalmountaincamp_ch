@@ -1478,6 +1478,9 @@ enum ImageStyleId {
   """{medium_wide} Mittelbreit (768)"""
   MEDIUM_WIDE
 
+  """{share} Share image (1200x630)"""
+  SHARE
+
   """{thumbnail} Miniaturansicht (100x100)"""
   THUMBNAIL
 
