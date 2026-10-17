@@ -29,8 +29,7 @@ const providerWith = (
         slots.default?.({ entity, isEditing }),
   })
 
-// The element carrying v-blokkli-droppable:field_image.
-const DROP_TARGET = '.grid-container-6 > div'
+const IMAGE_SLOT = '.grid-container-6'
 
 async function mount(
   props: Record<string, unknown>,
@@ -69,20 +68,23 @@ describe('news article image', () => {
 
   it('gives an article without an image a visible drop target while editing', async () => {
     const wrapper = await mount({}, { isEditing: true })
+    const slot = wrapper.get(IMAGE_SLOT)
 
-    expect(wrapper.get(DROP_TARGET).text()).toBe('pressRelease.imageDropHint')
-    expect(wrapper.find('img').exists()).toBe(false)
+    expect(slot.findAll('p')).toHaveLength(1)
+    expect(slot.get('p').text()).toBe('pressRelease.imageDropHint')
+    expect(slot.find('img').exists()).toBe(false)
   })
 
   it('renders nothing for a missing image outside the editor', async () => {
     const wrapper = await mount({})
 
-    expect(wrapper.find(DROP_TARGET).exists()).toBe(false)
+    expect(wrapper.get(IMAGE_SLOT).element.children).toHaveLength(0)
   })
 
-  it('makes the image the drop target outside the editor too', async () => {
+  it('renders only the image, unwrapped, outside the editor', async () => {
     const wrapper = await mount({ image: {} })
+    const children = [...wrapper.get(IMAGE_SLOT).element.children]
 
-    expect(wrapper.get(DROP_TARGET).find('img').exists()).toBe(true)
+    expect(children.map((c) => c.tagName)).toEqual(['IMG'])
   })
 })

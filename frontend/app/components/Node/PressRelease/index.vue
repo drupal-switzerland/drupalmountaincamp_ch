@@ -22,26 +22,23 @@
       </div>
 
       <div class="grid-container-6">
-        <!-- Rendered while editing, so an empty field has a drop target. -->
-        <div
-          v-if="entity?.image || image || isEditing"
+        <MediaImage
+          v-if="entity?.image || image"
           v-blokkli-droppable:field_image
+          v-bind="entity?.image || image"
+          :image-style="imageStyle"
+          preload
+          :loading="'eager'"
+          class="mb-10"
+        />
+        <!-- Gives an empty image field a drop target with a size in the editor. -->
+        <p
+          v-else-if="isEditing"
+          v-blokkli-droppable:field_image
+          class="mb-10 flex aspect-[3/2] items-center justify-center rounded-xl border-2 border-dashed border-primary-400 px-4 text-center font-bold text-primary-500"
         >
-          <MediaImage
-            v-if="entity?.image || image"
-            v-bind="entity?.image || image"
-            :image-style="imageStyle"
-            preload
-            :loading="'eager'"
-            class="mb-10"
-          />
-          <p
-            v-else
-            class="mb-10 flex aspect-[3/2] items-center justify-center rounded-xl border-2 border-dashed border-primary-400 px-4 text-center font-bold text-primary-500"
-          >
-            {{ $texts('pressRelease.imageDropHint', 'Drop an image here') }}
-          </p>
-        </div>
+          {{ $texts('pressRelease.imageDropHint', 'Drop an image here') }}
+        </p>
       </div>
     </div>
     <div>
