@@ -1,7 +1,14 @@
 @layer components {
   :root {
     --container-max-width: 1380px;
-    --container-max-width-bk: calc(1380px * 0.8); /* 80vw coming from blokkli */
+    /* The content width of .container at xl, so grid and container edges line
+       up: the container's width minus its padding (container.css). */
+    --container-content-max-width: calc(
+      var(--container-max-width) - 2 * var(--container-padding)
+    );
+    /* The blökkli editor's artboard is 80vw wide from 80rem (artboard
+       Renderer.vue); the grid shrinks with it there. */
+    --container-max-width-bk: calc(1380px * 0.8);
     --container-wide-table-max-width: 1200px;
 
     --grid-gap: theme(spacing.4);
@@ -24,7 +31,7 @@
     --container-columns-lg: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 12 */
 
     --container-columns-width-xl: calc(
-      calc(var(--container-max-width) - calc(11 * var(--grid-gap))) / 12
+      calc(var(--container-content-max-width) - calc(11 * var(--grid-gap))) / 12
     );
 
     --container-columns-width-xl-bk: calc(
@@ -104,9 +111,9 @@
       &:not(.is-small) {
         @apply px-0;
         @apply grid-cols-[var(--container-columns-xl)] gap-[var(--grid-gap)];
-        @apply mx-auto w-[var(--container-max-width)];
+        @apply mx-auto w-[var(--container-content-max-width)];
 
-        .bk-main-canvas & {
+        .bk-is-artboard .bk-main-canvas & {
           @apply grid-cols-[var(--container-columns-xl-bk)];
           @apply mx-auto w-[var(--container-max-width-bk)];
         }
@@ -181,7 +188,7 @@
           'a a a a a a a a b b b b b .' auto
           / 1fr var(--container-columns-xl) 1fr;
 
-        .bk-main-canvas & {
+        .bk-is-artboard .bk-main-canvas & {
           @apply w-full;
           grid-template:
             'a a a a a a a a b b b b b .' auto
@@ -252,7 +259,7 @@
           '. b b b b b a a a a a a a a' auto
           / 1fr var(--container-columns-xl) 1fr;
 
-        .bk-main-canvas & {
+        .bk-is-artboard .bk-main-canvas & {
           @apply w-full;
           grid-template:
             '. b b b b b a a a a a a a a' auto
