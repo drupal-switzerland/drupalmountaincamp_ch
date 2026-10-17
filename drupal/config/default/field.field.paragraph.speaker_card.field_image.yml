@@ -11,7 +11,7 @@ field_name: field_image
 entity_type: paragraph
 bundle: speaker_card
 label: Photo
-description: ''
+description: 'Square photo (1:1), at least 800 × 800 px, head and shoulders.'
 required: false
 translatable: false
 default_value: {  }
