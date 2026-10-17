@@ -1,0 +1,29 @@
+uuid: 2fec8dba-e8d2-46dd-8ff6-cd10ee31da94
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image
+    - media.type.image
+    - paragraphs.paragraphs_type.speaker_card
+id: paragraph.speaker_card.field_image
+field_name: field_image
+entity_type: paragraph
+bundle: speaker_card
+label: Photo
+description: 'Square photo (1:1), at least 800 × 800 px, head and shoulders.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

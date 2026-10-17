@@ -1,0 +1,18 @@
+uuid: 2599dc2a-98bf-489b-96e1-3527ee554090
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs_blokkli
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: false
+id: speaker_card
+label: 'Speaker card'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins:
+  paragraphs_blokkli_data:
+    enabled: true
