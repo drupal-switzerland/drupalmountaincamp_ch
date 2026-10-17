@@ -25,4 +25,11 @@ describe('iframe paragraph', () => {
     expect(iframe.attributes('title')).toBe('iframe.title')
     expect(iframe.attributes('loading')).toBe('lazy')
   })
+
+  it('renders nothing without a URL', async () => {
+    const wrapper = await mountSuspended(Iframe, { props: { url: undefined } })
+
+    expect(wrapper.find('iframe').exists()).toBe(false)
+    expect(wrapper.html()).not.toContain('<div')
+  })
 })

@@ -24,4 +24,9 @@
   .page-content .grid-container {
     @apply my-8;
   }
+
+  /* A speaker list right after another one starts a new section. */
+  .page-content .speaker-list + .speaker-list {
+    @apply mt-12 lg:mt-20;
+  }
 }

@@ -7,12 +7,9 @@ const { LOAD_ERROR } = vi.hoisted(() => ({
   LOAD_ERROR: 'chunk failed to load',
 }))
 
-// Swiper is loaded on demand, and that request can fail like any other. The
-// list asks for it twice (on mount and when its container is set). The second
-// import gets the real Swiper, which cannot start in a test DOM without
-// layout: that is a failed start as well, sometimes after the test has ended.
-vi.mock('swiper', () => ({
-  get default() {
+// Swiper is loaded on demand, and that request can fail like any other.
+vi.mock('../helpers/swiper', () => ({
+  loadSwiper: async () => {
     throw new Error(LOAD_ERROR)
   },
 }))
@@ -36,11 +33,15 @@ describe('teaser list when its slider cannot be started', () => {
     vi.restoreAllMocks()
   })
 
-  it('logs the failure and stays on the page', async () => {
+  it('logs the failure and stays a natively scrolling row, without buttons', async () => {
     const logged = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     const wrapper = await mountSuspended(TeaserList, {
-      props: { title: 'More news', paragraphs: [] },
+      // More teasers than one view holds, so the list tries to start.
+      props: {
+        title: 'More news',
+        paragraphs: [1, 2, 3, 4].map((i) => ({ uuid: `teaser-${i}` })) as never,
+      },
       global: { stubs: { BlokkliField: true } },
     })
     await flushPromises()
@@ -49,14 +50,14 @@ describe('teaser list when its slider cannot be started', () => {
     for (const [message] of logged.mock.calls) {
       expect(message).toContain('teaser slider could not be started')
     }
-    // The failed load itself was caught, whatever a later import did.
     expect(
       logged.mock.calls.map(
         ([, error]) => (error as Error | undefined)?.message,
       ),
     ).toContain(LOAD_ERROR)
     expect(wrapper.find('h2').text()).toBe('More news')
-    await wrapper.findAll('button')[1]!.trigger('click')
+    expect(wrapper.find('.is-swiper-running').exists()).toBe(false)
+    expect(wrapper.findAll('button')).toHaveLength(0)
     wrapper.unmount()
   })
 })
