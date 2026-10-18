@@ -1,5 +1,9 @@
 <template>
-  <BlokkliProvider v-slot="{ entity }" v-bind="blokkliProps" :entity="props">
+  <BlokkliProvider
+    v-slot="{ entity, isEditing }"
+    v-bind="blokkliProps"
+    :entity="props"
+  >
     <div class="grid-container">
       <div class="grid-container-8 pb-4">
         <p v-if="date" class="font-bold text-primary-500">
@@ -19,7 +23,7 @@
 
       <div class="grid-container-6">
         <MediaImage
-          v-if="image"
+          v-if="entity?.image || image"
           v-blokkli-droppable:field_image
           v-bind="entity?.image || image"
           :image-style="imageStyle"
@@ -27,6 +31,14 @@
           :loading="'eager'"
           class="mb-10"
         />
+        <!-- Gives an empty image field a drop target with a size in the editor. -->
+        <p
+          v-else-if="isEditing"
+          v-blokkli-droppable:field_image
+          class="mb-10 flex aspect-[3/2] items-center justify-center rounded-xl border-2 border-dashed border-primary-400 px-4 text-center font-bold text-primary-500"
+        >
+          {{ $texts('pressRelease.imageDropHint', 'Drop an image here') }}
+        </p>
       </div>
     </div>
     <div>
@@ -39,6 +51,8 @@
 import type { NodePressReleaseFragment } from '#graphql-operations'
 import { IMAGE_CREDIT_BELOW_IMAGE } from '~/composables/imageCreditDisplay'
 import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
+
+const { $texts } = useEasyTexts()
 
 const props = defineProps<{
   uuid?: string
