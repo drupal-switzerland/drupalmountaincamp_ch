@@ -7,7 +7,7 @@
           ref="content"
           v-blokkli-editable:field_text
           class="ck-content hyphens-auto lg:hyphens-none"
-          :class="{ 'text-center': alignment === 'center' }"
+          :class="{ 'is-centered text-center': alignment === 'center' }"
           v-html="text"
         />
       </div>
@@ -25,7 +25,6 @@ const { options, parentType } = defineBlokkli({
   editor: {
     addBehaviour: 'no-form',
     editTitle: (el) => el.textContent,
-    getDraggableElement: (el) => el.querySelector('.ck-content'),
     determineVisibleOptions: (ctx) => {
       if (!ctx.parentType) {
         return ['spacing', 'width', 'background', 'alignment']
@@ -131,9 +130,21 @@ const columnClassList = computed(() => {
         ]
 
   if (background.value === 'light') {
-    classList.push('gradient-border', 'is-tint', 'rounded-[18px]', 'p-6')
+    classList.push(
+      'gradient-border',
+      'is-tint',
+      'rounded-[18px]',
+      'p-4',
+      'sm:p-6',
+    )
   } else if (background.value === 'theme') {
-    classList.push('gradient-border', 'is-theme', 'rounded-[18px]', 'p-6')
+    classList.push(
+      'gradient-border',
+      'is-theme',
+      'rounded-[18px]',
+      'p-4',
+      'sm:p-6',
+    )
   }
 
   return classList

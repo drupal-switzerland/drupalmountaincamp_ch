@@ -1,7 +1,7 @@
 <template>
   <div v-if="isTopLevel" class="container" :class="spacingClassList">
     <div class="grid gap-8 md:grid-cols-2 md:items-start lg:gap-16">
-      <div class="min-w-0">
+      <div class="min-w-0 text-lg lg:text-xl">
         <h2
           v-if="hasText(title) || isEditing"
           v-blokkli-editable:field_title
@@ -13,7 +13,7 @@
           v-if="text || isEditing"
           ref="content"
           v-blokkli-editable:field_text
-          class="ck-content hyphens-auto"
+          class="ck-content hyphens-auto lg:hyphens-none"
           v-html="text"
         />
       </div>
@@ -54,7 +54,7 @@
     <div
       class="2xl:pl-10 col-start-8 col-end-[-1] mt-7 sm:mt-0 sm:pl-6 lg:mt-6 xl:pl-9"
     >
-      <div class="swiper-carousel-content">
+      <div class="swiper-carousel-content text-lg lg:text-xl">
         <component
           :is="slideHeading"
           v-if="hasText(title)"
@@ -62,7 +62,11 @@
         >
           {{ title }}
         </component>
-        <div ref="content" class="ck-content hyphens-auto" v-html="text" />
+        <div
+          ref="content"
+          class="ck-content hyphens-auto lg:hyphens-none"
+          v-html="text"
+        />
       </div>
     </div>
   </div>
