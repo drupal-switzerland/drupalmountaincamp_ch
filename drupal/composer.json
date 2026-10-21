@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.5",
         "ext-curl": "*",
         "ext-fileinfo": "*",
         "ext-json": "*",
@@ -160,7 +160,7 @@
         "discard-changes": true,
         "secure-http": false,
         "platform": {
-            "php": "8.3"
+            "php": "8.5"
         },
         "preferred-install": {
             "drupal/search_api_elasticsearch_client": "source",

@@ -5,7 +5,7 @@ env_file:
 config:
   via: nginx
   webroot: drupal/docroot
-  php: '8.3'
+  php: '8.5'
   xdebug: off
   composer_version: 2-latest
   config:
