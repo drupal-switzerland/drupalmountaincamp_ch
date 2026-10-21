@@ -42,6 +42,12 @@ ENV PATH="/app/drupal/vendor/bin:${PATH}"
 FROM uselagoon/php-8.5-fpm:26.9.0 AS php
 RUN install-php-extensions memcached
 COPY --from=cli /app /app
+COPY .lagoon/php-security.ini /usr/local/etc/php/conf.d/zz-security.ini
+# A mitigation for CVE-2026-109618 (.lagoon/php-security.ini), down from the
+# image's 2048M. Image and document fields allow 20 MB; video and audio
+# fields have no limit of their own, so this caps them.
+ENV PHP_POST_MAX_SIZE=32M
+ENV PHP_UPLOAD_MAX_FILESIZE=30M
 ENV WEBROOT=drupal/docroot
 ENV PATH="/app/drupal/vendor/bin:${PATH}"
 
