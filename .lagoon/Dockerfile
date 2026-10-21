@@ -1,13 +1,13 @@
 # Stage 1: Drupal dependencies
-# The uselagoon images share one release tag; keep all six on the same one.
-# Dependabot proposes new releases (.github/dependabot.yml).
-FROM uselagoon/php-8.5-cli-drupal:26.10.0 AS drupal-builder
+# The uselagoon images use :latest, so each Lagoon build picks up the newest
+# release, PHP and Node versions included. Check the PHP version after a deploy.
+FROM uselagoon/php-8.5-cli-drupal:latest AS drupal-builder
 COPY drupal /app/drupal
 WORKDIR /app/drupal
 RUN composer install --no-dev --optimize-autoloader
 
 # Stage 2: Frontend build
-FROM uselagoon/node-24-builder:26.10.0 AS frontend-builder
+FROM uselagoon/node-24-builder:latest AS frontend-builder
 # Same bun version as CI (.github/workflows/frontend-tests.yml); bump both
 # together.
 RUN npm install -g bun@1.4.2
@@ -24,7 +24,7 @@ RUN bun install --frozen-lockfile
 RUN bun run build
 
 # Stage 3: CLI image
-FROM uselagoon/php-8.5-cli-drupal:26.10.0 AS cli
+FROM uselagoon/php-8.5-cli-drupal:latest AS cli
 RUN install-php-extensions memcached
 COPY --from=drupal-builder /app/drupal /app/drupal
 RUN mkdir -p /app/drupal/files-private && fix-permissions /app/drupal/files-private
@@ -39,7 +39,7 @@ ENV WEBROOT=drupal/docroot
 ENV PATH="/app/drupal/vendor/bin:${PATH}"
 
 # Stage 4: PHP image
-FROM uselagoon/php-8.5-fpm:26.10.0 AS php
+FROM uselagoon/php-8.5-fpm:latest AS php
 RUN install-php-extensions memcached
 COPY --from=cli /app /app
 COPY .lagoon/php-security.ini /usr/local/etc/php/conf.d/zz-security.ini
@@ -52,7 +52,7 @@ ENV WEBROOT=drupal/docroot
 ENV PATH="/app/drupal/vendor/bin:${PATH}"
 
 # Stage 5: Nginx image
-FROM uselagoon/nginx-drupal:26.10.0 AS nginx
+FROM uselagoon/nginx-drupal:latest AS nginx
 COPY --from=cli /app /app
 ENV WEBROOT=drupal/docroot
 # Replace the stock Drupal server block with our reverse-proxy config
@@ -60,7 +60,7 @@ ENV WEBROOT=drupal/docroot
 COPY .lagoon/nginx-lagoon.conf /etc/nginx/conf.d/app.conf
 
 # Stage 6: Frontend image (Nuxt SSR)
-FROM uselagoon/node-24:26.10.0 AS frontend
+FROM uselagoon/node-24:latest AS frontend
 COPY --from=frontend-builder /app/frontend /app/frontend
 WORKDIR /app/frontend
 ENV NODE_ENV=production
