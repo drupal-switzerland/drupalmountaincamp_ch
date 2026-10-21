@@ -12,7 +12,7 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 
 ## Local setup
 
-- `ddev start`: web container (PHP 8.3, nginx, Node and bun), MariaDB,
+- `ddev start`: web container (PHP 8.5, nginx, Node and bun), MariaDB,
   Elasticsearch and memcached. The site is <https://mountaincamp.ddev.site>.
 - `ddev composer install`: Drupal dependencies into `drupal/vendor`.
 - `ddev bun install`: frontend dependencies into `frontend/node_modules`.

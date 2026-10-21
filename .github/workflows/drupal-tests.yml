@@ -36,7 +36,7 @@ jobs:
       # Same PHP version as the Lagoon images in .lagoon/Dockerfile.
       - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
-          php-version: '8.3'
+          php-version: '8.5'
           extensions: gd, pdo_sqlite, sqlite3
           coverage: none
           tools: composer:v2
