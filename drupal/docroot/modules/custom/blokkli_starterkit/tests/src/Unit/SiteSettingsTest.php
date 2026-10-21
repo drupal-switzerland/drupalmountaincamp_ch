@@ -57,7 +57,6 @@ class SiteSettingsTest extends UnitTestCase {
     'NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN',
     'ROKKA_API_KEY',
     'ROKKA_ORGANIZATION_NAME',
-    'DEEPL_AUTH_KEY',
     'AMAZEEAI_HOST',
     'AMAZEEAI_POSTGRES_HOST',
     'AMAZEEAI_POSTGRES_PORT',
@@ -302,11 +301,9 @@ class SiteSettingsTest extends UnitTestCase {
       'DRUPAL_GRAPHQL_TOKEN' => 'graphql-token',
       'ROKKA_API_KEY' => 'rokka-key',
       'ROKKA_ORGANIZATION_NAME' => 'rokka-org',
-      'DEEPL_AUTH_KEY' => 'deepl-key',
     ]);
     $this->assertSame('graphql-token', $loaded['settings']['access_graphql.token']);
     $this->assertSame(['api_key' => 'rokka-key', 'organization_name' => 'rokka-org'], $loaded['config']['rokka.settings']);
-    $this->assertSame('deepl-key', $loaded['config']['tmgmt.translator.deepl_pro']['settings']['auth_key']);
 
     $this->assertFalse($this->loadSettings([])['settings']['access_graphql.token']);
   }

@@ -18,4 +18,3 @@ subcontext_enabled: true
 conditional_subcontext_enabled: true
 conditional_max_parents: 3
 default_status: true
-new_revision: true

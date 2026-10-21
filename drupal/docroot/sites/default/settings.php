@@ -824,7 +824,6 @@ $settings['access_graphql.token'] = getenv('DRUPAL_GRAPHQL_TOKEN');
 // reads the same variable. Without it no token is sent.
 $config['nuxt_multi_cache.settings']['token'] = (string) getenv('NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN');
 $config['rokka.settings']['api_key'] = getenv('ROKKA_API_KEY');
-$config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY');
 $config['rokka.settings']['organization_name'] = getenv('ROKKA_ORGANIZATION_NAME');
 // amazee.ai LLM endpoint (region specific, not committed: the provider
 // config-ignores it). The API key itself is a Key entity reading AMAZEEAI_API_KEY.
