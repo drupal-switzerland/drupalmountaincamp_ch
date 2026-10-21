@@ -5,6 +5,20 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
+    # drupal/core releases skip the cooldown so a security release is offered
+    # at once: while composer.lock holds a core version with an advisory,
+    # every other composer update fails.
+    cooldown:
+      default-days: 3
+      exclude:
+        - "drupal/core"
+        - "drupal/core-*"
+    ignore:
+      # Dev branches installed from git. Dependabot's proxy does not allow
+      # git.drupalcode.org, so checking them fails the run; they get no updates.
+      - dependency-name: drupal/config_patch
+      - dependency-name: drupal/devel_entity_updates
+      - dependency-name: drupal/paragraphs_blokkli
 
   # Dependabot supports version updates for bun, not security updates or alerts.
   - package-ecosystem: bun
@@ -25,17 +39,13 @@ updates:
       interval: weekly
     open-pull-requests-limit: 3
 
-  # The uselagoon images in .lagoon/Dockerfile share one release tag and move
-  # together, so one pull request updates all of them.
+  # .lagoon/Dockerfile: only the Elasticsearch image has a version tag; the
+  # uselagoon images use :latest and get no pull requests.
   - package-ecosystem: docker
     directory: /.lagoon
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
-    groups:
-      lagoon-images:
-        patterns:
-          - "uselagoon/*"
 
   # docker-compose.yml: the local database image.
   - package-ecosystem: docker-compose

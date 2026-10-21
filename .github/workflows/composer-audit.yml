@@ -1,0 +1,49 @@
+name: Composer audit
+
+# Drupal contrib advisories do not reach Dependabot and core ones arrive late;
+# this checks the deployed lockfile for them every day. Failure emails go to
+# whoever last changed the cron line. GitHub disables the schedule after 60
+# days without repository activity.
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# actions/checkout runs git init; without a default branch name git prints
+# a 13-line hint about 'master' in every job.
+env:
+  GIT_CONFIG_COUNT: 1
+  GIT_CONFIG_KEY_0: init.defaultBranch
+  GIT_CONFIG_VALUE_0: main
+
+concurrency:
+  group: composer-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: drupal
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Same PHP version as drupal-tests.yml; composer.json requires 8.5.
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+
+      # Reads composer.lock only, no install. Drupal advisories come from
+      # packages.drupal.org. An accepted one goes in
+      # config.policy.advisories.ignore-id; adding a config.policy section
+      # makes Composer ignore config.audit.abandoned.
+      - run: composer audit --locked --no-interaction

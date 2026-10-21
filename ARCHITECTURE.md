@@ -228,15 +228,20 @@ built from `.lagoon/Dockerfile`; `mariadb` uses a published image. The
 
 ## Tests and CI
 
-The four workflows run on pull requests against `prod`.
+Four workflows run on pull requests against `prod`.
+`.github/workflows/composer-audit.yml` runs daily on `prod` instead.
 
 | Workflow                               | Job          | Runs                                                                |
 | :------------------------------------- | :----------- | :------------------------------------------------------------------ |
 | `.github/workflows/frontend-tests.yml` | `vitest`     | `bun run test:coverage`                                             |
 | `.github/workflows/frontend-tests.yml` | `checks`     | lint, prettier, typecheck, build, then the font preload test        |
-| `.github/workflows/drupal-tests.yml`   | `php`        | phpstan, phpcs, phpunit Unit, phpunit Kernel on the custom module   |
+| `.github/workflows/drupal-tests.yml`   | `php`        | phpstan, phpcs, phpunit Unit and Kernel, then `composer audit`      |
 | `.github/workflows/nginx-config.yml`   | `nginx-test` | `nginx -t` on the Lagoon config, then `scripts/ci/nginx-headers.sh` |
 | `.github/workflows/docs.yml`           | `doc-paths`  | `scripts/ci/check-doc-paths.sh`                                     |
+| `.github/workflows/composer-audit.yml` | `audit`      | `composer audit --locked`                                           |
+
+- GitHub disables the schedule of `composer-audit.yml` after 60 days without
+  activity in the repository.
 
 - Frontend tests: `frontend/app/__tests__/` and
   `frontend/app/pages/__tests__/`.
