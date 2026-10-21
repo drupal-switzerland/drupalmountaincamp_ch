@@ -13,7 +13,7 @@ the parts fit together is in [ARCHITECTURE.md](ARCHITECTURE.md); setup is in
 | `drupal/config/default` | Exported Drupal configuration.                          |
 | `.ddev/`                | Local environment used by the READMEs.                  |
 | `.lagoon/`              | Production images and nginx config.                     |
-| `.github/workflows/`    | The four CI workflows.                                  |
+| `.github/workflows/`    | The five CI workflows.                                  |
 | `scripts/ci/`           | Shell scripts; two of them are called by CI.            |
 
 - CI calls `scripts/ci/nginx-headers.sh` and `scripts/ci/check-doc-paths.sh`.
