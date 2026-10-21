@@ -32,6 +32,7 @@
     "nuxt-multi-cache": "^4.0.3",
     "nuxt-page-dependencies": "^1.2.0",
     "nuxt-svg-icon-sprite": "^2.0.2",
+    "svgo": "^4.1.0",
     "swiper": "^14.3.0",
     "vue3-click-away": "^1.2.4",
     "vuepal": "^3.0.6"
