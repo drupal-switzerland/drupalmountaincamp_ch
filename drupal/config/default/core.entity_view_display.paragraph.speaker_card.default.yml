@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.speaker_card.field_image
+    - field.field.paragraph.speaker_card.field_label
     - field.field.paragraph.speaker_card.field_link
     - field.field.paragraph.speaker_card.field_name
     - field.field.paragraph.speaker_card.field_summary
@@ -22,7 +23,16 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
+    weight: 5
+    region: content
+  field_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_link:
     type: link
@@ -34,7 +44,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_name:
     type: string
@@ -50,7 +60,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_title:
     type: string
@@ -59,7 +69,7 @@ content:
       link_to_entity: false
       link_rel: canonical
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
 hidden:
   search_api_excerpt: true
