@@ -5094,6 +5094,16 @@ type ParagraphSpeakerCard implements Entity & EntityRevisionable & Paragraph {
   """{field: field_image} """
   fieldImageRawField: FieldItemListEntityReference
 
+  """
+  {value} {field: field_label} Shown under the speaker name, for example Keynote or Fireside Chat.
+  """
+  fieldLabel: String
+
+  """
+  {field: field_label} Shown under the speaker name, for example Keynote or Fireside Chat.
+  """
+  fieldLabelRawField: FieldItemListString
+
   """{value} {field: field_link} """
   fieldLink: FieldItemTypeLink
 

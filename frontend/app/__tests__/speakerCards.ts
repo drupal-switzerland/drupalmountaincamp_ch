@@ -84,7 +84,7 @@ describe('speaker card', () => {
     stored.options = { spacing: 'none' }
   })
 
-  it('shows a speaker as the white bordered card, without a keynote label', async () => {
+  it('shows a speaker as the white bordered card, without the old keynote styling', async () => {
     const wrapper = await mountCard(filled)
     const article = wrapper.get('article')
 
@@ -139,6 +139,7 @@ describe('speaker card', () => {
   it('renders nothing for empty fields', async () => {
     const wrapper = await mountCard({
       name: ' ',
+      format: ' ',
       sessionTitle: '',
       summary: '',
     })
@@ -147,6 +148,39 @@ describe('speaker card', () => {
     expect(wrapper.find('img').exists()).toBe(false)
     expect(wrapper.findAll('p')).toHaveLength(0)
   })
+
+  it('shows the format right after the name, before the session title', async () => {
+    const wrapper = await mountCard({ ...filled, format: 'Keynote' })
+    const format = wrapper.get('h3').element.nextElementSibling
+
+    expect(format?.tagName).toBe('P')
+    expect(format?.textContent?.trim()).toBe('Keynote')
+    expect(format?.nextElementSibling?.textContent).toContain('Session title')
+  })
+
+  it('shows a format without a session title, as for a fireside chat', async () => {
+    const wrapper = await mountCard({
+      name: 'Speaker name',
+      format: 'Fireside Chat',
+      image,
+    })
+    const paragraphs = wrapper.findAll('p')
+
+    expect(paragraphs).toHaveLength(1)
+    expect(paragraphs[0]!.text()).toBe('Fireside Chat')
+    expect(wrapper.find('a').exists()).toBe(false)
+  })
+
+  it.each([undefined, '   '])(
+    'renders no format line for the format %j',
+    async (format) => {
+      const wrapper = await mountCard({ ...filled, format })
+
+      expect(
+        wrapper.get('h3').element.nextElementSibling?.textContent,
+      ).toContain('Session title')
+    },
+  )
 
   it.each(['h2', 'h3'] as const)(
     'sets the name as %s in the same weight',
