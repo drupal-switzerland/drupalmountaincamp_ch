@@ -1,5 +1,6 @@
 fragment paragraphSpeakerCard on ParagraphSpeakerCard {
   name: fieldName
+  format: fieldLabel
   sessionTitle: fieldTitle
   summary: fieldSummary
   link: fieldLink {

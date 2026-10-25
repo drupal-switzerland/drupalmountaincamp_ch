@@ -19,6 +19,13 @@
         {{ name }}
       </component>
       <p
+        v-if="hasText(format) || isEditing"
+        v-blokkli-editable:field_label
+        class="text-sm font-bold uppercase tracking-wide text-primary-500"
+      >
+        {{ format }}
+      </p>
+      <p
         v-if="hasText(sessionTitle) || isEditing"
         class="font-heading text-lg font-medium text-primary-500"
       >
@@ -56,6 +63,7 @@ import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
   name?: ParagraphSpeakerCardFragment['name']
+  format?: ParagraphSpeakerCardFragment['format']
   sessionTitle?: ParagraphSpeakerCardFragment['sessionTitle']
   summary?: ParagraphSpeakerCardFragment['summary']
   link?: ParagraphSpeakerCardFragment['link']
