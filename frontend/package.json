@@ -22,7 +22,7 @@
     "test:coverage": "TZ=utc vitest run --coverage"
   },
   "dependencies": {
-    "@blokkli/editor": "^2.0.0-alpha.73",
+    "@blokkli/editor": "2.0.0-alpha.74",
     "@fontsource-variable/source-sans-3": "5.3.1",
     "@rokka-io/nuxt": "^1.0.2",
     "@vueuse/core": "^15.0.0",

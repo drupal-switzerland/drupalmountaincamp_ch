@@ -753,8 +753,6 @@ type FieldItemListEntityReference implements FieldItemList {
 
 """Paragraphs"""
 type FieldItemListEntityReferenceRevisions implements FieldItemList {
-  canEdit: Boolean
-
   """The number of field items."""
   count: Int!
 
@@ -772,8 +770,6 @@ type FieldItemListEntityReferenceRevisions implements FieldItemList {
 
   """Array of field items."""
   list: [FieldItemTypeEntityReferenceRevisions]
-  name: String!
-  targetBundles: [Entity]
 }
 
 """Audiodatei"""
@@ -1302,6 +1298,12 @@ type FieldItemTypeListString implements FieldItemType & FieldItemTypeStringInter
 
 """Paragraphs Blokkli Mutations"""
 type FieldItemTypeParagraphsBlokkliMutation implements FieldItemType {
+  """
+  When the mutation was added, as an ISO 8601 date in UTC, e.g.
+  2026-05-28T14:32:18.000Z.
+  """
+  created: String
+
   """{field: enabled} Enabled"""
   enabled: Boolean
 
@@ -2741,6 +2743,31 @@ type Mutation {
   ): ParagraphsEditMutationState
 
   """
+  Create media from files uploaded in the editor, through their forms, in the
+  given language. Only for the current user's uploads, by the IDs the upload
+  route returned. Returns a result per item, in the same order, or null for an
+  unknown language.
+  """
+  pbCreateMediaFromUploads(items: [ParagraphsBlokkliUploadMediaInput!]!, langcode: String!): [ParagraphsBlokkliUploadMediaResult!]
+
+  """
+  Delete files uploaded in the editor that get no media, such as those of a
+  cancelled dialog. Only the current user's uploads are deleted, by the IDs the
+  upload route returned; other files are left out. Returns the number of
+  deleted files.
+  """
+  pbDeleteUploads(fileIds: [String!]!): Int!
+
+  """
+  Generate the alt text of an image uploaded in the editor, in the given
+  language, for a form with an altTextInput. It may take a while, and the
+  service that generates it may charge for it. Only for the current user's
+  uploads, by the ID the upload route returned. Returns null if none could be
+  generated.
+  """
+  pbGenerateUploadAltText(fileId: String!, langcode: String!, type: ParagraphsBlokkliUploadType!): String
+
+  """
   Mark notifications as read for the current user.
   
   When uuids is empty or omitted, all of the user's notifications are marked
@@ -2749,6 +2776,13 @@ type Mutation {
   Returns the number of unread notifications remaining afterwards.
   """
   pbMarkNotificationsAsRead(uuids: [String!]): Int!
+
+  """
+  The token for the upload route's X-CSRF-Token header: the current session's
+  token, as /session/token returns it, which a frontend may not route to
+  Drupal. Returns null without the permission to edit.
+  """
+  pbUploadToken: String
 
   """"""
   ping: String
@@ -5088,10 +5122,14 @@ type ParagraphSpeakerCard implements Entity & EntityRevisionable & Paragraph {
   """The entity type ID."""
   entityTypeId: String!
 
-  """{value} {field: field_image} """
+  """
+  {value} {field: field_image} Square photo (1:1), at least 800 × 800 px, head and shoulders.
+  """
   fieldImage: MediaImage
 
-  """{field: field_image} """
+  """
+  {field: field_image} Square photo (1:1), at least 800 × 800 px, head and shoulders.
+  """
   fieldImageRawField: FieldItemListEntityReference
 
   """
@@ -6283,6 +6321,11 @@ type ParagraphsBlokkliAllowedType {
 
 """"""
 type ParagraphsBlokkliAvailableFeatures {
+  """
+  Whether the AI agent is available: its module is enabled and has a secret.
+  """
+  agent: Boolean!
+
   """Whether the commenting feature is available."""
   comment: Boolean!
 
@@ -6317,6 +6360,17 @@ input ParagraphsBlokkliBulkUpdateFieldValuesInput {
 }
 
 """
+A paragraph bundle for pasted text, and the field the text is added in.
+"""
+type ParagraphsBlokkliClipboardTextParagraph {
+  """"""
+  bundle: String!
+
+  """"""
+  field: String!
+}
+
+"""
 A comment authored against one or more paragraphs in a blökkli edit state.
 """
 type ParagraphsBlokkliComment {
@@ -6337,7 +6391,10 @@ type ParagraphsBlokkliComment {
   """Whether the comment has been marked as resolved."""
   resolved: Boolean!
 
-  """ISO 8601 timestamp of when the comment was last updated, if available."""
+  """
+  ISO 8601 timestamp of when the comment's text was last edited, NULL when it
+  never was.
+  """
   updated: String
 
   """The author of the comment. NULL for anonymous."""
@@ -6360,6 +6417,12 @@ interface ParagraphsBlokkliConfigInput {
 
   """"""
   required: Boolean!
+
+  """If set, the input is required while the condition holds."""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """If set, the input is only shown while the condition holds."""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
 }
 
 """"""
@@ -6381,6 +6444,57 @@ type ParagraphsBlokkliConfigInputCheckbox implements ParagraphsBlokkliConfigInpu
 
   """"""
   required: Boolean!
+
+  """"""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """"""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
+}
+
+"""
+A condition on another input of the same form: a checkbox that is checked or
+not, or an input with options that has a value.
+"""
+type ParagraphsBlokkliConfigInputCondition {
+  """Whether the other input, a checkbox, is checked."""
+  checked: Boolean
+
+  """The name of the other input."""
+  name: String!
+
+  """The value the other input, with options, has."""
+  value: String
+}
+
+"""
+The point of an image that crops keep, such as the focal point of the
+focal_point module's image widget. The editor shows it on the image.
+"""
+type ParagraphsBlokkliConfigInputFocalPoint implements ParagraphsBlokkliConfigInput {
+  """
+  The point as "x,y": its offsets from the image's left and top edges, in whole
+  percent.
+  """
+  defaultValue: String
+
+  """"""
+  description: String
+
+  """"""
+  label: String!
+
+  """"""
+  name: String!
+
+  """"""
+  required: Boolean!
+
+  """"""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """"""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
 }
 
 """"""
@@ -6396,6 +6510,12 @@ type ParagraphsBlokkliConfigInputHost implements ParagraphsBlokkliConfigInput {
 
   """"""
   required: Boolean!
+
+  """"""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """"""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
 }
 
 """"""
@@ -6419,7 +6539,13 @@ type ParagraphsBlokkliConfigInputOptions implements ParagraphsBlokkliConfigInput
   required: Boolean!
 
   """"""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """"""
   variant: ParagraphsBlokkliConfigInputOptionsVariant!
+
+  """"""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
 }
 
 """"""
@@ -6449,6 +6575,12 @@ type ParagraphsBlokkliConfigInputSeed implements ParagraphsBlokkliConfigInput {
 
   """"""
   required: Boolean!
+
+  """"""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """"""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
 }
 
 """"""
@@ -6484,7 +6616,13 @@ type ParagraphsBlokkliConfigInputText implements ParagraphsBlokkliConfigInput {
   required: Boolean!
 
   """"""
+  requiredIf: ParagraphsBlokkliConfigInputCondition
+
+  """"""
   rows: Int
+
+  """"""
+  visibleIf: ParagraphsBlokkliConfigInputCondition
 }
 
 """"""
@@ -6655,6 +6793,12 @@ type ParagraphsBlokkliEditState implements Entity & EntityLinkable {
 
   """The langcode of this entity."""
   langcode: String
+
+  """
+  When the edit state was last changed, as an ISO 8601 date in UTC, e.g.
+  2026-05-28T14:32:18.000Z. It changes with every mutation.
+  """
+  lastChanged: String
 
   """The mutated entity."""
   mutatedEntity: Entity!
@@ -6987,33 +7131,6 @@ type ParagraphsBlokkliImportSkippedBundle {
   count: Int!
 }
 
-""""""
-type ParagraphsBlokkliImportSourceEntities {
-  """"""
-  filters: [ParagraphsBlokkliConfigInput!]!
-
-  """"""
-  items: [ParagraphsBlokkliImportSourceEntity]
-
-  """"""
-  perPage: Int
-
-  """"""
-  total: Int
-}
-
-""""""
-type ParagraphsBlokkliImportSourceEntity {
-  """"""
-  description: String
-
-  """"""
-  label: String!
-
-  """"""
-  uuid: String!
-}
-
 """Per-import summary returned by the Import paragraph mutation."""
 type ParagraphsBlokkliImportSummary {
   """
@@ -7167,7 +7284,7 @@ the matching notification type plugin; they are never stored.
 """
 type ParagraphsBlokkliNotification {
   """
-  The creation time as an ISO 8601 UTC timestamp, e.g. 2026-05-28T14:32:18Z.
+  The creation time as an ISO 8601 date in UTC, e.g. 2026-05-28T14:32:18.000Z.
   """
   created: String!
 
@@ -7248,6 +7365,32 @@ type ParagraphsBlokkliParagraphEditContext {
   outdatedTranslations: [String!]!
 }
 
+"""
+A paragraph type, with what the editor needs to know about it.
+
+This is not the paragraph type as an entity: whoever can use blökkli gets
+these, without access to the paragraph types themselves.
+"""
+type ParagraphsBlokkliParagraphType {
+  """Whether paragraphs of this type can be made reusable."""
+  allowReusable: Boolean!
+
+  """The description, in the language of the request."""
+  description: String
+
+  """The machine name of the paragraph type."""
+  id: String!
+
+  """Whether paragraphs of this type are translatable."""
+  isTranslatable: Boolean!
+
+  """The label, in the language of the request."""
+  label: String!
+
+  """The permissions the current user has for this paragraph type."""
+  permissions: [ParagraphsBlokkliTypePermission!]!
+}
+
 enum ParagraphsBlokkliPermission {
   """Delete the edit state."""
   delete
@@ -7297,7 +7440,10 @@ type ParagraphsBlokkliPublishOptions {
   """"""
   isRevisionable: Boolean!
 
-  """"""
+  """
+  When the entity was last changed, as an ISO 8601 date in UTC, e.g.
+  2026-05-28T14:32:18.000Z.
+  """
   lastChanged: String
 
   """"""
@@ -7306,8 +7452,11 @@ type ParagraphsBlokkliPublishOptions {
 
 """"""
 type ParagraphsBlokkliReferencedEntity {
-  """"""
-  editUrl: String!
+  """
+  The URL of the form that edits the entity. Null if the current user may not
+  open it.
+  """
+  editUrl: String
 
   """"""
   entityBundle: String!
@@ -7389,11 +7538,24 @@ interface ParagraphsBlokkliSupportedClipboard {
 
 """"""
 type ParagraphsBlokkliSupportedClipboardFile implements ParagraphsBlokkliSupportedClipboard {
+  """
+  Whether the user can upload files and create their media in the editor: they
+  can create media of the type, and its form is complete (see
+  ParagraphsBlokkliUploadForm).
+  """
+  canUpload: Boolean!
+
   """"""
   fileExtensions: [String!]!
 
   """"""
   maxFileSize: Int!
+
+  """
+  The media type of the uploaded files, and of the existing media found for
+  them.
+  """
+  mediaBundle: String!
 
   """"""
   possibleParagraphBundles: [String!]!
@@ -7401,11 +7563,24 @@ type ParagraphsBlokkliSupportedClipboardFile implements ParagraphsBlokkliSupport
 
 """"""
 type ParagraphsBlokkliSupportedClipboardImage implements ParagraphsBlokkliSupportedClipboard {
+  """
+  Whether the user can upload images and create their media in the editor: they
+  can create media of the type, and its form is complete (see
+  ParagraphsBlokkliUploadForm).
+  """
+  canUpload: Boolean!
+
   """"""
   fileExtensions: [String!]!
 
   """"""
   maxFileSize: Int!
+
+  """
+  The media type of the uploaded files, and of the existing media found for
+  them.
+  """
+  mediaBundle: String!
 
   """"""
   possibleParagraphBundles: [String!]!
@@ -7422,6 +7597,12 @@ type ParagraphsBlokkliSupportedClipboardRemoteVideo implements ParagraphsBlokkli
 
 """"""
 type ParagraphsBlokkliSupportedClipboardRichText implements ParagraphsBlokkliSupportedClipboard {
+  """
+  The paragraph bundles for pasted text, each with the field for the text. A
+  client can offer only those whose field can hold the pasted text.
+  """
+  paragraphs: [ParagraphsBlokkliClipboardTextParagraph!]!
+
   """"""
   possibleParagraphBundles: [String!]!
 }
@@ -7439,6 +7620,12 @@ type ParagraphsBlokkliTextFieldValue {
 
   """"""
   fieldType: String!
+
+  """
+  Whether the value can differ per language. An untranslatable field's value
+  is shared by every translation.
+  """
+  isTranslatable: Boolean!
 
   """"""
   uuid: String!
@@ -7521,6 +7708,70 @@ input ParagraphsBlokkliUpdateHostOptionsInput {
   value: String!
 }
 
+"""An error of a media created from a file uploaded in the editor."""
+type ParagraphsBlokkliUploadError {
+  """The message, as plain text."""
+  message: String!
+
+  """
+  The name of the form's input the error belongs to, or null if it belongs to
+  none, such as an error of the file.
+  """
+  name: String
+}
+
+"""The form of a media created from a file uploaded in the editor."""
+type ParagraphsBlokkliUploadForm {
+  """
+  The name of the input for an image's alt text, if pbGenerateUploadAltText can
+  generate it. Null for a form without an alt text, or if none can be generated.
+  """
+  altTextInput: String
+
+  """
+  Whether the editor can submit the form. False when a shown required field
+  can't be described, or the form has no submit button.
+  """
+  complete: Boolean!
+
+  """The form's fields, in the order of the form."""
+  inputs: [ParagraphsBlokkliConfigInput!]!
+}
+
+"""A media to create from a file uploaded in the editor."""
+input ParagraphsBlokkliUploadMediaInput {
+  """The ID the upload route returned for the file."""
+  fileId: String!
+
+  """The upload's type."""
+  type: ParagraphsBlokkliUploadType!
+
+  """The values of the form's inputs, keyed by their names."""
+  values: MapData
+}
+
+"""
+The media created from a file uploaded in the editor, or why it wasn't.
+"""
+type ParagraphsBlokkliUploadMediaResult {
+  """The errors, each with the input it belongs to."""
+  errors: [ParagraphsBlokkliUploadError!]!
+
+  """
+  The ID of the created media, or of the media that already has a file of the
+  same content.
+  """
+  mediaId: String
+}
+
+"""
+The type of a file uploaded in the editor, which decides its media type.
+"""
+enum ParagraphsBlokkliUploadType {
+  file
+  image
+}
+
 """"""
 type ParagraphsBlokkliUser {
   """"""
@@ -7582,10 +7833,13 @@ type ParagraphsEditMutationState {
     type: String!
   ): ParagraphsBlokkliMutationResult
 
-  """Adds a new text paragraph."""
+  """Adds a new paragraph with the pasted text."""
   add_clipboard_text(
     """The UUID of the paragraph after which to add this one."""
     afterUuid: String
+
+    """The paragraph bundle to add, one of those configured for pasted text."""
+    bundle: String
 
     """The field name of the target host."""
     hostFieldName: String!
@@ -8310,9 +8564,6 @@ type ParagraphsType implements Entity {
   """Check entity access for the given operation, defaults to view."""
   accessCheck(operation: String): Boolean!
 
-  """Whether this paragraph type can be made reusable."""
-  allowReusable: Boolean
-
   """{field: description} """
   description: String
 
@@ -8334,17 +8585,11 @@ type ParagraphsType implements Entity {
   """Determines whether the entity is new."""
   isNew: Boolean!
 
-  """If this paragraph is translatable."""
-  isTranslatable: Boolean
-
   """The label of this entity."""
   label: String
 
   """The langcode of this entity."""
   langcode: String
-
-  """The permissions the current user has for this paragraph type."""
-  permissions: [ParagraphsBlokkliTypePermission!]!
 
   """{field: status} """
   status: Boolean
@@ -8438,9 +8683,6 @@ type Query {
   pbGetEntityConfig(entityType: String!, entityUuid: String!): ParagraphsBlokkliEntityConfig
   pbGetFieldConfig: [ParagraphsBlokkliFieldConfig!]
 
-  """Get import source entities."""
-  pbGetImportSourceEntities(entityType: String!, entityUuid: String!, filters: [ParagraphsBlokkliUserConfigInput], page: Int): ParagraphsBlokkliImportSourceEntities
-
   """
   Get the number of unread notifications for the current user. Cheap to poll;
   invalidated whenever the user's notifications change.
@@ -8458,7 +8700,16 @@ type Query {
   read immediately, and the list's unreadCount reflects the new count.
   """
   pbGetNotifications(after: String, markAsRead: Boolean): ParagraphsBlokkliNotificationList
+
+  """Get the paragraph types."""
+  pbGetParagraphTypes: [ParagraphsBlokkliParagraphType!]
   pbGetSupportedClipboards: [ParagraphsBlokkliSupportedClipboard!]
+
+  """
+  Get the form of a media created from a file uploaded in the editor. Only for
+  the current user's uploads, by the ID the upload route returned.
+  """
+  pbGetUploadForm(fileId: String!, type: ParagraphsBlokkliUploadType!): ParagraphsBlokkliUploadForm
   pbGetUrlPrefixes: [ParagraphsBuilderUrlPrefix!]!
   pbMediaLibraryGetResults(filters: [ParagraphsBlokkliUserConfigInput], page: Int): ParagraphsBlokkliMediaLibraryResults
   pbSearchEditStates(filters: [ParagraphsBlokkliUserConfigInput], page: Int): ParagraphsBlokkliEditStatesResults
