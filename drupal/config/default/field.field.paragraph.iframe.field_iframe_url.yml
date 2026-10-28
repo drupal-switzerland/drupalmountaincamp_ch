@@ -7,10 +7,6 @@ dependencies:
     - paragraphs.paragraphs_type.iframe
   module:
     - link
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.iframe.field_iframe_url
 field_name: field_iframe_url
 entity_type: paragraph

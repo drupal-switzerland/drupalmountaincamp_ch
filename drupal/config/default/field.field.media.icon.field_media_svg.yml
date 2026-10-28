@@ -7,10 +7,6 @@ dependencies:
     - media.type.icon
   module:
     - image
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: media.icon.field_media_svg
 field_name: field_media_svg
 entity_type: media

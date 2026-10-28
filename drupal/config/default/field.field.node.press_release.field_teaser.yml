@@ -7,10 +7,6 @@ dependencies:
     - node.type.press_release
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: node.press_release.field_teaser
 field_name: field_teaser
 entity_type: node

@@ -5,11 +5,6 @@ dependencies:
   config:
     - comment.type.blokkli_node
     - field.storage.comment.field_target_uuids
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: comment.blokkli_node.field_target_uuids
 field_name: field_target_uuids
 entity_type: comment

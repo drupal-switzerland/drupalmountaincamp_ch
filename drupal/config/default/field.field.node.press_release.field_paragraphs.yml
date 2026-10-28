@@ -17,10 +17,6 @@ dependencies:
     - paragraphs.paragraphs_type.video
   module:
     - entity_reference_revisions
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: node.press_release.field_paragraphs
 field_name: field_paragraphs
 entity_type: node
