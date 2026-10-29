@@ -88,7 +88,7 @@
         "drupal/migrate_tools": "~6.0",
         "drupal/nuxt_multi_cache": "^2.0@beta",
         "drupal/paragraphs": "^1.15",
-        "drupal/paragraphs_blokkli": "2.0.x-dev",
+        "drupal/paragraphs_blokkli": "2.0.x-dev#1b08d602de4c4e0f85d824f8d2efd86f6f8d7a39",
         "drupal/pathauto": "^1.6",
         "drupal/pathologic": "^2.0@alpha",
         "drupal/purge": "^3.5",
