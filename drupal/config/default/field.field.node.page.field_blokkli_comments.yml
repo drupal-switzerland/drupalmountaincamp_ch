@@ -7,10 +7,6 @@ dependencies:
     - node.type.page
   module:
     - comment
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: node.page.field_blokkli_comments
 field_name: field_blokkli_comments
 entity_type: node

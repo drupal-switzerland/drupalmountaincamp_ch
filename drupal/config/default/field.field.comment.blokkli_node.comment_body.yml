@@ -7,10 +7,6 @@ dependencies:
     - field.storage.comment.comment_body
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: comment.blokkli_node.comment_body
 field_name: comment_body
 entity_type: comment

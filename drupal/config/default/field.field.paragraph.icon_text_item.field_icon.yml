@@ -6,11 +6,6 @@ dependencies:
     - field.storage.paragraph.field_icon
     - media.type.icon
     - paragraphs.paragraphs_type.icon_text_item
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.icon_text_item.field_icon
 field_name: field_icon
 entity_type: paragraph

@@ -27,7 +27,6 @@ dependencies:
     - system
     - taxonomy
     - texts
-    - tmgmt
     - toolbar
     - translatable_config_pages
 _core:
@@ -37,7 +36,6 @@ label: 'Content editor'
 weight: 2
 is_admin: false
 permissions:
-  - 'accept translation jobs'
   - 'access administration pages'
   - 'access comments'
   - 'access content'
@@ -64,7 +62,6 @@ permissions:
   - 'create paragraphs blokkli edit state'
   - 'create string translation'
   - 'create terms in tags'
-  - 'create translation jobs'
   - 'create url aliases'
   - 'delete content translations'
   - 'delete media'
@@ -72,7 +69,6 @@ permissions:
   - 'delete paragraphs blokkli edit state'
   - 'delete string translation'
   - 'delete terms in tags'
-  - 'delete translation jobs'
   - 'edit behavior plugin settings'
   - 'edit own comments'
   - 'edit paragraph library item'
@@ -84,7 +80,6 @@ permissions:
   - 'revert all revisions'
   - 'schedule publishing of nodes'
   - 'skip comment approval'
-  - 'submit translation jobs'
   - 'take ownership of paragraphs blokkli edit state'
   - 'translate any entity'
   - 'translate interface'

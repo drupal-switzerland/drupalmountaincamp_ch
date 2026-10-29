@@ -8,10 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.video
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.video.field_context_description
 field_name: field_context_description
 entity_type: paragraph

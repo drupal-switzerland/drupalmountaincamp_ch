@@ -8,7 +8,6 @@ dependencies:
   module:
     - content_translation
     - image
-    - tmgmt_content
   enforced:
     module:
       - media
@@ -18,8 +17,6 @@ third_party_settings:
       file: file
       alt: '0'
       title: '0'
-  tmgmt_content:
-    excluded: false
 _core:
   default_config_hash: P7CkVOgjDXiN26Fm2hniNei-XPK3iuZTlcBGqreTbJ0
 id: media.image.field_media_image

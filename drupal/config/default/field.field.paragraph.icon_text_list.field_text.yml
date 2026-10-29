@@ -8,10 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.icon_text_list
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.icon_text_list.field_text
 field_name: field_text
 entity_type: paragraph

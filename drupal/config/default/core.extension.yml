@@ -155,10 +155,6 @@ module:
   text: 0
   texts: 0
   texts_graphql: 0
-  tmgmt: 0
-  tmgmt_config: 0
-  tmgmt_content: 0
-  tmgmt_locale: 0
   token: 0
   token_or: 0
   toolbar: 0

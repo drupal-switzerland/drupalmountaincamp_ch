@@ -55,8 +55,6 @@ class GraphQlSmokeTest extends BlokkliStarterkitGraphQlExistingSiteTestBase {
       $metadata->addCacheContexts(
         [
           'user.node_grants:view',
-          // Fix because of tmgmt module.
-          'url.query_args:key',
         ]
       );
       $expected = $this->getExpectedResults($content);

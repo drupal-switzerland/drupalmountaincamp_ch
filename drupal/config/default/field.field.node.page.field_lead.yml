@@ -8,10 +8,6 @@ dependencies:
     - node.type.page
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: node.page.field_lead
 field_name: field_lead
 entity_type: node

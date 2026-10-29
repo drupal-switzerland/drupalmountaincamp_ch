@@ -6,11 +6,6 @@ dependencies:
     - field.storage.paragraph.field_node_ref
     - node.type.page
     - paragraphs.paragraphs_type.teaser
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.teaser.field_node_ref
 field_name: field_node_ref
 entity_type: paragraph
