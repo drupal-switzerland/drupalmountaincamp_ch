@@ -98,12 +98,16 @@ Run in `drupal/` inside DDEV: `ddev exec -d /var/www/html/drupal <command>`.
 - Dependencies are installed from the lockfiles: `frontend/bun.lock` and
   `drupal/composer.lock`. CI fails when `frontend/bun.lock` does not match
   `frontend/package.json`.
-- The Drupal module paragraphs_blokkli is pinned to a commit in
+- The Drupal module `paragraphs_blokkli` is pinned to a commit in
   `drupal/composer.json` and `@blokkli/editor` to an exact version in
   `frontend/package.json`. They change together, with
-  `frontend/schema.graphql` regenerated from the updated Drupal. GraphQL
-  requests over HTTP are not validated, so a field the module removed is
-  dropped without an error (#378 locked every block).
+  `frontend/schema.graphql` regenerated from the updated Drupal. The
+  frontend's queries run as persisted queries through `graphql_extra_cache`
+  (`dynamic_cached_persisted_query` in
+  `drupal/config/default/graphql.graphql_servers.graphql.yml`), and the
+  graphql module does not validate persisted queries. A field the module
+  removed is dropped without an error, and the editor then locks every
+  block.
 - Drupal configuration is changed in Drupal and exported to
   `drupal/config/default`; deploy imports it with `drush cim` (`.lagoon.yml`).
   Export steps: [README.md](README.md), section "Deploy".
