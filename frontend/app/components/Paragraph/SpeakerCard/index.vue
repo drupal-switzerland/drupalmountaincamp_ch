@@ -9,7 +9,7 @@
       :sizes="IMAGE_SIZES"
       hide-caption
     />
-    <div class="flex flex-col gap-2 p-5">
+    <div class="flex flex-1 flex-col gap-2 p-5">
       <component
         :is="heading"
         v-if="hasText(name) || isEditing"
@@ -18,10 +18,17 @@
       >
         {{ name }}
       </component>
+      <!-- After the name in the DOM, so it is read after it, but placed over
+           the photo. -->
       <p
         v-if="hasText(format) || isEditing"
         v-blokkli-editable:field_label
-        class="text-sm font-bold uppercase tracking-wide text-primary-500"
+        class="text-sm font-bold uppercase tracking-wide"
+        :class="
+          hasPhoto
+            ? 'absolute end-3 start-3 top-3 w-fit rounded-2xl bg-primary-500 px-3 py-1 text-white'
+            : 'text-primary-500'
+        "
       >
         {{ format }}
       </p>
@@ -90,6 +97,8 @@ const heading = inject(
   computed(() => 'h3' as const),
 )
 
+// MediaImage renders the photo only when the media has a file.
+const hasPhoto = computed(() => !!props.image?.image)
 const href = computed(() => props.link?.uri?.path || '')
 const isExternal = computed(() => /^https?:\/\//.test(href.value))
 
