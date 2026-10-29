@@ -73,9 +73,10 @@ function blokkli_starterkit_post_update_move_rokka_files_to_public(): string {
  * Implements hook_removed_post_updates().
  */
 function blokkli_starterkit_removed_post_updates(): array {
-  // They uninstalled TMGMT (#397). Core blocks updates on a database that has
-  // not run them, which still has TMGMT installed.
-  $removedIn = 'the removal of drupal/tmgmt';
+  // #403 removed these with drupal/tmgmt, after #397 had run them and
+  // drush cim had uninstalled TMGMT. On a database that has not run them,
+  // the status report shows an error; update.php stops, drush -y updb goes on.
+  $removedIn = '#403';
   return [
     'blokkli_starterkit_post_update_delete_tmgmt_jobs' => $removedIn,
     'blokkli_starterkit_post_update_delete_tmgmt_deepl_schema_version' => $removedIn,
