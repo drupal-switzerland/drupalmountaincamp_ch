@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fbf262a871d5d1e67483c6ceaf0c4c9",
+    "content-hash": "311bb8a56f8027b2d4c84dbc645b4433",
     "packages": [
         {
             "name": "amazeeio/drupal_integrations",
@@ -8370,70 +8370,6 @@
             "homepage": "https://www.drupal.org/project/texts",
             "support": {
                 "source": "https://git.drupalcode.org/project/texts"
-            }
-        },
-        {
-            "name": "drupal/tmgmt",
-            "version": "1.19.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/tmgmt.git",
-                "reference": "8.x-1.19"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/tmgmt-8.x-1.19.zip",
-                "reference": "8.x-1.19",
-                "shasum": "fb07e6aa49ebba4d7d9c85a73341f910359728ee"
-            },
-            "require": {
-                "drupal/core": "^10.3 || ^11"
-            },
-            "require-dev": {
-                "drupal/metatag": "2.0.x-dev || 1.x-dev",
-                "drupal/paragraphs": "1.x-dev",
-                "drupal/pathauto": "1.x-dev",
-                "drupal/tmgmt_content": "*",
-                "drupal/tmgmt_file": "*",
-                "drupal/tmgmt_language_combination": "*",
-                "drupal/tmgmt_local": "*",
-                "drupal/tmgmt_locale": "*",
-                "drupal/toolbar": "*",
-                "drupal/webform": "6.1.x-dev || 6.2.x-dev || 6.3.x-dev"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.19",
-                    "datestamp": "1787835959",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
-                },
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "miro_dietiker",
-                    "homepage": "https://www.drupal.org/user/227761"
-                }
-            ],
-            "description": "Translation Management Tool",
-            "homepage": "https://www.drupal.org/project/tmgmt",
-            "support": {
-                "source": "https://git.drupalcode.org/project/tmgmt"
             }
         },
         {

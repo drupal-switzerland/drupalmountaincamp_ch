@@ -8,7 +8,6 @@
 declare(strict_types=1);
 
 use Drupal\blokkli_starterkit\RokkaFileMigration;
-use Drupal\blokkli_starterkit\TmgmtCleanup;
 
 /**
  * Replaces German interface text defaults stored as English with English.
@@ -71,24 +70,15 @@ function blokkli_starterkit_post_update_move_rokka_files_to_public(): string {
 }
 
 /**
- * Deletes the TMGMT translation jobs so that TMGMT can be uninstalled.
- *
- * The configuration import that follows this update uninstalls TMGMT.
+ * Implements hook_removed_post_updates().
  */
-function blokkli_starterkit_post_update_delete_tmgmt_jobs(array &$sandbox): string {
-  return \Drupal::classResolver(TmgmtCleanup::class)->deleteJobs($sandbox);
-}
-
-/**
- * Deletes the schema version that the removed module tmgmt_deepl left behind.
- */
-function blokkli_starterkit_post_update_delete_tmgmt_deepl_schema_version(): string {
-  return \Drupal::classResolver(TmgmtCleanup::class)->deleteDeeplSchemaVersion();
-}
-
-/**
- * Deletes the English overrides of TMGMT's configuration.
- */
-function blokkli_starterkit_post_update_delete_tmgmt_english_overrides(): string {
-  return \Drupal::classResolver(TmgmtCleanup::class)->deleteEnglishOverrides();
+function blokkli_starterkit_removed_post_updates(): array {
+  // They uninstalled TMGMT (#397). Core blocks updates on a database that has
+  // not run them, which still has TMGMT installed.
+  $removedIn = 'the removal of drupal/tmgmt';
+  return [
+    'blokkli_starterkit_post_update_delete_tmgmt_jobs' => $removedIn,
+    'blokkli_starterkit_post_update_delete_tmgmt_deepl_schema_version' => $removedIn,
+    'blokkli_starterkit_post_update_delete_tmgmt_english_overrides' => $removedIn,
+  ];
 }
