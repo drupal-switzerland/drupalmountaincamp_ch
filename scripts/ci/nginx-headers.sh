@@ -160,6 +160,21 @@ expect_status() {
   fi
 }
 
+# expect_backend <host> <path> <drupal|frontend|disk>: who answered.
+expect_backend() {
+  local host="$1" path="$2" expected="$3" body actual
+  body="$(curl -sS -H "Host: $host" "$BASE_URL$path")"
+  case "$body" in
+    drupal\ *) actual=drupal ;;
+    frontend\ *) actual=frontend ;;
+    *) actual=disk ;;
+  esac
+  echo "--- backend | $host$path -> $actual"
+  if [[ "$REPORT_ONLY" != true ]]; then
+    expect "backend of $path" "$actual" "$expected"
+  fi
+}
+
 # expect_redirect <host> <path> <expected Location>
 expect_redirect() {
   local host="$1" path="$2" expected="$3" actual
@@ -187,8 +202,10 @@ PUBLIC_PATHS=(
   / /program /news /user-guide /users /administration /admin-team /batch-of-news
   /cronjobs /node/123 /taxonomy/term/5 /de/news /de/user-guide /media/7
   /core/misc/drupal.js /sites/default/files/photo.png /sitemap.xml /graphql
+  /system/files/ai-explorers/x.png /de/system/files/styles/large/private/x.jpg
+  /system/files/doc.pdf
 )
-SVG_PATHS=(/sites/default/files/icon.svg /media/7/icon)
+SVG_PATHS=(/sites/default/files/icon.svg /media/7/icon /system/files/x.svg /fr/system/files/x.svgz)
 
 run_environment() {
   local environment_type="$1" public_robots="$2" admin_robots="$3"
@@ -219,6 +236,19 @@ run_environment() {
   for path in /article /articles/x /sponsors /tickets-2025; do
     expect_status "$PUBLIC_HOST" "$path" 200
   done
+  # Private files are not on disk; Drupal serves them whatever the extension.
+  for path in /system/files/ai-explorers/x.png /system/files/ai-explorers/x.mp4 \
+    /de/system/files/styles/large/private/x.jpg /fr/system/files/x.svg \
+    /system/files/doc.pdf /system/files/notes.txt; do
+    expect_backend "$PUBLIC_HOST" "$path" drupal
+  done
+  # Assets not on disk still go to Nuxt; files on disk are served by nginx.
+  for path in /_nuxt/app.js /news/system/files/x.png /systems/files/x.png; do
+    expect_backend "$PUBLIC_HOST" "$path" frontend
+  done
+  expect_backend "$PUBLIC_HOST" /core/misc/drupal.js disk
+  expect_backend "$PUBLIC_HOST" /sites/default/files/photo.png disk
+  expect_status "$PUBLIC_HOST" /system/files/.htaccess 403
 }
 
 # Production: only the admin paths are kept out of search engines.
