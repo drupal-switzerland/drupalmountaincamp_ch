@@ -158,6 +158,42 @@ describe('speaker card', () => {
     expect(format?.nextElementSibling?.textContent).toContain('Session title')
   })
 
+  it('puts the format as a badge over the photo, without changing the reading order', async () => {
+    const wrapper = await mountCard({ ...filled, format: 'Keynote' })
+    const badge = wrapper.get('h3').element.nextElementSibling as HTMLElement
+
+    expect(badge.textContent?.trim()).toBe('Keynote')
+    expect(badge.closest('a, button')).toBeNull()
+    expect([...badge.classList]).toEqual(
+      expect.arrayContaining([
+        'absolute',
+        'rounded-full',
+        'bg-primary-500',
+        'text-white',
+        'uppercase',
+      ]),
+    )
+    // Positioned against the card, whose first child is the photo.
+    expect(wrapper.get('article').classes()).toContain('relative')
+    expect(
+      wrapper.get('article').element.firstElementChild?.querySelector('img'),
+    ).not.toBeNull()
+  })
+
+  it('shows the format inline under the name on a card without a photo', async () => {
+    const wrapper = await mountCard({
+      ...filled,
+      image: undefined,
+      format: 'Keynote',
+    })
+    const format = wrapper.get('h3').element.nextElementSibling as HTMLElement
+
+    expect(format.textContent?.trim()).toBe('Keynote')
+    expect([...format.classList]).not.toContain('absolute')
+    expect([...format.classList]).not.toContain('bg-primary-500')
+    expect([...format.classList]).toContain('text-primary-500')
+  })
+
   it('shows a format without a session title, as for a fireside chat', async () => {
     const wrapper = await mountCard({
       name: 'Speaker name',
@@ -172,13 +208,14 @@ describe('speaker card', () => {
   })
 
   it.each([undefined, '   '])(
-    'renders no format line for the format %j',
+    'renders no format line and no empty badge for the format %j',
     async (format) => {
       const wrapper = await mountCard({ ...filled, format })
 
       expect(
         wrapper.get('h3').element.nextElementSibling?.textContent,
       ).toContain('Session title')
+      expect(wrapper.find('p.rounded-full').exists()).toBe(false)
     },
   )
 
@@ -226,20 +263,24 @@ describe('speaker list', () => {
     expect(section.get('h3').text()).toBe('Speaker name')
   })
 
-  it('puts cards three to a row from lg, top-aligned', async () => {
+  it('puts cards three to a row from lg, as tall as the tallest in the row', async () => {
     const wrapper = await mountList('Speakers')
     const grid = wrapper.get('section > div')
+    const article = grid.get('article')
 
     expect(grid.classes()).toEqual(
-      expect.arrayContaining([
-        'grid',
-        'items-start',
-        'sm:grid-cols-2',
-        'lg:grid-cols-3',
-      ]),
+      expect.arrayContaining(['grid', 'sm:grid-cols-2', 'lg:grid-cols-3']),
     )
-    // A full-height card would stretch to the tallest one in its row.
-    expect(grid.get('article').classes()).not.toContain('h-full')
+    // Grid items stretch by default; any of these would undo it.
+    for (const cls of ['items-start', 'items-center', 'items-end']) {
+      expect(grid.classes()).not.toContain(cls)
+    }
+    expect(article.classes()).not.toContain('self-start')
+    // The text area takes the height the stretched card gains.
+    expect(article.classes()).toContain('flex-col')
+    expect(article.get('h3').element.parentElement!.classList).toContain(
+      'flex-1',
+    )
   })
 
   it('renders the same white card for a list saved with the old keynote option', async () => {

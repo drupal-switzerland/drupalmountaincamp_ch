@@ -9,7 +9,7 @@
       :sizes="IMAGE_SIZES"
       hide-caption
     />
-    <div class="flex flex-col gap-2 p-5">
+    <div class="flex flex-1 flex-col gap-2 p-5">
       <component
         :is="heading"
         v-if="hasText(name) || isEditing"
@@ -18,10 +18,17 @@
       >
         {{ name }}
       </component>
+      <!-- Follows the name in the DOM, so it is read after it; with a photo
+           it is placed over the photo's top left corner. -->
       <p
         v-if="hasText(format) || isEditing"
         v-blokkli-editable:field_label
-        class="text-sm font-bold uppercase tracking-wide text-primary-500"
+        class="text-sm font-bold uppercase tracking-wide"
+        :class="
+          image
+            ? 'absolute left-3 top-3 rounded-full bg-primary-500 px-3 py-1 text-white'
+            : 'text-primary-500'
+        "
       >
         {{ format }}
       </p>
