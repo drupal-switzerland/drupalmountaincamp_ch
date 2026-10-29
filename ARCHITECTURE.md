@@ -25,6 +25,7 @@ directory layout is in [AGENTS.md](AGENTS.md).
 | `/article/<slug>`                                                | 301 to `/news/<slug>`           |
 | Dotfiles except `/.well-known`                                   | Denied                          |
 | Files ending in `md`, `txt`, `yml`, `yaml`, `lock`, `dist`       | Denied, with exemptions (below) |
+| `/system/files/` (private files), also with a language prefix    | Drupal                          |
 | `update.php`, `core/install.php` and other `.php` entry points   | 404                             |
 | `/graphql`                                                       | Drupal                          |
 | The admin and system prefix list (`user`, `admin`, `media`, ...) | Drupal                          |
