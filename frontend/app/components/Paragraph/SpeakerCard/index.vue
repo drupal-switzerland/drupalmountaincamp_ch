@@ -18,16 +18,15 @@
       >
         {{ name }}
       </component>
-      <!-- Follows the name in the DOM, so it is read after it; with a photo
-           it is placed over the photo's top left corner, no wider than the
-           photo, and a long label wraps. -->
+      <!-- After the name in the DOM, so it is read after it, but placed over
+           the photo. -->
       <p
         v-if="hasText(format) || isEditing"
         v-blokkli-editable:field_label
         class="text-sm font-bold uppercase tracking-wide"
         :class="
-          image
-            ? 'absolute left-3 right-3 top-3 w-fit rounded-2xl bg-primary-500 px-3 py-1 text-white'
+          hasPhoto
+            ? 'absolute end-3 start-3 top-3 w-fit rounded-2xl bg-primary-500 px-3 py-1 text-white'
             : 'text-primary-500'
         "
       >
@@ -98,6 +97,8 @@ const heading = inject(
   computed(() => 'h3' as const),
 )
 
+// MediaImage renders the photo only when the media has a file.
+const hasPhoto = computed(() => !!props.image?.image)
 const href = computed(() => props.link?.uri?.path || '')
 const isExternal = computed(() => /^https?:\/\//.test(href.value))
 

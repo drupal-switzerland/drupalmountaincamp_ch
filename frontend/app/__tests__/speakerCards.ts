@@ -188,7 +188,7 @@ describe('speaker card', () => {
     expect(badge.textContent?.trim()).toBe(label)
     // Inset on both sides, as wide as its text up to that.
     expect([...badge.classList]).toEqual(
-      expect.arrayContaining(['left-3', 'right-3', 'w-fit']),
+      expect.arrayContaining(['start-3', 'end-3', 'w-fit']),
     )
     for (const cls of ['truncate', 'whitespace-nowrap', 'overflow-hidden']) {
       expect([...badge.classList]).not.toContain(cls)
@@ -206,6 +206,20 @@ describe('speaker card', () => {
     expect(format.textContent?.trim()).toBe('Keynote')
     expect([...format.classList]).not.toContain('absolute')
     expect([...format.classList]).not.toContain('bg-primary-500')
+    expect([...format.classList]).toContain('text-primary-500')
+  })
+
+  it('shows the format inline when the media has no file to show', async () => {
+    const wrapper = await mountCard({
+      ...filled,
+      image: { image: null },
+      format: 'Keynote',
+    })
+    const format = wrapper.get('h3').element.nextElementSibling as HTMLElement
+
+    expect(wrapper.find('img').exists()).toBe(false)
+    expect(format.textContent?.trim()).toBe('Keynote')
+    expect([...format.classList]).not.toContain('absolute')
     expect([...format.classList]).toContain('text-primary-500')
   })
 
