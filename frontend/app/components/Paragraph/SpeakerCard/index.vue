@@ -19,14 +19,15 @@
         {{ name }}
       </component>
       <!-- Follows the name in the DOM, so it is read after it; with a photo
-           it is placed over the photo's top left corner. -->
+           it is placed over the photo's top left corner, no wider than the
+           photo, and a long label wraps. -->
       <p
         v-if="hasText(format) || isEditing"
         v-blokkli-editable:field_label
         class="text-sm font-bold uppercase tracking-wide"
         :class="
           image
-            ? 'absolute left-3 top-3 rounded-full bg-primary-500 px-3 py-1 text-white'
+            ? 'absolute left-3 right-3 top-3 w-fit rounded-2xl bg-primary-500 px-3 py-1 text-white'
             : 'text-primary-500'
         "
       >

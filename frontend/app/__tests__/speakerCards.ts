@@ -167,7 +167,7 @@ describe('speaker card', () => {
     expect([...badge.classList]).toEqual(
       expect.arrayContaining([
         'absolute',
-        'rounded-full',
+        'rounded-2xl',
         'bg-primary-500',
         'text-white',
         'uppercase',
@@ -178,6 +178,21 @@ describe('speaker card', () => {
     expect(
       wrapper.get('article').element.firstElementChild?.querySelector('img'),
     ).not.toBeNull()
+  })
+
+  it('keeps a long format inside the photo and lets it wrap', async () => {
+    const label = 'Panel discussion with community leaders'
+    const wrapper = await mountCard({ ...filled, format: label })
+    const badge = wrapper.get('h3').element.nextElementSibling as HTMLElement
+
+    expect(badge.textContent?.trim()).toBe(label)
+    // Inset on both sides, as wide as its text up to that.
+    expect([...badge.classList]).toEqual(
+      expect.arrayContaining(['left-3', 'right-3', 'w-fit']),
+    )
+    for (const cls of ['truncate', 'whitespace-nowrap', 'overflow-hidden']) {
+      expect([...badge.classList]).not.toContain(cls)
+    }
   })
 
   it('shows the format inline under the name on a card without a photo', async () => {
@@ -215,7 +230,7 @@ describe('speaker card', () => {
       expect(
         wrapper.get('h3').element.nextElementSibling?.textContent,
       ).toContain('Session title')
-      expect(wrapper.find('p.rounded-full').exists()).toBe(false)
+      expect(wrapper.find('p.rounded-2xl').exists()).toBe(false)
     },
   )
 
