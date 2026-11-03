@@ -99,6 +99,8 @@ import {
 const props = defineProps<{
   /** Puts the tall peak on the right instead of the left. */
   mirrored?: boolean
+  /** Shows the phone crop at every width: a band whose height follows the width. */
+  cropped?: boolean
 }>()
 
 const MIRROR = `translate(${RIDGE_SIZE.width},0) scale(-1,1)`
@@ -108,18 +110,20 @@ const uid = useId().replace(/[^a-zA-Z0-9-]/g, '-')
 // Wide screens show the whole drawing; phones crop the empty sky above the
 // ridge. "slice" scales the drawing to the width and keeps its bottom edge,
 // so the crop's height follows the width (RIDGE_NARROW_HEIGHT).
-const crops = computed(() => [
-  {
-    key: 'wide',
-    aspect: 'xMidYMid meet',
-    class: 'hidden h-auto xs:block',
-  },
-  {
+const crops = computed(() => {
+  const narrow = {
     key: 'narrow',
     aspect: props.mirrored ? 'xMaxYMax slice' : 'xMinYMax slice',
     class: 'block h-[var(--ridge-height-narrow)] xs:hidden',
-  },
-])
+  }
+  if (props.cropped) {
+    return [{ ...narrow, class: 'block h-[var(--ridge-height-narrow)]' }]
+  }
+  return [
+    { key: 'wide', aspect: 'xMidYMid meet', class: 'hidden h-auto xs:block' },
+    narrow,
+  ]
+})
 
 function refId(crop: string, part: string) {
   return `${uid}-${crop}-${part}`

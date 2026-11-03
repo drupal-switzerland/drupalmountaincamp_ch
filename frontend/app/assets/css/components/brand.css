@@ -181,6 +181,12 @@
     }
   }
 
+  /* The lead's buttons sit centred: an even gap on both sides instead of the
+     rich text's right margin. */
+  .ck-content.home-hero-lead a.button {
+    @apply mx-[0.375rem];
+  }
+
   /* Both layers sit under the ridge and the text, in the box under the title
      row, so the blue starts there however the title wraps. */
   .home-hero-rise,
@@ -308,23 +314,21 @@
       no-repeat;
   }
 
-  /* Ice with 3% sky: where the inner-page hero's sky ends and .snow-blocks
-     begins (helpers/heroSky). */
-  .page-hero,
-  .snow-blocks {
+  /* Ice with 3% sky: where the inner-page hero's sky ends, behind its ridge
+     (helpers/heroSky). */
+  .page-hero {
     --sky-handover: #c7ebf8;
   }
 
-  /* Under the inner-page hero the sky keeps getting lighter: from the
-     handover colour to ice around the middle of the first block, then the
-     homepage's tint and white. Sized, not stopped in px, so a page shorter
-     than the fade still ends in white. */
+  /* Under the inner-page hero's ridge the snow keeps getting lighter: from
+     the ridge's ice to the homepage's tint and white. Sized, not stopped in
+     px, so a page shorter than the fade still ends in white. */
   .snow-blocks {
     --snow-fade-height: clamp(720px, 640px + 12vw, 840px);
     /* Keeps the first block's top margin inside, so no white gap shows. */
     display: flow-root;
     background: linear-gradient(
-        var(--sky-handover) 0,
+        theme(colors.brand.ice) 0,
         theme(colors.brand.ice) 18%,
         theme(colors.brand.tint) 62%,
         theme(colors.white) 100%
@@ -376,57 +380,13 @@
     }
   }
 
-  /* The conference theme as a lift ticket: a blue stub, a dashed tear line
-     and two punched notches, all decoration. Text pairs: white on blue,
-     navy on white. The box is the container, so the ticket stacks when the
-     space is too narrow for one row: at 320px or with large text. */
-  .theme-ticket-box {
-    container-type: inline-size;
-  }
+  /* The conference theme under a page title, in the heading face. Sizes are
+     set where it is used. Ice on the dark heroes, brand blue on white. */
+  .theme-line {
+    @apply font-heading font-bold leading-[1.05] text-primary-400 [text-wrap:balance];
 
-  .theme-ticket {
-    --theme-ticket-notch: 7px;
-    @apply inline-flex max-w-full overflow-hidden rounded-[10px] bg-white font-bold leading-snug text-primary-500 md:text-lg;
-    /* The white ticket needs an edge on a white page. */
-    border: 2px solid theme(colors.brand.navy);
-    background-clip: padding-box;
-    mask:
-      radial-gradient(
-          circle var(--theme-ticket-notch) at 0 50%,
-          transparent 98%,
-          #000
-        )
-        left / 51% 100% no-repeat,
-      radial-gradient(
-          circle var(--theme-ticket-notch) at 100% 50%,
-          transparent 98%,
-          #000
-        )
-        right / 51% 100% no-repeat;
-
-    /* :where keeps forced colours, which set the edge, in charge. */
     :where(.on-dark) & {
-      border-color: transparent;
-    }
-  }
-
-  .theme-ticket-stub {
-    @apply flex items-center bg-primary-400 py-2 pl-5 pr-4 text-sm font-bold uppercase tracking-[0.08em] text-white md:py-[0.625rem];
-    border-right: 2px dashed theme(colors.brand.navy);
-  }
-
-  .theme-ticket-name {
-    @apply py-2 pl-4 pr-5 md:py-[0.625rem];
-  }
-
-  @container (max-width: 22rem) {
-    .theme-ticket {
-      @apply flex w-full flex-col;
-    }
-
-    .theme-ticket-stub {
-      border-right: 0;
-      border-bottom: 2px dashed theme(colors.brand.navy);
+      @apply text-primary-100;
     }
   }
 
@@ -438,12 +398,6 @@
 
     .brand-strip {
       background: CanvasText;
-    }
-
-    /* The mask would cut the outline at the notches. */
-    .theme-ticket {
-      border-color: CanvasText;
-      mask: none;
     }
   }
 }

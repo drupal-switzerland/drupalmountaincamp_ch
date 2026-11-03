@@ -2,32 +2,25 @@
   <section aria-labelledby="home-hero-title" class="relative">
     <div class="on-dark home-hero relative isolate overflow-hidden text-white">
       <div
-        class="container !my-0 flex flex-col gap-5 pt-6 xs:gap-6 xs:pt-12 md:pt-20"
+        class="container !my-0 flex flex-col items-center gap-4 pt-6 text-center xs:gap-5 xs:pt-12 md:pt-20"
       >
-        <p
-          class="label self-start rounded-full border-2 border-primary-100 px-4 py-1"
-        >
+        <BrandSparkles class="w-14 text-white xs:w-16 md:w-24 lg:w-28" />
+        <p class="label">
           {{ $texts('hero.badge', '10 years of community') }}
         </p>
-        <!-- The plus marks share the title's row so they line up with it at every width. -->
-        <div class="flex items-center justify-between gap-4 md:gap-10">
-          <h1
-            id="home-hero-title"
-            v-blokkli-editable:title
-            class="shrink-[9999] text-[length:min(2.5rem,12.5vw)] leading-none xs:text-6xl md:text-7xl lg:text-8xl"
-          >
-            {{ titleParts.name }}
-            <span v-if="titleParts.year" class="text-primary-300">
-              {{ titleParts.year }}
-            </span>
-          </h1>
-          <div class="page-marks-box w-14 xs:w-24 md:w-36 lg:w-40">
-            <BrandSparkles class="w-full text-white" />
-          </div>
-        </div>
-        <ThemeTicket />
+        <h1
+          id="home-hero-title"
+          v-blokkli-editable:title
+          class="max-w-full text-[length:min(2.5rem,12.5vw)] leading-none [text-wrap:balance] xs:text-6xl md:text-7xl lg:text-8xl"
+        >
+          {{ titleParts.name }}
+          <span v-if="titleParts.year" class="text-primary-300">
+            {{ titleParts.year }}
+          </span>
+        </h1>
+        <ThemeLine class="text-3xl xs:text-5xl md:text-6xl lg:text-[5rem]" />
       </div>
-      <!-- Everything under the title row: the box the blue rises in. -->
+      <!-- Everything under the theme line: the box the blue rises in. -->
       <div class="relative">
         <span class="home-hero-rise" aria-hidden="true" />
         <span class="home-hero-horizon" aria-hidden="true" />
@@ -39,7 +32,7 @@
           <div
             v-if="lead"
             v-blokkli-editable:field_lead
-            class="ck-content is-small home-hero-lead mt-5 max-w-2xl text-base xs:mt-6 md:text-2xl"
+            class="ck-content is-small home-hero-lead mx-auto mt-5 max-w-2xl text-center text-base xs:mt-6 md:text-2xl"
             v-html="lead"
           />
         </div>

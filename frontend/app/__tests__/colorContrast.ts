@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import config, { brand, colors } from '../../tailwind.config'
-import { HERO_GLOW, blendHeroGlowOver } from '../helpers/heroGlow'
 import { SKY_HANDOVER } from '../helpers/heroSky'
 
 const WHITE = '#FFFFFF'
@@ -67,62 +66,15 @@ const pairs: [string, string, string, number][] = [
   ['body text on tint', colors.gray[900], brand.tint, AA_TEXT],
   ['link text on ice', colors.link.DEFAULT, brand.ice, AA_TEXT],
   ['link hover text on ice', colors.link.hover, brand.ice, AA_TEXT],
-  // The top of the first block can sit on the hero's handover colour, the
-  // darkest background the page content reaches.
-  ['body text on the sky handover', colors.gray[900], SKY_HANDOVER, AA_TEXT],
-  ['navy heading on the sky handover', brand.navy, SKY_HANDOVER, AA_TEXT],
-  [
-    'blue label and link on the sky handover',
-    brand.blue,
-    SKY_HANDOVER,
-    AA_TEXT,
-  ],
-  [
-    'gray-600 caption on the sky handover',
-    colors.gray[600],
-    SKY_HANDOVER,
-    AA_TEXT,
-  ],
-  [
-    'navy focus outline on the sky handover',
-    brand.navy,
-    SKY_HANDOVER,
-    AA_NON_TEXT,
-  ],
-  ['table border on the sky handover', TABLE_BORDER, SKY_HANDOVER, AA_NON_TEXT],
-  // Inner-page hero. The glow is painted behind the text, so text sits on the
-  // gradient blended with the glow: the title anywhere, the ice lead and
-  // breadcrumb only over the navy part (see the rejected pair below).
+  ['navy focus outline on ice', brand.navy, brand.ice, AA_NON_TEXT],
+  ['table border on ice', TABLE_BORDER, brand.ice, AA_NON_TEXT],
+  // Inner-page hero: text on its gradient, from navy to brand blue.
   ['ice lead text on blue', brand.ice, brand.blue, AA_TEXT],
-  [
-    'white title on glow over navy',
-    WHITE,
-    blendHeroGlowOver(brand.navy),
-    AA_LARGE_TEXT,
-  ],
-  [
-    'white title on glow over blue',
-    WHITE,
-    blendHeroGlowOver(brand.blue),
-    AA_LARGE_TEXT,
-  ],
-  [
-    'ice lead text on glow over navy',
-    brand.ice,
-    blendHeroGlowOver(brand.navy),
-    AA_TEXT,
-  ],
-  // Theme ticket: white stub text on blue, navy theme on the white ticket,
-  // and the ticket's edge on the hero (glow included) and on a white page.
-  ['theme ticket stub text', WHITE, brand.blue, AA_TEXT],
-  ['theme ticket name text', brand.navy, WHITE, AA_TEXT],
-  [
-    'theme ticket on glow over blue',
-    WHITE,
-    blendHeroGlowOver(brand.blue),
-    AA_NON_TEXT,
-  ],
-  ['theme ticket edge on white', brand.navy, WHITE, AA_NON_TEXT],
+  ['white title on blue', WHITE, brand.blue, AA_LARGE_TEXT],
+  // Theme line: ice on the dark heroes, brand blue on a white press release.
+  ['theme line on navy', brand.ice, brand.navy, AA_TEXT],
+  ['theme line on blue', brand.ice, brand.blue, AA_TEXT],
+  ['theme line on white', brand.blue, WHITE, AA_TEXT],
 ]
 
 describe('brand colour contrast', () => {
@@ -134,23 +86,11 @@ describe('brand colour contrast', () => {
     expect(contrast(brand.sky, WHITE)).toBeLessThan(AA_TEXT)
   })
 
-  // The lead must stay clear of the glow's centre near the gradient's blue
-  // end; PageHero keeps the glow on the title row for that reason.
-  it('rejects ice lead text on the glow over blue', () => {
-    expect(contrast(brand.ice, blendHeroGlowOver(brand.blue))).toBeLessThan(
-      AA_TEXT,
-    )
-  })
-
   it('uses the tested handover colour in the stylesheet', () => {
     const css = readFileSync(
       join(process.cwd(), 'app/assets/css/components/brand.css'),
       'utf8',
     )
     expect(css.toUpperCase()).toContain(`--SKY-HANDOVER: ${SKY_HANDOVER}`)
-  })
-
-  it('draws the hero glow in brand sky', () => {
-    expect(HERO_GLOW.color).toBe(brand.sky)
   })
 })

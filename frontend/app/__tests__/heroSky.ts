@@ -443,17 +443,42 @@ describe('homepage hero text on what the layers put behind it', () => {
 describe('hero bottom edge at fractional device pixel ratios', () => {
   it('ends the dark base above the edge and backs the edge row with the next colour', () => {
     expect(PAGE_HERO).toMatch(
-      /\.brand-hero\.page-hero \{\s*background: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--sky-handover\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
+      /\.brand-hero\.page-hero \{\s*background: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--page-hero-edge-colour\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
     )
-    expect(PAGE_HERO).toContain('--page-hero-edge-colour: var(--sky-handover);')
+    expect(PAGE_HERO).toContain(
+      '--page-hero-edge-colour: theme(colors.brand.ice);',
+    )
     expect(BRAND_CSS).toMatch(
       /top \/ 100% calc\(100% - var\(--home-hero-edge\)\) no-repeat\s*theme\(colors\.brand\.ice\);\s*box-shadow: 0 var\(--home-hero-backdrop\) 0 theme\(colors\.brand\.ice\);/,
     )
   })
+})
 
-  it('backs a hero that meets a dark band with navy', () => {
+describe('inner-page ridge', () => {
+  const RIDGE = read('app/components/BrandRidge/index.vue')
+
+  it('stands at the bottom of every inner-page hero', () => {
+    expect(PAGE_HERO).toContain('<BrandRidge mirrored cropped')
     expect(PAGE_HERO).toMatch(
-      /:is\(\.navy-band, \.week-band\):first-child\s*\) \{\s*--page-hero-fade: 0px;\s*--page-hero-edge-colour: theme\(colors\.brand\.navy\);/,
+      /\.page-hero-ridge \{\s*@apply absolute inset-x-0 bottom-0;/,
+    )
+    // No band below the hero switches the ridge off.
+    expect(PAGE_HERO).not.toContain(':has(')
+  })
+
+  // The zone below the lead is as tall as the cropped ridge, so the ridge
+  // never reaches up over the lead.
+  it('sizes the zone below the lead to the cropped ridge', () => {
+    expect(PAGE_HERO).toContain('--page-hero-fade: var(--ridge-height-narrow);')
+    expect(PAGE_HERO.match(/--page-hero-fade:/g)).toHaveLength(1)
+    expect(RIDGE).toContain(
+      "return [{ ...narrow, class: 'block h-[var(--ridge-height-narrow)]' }]",
+    )
+  })
+
+  it('starts the blocks below in the ridge colour', () => {
+    expect(BRAND_CSS).toMatch(
+      /\.snow-blocks \{[^}]*background: linear-gradient\(\s*theme\(colors\.brand\.ice\) 0,/,
     )
   })
 })
