@@ -8,7 +8,7 @@ import blokkliDrupal from '@blokkli/editor/drupal'
 import { runtimeConfig } from './config/runtimeConfig'
 import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
-import { SITE_TITLE } from './app/helpers/site'
+import { SITE_DESCRIPTION, SITE_TITLE } from './app/helpers/site'
 
 const ONE_YEAR = 31_536_000
 const ONE_DAY = 60 * 60 * 24
@@ -91,8 +91,7 @@ export default defineNuxtConfig({
         },
         {
           name: 'description',
-          content:
-            'Mountain Camp 2027 is the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
+          content: SITE_DESCRIPTION,
         },
       ],
     },
