@@ -25,6 +25,7 @@
             <BrandSparkles class="w-full text-white" />
           </div>
         </div>
+        <ThemeTicket />
       </div>
       <!-- Everything under the title row: the box the blue rises in. -->
       <div class="relative">

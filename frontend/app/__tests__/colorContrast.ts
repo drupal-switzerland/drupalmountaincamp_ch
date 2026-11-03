@@ -112,6 +112,17 @@ const pairs: [string, string, string, number][] = [
     blendHeroGlowOver(brand.navy),
     AA_TEXT,
   ],
+  // Theme ticket: white stub text on blue, navy theme on the white ticket,
+  // and the ticket's edge on the hero (glow included) and on a white page.
+  ['theme ticket stub text', WHITE, brand.blue, AA_TEXT],
+  ['theme ticket name text', brand.navy, WHITE, AA_TEXT],
+  [
+    'theme ticket on glow over blue',
+    WHITE,
+    blendHeroGlowOver(brand.blue),
+    AA_NON_TEXT,
+  ],
+  ['theme ticket edge on white', brand.navy, WHITE, AA_NON_TEXT],
 ]
 
 describe('brand colour contrast', () => {

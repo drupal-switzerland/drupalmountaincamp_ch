@@ -5,6 +5,7 @@
     <div class="grid-container my-0 py-10 md:py-16 lg:py-20">
       <div class="grid-container-8 flex flex-col gap-3 md:gap-4">
         <Breadcrumb :links="breadcrumb" :current-title="title" variant="hero" />
+        <ThemeTicket />
         <!-- The plus marks share the title's row so they line up with it at every width. -->
         <div class="flex items-center justify-between gap-4 md:gap-10">
           <slot name="title" :title-class="TITLE_CLASS">

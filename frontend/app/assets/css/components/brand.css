@@ -376,6 +376,60 @@
     }
   }
 
+  /* The conference theme as a lift ticket: a blue stub, a dashed tear line
+     and two punched notches, all decoration. Text pairs: white on blue,
+     navy on white. The box is the container, so the ticket stacks when the
+     space is too narrow for one row: at 320px or with large text. */
+  .theme-ticket-box {
+    container-type: inline-size;
+  }
+
+  .theme-ticket {
+    --theme-ticket-notch: 7px;
+    @apply inline-flex max-w-full overflow-hidden rounded-[10px] bg-white font-bold leading-snug text-primary-500 md:text-lg;
+    /* The white ticket needs an edge on a white page. */
+    border: 2px solid theme(colors.brand.navy);
+    background-clip: padding-box;
+    mask:
+      radial-gradient(
+          circle var(--theme-ticket-notch) at 0 50%,
+          transparent 98%,
+          #000
+        )
+        left / 51% 100% no-repeat,
+      radial-gradient(
+          circle var(--theme-ticket-notch) at 100% 50%,
+          transparent 98%,
+          #000
+        )
+        right / 51% 100% no-repeat;
+
+    /* :where keeps forced colours, which set the edge, in charge. */
+    :where(.on-dark) & {
+      border-color: transparent;
+    }
+  }
+
+  .theme-ticket-stub {
+    @apply flex items-center bg-primary-400 py-2 pl-5 pr-4 text-sm font-bold uppercase tracking-[0.08em] text-white md:py-[0.625rem];
+    border-right: 2px dashed theme(colors.brand.navy);
+  }
+
+  .theme-ticket-name {
+    @apply py-2 pl-4 pr-5 md:py-[0.625rem];
+  }
+
+  @container (max-width: 22rem) {
+    .theme-ticket {
+      @apply flex w-full flex-col;
+    }
+
+    .theme-ticket-stub {
+      border-right: 0;
+      border-bottom: 2px dashed theme(colors.brand.navy);
+    }
+  }
+
   /* Forced colours drop backgrounds, which would erase gradient edges. */
   @media (forced-colors: active) {
     .gradient-border {
@@ -384,6 +438,12 @@
 
     .brand-strip {
       background: CanvasText;
+    }
+
+    /* The mask would cut the outline at the notches. */
+    .theme-ticket {
+      border-color: CanvasText;
+      mask: none;
     }
   }
 }
