@@ -51,4 +51,22 @@ describe('theme ticket', () => {
       /\.theme-ticket-stub\s*{\s*background: none !important;/,
     )
   })
+
+  // The landing image hero's overlay sizes to its title, which squeezed and
+  // clipped the ticket.
+  it('stays off the landing image hero', () => {
+    expect(source('components/Node/Page/Landing/index.vue')).not.toContain(
+      '<ThemeTicket',
+    )
+  })
+
+  it('lets forced colours outline the ticket on dark heroes', () => {
+    const css = source('assets/css/components/brand.css')
+    const darkEdge = css.indexOf(':where(.on-dark) & {')
+
+    expect(darkEdge).toBeGreaterThan(-1)
+    expect(css.indexOf('@media (forced-colors: active)')).toBeGreaterThan(
+      darkEdge,
+    )
+  })
 })
