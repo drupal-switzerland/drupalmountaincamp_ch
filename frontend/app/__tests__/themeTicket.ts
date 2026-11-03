@@ -27,7 +27,6 @@ describe('theme ticket', () => {
     'components/HomeHero/index.vue',
     'components/PageHero/index.vue',
     'components/Node/PressRelease/index.vue',
-    'components/Node/Page/Landing/index.vue',
   ])('is shown in %s', (path) => {
     expect(source(path)).toContain('<ThemeTicket')
   })
@@ -39,6 +38,17 @@ describe('theme ticket', () => {
     expect(css).toContain('@container (max-width: 22rem)')
     expect(css).toMatch(
       /forced-colors: active[\s\S]*\.theme-ticket\s*{\s*border-color: CanvasText;\s*mask: none;/,
+    )
+  })
+
+  it('prints the stub label navy without its blue fill', () => {
+    const css = source('assets/css/components/print.css')
+
+    expect(css).toMatch(
+      /\.theme-ticket-stub\s*{\s*color: theme\(colors\.brand\.navy\) !important;/,
+    )
+    expect(css).toMatch(
+      /\.theme-ticket-stub\s*{\s*background: none !important;/,
     )
   })
 })

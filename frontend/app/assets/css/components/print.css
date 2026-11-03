@@ -1,5 +1,6 @@
 /* On paper, sections that are light text on a dark fill on screen become navy
-   text on white. Both halves are needed: browsers drop backgrounds unless the
+   text on white, and so does the theme ticket's stub on white pages. Both
+   halves are needed: browsers drop backgrounds unless the
    reader ticks "Background graphics", so the text has to turn dark, and when
    the reader does tick it the dark fills must not come back under that text.
    The rules key on .on-dark, which sits on the element that carries the fill.
@@ -10,7 +11,8 @@
   .on-dark,
   .on-dark *,
   .button.is-filled,
-  .ticket-button {
+  .ticket-button,
+  .theme-ticket-stub {
     color: theme(colors.brand.navy) !important;
   }
 
@@ -24,7 +26,8 @@
   .on-dark *::before,
   .on-dark *::after,
   .button.is-filled,
-  .ticket-button {
+  .ticket-button,
+  .theme-ticket-stub {
     background: none !important;
   }
 
