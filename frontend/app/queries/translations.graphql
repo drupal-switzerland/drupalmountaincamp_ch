@@ -58,6 +58,8 @@ fragment easyTexts on TextsLoader {
   sponsors__title: getText(key: "title", context: "sponsors", default: "Put your brand on top of the world")
   sponsors__titleHighlight: getText(key: "titleHighlight", context: "sponsors", default: "top")
   sponsors__titleThanks: getText(key: "titleThanks", context: "sponsors", default: "Thank you for taking us to the top")
+  theme__label: getText(key: "label", context: "theme", default: "2027 theme")
+  theme__name: getText(key: "name", context: "theme", default: "Humans with AI in the Loop")
   video__load: getText(key: "load", context: "video", default: "Load video")
   video__player: getText(key: "player", context: "video", default: "Video")
 }
