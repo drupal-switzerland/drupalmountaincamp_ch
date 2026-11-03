@@ -6,7 +6,7 @@
   >
     <div class="grid-container">
       <div class="grid-container-8 pb-4">
-        <ThemeTicket class="mb-4" />
+        <ThemeLine class="mb-4 text-2xl md:text-4xl" />
         <p v-if="date" class="font-bold text-primary-500">
           <time v-if="date.value" :datetime="date.value">
             {{ date.formatted }}

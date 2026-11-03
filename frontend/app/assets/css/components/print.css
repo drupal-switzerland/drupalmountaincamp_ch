@@ -1,22 +1,20 @@
 /* On paper, sections that are light text on a dark fill on screen become navy
-   text on white, and so does the theme ticket's stub on white pages. Both
-   halves are needed: browsers drop backgrounds unless the
+   text on white. Both halves are needed: browsers drop backgrounds unless the
    reader ticks "Background graphics", so the text has to turn dark, and when
    the reader does tick it the dark fills must not come back under that text.
    The rules key on .on-dark, which sits on the element that carries the fill.
    Marked !important because they have to win over utilities such as
    text-white and bg-primary-500, which come later in the stylesheet with the
-   same specificity, and over the hero glow's inline background. */
+   same specificity. */
 @media print {
   .on-dark,
   .on-dark *,
   .button.is-filled,
-  .ticket-button,
-  .theme-ticket-stub {
+  .ticket-button {
     color: theme(colors.brand.navy) !important;
   }
 
-  /* Gradients, the heroes' sky layers and glow included. The ridge and the
+  /* Gradients, the heroes' sky layers included. The ridge and the
      plus marks are SVG, not backgrounds: the ridge stays as light art, the
      marks take the text colour. */
   .on-dark,
@@ -26,12 +24,11 @@
   .on-dark *::before,
   .on-dark *::after,
   .button.is-filled,
-  .ticket-button,
-  .theme-ticket-stub {
+  .ticket-button {
     background: none !important;
   }
 
-  /* Borders drawn in white or ice: the hero's pill, outline buttons, rules. */
+  /* Borders drawn in white or ice: outline buttons, rules. */
   .on-dark * {
     border-color: currentColor !important;
   }
