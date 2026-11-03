@@ -109,7 +109,7 @@
     background: var(--brand-hero-gradient);
   }
 
-  /* Shared horizon (helpers/heroSky): navy behind the badge and title, blue
+  /* Shared horizon (helpers/heroSky): navy behind the label, title and theme, blue
      rising behind the lead, sky behind the ridge. Plain navy, not .brand-hero's
      diagonal, because the sky-coloured year only reaches 4.5:1 on navy. */
   .home-hero {
@@ -167,10 +167,10 @@
     }
   }
 
-  /* The box under the title row. Without a lead it is only its padding, and
+  /* The box under the theme line. Without a lead it is only its padding, and
      the wide ridge, which reaches up by --home-hero-overlap, would lift its
-     tall peak over the plus marks. This keeps the peak's top a gap below the
-     title row; with a lead the box is taller than this anyway. */
+     tall peak over the theme. This keeps the peak's top a gap below the
+     theme line; with a lead the box is taller than this anyway. */
   @screen xs {
     .home-hero-body {
       --home-hero-peak-gap: theme(spacing.4);
@@ -187,8 +187,8 @@
     @apply mx-[0.375rem];
   }
 
-  /* Both layers sit under the ridge and the text, in the box under the title
-     row, so the blue starts there however the title wraps. */
+  /* Both layers sit under the ridge and the text, in the box under the theme
+     line, so the blue starts there however the title wraps. */
   .home-hero-rise,
   .home-hero-horizon {
     @apply pointer-events-none absolute inset-x-0 z-[-1] block;
@@ -328,8 +328,7 @@
     /* Keeps the first block's top margin inside, so no white gap shows. */
     display: flow-root;
     background: linear-gradient(
-        theme(colors.brand.ice) 0,
-        theme(colors.brand.ice) 18%,
+        theme(colors.brand.ice) 0 18%,
         theme(colors.brand.tint) 62%,
         theme(colors.white) 100%
       )

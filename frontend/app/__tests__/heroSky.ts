@@ -454,6 +454,14 @@ describe('hero bottom edge at fractional device pixel ratios', () => {
   })
 })
 
+describe('inner-page hero layout', () => {
+  // Centred column: an unstretched breadcrumb grows to its trail's width,
+  // overflows both edges and can no longer scroll to its end.
+  it('stretches the breadcrumb to the column', () => {
+    expect(PAGE_HERO).toMatch(/<Breadcrumb\s+class="self-stretch"/)
+  })
+})
+
 describe('inner-page ridge', () => {
   const RIDGE = read('app/components/BrandRidge/index.vue')
 
@@ -463,7 +471,7 @@ describe('inner-page ridge', () => {
       /\.page-hero-ridge \{\s*@apply absolute inset-x-0 bottom-0;/,
     )
     // No band below the hero switches the ridge off.
-    expect(PAGE_HERO).not.toContain(':has(')
+    expect(PAGE_HERO).not.toMatch(/navy-band|week-band|news-band|theme-band/)
   })
 
   // The zone below the lead is as tall as the cropped ridge, so the ridge
@@ -478,7 +486,7 @@ describe('inner-page ridge', () => {
 
   it('starts the blocks below in the ridge colour', () => {
     expect(BRAND_CSS).toMatch(
-      /\.snow-blocks \{[^}]*background: linear-gradient\(\s*theme\(colors\.brand\.ice\) 0,/,
+      /\.snow-blocks \{[^}]*background: linear-gradient\(\s*theme\(colors\.brand\.ice\) 0 18%,/,
     )
   })
 })

@@ -6,7 +6,13 @@
       <div
         class="grid-container-8 flex flex-col items-center gap-3 text-center md:gap-4"
       >
-        <Breadcrumb :links="breadcrumb" :current-title="title" variant="hero" />
+        <!-- Stretched, so a long trail scrolls in the column instead of growing past it. -->
+        <Breadcrumb
+          class="self-stretch"
+          :links="breadcrumb"
+          :current-title="title"
+          variant="hero"
+        />
         <BrandSparkles class="w-14 text-white xs:w-16 md:w-20 lg:w-24" />
         <slot name="title" :title-class="TITLE_CLASS">
           <h1 :class="TITLE_CLASS">{{ title }}</h1>

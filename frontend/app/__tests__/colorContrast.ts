@@ -86,7 +86,7 @@ describe('brand colour contrast', () => {
     expect(contrast(brand.sky, WHITE)).toBeLessThan(AA_TEXT)
   })
 
-  it('uses the tested handover colour in the stylesheet', () => {
+  it('declares the same handover colour in the stylesheet as in helpers/heroSky', () => {
     const css = readFileSync(
       join(process.cwd(), 'app/assets/css/components/brand.css'),
       'utf8',

@@ -36,11 +36,7 @@ describe('theme line', () => {
       'components/HomeHero/index.vue',
       'components/PageHero/index.vue',
     ]) {
-      const hero = source(path)
-      const title = hero.lastIndexOf('</h1>')
-
-      expect(title, path).toBeGreaterThan(-1)
-      expect(hero.indexOf('<ThemeLine'), path).toBeGreaterThan(title)
+      expect(source(path), path).toMatch(/<\/h1>\s*(<\/slot>\s*)?<ThemeLine/)
     }
   })
 

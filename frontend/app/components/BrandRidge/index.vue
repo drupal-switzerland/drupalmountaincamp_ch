@@ -107,9 +107,10 @@ const MIRROR = `translate(${RIDGE_SIZE.width},0) scale(-1,1)`
 // SVG ids must be unique per instance and safe inside url(#…).
 const uid = useId().replace(/[^a-zA-Z0-9-]/g, '-')
 
-// Wide screens show the whole drawing; phones crop the empty sky above the
-// ridge. "slice" scales the drawing to the width and keeps its bottom edge,
-// so the crop's height follows the width (RIDGE_NARROW_HEIGHT).
+// Wide screens show the whole drawing; phones, and every width when cropped,
+// crop the empty sky above the ridge. "slice" scales the drawing to the width
+// and keeps its bottom edge, so the crop's height follows the width
+// (RIDGE_NARROW_HEIGHT).
 const crops = computed(() => {
   const narrow = {
     key: 'narrow',
