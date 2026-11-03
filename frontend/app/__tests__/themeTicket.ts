@@ -27,6 +27,7 @@ describe('theme ticket', () => {
     'components/HomeHero/index.vue',
     'components/PageHero/index.vue',
     'components/Node/PressRelease/index.vue',
+    'components/Node/Page/Landing/index.vue',
   ])('is shown in %s', (path) => {
     expect(source(path)).toContain('<ThemeTicket')
   })

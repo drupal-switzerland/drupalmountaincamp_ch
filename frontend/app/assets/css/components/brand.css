@@ -404,7 +404,8 @@
         )
         right / 51% 100% no-repeat;
 
-    .on-dark & {
+    /* :where keeps forced colours, which set the edge, in charge. */
+    :where(.on-dark) & {
       border-color: transparent;
     }
   }
