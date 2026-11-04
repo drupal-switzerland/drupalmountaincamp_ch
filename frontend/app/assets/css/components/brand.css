@@ -167,6 +167,10 @@
     }
   }
 
+  .home-hero-screen {
+    min-height: var(--first-screen);
+  }
+
   /* The box under the theme line. Without a lead it is only its padding, and
      the wide ridge, which reaches up by --home-hero-overlap, would lift its
      tall peak over the theme. This keeps the peak's top a gap below the

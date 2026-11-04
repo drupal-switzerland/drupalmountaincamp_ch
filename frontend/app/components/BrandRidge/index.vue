@@ -76,7 +76,7 @@
           :d="RIDGE_OUTLINE"
           fill="none"
           :stroke="RIDGE_COLORS.snow"
-          stroke-width="10"
+          :stroke-width="RIDGE_STROKE_WIDTH"
           stroke-linejoin="round"
         />
       </g>
@@ -93,6 +93,7 @@ import {
   RIDGE_GLINTS,
   RIDGE_OUTLINE,
   RIDGE_SIZE,
+  RIDGE_STROKE_WIDTH,
   RIDGE_VIEWBOX,
 } from '~/helpers/ridge'
 

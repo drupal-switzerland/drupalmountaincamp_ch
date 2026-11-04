@@ -1,10 +1,16 @@
 <template>
-  <section aria-labelledby="home-hero-title" class="relative">
-    <div class="on-dark home-hero relative isolate overflow-hidden text-white">
+  <!-- Fills the first screen, so the page below starts after a scroll. -->
+  <section
+    aria-labelledby="home-hero-title"
+    class="home-hero-screen relative flex flex-col md:bg-primary-100"
+  >
+    <div
+      class="on-dark home-hero relative isolate flex flex-1 flex-col overflow-hidden text-white"
+    >
+      <!-- Auto margin: a taller screen adds navy above the badge. -->
       <div
-        class="container !my-0 flex flex-col items-center gap-4 pt-6 text-center xs:gap-5 xs:pt-12 md:pt-20"
+        class="container !mb-0 !mt-auto flex flex-col items-center gap-4 pt-6 text-center xs:gap-5 xs:pt-12 md:pt-20"
       >
-        <BrandSparkles class="w-14 text-white xs:w-16 md:w-24 lg:w-28" />
         <p class="label">
           {{ $texts('hero.badge', '10 years of community') }}
         </p>
@@ -43,11 +49,21 @@
       </div>
     </div>
 
-    <div class="bg-primary-100 text-primary-500">
+    <!-- From md it sits on the ridge's snow; the section's ice continues it below. -->
+    <div
+      class="relative z-[1] bg-primary-100 text-primary-500 md:mt-[-4.4vw] md:bg-transparent"
+    >
+      <!-- From md one grid: the title block, When and Where are subgrids over
+           its two rows, so labels share a baseline and values share another.
+           Where keeps 12rem when editors lengthen the title. A subgrid takes
+           its own gap, so the dl repeats the column gaps. The narrower md gap
+           keeps the title on one line at 1024px. -->
       <div
-        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:gap-y-2 xs:pb-12 md:grid-cols-[minmax(0,max-content)_minmax(min-content,1fr)_auto] md:items-center md:gap-y-0 md:pb-16 md:pt-8"
+        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:pb-12 md:grid-cols-[minmax(0,max-content)_minmax(0,max-content)_minmax(12rem,1fr)_auto] md:grid-rows-[auto_auto] md:items-baseline md:gap-x-8 md:gap-y-1 md:pb-8 md:pt-0 lg:gap-x-12"
       >
-        <div class="flex flex-col gap-[6px] md:pr-8">
+        <div
+          class="flex flex-col gap-1 md:row-span-2 md:grid md:grid-rows-subgrid md:items-baseline"
+        >
           <p class="label">
             {{ $texts('edition.label', '10th anniversary gathering') }}
           </p>
@@ -56,10 +72,10 @@
           </h2>
         </div>
         <dl
-          class="grid grid-cols-2 border-t border-primary-500 md:flex md:border-t-0"
+          class="grid grid-cols-2 gap-x-4 md:col-span-2 md:row-span-2 md:grid-cols-subgrid md:grid-rows-subgrid md:gap-x-8 lg:gap-x-12"
         >
           <div
-            class="flex flex-col gap-1 py-2 pr-4 md:border-l md:border-primary-500 md:px-8 md:py-1"
+            class="flex flex-col gap-1 md:row-span-2 md:grid md:grid-rows-subgrid md:items-baseline"
           >
             <dt class="label">{{ $texts('edition.whenLabel', 'When') }}</dt>
             <dd class="break-words font-medium md:text-lg">
@@ -67,20 +83,18 @@
             </dd>
           </div>
           <div
-            class="flex flex-col gap-1 border-l border-primary-500 py-2 pl-4 md:px-8 md:py-1"
+            class="flex flex-col gap-1 md:row-span-2 md:grid md:grid-rows-subgrid md:items-baseline"
           >
             <dt class="label">{{ $texts('edition.whereLabel', 'Where') }}</dt>
             <dd class="break-words font-medium md:text-lg">
-              {{
-                $texts('edition.venue', 'Davos Congress Centre, Switzerland')
-              }}
+              {{ $texts('edition.venueShort', 'Davos Congress Centre') }}
             </dd>
           </div>
         </dl>
         <VuepalLink
           v-if="ticketsLink"
           :to="ticketsLink.link.url?.path"
-          class="ticket-button mt-2 min-h-[52px] xs:mt-1 xs:min-h-14"
+          class="ticket-button mt-2 min-h-[52px] xs:mt-1 xs:min-h-14 md:row-span-2 md:mt-0 md:self-center"
         >
           {{ $texts('edition.tickets', 'Get tickets') }}
           <span aria-hidden="true">→</span>
