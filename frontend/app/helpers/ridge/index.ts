@@ -12,7 +12,12 @@ export const RIDGE_OUTLINE =
  * the lower 384 of 540 units, which holds the summit (y 178) and its stroke.
  * Written to --ridge-height-narrow by tailwind.config.
  */
-export const RIDGE_NARROW_HEIGHT = 'max(72px, 20vw)'
+/** The narrow crop's height as a share of the width, in vw. */
+export const RIDGE_NARROW_VW = 20
+export const RIDGE_NARROW_HEIGHT = `max(72px, ${RIDGE_NARROW_VW}vw)`
+
+/** Width of the white outline drawn over the skyline, in drawing units. */
+export const RIDGE_STROKE_WIDTH = 10
 
 /** The lowest point of the skyline inside the box (its y). */
 export const RIDGE_DEEPEST_VALLEY = 431

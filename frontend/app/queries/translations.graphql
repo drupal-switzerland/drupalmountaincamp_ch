@@ -10,6 +10,7 @@ fragment easyTexts on TextsLoader {
   edition__tickets: getText(key: "tickets", context: "edition", default: "Get tickets")
   edition__title: getText(key: "title", context: "edition", default: "Join us for our 6th edition")
   edition__venue: getText(key: "venue", context: "edition", default: "Davos Congress Centre, Switzerland")
+  edition__venueShort: getText(key: "venueShort", context: "edition", default: "Davos Congress Centre")
   edition__whenLabel: getText(key: "whenLabel", context: "edition", default: "When")
   edition__whereLabel: getText(key: "whereLabel", context: "edition", default: "Where")
   error__code: getText(key: "code", context: "error", default: "Error")

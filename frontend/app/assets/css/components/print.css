@@ -33,6 +33,12 @@
     border-color: currentColor !important;
   }
 
+  /* On paper vh is the page box: a first-screen hero would fill a sheet. */
+  .home-hero-screen,
+  .page-hero {
+    min-height: 0 !important;
+  }
+
   /* Without its fill a call to action is plain text; the outline keeps it a button. */
   .ticket-button {
     outline: 2px solid currentColor;

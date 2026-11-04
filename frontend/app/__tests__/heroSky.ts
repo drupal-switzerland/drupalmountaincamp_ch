@@ -5,9 +5,12 @@ import { describe, expect, it } from 'vitest'
 import { brand, colors } from '../../tailwind.config'
 import {
   RIDGE_DEEPEST_VALLEY,
+  RIDGE_NARROW_VW,
   RIDGE_OUTLINE,
   RIDGE_SIZE,
+  RIDGE_STROKE_WIDTH,
 } from '../helpers/ridge'
+import { SCREENS } from '../tailwind/screens'
 import {
   SKY_HANDOVER_FROM,
   SKY_LEAD_END,
@@ -474,15 +477,28 @@ describe('inner-page ridge', () => {
     expect(PAGE_HERO).not.toMatch(/navy-band|week-band|news-band|theme-band/)
   })
 
-  // Below lg the zone below the lead is as tall as the cropped ridge. From
-  // lg it is 10vw shorter, so the ridge reaches up beside the lead.
+  // Below md the zone below the lead is as tall as the cropped ridge. From
+  // md it is shorter, so the ridge reaches up beside the lead.
+  const RAISE_PREFIX =
+    '--page-hero-fade: calc(var(--ridge-height-narrow) - min('
+  const RAISE_AT = PAGE_HERO.indexOf(RAISE_PREFIX)
+  const RAISE =
+    RAISE_AT < 0
+      ? null
+      : PAGE_HERO.slice(RAISE_AT + RAISE_PREFIX.length).match(
+          /^(\d+)vw, (\d+)rem\)\);/,
+        )
+  const RIDGE_VW = RIDGE_NARROW_VW / 100
+
   it('sizes the zone below the lead to the cropped ridge', () => {
     expect(PAGE_HERO).toContain('--page-hero-fade: var(--ridge-height-narrow);')
-    expect(PAGE_HERO).toMatch(
-      /@screen lg \{\s*--page-hero-fade: calc\(var\(--ridge-height-narrow\) - 10vw\);/,
+    expect(RAISE).not.toBeNull()
+    // Inside the md block, before lg.
+    const at = RAISE_AT
+    expect(PAGE_HERO.lastIndexOf('@screen', at)).toBe(
+      PAGE_HERO.lastIndexOf('@screen md {', at),
     )
     expect(PAGE_HERO.match(/--page-hero-fade:/g)).toHaveLength(2)
-    expect(PAGE_HERO).toContain('lg:pb-20')
     expect(RIDGE).toContain(
       "return [{ ...narrow, class: 'block h-[var(--ridge-height-narrow)]' }]",
     )
@@ -490,8 +506,24 @@ describe('inner-page ridge', () => {
 
   // The cropped ridge fills the width ("slice"), so a drawing unit is
   // width / 1920 px and its bottom edge is the hero's. It is mirrored.
-  const LEAD_WIDTH = 672 // max-w-2xl, wider than the theme line
+  // The lead is the widest last line of the text (max-w-2xl); the space
+  // between it and the zone is the text column's bottom padding.
+  const LEAD_WIDTH = 672
   const LEAD_GAP = 24
+  const BOTTOM_PADDING = [
+    [SCREENS.lg, 80, 'lg:pb-20'],
+    [SCREENS.md, 64, 'md:pb-16'],
+    [0, 40, 'py-10'],
+  ] as const
+  const bottomPadding = (width: number) =>
+    BOTTOM_PADDING.find(([from]) => width >= from)![1]
+  const REM = 16
+  const raisePx = (width: number) =>
+    Math.min(
+      (Number(RAISE?.[1] ?? 0) / 100) * width,
+      Number(RAISE?.[2] ?? 0) * REM,
+    )
+
   const outline = [...RIDGE_OUTLINE.matchAll(/[ML](-?\d+) (\d+)/g)]
     .map((m) => [RIDGE_SIZE.width - Number(m[1]), Number(m[2])] as const)
     .sort((a, b) => a[0] - b[0])
@@ -513,22 +545,27 @@ describe('inner-page ridge', () => {
     for (let x = (width - LEAD_WIDTH) / 2; x <= (width + LEAD_WIDTH) / 2; x++) {
       top = Math.min(top, ridgeYAt(x / scale))
     }
-    return (RIDGE_SIZE.height - top) * scale
+    return (RIDGE_SIZE.height - top + RIDGE_STROKE_WIDTH / 2) * scale
   }
+  const roomUnderLead = (width: number) =>
+    RIDGE_VW * width - raisePx(width) + bottomPadding(width) - LEAD_GAP
 
-  it.each([1024, 1100, 1280, 1366, 1440, 1680, 1920, 2560, 3840])(
+  it('uses the padding classes the test assumes', () => {
+    for (const [, , cls] of BOTTOM_PADDING) expect(PAGE_HERO).toContain(cls)
+  })
+
+  it.each([SCREENS.md, 1100, SCREENS.lg, 1366, 1440, 1680, 1920, 2560, 3840])(
     'keeps the raised ridge below the lead at %ipx',
     (width) => {
-      const zoneAndPadding = 0.2 * width - 0.1 * width + 80
-      expect(ridgeHeightUnderLead(width)).toBeLessThan(
-        zoneAndPadding - LEAD_GAP,
-      )
+      expect(ridgeHeightUnderLead(width)).toBeLessThan(roomUnderLead(width))
     },
   )
 
-  // Why the ridge is raised only from lg: at md it would reach the lead.
-  it('would reach the lead at 768px if raised there', () => {
-    expect(ridgeHeightUnderLead(768)).toBeGreaterThan(0.1 * 768 + 64 - LEAD_GAP)
+  // Why the raise starts at md: one step narrower it would reach the lead.
+  it('would reach the lead at sm if raised there', () => {
+    expect(ridgeHeightUnderLead(SCREENS.sm)).toBeGreaterThan(
+      roomUnderLead(SCREENS.sm),
+    )
   })
 
   it('starts the blocks below in the ridge colour', () => {

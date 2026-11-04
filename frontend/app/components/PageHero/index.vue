@@ -69,8 +69,9 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
    shares: brand blue fades in behind the text (never fully, so the ice lead
    keeps a dark background) and from the end of the lead turns sky behind the
    ridge and eases into the handover colour. Both sides reach the same blue at
-   the same height, so the hero's diagonal gradient leaves no band. The zone
-   below the lead is the ridge's height, so the ridge stands in it. */
+   the same height, so the hero's diagonal gradient leaves no band. Below md the zone
+   below the lead is the ridge's height, so the ridge stands in it; from md it
+   is up to 12rem shorter and the peaks rise into the blue beside the lead. */
 .page-hero {
   --page-hero-fade: var(--ridge-height-narrow);
   --page-hero-pad: theme(spacing.10);
@@ -95,14 +96,15 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   padding-bottom: var(--page-hero-fade);
   min-height: calc(var(--first-screen) - var(--event-strip-height));
 
+  /* From md the ridge reaches up into the empty sky beside the lead, so the
+     hero fits a laptop screen. Narrower, its peaks would reach the lead;
+     on a 4K screen a full 10vw would come within 24px of it, hence the cap. */
   @screen md {
+    --page-hero-fade: calc(var(--ridge-height-narrow) - min(10vw, 12rem));
     --page-hero-pad: theme(spacing.16);
   }
 
-  /* From lg the ridge reaches up into the empty sky beside the lead, so the
-     hero fits a laptop screen. Narrower, its peaks would reach the lead. */
   @screen lg {
-    --page-hero-fade: calc(var(--ridge-height-narrow) - 10vw);
     --page-hero-pad: theme(spacing.20);
   }
 }
