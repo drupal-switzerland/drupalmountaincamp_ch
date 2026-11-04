@@ -1,11 +1,13 @@
 import { CANONICAL_HOST } from '../../../config/publicHosts'
 import { TICKETS_PATH } from '~/helpers/navigation'
+import { SITE_DESCRIPTION } from '~/helpers/site'
 
 /** Public origin for structured data, independent of the requesting host. */
 export const SITE_URL = `https://${CANONICAL_HOST}`
 
 export type EventFacts = {
   name: string
+  description: string
   startDate: string
   endDate: string
   venue: string
@@ -17,6 +19,7 @@ export type EventFacts = {
 
 export const EVENT: Readonly<EventFacts> = {
   name: 'Drupal Mountain Camp 2027',
+  description: SITE_DESCRIPTION,
   startDate: '2027-03-02',
   endDate: '2027-03-04',
   venue: 'Davos Congress Centre',
@@ -35,6 +38,7 @@ export function buildEventSchema(
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: event.name,
+    description: event.description,
     startDate: event.startDate,
     endDate: event.endDate,
     eventStatus: 'https://schema.org/EventScheduled',

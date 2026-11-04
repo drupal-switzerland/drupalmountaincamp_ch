@@ -5,6 +5,9 @@ import {
 } from '../../../config/publicHosts'
 
 export const SITE_TITLE = 'Mountain Camp 2027, Davos, Switzerland'
+/** Meta description of pages without their own, and the event's. The owner's wording. */
+export const SITE_DESCRIPTION =
+  'Mountain Camp 2027, the Swiss Drupal community conference in Davos, March 2–4, 2027. Theme: Humans with AI in the Loop. Open Source on top of the world.'
 /** Same value as Drupal's site name, which its og:site_name uses. */
 export const SITE_NAME = 'Mountain Camp'
 /** Fallback share image, the one Drupal's metatag defaults point to. */

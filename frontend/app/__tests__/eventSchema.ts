@@ -1,6 +1,9 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { EVENT, SITE_URL, buildEventSchema } from '../helpers/eventSchema'
+import { SITE_DESCRIPTION } from '../helpers/site'
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const ABSOLUTE_URL = /^https:\/\/[^/]+\//
@@ -64,7 +67,23 @@ describe('buildEventSchema', () => {
     expect(other.offers.url).toBe('https://example.org/tickets')
   })
 
+  it('describes the event with the 2027 theme', () => {
+    expect(schema.description).toBe(SITE_DESCRIPTION)
+  })
+
   it('serialises to JSON without loss', () => {
     expect(JSON.parse(JSON.stringify(schema))).toEqual(schema)
+  })
+})
+
+describe('site description', () => {
+  // Search results cut descriptions at about 160 characters.
+  it('fits a search result', () => {
+    expect(SITE_DESCRIPTION.length).toBeLessThanOrEqual(160)
+  })
+
+  it('is the meta description of pages without their own', () => {
+    const config = readFileSync(join(process.cwd(), 'nuxt.config.ts'), 'utf8')
+    expect(config).toMatch(/name: 'description',\s*content: SITE_DESCRIPTION,/)
   })
 })
