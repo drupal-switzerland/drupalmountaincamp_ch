@@ -474,14 +474,61 @@ describe('inner-page ridge', () => {
     expect(PAGE_HERO).not.toMatch(/navy-band|week-band|news-band|theme-band/)
   })
 
-  // The zone below the lead is as tall as the cropped ridge, so the ridge
-  // never reaches up over the lead.
+  // Below lg the zone below the lead is as tall as the cropped ridge. From
+  // lg it is 10vw shorter, so the ridge reaches up beside the lead.
   it('sizes the zone below the lead to the cropped ridge', () => {
     expect(PAGE_HERO).toContain('--page-hero-fade: var(--ridge-height-narrow);')
-    expect(PAGE_HERO.match(/--page-hero-fade:/g)).toHaveLength(1)
+    expect(PAGE_HERO).toMatch(
+      /@screen lg \{\s*--page-hero-fade: calc\(var\(--ridge-height-narrow\) - 10vw\);/,
+    )
+    expect(PAGE_HERO.match(/--page-hero-fade:/g)).toHaveLength(2)
+    expect(PAGE_HERO).toContain('lg:pb-20')
     expect(RIDGE).toContain(
       "return [{ ...narrow, class: 'block h-[var(--ridge-height-narrow)]' }]",
     )
+  })
+
+  // The cropped ridge fills the width ("slice"), so a drawing unit is
+  // width / 1920 px and its bottom edge is the hero's. It is mirrored.
+  const LEAD_WIDTH = 672 // max-w-2xl, wider than the theme line
+  const LEAD_GAP = 24
+  const outline = [...RIDGE_OUTLINE.matchAll(/[ML](-?\d+) (\d+)/g)]
+    .map((m) => [RIDGE_SIZE.width - Number(m[1]), Number(m[2])] as const)
+    .sort((a, b) => a[0] - b[0])
+  const ridgeYAt = (x: number) => {
+    for (let i = 0; i < outline.length - 1; i++) {
+      const [x0, y0] = outline[i]!
+      const [x1, y1] = outline[i + 1]!
+      if (x >= x0 && x <= x1) {
+        return x1 === x0
+          ? Math.min(y0, y1)
+          : y0 + ((y1 - y0) * (x - x0)) / (x1 - x0)
+      }
+    }
+    return RIDGE_SIZE.height
+  }
+  const ridgeHeightUnderLead = (width: number) => {
+    const scale = width / RIDGE_SIZE.width
+    let top: number = RIDGE_SIZE.height
+    for (let x = (width - LEAD_WIDTH) / 2; x <= (width + LEAD_WIDTH) / 2; x++) {
+      top = Math.min(top, ridgeYAt(x / scale))
+    }
+    return (RIDGE_SIZE.height - top) * scale
+  }
+
+  it.each([1024, 1100, 1280, 1366, 1440, 1680, 1920, 2560, 3840])(
+    'keeps the raised ridge below the lead at %ipx',
+    (width) => {
+      const zoneAndPadding = 0.2 * width - 0.1 * width + 80
+      expect(ridgeHeightUnderLead(width)).toBeLessThan(
+        zoneAndPadding - LEAD_GAP,
+      )
+    },
+  )
+
+  // Why the ridge is raised only from lg: at md it would reach the lead.
+  it('would reach the lead at 768px if raised there', () => {
+    expect(ridgeHeightUnderLead(768)).toBeGreaterThan(0.1 * 768 + 64 - LEAD_GAP)
   })
 
   it('starts the blocks below in the ridge colour', () => {

@@ -1,8 +1,12 @@
 <template>
+  <!-- Fills the first screen, so the page below starts after a scroll. -->
   <section
-    class="on-dark brand-hero page-hero relative isolate overflow-hidden text-white"
+    class="on-dark brand-hero page-hero relative isolate flex flex-col overflow-hidden text-white"
   >
-    <div class="grid-container my-0 py-10 md:py-16 lg:py-20">
+    <!-- A taller screen adds the space evenly above and below the text. -->
+    <div
+      class="grid-container my-0 flex-1 content-center py-10 md:pb-16 md:pt-12 lg:pb-20"
+    >
       <div
         class="grid-container-8 flex flex-col items-center gap-3 text-center md:gap-4"
       >
@@ -13,7 +17,6 @@
           :current-title="title"
           variant="hero"
         />
-        <BrandSparkles class="w-14 text-white xs:w-16 md:w-20 lg:w-24" />
         <slot name="title" :title-class="TITLE_CLASS">
           <h1 :class="TITLE_CLASS">{{ title }}</h1>
         </slot>
@@ -90,12 +93,16 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-backdrop: 1px;
   --page-hero-edge-colour: theme(colors.brand.ice);
   padding-bottom: var(--page-hero-fade);
+  min-height: calc(var(--first-screen) - var(--event-strip-height));
 
   @screen md {
     --page-hero-pad: theme(spacing.16);
   }
 
+  /* From lg the ridge reaches up into the empty sky beside the lead, so the
+     hero fits a laptop screen. Narrower, its peaks would reach the lead. */
   @screen lg {
+    --page-hero-fade: calc(var(--ridge-height-narrow) - 10vw);
     --page-hero-pad: theme(spacing.20);
   }
 }

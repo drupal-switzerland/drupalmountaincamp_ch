@@ -19,6 +19,23 @@
 @layer base {
   :root {
     --page-header-height: theme(spacing.12);
+    --event-strip-height: theme(spacing.12);
+    /* What the first screen shows of a hero: below the header, and on pages
+       other than home, below the event strip. svh, so a phone's collapsing
+       address bar does not push the next section into view. */
+    --first-screen: calc(100vh - var(--page-header-height));
+  }
+
+  @supports (height: 100svh) {
+    :root {
+      --first-screen: calc(100svh - var(--page-header-height));
+    }
+  }
+
+  @media (min-width: 390px) {
+    :root {
+      --event-strip-height: theme(spacing.10);
+    }
   }
 
   @screen md {
