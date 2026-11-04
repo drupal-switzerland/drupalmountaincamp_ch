@@ -93,7 +93,6 @@ location_rewrite:
     - themes/contrib
     - core
     - tfa
-    - tmgmt
     - graphql
     - sitemap
     - translate
