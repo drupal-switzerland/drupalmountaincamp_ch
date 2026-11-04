@@ -56,9 +56,10 @@
       <!-- From md one grid: the title block, When and Where are subgrids over
            its two rows, so labels share a baseline and values share another.
            Where keeps 12rem when editors lengthen the title. A subgrid takes
-           its own gap, so the dl repeats md:gap-x-12. -->
+           its own gap, so the dl repeats the column gaps. The narrower md gap
+           keeps the title on one line at 1024px. -->
       <div
-        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:pb-12 md:grid-cols-[minmax(0,max-content)_minmax(0,max-content)_minmax(12rem,1fr)_auto] md:grid-rows-[auto_auto] md:items-baseline md:gap-x-12 md:gap-y-1 md:pb-8 md:pt-0"
+        class="container !my-0 grid gap-y-4 pb-8 pt-6 xs:pb-12 md:grid-cols-[minmax(0,max-content)_minmax(0,max-content)_minmax(12rem,1fr)_auto] md:grid-rows-[auto_auto] md:items-baseline md:gap-x-8 md:gap-y-1 md:pb-8 md:pt-0 lg:gap-x-12"
       >
         <div
           class="flex flex-col gap-1 md:row-span-2 md:grid md:grid-rows-subgrid md:items-baseline"
@@ -71,7 +72,7 @@
           </h2>
         </div>
         <dl
-          class="grid grid-cols-2 gap-x-4 md:col-span-2 md:row-span-2 md:grid-cols-subgrid md:grid-rows-subgrid md:gap-x-12"
+          class="grid grid-cols-2 gap-x-4 md:col-span-2 md:row-span-2 md:grid-cols-subgrid md:grid-rows-subgrid md:gap-x-8 lg:gap-x-12"
         >
           <div
             class="flex flex-col gap-1 md:row-span-2 md:grid md:grid-rows-subgrid md:items-baseline"

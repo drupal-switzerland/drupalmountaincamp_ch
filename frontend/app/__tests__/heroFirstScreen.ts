@@ -22,11 +22,6 @@ const BAND = HOME_HERO.slice(
   HOME_HERO.indexOf('</section>'),
 )
 
-// Class attributes only, so comments that name a class do not count.
-const BAND_CLASSES = [...BAND.matchAll(/class="([^"]*)"/g)]
-  .map((m) => m[1])
-  .join(' ')
-
 describe('heroes fill the first screen', () => {
   it('measures the first screen below the sticky header, svh where supported', () => {
     expect(TAILWIND_CSS).toContain(
@@ -95,10 +90,16 @@ describe('edition band on the homepage ridge', () => {
   // A subgrid takes its own gap: without repeating the band's column gap,
   // When and Where would sit closer together than the title and When.
   it('keeps one column gap across the subgrid', () => {
-    const gaps = BAND_CLASSES.match(/md:gap-x-\d+/g)
+    const gaps = [...BAND.matchAll(/class="([^"]*)"/g)]
+      .map((m) =>
+        m[1]!
+          .split(/\s+/)
+          .filter((cls) => /^(md|lg):gap-x-/.test(cls))
+          .join(' '),
+      )
+      .filter(Boolean)
 
-    expect(gaps).toHaveLength(2)
-    expect(new Set(gaps).size).toBe(1)
+    expect(gaps).toEqual(['md:gap-x-8 lg:gap-x-12', 'md:gap-x-8 lg:gap-x-12'])
     expect(BAND).toContain('md:grid-cols-subgrid md:grid-rows-subgrid')
   })
 

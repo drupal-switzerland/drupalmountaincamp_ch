@@ -69,9 +69,10 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
    shares: brand blue fades in behind the text (never fully, so the ice lead
    keeps a dark background) and from the end of the lead turns sky behind the
    ridge and eases into the handover colour. Both sides reach the same blue at
-   the same height, so the hero's diagonal gradient leaves no band. Below md the zone
-   below the lead is the ridge's height, so the ridge stands in it; from md it
-   is up to 12rem shorter and the peaks rise into the blue beside the lead. */
+   the same height, so the hero's diagonal gradient leaves no band. Below md
+   the zone below the lead is the ridge's height, so the ridge stands in it;
+   from md it is up to 12rem shorter and the peaks rise into the blue beside
+   the lead. */
 .page-hero {
   --page-hero-fade: var(--ridge-height-narrow);
   --page-hero-pad: theme(spacing.10);
