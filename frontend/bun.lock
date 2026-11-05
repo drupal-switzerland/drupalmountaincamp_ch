@@ -16,7 +16,7 @@
         "nuxt-page-dependencies": "^1.2.0",
         "nuxt-svg-icon-sprite": "^2.0.2",
         "svgo": "^4.1.0",
-        "swiper": "^14.3.0",
+        "swiper": "^14.4.0",
         "vue3-click-away": "^1.2.4",
         "vuepal": "^3.0.6",
       },
@@ -2107,7 +2107,7 @@
 
     "swap-case": ["swap-case@2.0.2", "", { "dependencies": { "tslib": "^2.0.3" } }, "sha512-kc6S2YS/2yXbtkSMunBtKdah4VFETZ8Oh6ONSmSd9bRxhqTrtARUCBUiWXH3xVPpvR7tz2CSnkuXVE42EcGnMw=="],
 
-    "swiper": ["swiper@14.3.0", "", {}, "sha512-qw0Xv1+sylM8KCQxWxV2iYAK2G6XjFGPZ/8F1baEsY8DK4A3sTnLx6jUJ0G71rDbVQ05JHMWkcWmJ5NvlxZO0w=="],
+    "swiper": ["swiper@14.4.0", "", {}, "sha512-6axnAuBsttFJe0gwsM5tT203/Bts0vcI+FwIX6dqFE4pUFVW6qrdRprNFQVxOYMW7V0S6A/KIqJ6JaPpNN2MCw=="],
 
     "sync-fetch": ["sync-fetch@0.7.1", "", { "dependencies": { "node-fetch": "^3.3.2", "timeout-signal": "^2.0.0", "whatwg-mimetype": "^5.0.0" } }, "sha512-tTw2sPVgJb/ZO+Uz5Cs1haWg7aL0cw+DvD8mXos+ws5YaelM3IBZ50M717T1+RD5Qq0TdeZ/EI/wVMnAdJA0Eg=="],
 
