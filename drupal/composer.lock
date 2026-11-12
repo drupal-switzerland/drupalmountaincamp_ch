@@ -5248,17 +5248,17 @@
         },
         {
             "name": "drupal/graphql_core_schema",
-            "version": "1.0.28",
+            "version": "1.0.29",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/graphql_core_schema.git",
-                "reference": "1.0.28"
+                "reference": "1.0.29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/graphql_core_schema-1.0.28.zip",
-                "reference": "1.0.28",
-                "shasum": "b74e0b578e25fe452929603728bda062aa2e3b0d"
+                "url": "https://ftp.drupal.org/files/projects/graphql_core_schema-1.0.29.zip",
+                "reference": "1.0.29",
+                "shasum": "d854f72c0dab27c9158a2b04e4fbf90cae1ab4ae"
             },
             "require": {
                 "drupal/core": "^9.3 || ^10 || ^11",
@@ -5282,8 +5282,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.28",
-                    "datestamp": "1783000417",
+                    "version": "1.0.29",
+                    "datestamp": "1794418534",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8334,30 +8334,30 @@
         },
         {
             "name": "drupal/texts",
-            "version": "1.0.15",
+            "version": "1.0.17",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/texts.git",
-                "reference": "1.0.15"
+                "reference": "1.0.17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/texts-1.0.15.zip",
-                "reference": "1.0.15",
-                "shasum": "7b9df7985b39aa8520ffa1121885b31ac5022fda"
+                "url": "https://ftp.drupal.org/files/projects/texts-1.0.17.zip",
+                "reference": "1.0.17",
+                "shasum": "031164e49bd70e3fe80ed65ae01828dc3eda46ff"
             },
             "require": {
-                "drupal/core": "^10.2 || ^11 || ^12",
+                "drupal/core": "^10.3 || ^11 || ^12",
                 "league/csv": "^9.27"
             },
             "require-dev": {
-                "drupal/graphql": "^4"
+                "drupal/graphql": "^4 || ^5"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.15",
-                    "datestamp": "1790867109",
+                    "version": "1.0.17",
+                    "datestamp": "1794418556",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
