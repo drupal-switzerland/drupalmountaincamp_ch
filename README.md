@@ -118,12 +118,13 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 
 ## AI modules (drupal/ai + amazee.ai provider)
 
-`drush cim` on deploy enables `ai`, `ai_api_explorer`, `ai_ckeditor`, `ai_context`, `key` and
-`ai_provider_amazeeio`. No secret is committed: the amazee.ai API key is the Key entity
-`amazeeai_api_key`, which reads the `AMAZEEAI_API_KEY` environment variable. The region specific LLM
-endpoint is passed through `AMAZEEAI_HOST` (see `settings.php`); it falls back to the provider default.
-
-Set the variables per Lagoon environment before deploying:
+- `drush cim` on deploy enables `ai`, `ai_api_explorer`, `ai_ckeditor`,
+  `ai_context`, `key` and `ai_provider_amazeeio`.
+- No secret is committed. The amazee.ai API key is the Key entity
+  `amazeeai_api_key`, which reads the `AMAZEEAI_API_KEY` environment variable.
+- `AMAZEEAI_HOST` sets the region specific LLM endpoint (see `settings.php`).
+  Without it the provider default applies.
+- Set the variables per Lagoon environment before deploying:
 
 ```bash
 lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_API_KEY -V <key> -S runtime
@@ -136,4 +137,5 @@ lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_DEFAUL
 lagoon add variable -p drupalmountaincamp-ch -e prod -N AMAZEEAI_POSTGRES_USERNAME -V <user> -S runtime
 ```
 
-Locally, add the same variables to `.ddev/config.local.yaml` under `web_environment`.
+- Locally, add the same variables to `.ddev/config.local.yaml` under
+  `web_environment`.
