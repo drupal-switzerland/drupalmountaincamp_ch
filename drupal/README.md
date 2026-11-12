@@ -10,7 +10,8 @@ Setup and commands are in the [root README](../README.md).
 - `env -u SIMPLETEST_BASE_URL` lets `phpunit.xml`'s `http://localhost` fallback
   apply, which reaches Drupal from inside the container.
 - Kernel tests use `SIMPLETEST_DB` from `.ddev/config.yaml` (the local
-  MariaDB, with prefixed tables they drop afterwards).
+  MariaDB, with prefixed tables they drop afterwards). CI uses
+  `sqlite://localhost/:memory:` (`.github/workflows/drupal-tests.yml`).
 
 ## Lint
 
