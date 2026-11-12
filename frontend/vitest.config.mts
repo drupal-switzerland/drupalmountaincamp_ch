@@ -5,13 +5,13 @@ import { defineVitestConfig } from '@nuxt/test-utils/config'
 // 10s default from load 55, which fails the whole file with its tests skipped.
 const HOOK_TIMEOUT_MS = 60_000
 
-// About three points under the measured 63.9 / 47.9 / 59.0 / 63.1, so an
+// About three points under the measured 84.5 / 73.5 / 81.7 / 84.5, so an
 // unrelated change does not fail the run. Raise them when coverage rises.
 const COVERAGE_THRESHOLDS = {
-  lines: 60,
-  branches: 45,
-  functions: 55,
-  statements: 60,
+  lines: 81,
+  branches: 70,
+  functions: 78,
+  statements: 81,
 }
 
 export default defineVitestConfig({

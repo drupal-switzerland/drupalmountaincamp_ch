@@ -14,10 +14,9 @@ the parts fit together is in [ARCHITECTURE.md](ARCHITECTURE.md); setup is in
 | `.ddev/`                | Local environment used by the READMEs.                  |
 | `.lagoon/`              | Production images and nginx config.                     |
 | `.github/workflows/`    | The five CI workflows.                                  |
-| `scripts/ci/`           | Shell scripts; two of them are called by CI.            |
+| `scripts/ci/`           | Shell scripts that CI calls.                            |
 
 - CI calls `scripts/ci/nginx-headers.sh` and `scripts/ci/check-doc-paths.sh`.
-  No workflow calls the other files in `scripts/ci/`.
 
 Three local setups are in the repository. Use DDEV.
 

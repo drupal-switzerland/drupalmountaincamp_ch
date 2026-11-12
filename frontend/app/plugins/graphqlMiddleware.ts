@@ -118,9 +118,8 @@ export default defineNuxtPlugin({
               options.headers?.append(key, headerValue)
             }
           })
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
-          // Do nothing.
+          console.error('Failed to prepare the GraphQL request.', e)
         }
       },
     }
