@@ -442,20 +442,9 @@ server {
     }
   {% endif %}
 
+  # "/" is a directory under the root, so the catch-all's $uri/ would answer 403.
   location = / {
-    if ($http_accept_language ~* ^fr) {
-      return 302 https://$host/fr;
-    }
-
-    if ($http_accept_language ~* ^it) {
-      return 302 https://$host/it;
-    }
-
-    if ($http_accept_language ~* ^en) {
-      return 302 https://$host/en;
-    }
-
-    return 302 https://$host/de;
+    try_files $uri @frontend;
   }
 
   {% set proxy_pass_drupal = 'http://' ~ php.server_name ~ ':' ~ php.listen -%}

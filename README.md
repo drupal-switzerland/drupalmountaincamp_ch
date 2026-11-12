@@ -17,7 +17,7 @@ Drupal 11 backend (`drupal/`) and Nuxt frontend (`frontend/`), run locally with
 - `ddev composer install`: Drupal dependencies into `drupal/vendor`.
 - `ddev bun install`: frontend dependencies into `frontend/node_modules`.
 - Database, one of:
-  - `ddev init-db`: drops the local database, imports
+  - `ddev init-db`: asks for confirmation, drops the local database, imports
     `drupal/dump/init.sql.gz` and runs `drush deploy`.
   - `ddev copy-live-to-self` or `ddev copy-stage-to-self`: pulls a Lagoon
     environment (needs Lagoon access).
