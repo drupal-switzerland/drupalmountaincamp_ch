@@ -38,13 +38,13 @@
       <div
         class="grid-area-hamburger flex items-center justify-between pl-2 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
       >
-        <VuepalLink
-          v-if="ticketsLink && !isMenuOpen"
-          :to="ticketsLink.link.url?.path"
+        <TicketsButton
+          v-if="!isMenuOpen"
+          v-slot="{ label }"
           class="button is-filled mr-1 px-4 py-2 text-sm md:hidden"
         >
-          {{ ticketsLink.link.label }}
-        </VuepalLink>
+          {{ label }}
+        </TicketsButton>
         <button
           ref="menuToggle"
           type="button"
@@ -73,7 +73,6 @@ import { useEventListener } from '@vueuse/core'
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
 
 const route = useRoute()
-const ticketsLink = await useTicketsLink()
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
 const container = ref<HTMLElement | null>(null)

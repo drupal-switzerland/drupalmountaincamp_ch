@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { EVENT, SITE_URL, buildEventSchema } from '../helpers/eventSchema'
+import { TICKET_SHOP_URL } from '../helpers/navigation'
 import { SITE_DESCRIPTION } from '../helpers/site'
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
@@ -65,6 +66,16 @@ describe('buildEventSchema', () => {
     expect(other.name).toBe('Other')
     expect(other.startDate).toBe('2028-01-01')
     expect(other.offers.url).toBe('https://example.org/tickets')
+  })
+
+  it('offers tickets at the ticket shop the button uses', () => {
+    const shop = buildEventSchema(EVENT, SITE_URL, TICKET_SHOP_URL)
+    expect(shop.offers.url).toBe(TICKET_SHOP_URL)
+  })
+
+  it('offers tickets at an internal page on the public site', () => {
+    const page = buildEventSchema(EVENT, SITE_URL, '/register')
+    expect(page.offers.url).toBe(`${SITE_URL}/register`)
   })
 
   it('describes the event with the 2027 theme', () => {

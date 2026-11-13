@@ -91,14 +91,12 @@
             </dd>
           </div>
         </dl>
-        <VuepalLink
-          v-if="ticketsLink"
-          :to="ticketsLink.link.url?.path"
+        <TicketsButton
           class="ticket-button mt-2 min-h-[52px] xs:mt-1 xs:min-h-14 md:row-span-2 md:mt-0 md:self-center"
         >
           {{ $texts('edition.tickets', 'Get tickets') }}
           <span aria-hidden="true">→</span>
-        </VuepalLink>
+        </TicketsButton>
       </div>
     </div>
   </section>
@@ -111,7 +109,6 @@ const props = defineProps<{
 }>()
 
 const { $texts } = useEasyTexts()
-const ticketsLink = await useTicketsLink()
 
 // "Mountain Camp 2027" renders the trailing year in the accent colour.
 const titleParts = computed(() => {
