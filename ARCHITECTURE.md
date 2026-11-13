@@ -92,7 +92,6 @@ directory layout is in [AGENTS.md](AGENTS.md).
 | `frontend/app/pages/news/[...slug]/index.vue`        | One news article (`Node/PressRelease`).              |
 | `frontend/app/pages/node/[nid]/index.vue`            | `/node/<id>`.                                        |
 | `frontend/app/pages/blokkli/library-item/[uuid].vue` | Library item in the editor; layout `library`.        |
-| `frontend/app/pages/static-page/example.vue`         | Example of a page with a fixed path.                 |
 
 The components named in the right column are under
 `frontend/app/components/`.
