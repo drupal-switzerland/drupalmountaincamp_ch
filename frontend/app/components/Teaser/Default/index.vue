@@ -11,7 +11,7 @@
         hide-caption
       />
     </div>
-    <component :is="heading" class="mb-3 px-5 text-xl md:text-2xl">
+    <component :is="heading" class="mb-3 px-5 text-xl font-medium md:text-2xl">
       {{ title }}
     </component>
     <div v-if="text" class="mb-5 grow px-5" v-html="text" />

@@ -10,7 +10,7 @@
       <section v-for="group in groups" :key="group.key" class="mb-12">
         <component
           :is="hasText(title) ? 'h3' : 'h2'"
-          class="mb-6 text-sm uppercase tracking-wide text-gray-600"
+          class="mb-6 text-sm font-medium uppercase tracking-wide text-gray-600"
         >
           {{ group.label }}
         </component>

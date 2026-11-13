@@ -86,4 +86,12 @@ describe('Heading levels in lists (WCAG 1.3.1)', () => {
 
     expect(levelOf(wrapper, 'section :is(h2, h3)')).toBe('h2')
   })
+
+  it('keeps the medium weight of an h3 when rendered as h2', async () => {
+    const teasers = await mountTeaserList('')
+    const sponsors = await mountSponsorList('')
+
+    expect(teasers.find('a h2').classes()).toContain('font-medium')
+    expect(sponsors.find('section h2').classes()).toContain('font-medium')
+  })
 })
