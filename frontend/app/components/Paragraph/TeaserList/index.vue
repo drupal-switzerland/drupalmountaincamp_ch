@@ -72,6 +72,7 @@ import type { ParagraphTeaserListFragment } from '#graphql-operations'
 import type Swiper from 'swiper'
 // Slide layout styles stay static so slides don't shift while the JS loads.
 import 'swiper/css'
+import { TEASER_HEADING } from '~/composables/teaserHeading'
 import { loadSwiper } from '~/helpers/swiper'
 import { hasText } from '~/helpers/text'
 import { SCREENS } from '~/tailwind/screens'
@@ -85,6 +86,12 @@ const props = defineProps<{
 }>()
 
 const isEditing = import.meta.blokkliEditing
+
+// Teasers are one level below the list title, or take its place without one.
+provide(
+  TEASER_HEADING,
+  computed(() => (hasText(props.title) ? 'h3' : 'h2')),
+)
 const { options } = defineBlokkli({
   bundle: 'teaser_list',
   propsFieldMapping: {

@@ -8,9 +8,12 @@
         No published sponsors{{ year ? ` for ${year}` : '' }} yet.
       </p>
       <section v-for="group in groups" :key="group.key" class="mb-12">
-        <h3 class="mb-6 text-sm uppercase tracking-wide text-gray-600">
+        <component
+          :is="hasText(title) ? 'h3' : 'h2'"
+          class="mb-6 text-sm font-medium uppercase tracking-wide text-gray-600"
+        >
           {{ group.label }}
-        </h3>
+        </component>
         <ul class="flex flex-wrap gap-4">
           <li v-for="sponsor in group.sponsors" :key="sponsor.uuid">
             <SponsorTile
