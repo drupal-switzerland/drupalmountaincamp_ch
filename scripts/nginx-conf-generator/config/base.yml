@@ -36,6 +36,12 @@ block:
     - txt
     - xml
 
+# Permanent redirects, as regex location and target. Match .lagoon/nginx-lagoon.conf.
+# A capture is the decoded path; excluding \r and \n keeps a %0D out of Location.
+redirects:
+  - location: '^/article/([^\r\n]+)$'
+    target: /news/$1
+
 location_rewrite:
   # The route prefixes (with or without language) to pass to Drupal.
   # Any request that matches this prefix will be passed to Drupal.

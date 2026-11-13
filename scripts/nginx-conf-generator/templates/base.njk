@@ -498,6 +498,13 @@ server {
     try_files false @frontend;
   }
 
+  {%- for redirect in redirects %}
+  location ~ {{ redirect.location | safe }} {
+    absolute_redirect off;
+    return 301 {{ redirect.target | safe }};
+  }
+  {%- endfor %}
+
   # {-% include "templates/spam.conf" %-}
 
   location ^~ /sites/default/files {
