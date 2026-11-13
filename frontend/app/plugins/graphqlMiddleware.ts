@@ -8,6 +8,7 @@ import {
   guardBackendRequest,
   handleBackendResponseError,
 } from '~/helpers/backendUnavailable'
+import { prepareGraphqlRequest } from '~/helpers/graphqlRequest'
 
 /**
  * This is only called when performing a query or mutation from within the nuxt
@@ -90,7 +91,7 @@ export default defineNuxtPlugin({
         if (import.meta.server) {
           guardBackendRequest(backendUnavailable, markPageUncacheable)
         }
-        try {
+        prepareGraphqlRequest(() => {
           if (!options.params) {
             options.params = {}
           }
@@ -118,10 +119,7 @@ export default defineNuxtPlugin({
               options.headers?.append(key, headerValue)
             }
           })
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (e) {
-          // Do nothing.
-        }
+        }, markPageUncacheable)
       },
     }
   },

@@ -67,9 +67,8 @@ export const Parallax: SwiperModule = ({ swiper }: SwiperContext) => {
     const { slides, progress, snapGrid, el } = swiper
     const rootWidth: number = el.offsetWidth
     const slidesPerGroup = swiper.params.slidesPerGroup || 1
-    slides.forEach((slideEl: HTMLElement, slideIndex: number) => {
-      // @ts-ignore
-      let slideProgress = slideEl.progress
+    slides.forEach((slideEl, slideIndex) => {
+      let slideProgress = slideEl.progress ?? 0
       if (slidesPerGroup > 1 && swiper.params.slidesPerView !== 'auto') {
         slideProgress +=
           Math.ceil(slideIndex / 2) - progress * (snapGrid.length - 1)

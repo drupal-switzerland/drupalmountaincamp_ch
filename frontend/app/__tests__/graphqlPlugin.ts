@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // The plugin (app/plugins/graphqlMiddleware.ts) runs when the test app starts
 // and stores its hooks in the GraphQL state. Vitest runs the browser build, so
@@ -9,6 +9,9 @@ type Hooks = {
     options: { params?: Record<string, unknown>; headers: Headers }
   }) => void
   onResponse: (context: { response?: { _data?: unknown } }) => void
+  onRequestError: () => void
+  onResponseError: (context: { response: { status: number } }) => void
+  retry?: number
 }
 
 function hooks() {
@@ -90,5 +93,41 @@ describe('GraphQL plugin: Drupal messages in a response', () => {
   ])('adds nothing for a response with %s', (_label, data) => {
     expect(() => respond(data)).not.toThrow()
     expect(messages.value).toEqual([])
+  })
+})
+
+describe('GraphQL plugin: failed requests in the browser', () => {
+  it("keeps ofetch's default retry", () => {
+    expect(hooks().retry).toBeUndefined()
+  })
+
+  // Both only act during a server render.
+  it('leaves an error response to the caller', () => {
+    expect(() =>
+      hooks().onResponseError({ response: { status: 503 } }),
+    ).not.toThrow()
+  })
+
+  it('leaves a request that failed to send to the caller', () => {
+    expect(() => hooks().onRequestError()).not.toThrow()
+  })
+
+  it('logs a request it could not prepare and does not throw', () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const options = {
+      get params(): Record<string, unknown> {
+        throw new Error('broken params')
+      },
+      headers: new Headers(),
+    }
+
+    expect(() =>
+      hooks().onRequest({ request: '/api/graphql/query/route', options }),
+    ).not.toThrow()
+    expect(log).toHaveBeenCalledWith(
+      'Failed to prepare the GraphQL request.',
+      expect.objectContaining({ message: 'broken params' }),
+    )
+    log.mockRestore()
   })
 })

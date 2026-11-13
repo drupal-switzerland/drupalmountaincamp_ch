@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\blokkli_starterkit\Plugin\views\field;
 
+use Drupal\Core\Access\AccessManagerInterface;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\block_content\BlockContentInterface;
@@ -42,8 +44,16 @@ class TranslationLinksViewsField extends FieldPluginBase {
    *   The plugin implementation definition.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
+   * @param \Drupal\Core\Access\AccessManagerInterface $accessManager
+   *   The access manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LanguageManagerInterface $language_manager) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    LanguageManagerInterface $language_manager,
+    protected AccessManagerInterface $accessManager,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->languages = $language_manager->getLanguages();
   }
@@ -56,7 +66,8 @@ class TranslationLinksViewsField extends FieldPluginBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('access_manager'),
     );
   }
 
@@ -101,6 +112,7 @@ class TranslationLinksViewsField extends FieldPluginBase {
     $type = $entity->getEntityTypeId();
 
     $items = [];
+    $cacheability = CacheableMetadata::createFromObject($entity);
     $default_language_id = $entity->language()->getId();
 
     if ($this->displayHandler instanceof RestExport) {
@@ -135,15 +147,15 @@ class TranslationLinksViewsField extends FieldPluginBase {
 
         if ($language_id === $default_language_id) {
           $classes[] = 'is-source';
-          $title = sprintf('%s: %s (%s)', $this->t('Edit'), $name, $this->t('Original language'));
+          $title = $this->t('Edit: @language (Original language)', ['@language' => $name]);
         }
         else {
-          $title = sprintf('%s: %s', $this->t('Edit'), $name);
+          $title = $this->t('Edit: @language', ['@language' => $name]);
         }
       }
       else {
         $classes[] = 'is-missing';
-        $title = sprintf('%s: %s', $this->t('Add'), $name);
+        $title = $this->t('Add: @language', ['@language' => $name]);
         $url = Url::fromRoute(
           "entity.$type.content_translation_add",
           [
@@ -157,6 +169,18 @@ class TranslationLinksViewsField extends FieldPluginBase {
         );
       }
 
+      $access = $this->accessManager->checkNamedRoute(
+        $url->getRouteName(),
+        $url->getRouteParameters(),
+        NULL,
+        TRUE,
+      );
+      $cacheability->addCacheableDependency($access);
+      if (!$access->isAllowed()) {
+        $items[] = ['#plain_text' => $language_id];
+        continue;
+      }
+
       $items[] = [
         '#type' => 'link',
         '#title' => $language_id,
@@ -168,11 +192,13 @@ class TranslationLinksViewsField extends FieldPluginBase {
       ];
     }
 
-    return [
+    $build = [
       '#theme' => 'item_list',
       '#items' => $items,
       '#wrapper_attributes' => ['class' => 'views-liip-links'],
     ];
+    $cacheability->applyTo($build);
+    return $build;
   }
 
 }

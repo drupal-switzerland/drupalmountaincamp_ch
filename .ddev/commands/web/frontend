@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Description: Run drush CLI inside the web container
+## Description: Start the Nuxt dev server inside the web container
 ## Usage: frontend
 ## ExecRaw: true
 

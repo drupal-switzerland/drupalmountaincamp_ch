@@ -135,7 +135,7 @@ const data = await useInitData()
 const footerMenuLinks = data.value.footerMenuLinks
 const newTabHintId = useId()
 
-// Fixed legal line — the Drupal-side easy_texts value still carries the Liip
+// Fixed legal line. The Drupal-side easy_texts value still carries the Liip
 // starter default ("@year Liip AG"), so don't source this from translations.
 const copyright =
   '© Drupal Events Switzerland. Drupal is a registered trademark of Dries Buytaert.'

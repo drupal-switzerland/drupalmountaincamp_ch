@@ -1,6 +1,6 @@
 ## INTRODUCTION
 
-The blökkli starterkit module is helper module for the blokkli distribution..
+The blökkli starterkit module is a helper module for the blökkli distribution.
 
 ## INSTALLATION
 

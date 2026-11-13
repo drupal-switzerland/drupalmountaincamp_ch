@@ -21,6 +21,7 @@ type Hooks = {
 }
 
 let request: (path: string) => Promise<Response>
+const hooks: Hooks = {}
 
 // What a page render does before its status is known: every GraphQL response
 // passes its cacheability on to the CDN header.
@@ -29,7 +30,6 @@ function cacheForAYear(event: H3Event) {
 }
 
 beforeAll(async () => {
-  const hooks: Hooks = {}
   // h3 logs the thrown 500 of this suite as unhandled.
   vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.stubGlobal(
@@ -162,5 +162,27 @@ describe('isCdnCacheableStatus', () => {
     '200',
   ])('refuses %s', (status) => {
     expect(isCdnCacheableStatus(status)).toBe(false)
+  })
+})
+
+describe('CDN cacheability after the headers were sent', () => {
+  it('has an error hook', () => {
+    expect(hooks.error).toBeTypeOf('function')
+  })
+
+  it('leaves a streamed response alone', () => {
+    const setHeader = vi.fn()
+    const event = {
+      node: { res: { headersSent: true, setHeader } },
+    } as unknown as H3Event
+
+    hooks.error!(new Error('failed while streaming'), { event })
+
+    expect(setHeader).not.toHaveBeenCalled()
+    expect(event.node.res.setHeader).toBe(setHeader)
+  })
+
+  it('ignores an error without a request', () => {
+    expect(() => hooks.error!(new Error('startup'), {})).not.toThrow()
   })
 })

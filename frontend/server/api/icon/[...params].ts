@@ -389,7 +389,7 @@ export default defineEventHandler(async (event) => {
 
     const result = await getIcon(id, event)
     if (!result) {
-      console.log('Failed to load icon from Drupal: ' + id)
+      console.warn('Failed to load icon from Drupal: ' + id)
       return emptyUncacheableIcon(event)
     }
 
@@ -410,8 +410,7 @@ export default defineEventHandler(async (event) => {
     setHeader(event, 'cache-control', 'public, max-age=604800')
     return result.markup
   } catch (e) {
-    console.log(e)
-    console.log('Failed to load icon from Drupal.', e)
+    console.error('Failed to load icon from Drupal.', e)
     // We don't want to return a message here, only an empty response.
     return emptyUncacheableIcon(event)
   }

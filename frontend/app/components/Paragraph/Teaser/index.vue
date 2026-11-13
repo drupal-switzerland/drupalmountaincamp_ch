@@ -38,7 +38,7 @@ const isEditing = import.meta.blokkliEditing
 defineBlokkli({
   bundle: 'teaser',
   editor: {
-    editTitle: (el) => el.querySelector('h3')?.innerText,
+    editTitle: (el) => el.querySelector<HTMLElement>('h2, h3')?.innerText,
     mockProps: (text) => {
       return {
         title: text || 'Teaser title',
