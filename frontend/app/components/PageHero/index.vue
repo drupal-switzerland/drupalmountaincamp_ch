@@ -142,7 +142,25 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 }
 
 /* The lead is ice, so its links need more than colour to stand out. */
-.page-hero-lead a {
+.page-hero-lead a:not(.button) {
   @apply text-white underline underline-offset-4;
+}
+
+/* CKEditor buttons in the lead look as in a Text block on a dark section
+   (ck-content.css). */
+.page-hero-lead a.button {
+  @apply no-underline;
+
+  .highlight {
+    color: inherit;
+  }
+
+  &.is-filled {
+    @apply border-white bg-white text-primary-500 hover:border-primary-100 hover:bg-primary-100 hover:text-primary-500;
+  }
+
+  &.is-outline {
+    @apply border-white bg-transparent text-white hover:bg-white hover:text-primary-500;
+  }
 }
 </style>
