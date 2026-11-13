@@ -20,7 +20,7 @@
 
       <SpriteSymbol
         name="arrow-right"
-        class="size-6 max-w-0 -translate-x-0.5 opacity-0 transition-all duration-250 ease-in-out [.teaser:hover_&]:max-w-6 [.teaser:hover_&]:translate-x-0 [.teaser:hover_&]:opacity-100"
+        class="size-6 max-w-0 -translate-x-0.5 opacity-0 transition-all duration-250 ease-in-out group-focus-visible:max-w-6 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 [.teaser:hover_&]:max-w-6 [.teaser:hover_&]:translate-x-0 [.teaser:hover_&]:opacity-100"
       />
     </p>
   </VuepalLink>
