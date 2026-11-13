@@ -27,7 +27,7 @@
     "@rokka-io/nuxt": "^1.0.2",
     "@vueuse/core": "^15.0.0",
     "nuxt-easy-texts": "^2.2.0",
-    "nuxt-graphql-middleware": "^5.4.0",
+    "nuxt-graphql-middleware": "^5.5.0",
     "nuxt-language-negotiation": "^2.0.2",
     "nuxt-multi-cache": "^5.0.0",
     "nuxt-page-dependencies": "^1.2.0",
