@@ -465,6 +465,39 @@ describe('inner-page hero layout', () => {
   })
 })
 
+describe('inner-page hero lead links and buttons', () => {
+  const riseColour = brand.blue
+  const heroBase = brand.navy
+  const filled = textColourAfter(
+    PAGE_HERO,
+    '.page-hero-lead a.button {\n  @apply no-underline;',
+  )
+  const outline = textColourAfter(PAGE_HERO, '  &.is-outline {')
+
+  it('underlines plain links but not buttons', () => {
+    expect(PAGE_HERO).toMatch(
+      /\.page-hero-lead a:not\(\.button\) \{\s*@apply text-white underline/,
+    )
+    expect(PAGE_HERO).toMatch(
+      /\.page-hero-lead a\.button \{\s*@apply no-underline;/,
+    )
+  })
+
+  it.each([
+    ['filled button label on white', filled, WHITE],
+    ['outline button label on the full rise', outline, riseColour],
+    ['outline button label on the hero base', outline, heroBase],
+  ])('%s meets WCAG AA', (_label, foreground, background) => {
+    expect(contrast(foreground, background)).toBeGreaterThanOrEqual(AA_TEXT)
+  })
+
+  it('fills the filled button white', () => {
+    expect(PAGE_HERO).toMatch(
+      /&\.is-filled \{\s*@apply border-white bg-white text-primary-500/,
+    )
+  })
+})
+
 describe('inner-page ridge', () => {
   const RIDGE = read('app/components/BrandRidge/index.vue')
 
