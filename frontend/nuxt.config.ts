@@ -15,6 +15,13 @@ const ONE_YEAR = 31_536_000
 const ONE_DAY = 60 * 60 * 24
 const ONE_WEEK = ONE_DAY * 7
 const NUXT_REQUEST_HOST = process.env.NUXT_REQUEST_HOST
+// @nuxt/schema 4.6.4 resolves an unset devServer.host to {}, and nuxi dev then
+// fails on hostname.toLowerCase. The env order is the one @nuxt/schema reads.
+const DEV_SERVER_HOST =
+  process.env.NUXT_HOST ||
+  process.env.NITRO_HOST ||
+  process.env.HOST ||
+  'localhost'
 
 const LANGCODES = [{ code: 'en', prefix: '' }]
 
@@ -63,6 +70,7 @@ export function fontPreloadModule(_options: unknown, nuxt: Nuxt) {
 export default defineNuxtConfig({
   devtools: { enabled: true },
   telemetry: false,
+  devServer: { host: DEV_SERVER_HOST },
   graphqlMiddleware,
   multiCache,
   runtimeConfig,

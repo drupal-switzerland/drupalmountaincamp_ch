@@ -24,6 +24,7 @@ let multiCache: MultiCacheConfig
 let postcssPlugins: Record<string, unknown>
 let sourcemap: unknown
 let rokkaViewports: unknown
+let devServerHost: unknown
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -35,12 +36,14 @@ beforeAll(async () => {
     postcss: { plugins: Record<string, unknown> }
     sourcemap: unknown
     rokka: { viewports: unknown }
+    devServer: { host: unknown }
   }
   routeRules = config.routeRules
   multiCache = config.multiCache
   postcssPlugins = config.postcss.plugins
   sourcemap = config.sourcemap
   rokkaViewports = config.rokka.viewports
+  devServerHost = config.devServer.host
   vi.unstubAllGlobals()
 })
 
@@ -137,5 +140,12 @@ describe('source maps', () => {
   // its comments; server maps stay for readable stack traces.
   it('are built for the server only', () => {
     expect(sourcemap).toEqual({ server: true, client: false })
+  })
+})
+
+describe('dev server host', () => {
+  // A host that is not a non-empty string resolves to {} and crashes nuxi dev.
+  it('is a non-empty string', () => {
+    expect(devServerHost).toEqual(expect.stringMatching(/./))
   })
 })
