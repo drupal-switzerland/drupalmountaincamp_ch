@@ -33,6 +33,7 @@ export const EVENT: Readonly<EventFacts> = {
 export function buildEventSchema(
   event: EventFacts = EVENT,
   siteUrl = SITE_URL,
+  ticketsHref = TICKETS_PATH,
 ) {
   return {
     '@context': 'https://schema.org',
@@ -61,7 +62,7 @@ export function buildEventSchema(
     },
     offers: {
       '@type': 'Offer',
-      url: `${siteUrl}${TICKETS_PATH}`,
+      url: new URL(ticketsHref, siteUrl).href,
     },
   }
 }

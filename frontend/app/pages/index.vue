@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
-import { buildEventSchema } from '~/helpers/eventSchema'
+import { buildEventSchema, EVENT, SITE_URL } from '~/helpers/eventSchema'
 import { canonicalPageUrl } from '~/helpers/pagination'
 import { SITE_TITLE } from '~/helpers/site'
 
@@ -19,6 +19,7 @@ definePageMeta({
 })
 
 const nuxtRoute = useRoute()
+const ticketsLink = await useTicketsLink()
 
 // Get the data. Query the front node's alias instead of "/", because Drupal's route
 // resolver answers "/" with a 301 RedirectUrl to the alias (and no entity),
@@ -51,7 +52,9 @@ useHead({
     {
       key: 'event-schema',
       type: 'application/ld+json',
-      innerHTML: JSON.stringify(buildEventSchema()),
+      innerHTML: JSON.stringify(
+        buildEventSchema(EVENT, SITE_URL, ticketsLink.value?.href),
+      ),
     },
   ],
 })

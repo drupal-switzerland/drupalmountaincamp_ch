@@ -37,15 +37,12 @@
         :inert="isCovered(null) || undefined"
         class="mt-8 px-outer md:mt-0 md:pl-2 md:pr-0 lg:pl-3"
       >
-        <VuepalLink
-          :to="ticketsLink.link.url?.path"
-          :aria-current="
-            route.path === ticketsLink.link.url?.path ? 'page' : undefined
-          "
+        <TicketsButton
+          v-slot="{ label }"
           class="button is-filled w-full justify-center md:w-auto md:whitespace-nowrap md:px-5 md:py-2 lg:px-6"
         >
-          {{ ticketsLink.link.label }}
-        </VuepalLink>
+          {{ label }}
+        </TicketsButton>
       </li>
     </ul>
   </nav>
@@ -82,6 +79,6 @@ const items = computed(() =>
         isActive: isActivePath(route.path, path),
       }
     })
-    .filter((item) => item.link !== ticketsLink.value),
+    .filter((item) => item.link !== ticketsLink.value?.item),
 )
 </script>

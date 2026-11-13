@@ -23,14 +23,10 @@
           <span aria-hidden="true" class="mx-1">·</span>
           {{ $texts('edition.venue', 'Davos Congress Centre, Switzerland') }}
         </p>
-        <VuepalLink
-          v-if="ticketsLink"
-          :to="ticketsLink.link.url?.path"
-          class="ticket-button mt-2"
-        >
+        <TicketsButton class="ticket-button mt-2">
           {{ $texts('edition.tickets', 'Get tickets') }}
           <span aria-hidden="true">→</span>
-        </VuepalLink>
+        </TicketsButton>
       </div>
       <BrandRidge class="mt-8 xs:mt-0" />
     </section>
@@ -142,7 +138,6 @@ const copyright =
 
 const sponsorsTitleId = useId()
 const ctaTitleId = useId()
-const ticketsLink = await useTicketsLink()
 const { currentByTier } = await useCurrentSponsors()
 
 const STANDARD_TILE = 'h-[72px] w-[200px]'

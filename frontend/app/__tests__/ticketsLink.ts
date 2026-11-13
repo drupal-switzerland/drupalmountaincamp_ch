@@ -1,9 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import { useTicketsLink } from '../composables/useTicketsLink'
-import { TICKETS_PATH } from '../helpers/navigation'
+import { TICKET_SHOP_URL, TICKETS_PATH } from '../helpers/navigation'
 
-type MenuLink = { link: { label: string; url?: { path?: string } | null } }
+type MenuLink = {
+  link: {
+    label: string
+    url?: { path?: string } | null
+    attribute?: string | null
+  }
+}
 
 const { mainMenuLinks } = vi.hoisted(() => ({
   mainMenuLinks: { value: [] as MenuLink[] },
@@ -14,29 +20,70 @@ mockNuxtImport(
     Promise.resolve(computed(() => ({ mainMenuLinks: mainMenuLinks.value }))),
 )
 
-const menuLink = (label: string, path?: string): MenuLink => ({
-  link: { label, url: path === undefined ? null : { path } },
+const menuLink = (
+  label: string,
+  path?: string,
+  attribute: string | null = null,
+): MenuLink => ({
+  link: { label, url: path === undefined ? null : { path }, attribute },
 })
 
 describe('useTicketsLink', () => {
-  it('returns the main menu link that points to the tickets page', async () => {
-    const tickets = menuLink('Tickets', TICKETS_PATH)
+  it('returns the first main menu link to the tickets page', async () => {
+    const tickets = menuLink('Register', TICKETS_PATH)
     mainMenuLinks.value = [
       menuLink('Programme', '/programme'),
       menuLink('No URL'),
       tickets,
-      menuLink('Tickets again', TICKETS_PATH),
+      menuLink('Again', TICKETS_PATH),
     ]
 
     const link = await useTicketsLink()
 
-    expect(link.value).toBe(tickets)
+    expect(link.value).toEqual({
+      item: tickets,
+      href: TICKETS_PATH,
+      label: 'Register',
+      target: '_self',
+      opensNewTab: false,
+    })
   })
 
-  it('ignores paths that only contain the tickets path', async () => {
+  it('returns the link to the ticket shop in the same tab', async () => {
+    const shop = menuLink('Register', TICKET_SHOP_URL)
+    mainMenuLinks.value = [menuLink('Programme', '/programme'), shop]
+
+    const link = await useTicketsLink()
+
+    expect(link.value?.item).toBe(shop)
+    expect(link.value?.href).toBe(TICKET_SHOP_URL)
+    expect(link.value?.target).toBe('_self')
+    expect(link.value?.opensNewTab).toBe(false)
+  })
+
+  it('matches the ticket shop without the trailing slash', async () => {
+    const shop = menuLink('Register', TICKET_SHOP_URL.replace(/\/$/, ''))
+    mainMenuLinks.value = [shop]
+
+    const link = await useTicketsLink()
+
+    expect(link.value?.item).toBe(shop)
+  })
+
+  it('opens a new tab only when the menu link target asks for it', async () => {
+    mainMenuLinks.value = [menuLink('Register', TICKET_SHOP_URL, '_blank')]
+
+    const link = await useTicketsLink()
+
+    expect(link.value?.target).toBe('_blank')
+    expect(link.value?.opensNewTab).toBe(true)
+  })
+
+  it('ignores other paths and other shops', async () => {
     mainMenuLinks.value = [
-      menuLink('Ticket info', `${TICKETS_PATH}/info`),
+      menuLink('Info', `${TICKETS_PATH}/info`),
       menuLink('External', `https://example.com${TICKETS_PATH}`),
+      menuLink('Other year', 'https://pretix.eu/mountain-camp/2026/'),
     ]
 
     const link = await useTicketsLink()
