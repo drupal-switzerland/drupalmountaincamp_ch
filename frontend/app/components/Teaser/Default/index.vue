@@ -11,9 +11,9 @@
         hide-caption
       />
     </div>
-    <h3 class="mb-3 px-5 text-xl md:text-2xl">
+    <component :is="heading" class="mb-3 px-5 text-xl md:text-2xl">
       {{ title }}
-    </h3>
+    </component>
     <div v-if="text" class="mb-5 grow px-5" v-html="text" />
     <p class="mb-5 inline-flex px-5 font-bold">
       {{ $texts('more_information', 'More information') }}
@@ -28,6 +28,7 @@
 
 <script lang="ts" setup>
 import type { MediaImageFragment } from '#graphql-operations'
+import { TEASER_HEADING } from '~/composables/teaserHeading'
 
 defineProps<{
   title: string
@@ -37,6 +38,11 @@ defineProps<{
 }>()
 
 const { $texts } = useNuxtApp()
+
+const heading = inject(
+  TEASER_HEADING,
+  computed(() => 'h3' as const),
+)
 
 const imageStyle = defineImageStyle({
   type: 'sizes',
