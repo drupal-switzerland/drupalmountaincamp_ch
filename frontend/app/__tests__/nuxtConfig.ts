@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { execFileSync } from 'node:child_process'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { SCREENS } from '../tailwind/screens'
 
 type RouteRule = {
   headers?: Record<string, string>
@@ -22,6 +23,7 @@ let routeRules: Record<string, RouteRule>
 let multiCache: MultiCacheConfig
 let postcssPlugins: Record<string, unknown>
 let sourcemap: unknown
+let rokkaViewports: unknown
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -32,11 +34,13 @@ beforeAll(async () => {
     multiCache: MultiCacheConfig
     postcss: { plugins: Record<string, unknown> }
     sourcemap: unknown
+    rokka: { viewports: unknown }
   }
   routeRules = config.routeRules
   multiCache = config.multiCache
   postcssPlugins = config.postcss.plugins
   sourcemap = config.sourcemap
+  rokkaViewports = config.rokka.viewports
   vi.unstubAllGlobals()
 })
 
@@ -47,6 +51,12 @@ function cacheControl(route: string) {
 function maxAge(route: string) {
   return Number(/(?:^|,)max-age=(\d+)/.exec(cacheControl(route))?.[1])
 }
+
+describe('rokka viewports', () => {
+  it('are the Tailwind screens, so image sizes and breakpoints cannot drift', () => {
+    expect(rokkaViewports).toBe(SCREENS)
+  })
+})
 
 describe('route rules: cache-control per kind of static file', () => {
   it('lets content-hashed files under /_nuxt/** be cached for a year, immutable', () => {
