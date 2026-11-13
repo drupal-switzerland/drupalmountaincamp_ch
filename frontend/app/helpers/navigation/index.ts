@@ -17,9 +17,18 @@ export function isTicketsUrl(path?: string | null) {
   )
 }
 
-/** The Drupal menu link target, or the same tab when none is set. */
-export function linkTarget(target?: string | null) {
-  return target || SAME_TAB_TARGET
+// VuepalLink routes clicks on other URLs with router.push, ignoring target.
+const EXTERNAL_URL_PREFIXES = ['http', 'www', 'mailto:', 'tel:']
+
+const isExternalUrl = (url: string) =>
+  EXTERNAL_URL_PREFIXES.some((prefix) => url.startsWith(prefix))
+
+/**
+ * The Drupal menu link target for an external URL, or the same tab when none
+ * is set or the URL is internal.
+ */
+export function linkTarget(url: string, target?: string | null) {
+  return (isExternalUrl(url) && target) || SAME_TAB_TARGET
 }
 
 export function opensNewTab(target: string) {
