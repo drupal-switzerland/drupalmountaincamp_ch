@@ -156,7 +156,6 @@
         "optimize-autoloader": false,
         "apcu-autoloader": false,
         "discard-changes": true,
-        "secure-http": false,
         "platform": {
             "php": "8.5"
         },
