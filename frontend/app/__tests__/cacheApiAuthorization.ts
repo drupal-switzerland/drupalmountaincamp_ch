@@ -8,20 +8,30 @@ const TOKEN_HEADER = 'x-nuxt-multi-cache-token'
 // What the module reads at runtime: the token from the environment (empty
 // without one) and the callback from server/multiCache.serverOptions.ts.
 const app = {
-  config: { api: { authorizationToken: '', authorizationDisabled: false } },
+  config: {
+    api: {
+      enabled: true,
+      authorizationToken: '',
+      authorizationDisabled: false,
+    },
+  },
   serverOptions: { api: { authorization: refuseCacheApiRequest } },
 }
 
 vi.mock(
   '../../node_modules/nuxt-multi-cache/dist/runtime/server/utils/useMultiCacheApp.js',
-  () => ({ useMultiCacheApp: () => app }),
+  () => ({ getMultiCacheApp: () => app }),
 )
 
 async function authorize(token?: string) {
   const { checkAuth } =
     await import('../../node_modules/nuxt-multi-cache/dist/runtime/server/api/helpers/index.js')
   const headers = token === undefined ? {} : { [TOKEN_HEADER]: token }
-  return checkAuth({ node: { req: { headers } } } as unknown as H3Event)
+  const res = { setHeader: () => {}, getHeader: () => undefined }
+  return checkAuth({
+    context: {},
+    node: { req: { headers }, res },
+  } as unknown as H3Event)
 }
 
 describe('cache API authorization', () => {
