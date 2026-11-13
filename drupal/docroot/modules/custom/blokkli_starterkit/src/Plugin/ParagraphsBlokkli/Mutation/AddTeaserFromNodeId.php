@@ -7,6 +7,8 @@ namespace Drupal\blokkli_starterkit\Plugin\ParagraphsBlokkli\Mutation;
 use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\paragraphs_blokkli\Attribute\ParagraphMutation;
+use Drupal\paragraphs_blokkli\Exception\MutationAccessException;
+use Drupal\paragraphs_blokkli\Exception\MutationMissingEntityException;
 use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
 use Drupal\paragraphs_blokkli\ParagraphMutationPluginBase;
 use Drupal\paragraphs_blokkli\ParagraphProxy;
@@ -69,6 +71,16 @@ class AddTeaserFromNodeId extends ParagraphMutationPluginBase {
     string $hostFieldName,
     ?string $afterUuid,
   ): void {
+    // Loaded without an access check, so that the mutation replays for every
+    // user; view access is checked once, when the editor adds the teaser.
+    $node = $this->entityTypeManager->getStorage('node')->load($nid);
+    if (!$node) {
+      throw new MutationMissingEntityException('node', $nid);
+    }
+    if ($this->isFirstRun() && !$node->access('view')) {
+      throw new MutationAccessException('Access denied: cannot view the node.');
+    }
+
     $paragraph = $this->createNewParagraph([
       'type' => 'teaser',
       'uuid' => $this->getUuidForNewEntity(),

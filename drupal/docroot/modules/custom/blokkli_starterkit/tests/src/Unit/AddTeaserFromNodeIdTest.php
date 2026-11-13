@@ -9,6 +9,7 @@ use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs_blokkli\ParagraphMutationContext;
 use Drupal\paragraphs_blokkli\ParagraphProxyInterface;
@@ -62,7 +63,12 @@ class AddTeaserFromNodeIdTest extends UnitTestCase {
       return $paragraph;
     });
     $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
-    $entityTypeManager->method('getStorage')->with('paragraph')->willReturn($storage);
+    $nodeStorage = $this->createMock(EntityStorageInterface::class);
+    $nodeStorage->method('load')->with($nid)->willReturn($this->createMock(NodeInterface::class));
+    $entityTypeManager->method('getStorage')->willReturnMap([
+      ['paragraph', $storage],
+      ['node', $nodeStorage],
+    ]);
 
     $uuid = $this->createMock(UuidInterface::class);
     $uuid->method('generate')->willReturn('generated-' . count($this->created));
