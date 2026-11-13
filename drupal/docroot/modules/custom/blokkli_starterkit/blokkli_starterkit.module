@@ -98,15 +98,7 @@ function blokkli_starterkit_form_alter(array &$form, FormStateInterface $form_st
       ];
 
       field_group_attach_groups($form, $context);
-      if (method_exists(FormatterHelper::class, 'formProcess')) {
-        $form['#process'][] = [FormatterHelper::class, 'formProcess'];
-      }
-      elseif (function_exists('field_group_form_pre_render')) {
-        $form['#pre_render'][] = 'field_group_form_pre_render';
-      }
-      elseif (function_exists('field_group_form_process')) {
-        $form['#process'][] = 'field_group_form_process';
-      }
+      $form['#process'][] = [FormatterHelper::class, 'formProcess'];
     }
   }
 }
