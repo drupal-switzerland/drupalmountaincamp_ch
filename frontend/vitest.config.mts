@@ -19,6 +19,13 @@ export default defineVitestConfig({
     hookTimeout: HOOK_TIMEOUT_MS,
     globals: true,
     environment: 'nuxt',
+    environmentOptions: {
+      nuxt: {
+        overrides: {
+          modules: ['./app/__tests__/support/keepCdnHeadersCalls'],
+        },
+      },
+    },
     setupFiles: ['./vitest.setup.ts'],
     include: ['**/__tests__/*.*'],
     coverage: {
