@@ -233,6 +233,7 @@ run_environment() {
   expect_status "$PUBLIC_HOST" /admin 403
   # News articles of the previous site; the paths next to them still answer.
   expect_redirect "$PUBLIC_HOST" /article/some-news-title /news/some-news-title
+  expect_backend "$PUBLIC_HOST" /article/a%0db frontend
   for path in /article /articles/x /sponsors /tickets-2025; do
     expect_status "$PUBLIC_HOST" "$path" 200
   done
