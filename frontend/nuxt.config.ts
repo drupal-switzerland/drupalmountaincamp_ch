@@ -9,6 +9,7 @@ import { runtimeConfig } from './config/runtimeConfig'
 import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
 import { SITE_DESCRIPTION, SITE_TITLE } from './app/helpers/site'
+import { SCREENS } from './app/tailwind/screens'
 
 const ONE_YEAR = 31_536_000
 const ONE_DAY = 60 * 60 * 24
@@ -140,13 +141,7 @@ export default defineNuxtConfig({
     // Overridable per environment with NUXT_PUBLIC_ROKKA_HOST; an empty value
     // renders every image from the Drupal derivatives.
     host: 'mountaincamp.rokka.io',
-    viewports: {
-      xs: 640,
-      sm: 768,
-      md: 1024,
-      lg: 1280,
-      xl: 1380,
-    },
+    viewports: SCREENS,
     dpr: ['', '1.5', '2'],
   },
 
