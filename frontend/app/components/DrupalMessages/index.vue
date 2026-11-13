@@ -16,7 +16,6 @@
       :key="message.message"
       class="flex items-center justify-between rounded p-6 font-medium"
       :class="classes[message.type]"
-      @click="removeMessage(i)"
     >
       <div>
         <span v-if="typeLabels[message.type]" class="sr-only">
@@ -28,7 +27,7 @@
         type="button"
         class="shrink-0"
         :aria-label="$texts('messages.dismiss', 'Dismiss message')"
-        @click.stop="dismissFromButton(i, $event)"
+        @click="dismissFromButton(i, $event)"
       >
         <SpriteSymbol name="close" class="block size-6" />
       </button>

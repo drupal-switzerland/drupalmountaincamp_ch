@@ -612,3 +612,17 @@ describe('Drupal messages', () => {
     elsewhere.remove()
   })
 })
+
+describe('Drupal messages: clicks outside the dismiss button', () => {
+  it('keeps a message open when its text or a link in it is clicked', async () => {
+    useDrupalMessages().messages.value = [
+      { type: 'status', message: 'Saved. <a href="/node/1">View</a>' },
+    ]
+    const wrapper = await mountMessages()
+
+    await wrapper.get('[aria-live="polite"] a').trigger('click')
+    await wrapper.get('[aria-live="polite"] > div').trigger('click')
+
+    expect(useDrupalMessages().messages.value).toHaveLength(1)
+  })
+})
