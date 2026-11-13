@@ -24,7 +24,7 @@
           <button
             v-if="!isPlaying"
             class="relative flex aspect-video w-full cursor-pointer items-center justify-center lg:px-0"
-            :aria-label="$texts('video.load', 'Load video')"
+            :aria-label="loadLabel"
             @click.prevent="play"
           >
             <ImageItem
@@ -32,6 +32,7 @@
               :image-style="imageStyle"
               loading="lazy"
               v-bind="video.thumbnailCustom"
+              alt=""
               class="absolute left-0 top-0 w-full"
             />
 
@@ -39,7 +40,8 @@
               v-else-if="thumbnailUrl"
               :src="thumbnailUrl"
               class="absolute left-0 top-0 size-full object-cover"
-              :alt="videoDescription"
+              alt=""
+              loading="lazy"
             />
 
             <img
@@ -50,7 +52,8 @@
                 )
               "
               class="absolute left-0 top-0 size-full object-cover"
-              :alt="videoDescription"
+              alt=""
+              loading="lazy"
             />
 
             <SpriteSymbol name="play" class="z-10 size-[75px]" />
@@ -183,6 +186,13 @@ const playerTitle = computed(
   () =>
     props.title || props.videoDescription || $texts('video.player', 'Video'),
 )
+
+// The thumbnail inside is decorative: the button carries the video's name.
+const loadLabel = computed(() => {
+  const load = $texts('video.load', 'Load video')
+  const name = props.title || props.videoDescription
+  return name ? `${load}: ${name}` : load
+})
 
 // The play button disappears, so focus moves on to the player.
 async function play() {
