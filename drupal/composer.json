@@ -146,7 +146,6 @@
             "drupal/core-composer-scaffold": true,
             "drupalspoons/composer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
-            "mglaman/composer-drupalse-lenient": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
             "tbachert/spi": true,
@@ -228,11 +227,6 @@
                 "[web-root]/install.php": false,
                 "[web-root]/INSTALL.txt": false,
                 "[web-root]/README.txt": false
-            }
-        },
-        "drush": {
-            "services": {
-                "drush.services.yml": "^9 || ^10 || ^11"
             }
         },
         "patches": {
