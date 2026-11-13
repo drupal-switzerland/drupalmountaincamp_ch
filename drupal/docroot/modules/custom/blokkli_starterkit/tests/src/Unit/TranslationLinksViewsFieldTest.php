@@ -6,6 +6,8 @@ namespace Drupal\Tests\blokkli_starterkit\Unit;
 
 use Drupal\block_content\BlockContentInterface;
 use Drupal\blokkli_starterkit\Plugin\views\field\TranslationLinksViewsField;
+use Drupal\Core\Access\AccessManagerInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
@@ -34,7 +36,9 @@ class TranslationLinksViewsFieldTest extends UnitTestCase {
       'de' => new Language(['id' => 'de', 'name' => 'German']),
       'fr' => new Language(['id' => 'fr', 'name' => 'French']),
     ]);
-    $field = new TranslationLinksViewsField([], 'translation_links_field', [], $languageManager);
+    $accessManager = $this->createMock(AccessManagerInterface::class);
+    $accessManager->method('checkNamedRoute')->willReturn(AccessResult::allowed());
+    $field = new TranslationLinksViewsField([], 'translation_links_field', [], $languageManager, $accessManager);
     $field->setStringTranslation($this->getStringTranslationStub());
     return $field;
   }
@@ -93,7 +97,7 @@ class TranslationLinksViewsFieldTest extends UnitTestCase {
     $this->assertSame('entity.node.edit_form', $link['#url']->getRouteName());
     $this->assertSame(['node' => '7'], $link['#url']->getRouteParameters());
     $this->assertSame('de', $link['#url']->getOption('language')->getId());
-    $this->assertSame('Edit: German', $link['#attributes']['title']);
+    $this->assertSame('Edit: German', (string) $link['#attributes']['title']);
     $this->assertSame(['views-liip-links-item'], $link['#attributes']['class']);
   }
 
@@ -105,7 +109,7 @@ class TranslationLinksViewsFieldTest extends UnitTestCase {
 
     $this->assertSame('entity.node.edit_form', $link['#url']->getRouteName());
     $this->assertContains('is-source', $link['#attributes']['class']);
-    $this->assertSame('Edit: English (Original language)', $link['#attributes']['title']);
+    $this->assertSame('Edit: English (Original language)', (string) $link['#attributes']['title']);
   }
 
   /**
@@ -119,7 +123,7 @@ class TranslationLinksViewsFieldTest extends UnitTestCase {
     $this->assertSame('fr', $link['#url']->getOption('language')->getId());
     $this->assertContains('is-missing', $link['#attributes']['class']);
     $this->assertNotContains('is-source', $link['#attributes']['class']);
-    $this->assertSame('Add: French', $link['#attributes']['title']);
+    $this->assertSame('Add: French', (string) $link['#attributes']['title']);
   }
 
   /**
