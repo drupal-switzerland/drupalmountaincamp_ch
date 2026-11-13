@@ -8716,7 +8716,6 @@ type Query {
 
   """"""
   ping: String
-  requestHeaders: [RequestHeader!]
   route(path: String!, skipFrontpageRedirect: Boolean = false): Url
   textsLoader: TextsLoader
 }
@@ -8834,15 +8833,6 @@ type RedirectUrl implements Url {
   """"""
   path: String!
   redirect: Redirect!
-}
-
-""""""
-type RequestHeader {
-  """"""
-  key: String!
-
-  """"""
-  value: [String!]
 }
 
 """Rokka Metadata"""

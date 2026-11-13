@@ -16,7 +16,6 @@ schema_configuration:
   core_composable:
     extensions:
       breadcrumb: breadcrumb
-      debugging: debugging
       entity_query: entity_query
       environment_indicator: environment_indicator
       formatted_date: formatted_date
