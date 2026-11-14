@@ -79,6 +79,15 @@ describe('useTicketsLink', () => {
     expect(link.value?.opensNewTab).toBe(true)
   })
 
+  it('stays in the same tab for the tickets page, whatever the target', async () => {
+    mainMenuLinks.value = [menuLink('Register', TICKETS_PATH, '_blank')]
+
+    const link = await useTicketsLink()
+
+    expect(link.value?.target).toBe('_self')
+    expect(link.value?.opensNewTab).toBe(false)
+  })
+
   it('ignores other paths and other shops', async () => {
     mainMenuLinks.value = [
       menuLink('Info', `${TICKETS_PATH}/info`),

@@ -28,7 +28,7 @@ export async function useTicketsLink() {
     if (!item || !href) {
       return undefined
     }
-    const target = linkTarget(item.link.attribute)
+    const target = linkTarget(href, item.link.attribute)
     return {
       item,
       href,
