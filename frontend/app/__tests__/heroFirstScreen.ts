@@ -52,6 +52,26 @@ describe('heroes fill the first screen', () => {
     )
   })
 
+  // Free space goes half above the badge, half below the lead, so the text
+  // sits evenly between the header and the ridge on any screen height.
+  it('splits the spare height evenly around the homepage text', () => {
+    const classesBefore = (marker: string) => {
+      const at = HOME_HERO.indexOf(marker)
+      const start = HOME_HERO.lastIndexOf('class="', at)
+      return HOME_HERO.slice(
+        start + 7,
+        HOME_HERO.indexOf('"', start + 7),
+      ).split(/\s+/)
+    }
+    const top = classesBefore('<p class="label">')
+    const below = classesBefore('<span class="home-hero-rise"')
+
+    expect(top).toEqual(expect.arrayContaining(['grow', 'justify-end']))
+    expect(below).toEqual(expect.arrayContaining(['grow', 'flex-col']))
+    expect(HOME_HERO).toMatch(/class="home-hero-body[^"]*\bgrow\b/)
+    expect(HOME_HERO).not.toContain('!mt-auto')
+  })
+
   it('lets both heroes be as tall as their content on paper', () => {
     expect(PRINT_CSS).toMatch(
       /\.home-hero-screen,\s*\.page-hero \{\s*min-height: 0 !important;/,

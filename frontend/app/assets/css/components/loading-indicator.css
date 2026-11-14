@@ -4,6 +4,8 @@
    the app's own templates. */
 .nuxt-loading-indicator {
   background: theme('colors.primary.400') !important;
+  /* The edge keeps the bar visible over the navy header. */
+  box-shadow: 0 1px 0 theme('colors.white') !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

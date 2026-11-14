@@ -10,14 +10,14 @@
   >
     <div
       :inert="coversRow || undefined"
-      class="flex h-10 w-full items-center pr-2 transition-all duration-250 ease-in-out hover:text-primary-400 md:h-20 lg:justify-between"
+      class="flex h-10 w-full items-center pr-2 transition-all duration-250 ease-in-out hover:text-primary-300 md:h-20 lg:justify-between"
       @mouseenter="menuHoverOpen"
       @mouseleave="menuHoverClose"
     >
       <VuepalLink
         :to="link.link.url?.path"
         :aria-current="route.path === link.link.url?.path ? 'page' : undefined"
-        class="flex h-full items-center py-2 pl-2 decoration-primary-400 decoration-[3px] underline-offset-8"
+        class="flex h-full items-center py-2 pl-2 decoration-primary-300 decoration-[3px] underline-offset-8"
         :class="{ underline: isGroupActive }"
       >
         {{ link.link.label }}
@@ -52,7 +52,7 @@
         // it covers is reachable.
         'pointer-events-auto h-full translate-x-0 md:scale-y-100': subtreeOpen,
       }"
-      class="absolute left-0 top-0 z-[100] size-full bg-gray-50 transition-all duration-500 ease-in-out md:pointer-events-auto md:top-20 md:h-auto md:w-[calc(100%+50px)] md:origin-top md:border md:border-gray-300"
+      class="on-light absolute left-0 top-0 z-[100] size-full bg-gray-50 text-primary-500 transition-all duration-500 ease-in-out md:pointer-events-auto md:top-20 md:h-auto md:w-[calc(100%+50px)] md:origin-top md:border md:border-gray-300"
       @mouseenter="menuHoverOpen"
       @mouseleave="menuHoverClose"
     >

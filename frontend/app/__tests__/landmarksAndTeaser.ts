@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import GlobalMenu from '../components/PageHeader/GlobalMenu.vue'
+import PageHeader from '../components/PageHeader/index.vue'
 import Card from '../components/Node/PressRelease/Card/index.vue'
 
 mockNuxtImport('useEasyTexts', () => () => ({
@@ -23,6 +24,42 @@ describe('main navigation', () => {
     const wrapper = await mountSuspended(GlobalMenu)
 
     expect(wrapper.get('nav').attributes('aria-label')).toBe('mainNavigation')
+  })
+})
+
+mockNuxtImport('useTicketsLink', () => async () => ref(null))
+
+describe('header logo', () => {
+  it('names the home link by the logo text only', async () => {
+    const wrapper = await mountSuspended(PageHeader)
+    const link = wrapper.get('a.page-header-logo')
+
+    expect(link.text()).toBe('')
+    expect(link.findAll('img')).toHaveLength(1)
+    expect(link.get('img').attributes('alt')).toBe('Mountain Camp 2027')
+  })
+
+  it('shows its bottom edge only once the page is scrolled', async () => {
+    window.scrollTo(0, 0)
+    const wrapper = await mountSuspended(PageHeader)
+    const header = wrapper.get('header')
+    expect(header.classes()).toContain('on-dark')
+    expect(header.classes()).toContain('border-b-primary-500')
+    expect(header.classes()).not.toContain('border-b-primary-300')
+
+    Object.defineProperty(window, 'scrollY', {
+      value: 400,
+      configurable: true,
+    })
+    window.dispatchEvent(new Event('scroll'))
+    await nextTick()
+    expect(header.classes()).toContain('border-b-primary-300')
+
+    Object.defineProperty(window, 'scrollY', {
+      value: 0,
+      configurable: true,
+    })
+    window.dispatchEvent(new Event('scroll'))
   })
 })
 

@@ -136,11 +136,13 @@ describe('navy band (navy to blue)', () => {
 
 describe("a table's white panel on a dark section", () => {
   // Rules that colour something on a dark section and can match inside the
-  // panel. Not rich text, so not in a table: the ticket button and the theme
-  // line. The panel's own rules and the global focus ring are checked below.
+  // panel. Not rich text, so not in a table: the ticket button, the theme
+  // line and the navy ring of a light panel such as a header submenu. The
+  // panel's own rules and the global focus ring are checked below.
   const NOT_RICH_TEXT = [
     '.on-dark .ticket-button',
     ':where(.on-dark) .theme-line',
+    '.on-dark .on-light :focus-visible',
   ]
   const PANEL_RULES = [
     '.on-dark .ck-content figure.table',

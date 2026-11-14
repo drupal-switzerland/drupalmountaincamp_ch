@@ -18,7 +18,8 @@
 
 @layer base {
   :root {
-    --page-header-height: theme(spacing.12);
+    /* The logo row plus the header's bottom border. */
+    --page-header-height: calc(theme(spacing.14) + theme(borderWidth.2));
     --event-strip-height: theme(spacing.12);
     /* What the first screen shows of a hero: below the header, and on pages
        other than home, below the event strip. svh, so a phone's collapsing

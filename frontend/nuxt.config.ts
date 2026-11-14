@@ -10,6 +10,7 @@ import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
 import { SITE_DESCRIPTION, SITE_TITLE } from './app/helpers/site'
 import { SCREENS } from './app/tailwind/screens'
+import { brand } from './tailwind.config'
 
 const ONE_YEAR = 31_536_000
 const ONE_DAY = 60 * 60 * 24
@@ -89,7 +90,7 @@ export default defineNuxtConfig({
         lang: 'en',
       },
       meta: [
-        { name: 'theme-color', content: '#184759' },
+        { name: 'theme-color', content: brand.navy },
         {
           name: 'google-site-verification',
           content: 'SCUdRugj-xdUAPc-l5QvGazhSoLCk41JiDAOoztuT8I',

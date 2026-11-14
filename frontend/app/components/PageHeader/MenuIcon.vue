@@ -3,7 +3,7 @@
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    class="size-6 overflow-visible text-primary-500"
+    class="size-6 overflow-visible"
     aria-hidden="true"
   >
     <rect

@@ -1,8 +1,11 @@
 <template>
   <header
     ref="container"
-    class="top-0 z-10 border-b-2 border-b-primary-500 bg-white text-primary-500 transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
+    class="on-dark top-0 z-10 border-b-2 bg-primary-500 text-white transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
     :class="{
+      // Scrolled, the edge keeps the header apart from navy sections below it.
+      'border-b-primary-300': isScrolled,
+      'border-b-primary-500': !isScrolled,
       '-translate-y-10 md:translate-y-[-50px]':
         isHeaderShiftedUp && !isMenuOpen,
       'h-[var(--page-header-height)] md:max-h-screen': !isMenuOpen,
@@ -12,36 +15,31 @@
     }"
   >
     <div class="page-header-grid container mx-auto grid max-w-none">
-      <div class="grid-area-logo h-7 md:h-20">
+      <div class="grid-area-logo h-14 md:h-20">
         <div
-          class="flex h-full items-center pr-1 pt-5 transition-all duration-250 ease-in-out md:pt-0"
+          class="flex h-full items-center pr-1 transition-all duration-250 ease-in-out"
           :class="{
             'sticky top-0': isGlobalSticky,
           }"
         >
-          <nuxt-link :to="{ name: 'home' }" class="flex items-center gap-2">
+          <nuxt-link :to="{ name: 'home' }" class="page-header-logo flex">
             <img
-              src="/images/icon-mountain.webp"
-              alt=""
-              width="128"
-              height="128"
-              class="size-7 xs:size-8 md:size-10"
+              src="/images/logo-mountain-camp-white.webp"
+              alt="Mountain Camp 2027"
+              width="417"
+              height="168"
+              class="h-9 w-auto md:h-14"
             />
-            <span
-              class="font-heading text-base font-bold uppercase leading-none tracking-wide text-primary-500 xs:text-lg md:whitespace-nowrap lg:text-xl"
-            >
-              Mountain Camp <span class="text-primary-400">2027</span>
-            </span>
           </nuxt-link>
         </div>
       </div>
       <div
-        class="grid-area-hamburger flex items-center justify-between pl-2 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
+        class="grid-area-hamburger flex items-center justify-between pl-2 transition-all duration-250 ease-in-out md:px-0 md:text-lg"
       >
         <TicketsButton
           v-if="!isMenuOpen"
           v-slot="{ label }"
-          class="button is-filled mr-1 px-4 py-2 text-sm md:hidden"
+          class="button is-on-navy mr-1 px-4 py-2 text-sm md:hidden"
         >
           {{ label }}
         </TicketsButton>
@@ -75,6 +73,17 @@ import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
 const route = useRoute()
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
+const isScrolled = ref(false)
+const updateIsScrolled = () => {
+  isScrolled.value = window.scrollY > 0
+}
+useEventListener(
+  () => (import.meta.client ? window : null),
+  'scroll',
+  updateIsScrolled,
+  { passive: true },
+)
+onMounted(updateIsScrolled)
 const container = ref<HTMLElement | null>(null)
 const isGlobalSticky = ref(false)
 const isMenuOpen = useMainMenuOpen()
@@ -155,7 +164,7 @@ function openMenu() {
 <style lang="postcss">
 .page-header-grid {
   grid-template:
-    'logo hamburger' theme(space.10)
+    'logo hamburger' theme(space.14)
     'global global' 1fr
     'language language' auto
     / 1fr auto;

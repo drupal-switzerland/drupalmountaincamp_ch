@@ -16,7 +16,12 @@ describe('focus below the sticky header', () => {
   })
 
   it('takes the header height from the same variable', () => {
-    expect(BASE_CSS).toMatch(/--page-header-height: theme\(spacing\.12\);/)
+    expect(BASE_CSS).toContain(
+      '--page-header-height: calc(theme(spacing.14) + theme(borderWidth.2));',
+    )
+    expect(HEADER).toContain("'logo hamburger' theme(space.14)")
+    expect(HEADER).toContain('grid-area-logo h-14 md:h-20')
+    expect(HEADER).toContain('border-b-2')
     expect(BASE_CSS).toMatch(
       /@screen md \{\s*:root \{\s*--page-header-height: theme\(spacing\.20\);/,
     )

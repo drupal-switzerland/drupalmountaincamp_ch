@@ -10,7 +10,7 @@
         v-for="item in items"
         :key="`global_${item.index}`"
         :inert="isCovered(item.index) || undefined"
-        class="flex items-stretch border-b border-primary-100 px-outer md:border-0 md:px-0"
+        class="flex items-stretch border-b border-white/20 px-outer md:border-0 md:px-0"
       >
         <div
           v-if="item.link.subtree.length > 0"
@@ -23,9 +23,9 @@
           v-else
           :to="item.path"
           :aria-current="item.isCurrent ? 'page' : undefined"
-          class="flex min-h-14 w-full items-center decoration-primary-400 decoration-[3px] underline-offset-8 hover:text-primary-400 md:min-h-0 md:whitespace-nowrap md:p-2 lg:px-3"
+          class="flex min-h-14 w-full items-center decoration-primary-300 decoration-[3px] underline-offset-8 hover:text-primary-300 md:min-h-0 md:whitespace-nowrap md:p-2 lg:px-3"
           :class="{
-            'border-l-4 border-primary-400 pl-3 md:border-l-0 md:underline':
+            'border-l-4 border-primary-300 pl-3 md:border-l-0 md:underline':
               item.isActive,
           }"
         >
@@ -39,7 +39,7 @@
       >
         <TicketsButton
           v-slot="{ label }"
-          class="button is-filled w-full justify-center md:w-auto md:whitespace-nowrap md:px-5 md:py-2 lg:px-6"
+          class="button is-on-navy w-full justify-center md:w-auto md:whitespace-nowrap md:px-5 md:py-2 lg:px-6"
         >
           {{ label }}
         </TicketsButton>

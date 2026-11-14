@@ -216,6 +216,15 @@ describe('main menu submenu toggle', () => {
     ).toBe(true)
   })
 
+  it('marks its panel as light, so focus rings inside it are navy', async () => {
+    const wrapper = await mountGroup()
+    const toggle = wrapper.get('button[aria-controls]')
+    const panel = wrapper.get(`#${toggle.attributes('aria-controls')}`)
+
+    expect(panel.classes()).toContain('on-light')
+    expect(panel.classes()).toContain('bg-gray-50')
+  })
+
   it('opens, and Escape closes and returns focus to the toggle', async () => {
     const wrapper = await mountGroup()
     const toggle = wrapper.get('button[aria-controls]')
