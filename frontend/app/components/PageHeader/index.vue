@@ -15,9 +15,9 @@
     }"
   >
     <div class="page-header-grid container mx-auto grid max-w-none">
-      <div class="grid-area-logo h-10 md:h-20">
+      <div class="grid-area-logo h-14 md:h-20">
         <div
-          class="flex h-full items-center pr-1 pt-1 transition-all duration-250 ease-in-out md:pt-0"
+          class="flex h-full items-center pr-1 transition-all duration-250 ease-in-out"
           :class="{
             'sticky top-0': isGlobalSticky,
           }"
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div
-        class="grid-area-hamburger flex items-center justify-between pl-2 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
+        class="grid-area-hamburger flex items-center justify-between pl-2 transition-all duration-250 ease-in-out md:px-0 md:text-lg"
       >
         <TicketsButton
           v-if="!isMenuOpen"
@@ -164,7 +164,7 @@ function openMenu() {
 <style lang="postcss">
 .page-header-grid {
   grid-template:
-    'logo hamburger' theme(space.10)
+    'logo hamburger' theme(space.14)
     'global global' 1fr
     'language language' auto
     / 1fr auto;
