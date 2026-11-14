@@ -1,7 +1,7 @@
 <template>
   <header
     ref="container"
-    class="top-0 z-10 border-b-2 border-b-primary-500 bg-white text-primary-500 transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
+    class="on-dark top-0 z-10 border-b-2 border-b-primary-500 bg-primary-500 text-white transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
     :class="{
       '-translate-y-10 md:translate-y-[-50px]':
         isHeaderShiftedUp && !isMenuOpen,
@@ -12,26 +12,21 @@
     }"
   >
     <div class="page-header-grid container mx-auto grid max-w-none">
-      <div class="grid-area-logo h-7 md:h-20">
+      <div class="grid-area-logo h-10 md:h-20">
         <div
-          class="flex h-full items-center pr-1 pt-5 transition-all duration-250 ease-in-out md:pt-0"
+          class="flex h-full items-center pr-1 pt-2 transition-all duration-250 ease-in-out md:pt-0"
           :class="{
             'sticky top-0': isGlobalSticky,
           }"
         >
-          <nuxt-link :to="{ name: 'home' }" class="flex items-center gap-2">
+          <nuxt-link :to="{ name: 'home' }" class="page-header-logo flex">
             <img
-              src="/images/icon-mountain.webp"
-              alt=""
-              width="128"
-              height="128"
-              class="size-7 xs:size-8 md:size-10"
+              src="/images/logo-mountain-camp-white.webp"
+              alt="Mountain Camp 2027"
+              width="417"
+              height="168"
+              class="h-8 w-auto md:h-14"
             />
-            <span
-              class="font-heading text-base font-bold uppercase leading-none tracking-wide text-primary-500 xs:text-lg md:whitespace-nowrap lg:text-xl"
-            >
-              Mountain Camp <span class="text-primary-400">2027</span>
-            </span>
           </nuxt-link>
         </div>
       </div>
@@ -41,7 +36,7 @@
         <TicketsButton
           v-if="!isMenuOpen"
           v-slot="{ label }"
-          class="button is-filled mr-1 px-4 py-2 text-sm md:hidden"
+          class="button is-on-navy mr-1 px-4 py-2 text-sm md:hidden"
         >
           {{ label }}
         </TicketsButton>

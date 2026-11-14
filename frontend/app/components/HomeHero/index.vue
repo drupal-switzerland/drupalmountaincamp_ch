@@ -7,9 +7,11 @@
     <div
       class="on-dark home-hero relative isolate flex flex-1 flex-col overflow-hidden text-white"
     >
-      <!-- Auto margin: a taller screen adds navy above the badge. -->
+      <!-- This block and the one under the theme line grow by the same
+           amount, so a taller screen adds as much navy above the badge as
+           below the lead. -->
       <div
-        class="container !mb-0 !mt-auto flex flex-col items-center gap-4 pt-6 text-center xs:gap-5 xs:pt-12 md:pt-20"
+        class="container !my-0 flex grow flex-col items-center justify-end gap-4 pt-6 text-center xs:gap-5 xs:pt-12"
       >
         <p class="label">
           {{ $texts('hero.badge', '10 years of community') }}
@@ -27,12 +29,12 @@
         <ThemeLine class="text-3xl xs:text-5xl md:text-6xl lg:text-[5rem]" />
       </div>
       <!-- Everything under the theme line: the box the blue rises in. -->
-      <div class="relative">
+      <div class="relative flex grow flex-col">
         <span class="home-hero-rise" aria-hidden="true" />
         <span class="home-hero-horizon" aria-hidden="true" />
         <!-- Flex, so the lead's top margin stays inside and the blue starts at the title. -->
         <div
-          class="home-hero-body container !my-0 flex flex-col pb-[var(--home-hero-pad)]"
+          class="home-hero-body container !my-0 flex grow flex-col pb-[var(--home-hero-pad)]"
         >
           <!-- Rich text so editors can add Button / Button (outline) links. -->
           <div

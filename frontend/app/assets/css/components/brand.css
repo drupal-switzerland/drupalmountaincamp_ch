@@ -12,6 +12,11 @@
   .on-dark :focus-visible {
     outline-color: theme(colors.white);
   }
+
+  /* A light panel inside a dark area, such as the header's submenus. */
+  .on-dark .on-light :focus-visible {
+    outline-color: theme(colors.brand.navy);
+  }
 }
 
 @layer components {

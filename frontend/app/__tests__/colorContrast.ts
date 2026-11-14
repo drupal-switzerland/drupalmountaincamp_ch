@@ -53,6 +53,18 @@ const pairs: [string, string, string, number][] = [
   ['navy ticket button on ice', brand.navy, brand.ice, AA_NON_TEXT],
   ['white ticket button on navy', WHITE, brand.navy, AA_NON_TEXT],
   // Navigation loading bar (blue) over the event strip, header and menus.
+  // Navy header: white links, sky hover and current mark, white Tickets pill
+  // turning ice on hover, white focus ring; submenus are gray-50 panels.
+  ['header link on navy', WHITE, brand.navy, AA_TEXT],
+  ['header link hover on navy', brand.sky, brand.navy, AA_TEXT],
+  ['header current mark on navy', brand.sky, brand.navy, AA_NON_TEXT],
+  ['header tickets pill on navy', WHITE, brand.navy, AA_NON_TEXT],
+  ['header tickets text on white', brand.navy, WHITE, AA_TEXT],
+  ['header tickets hover text on ice', brand.navy, brand.ice, AA_TEXT],
+  ['white focus outline on navy', WHITE, brand.navy, AA_NON_TEXT],
+  ['submenu link on gray-50', brand.navy, colors.gray[50], AA_TEXT],
+  ['submenu link hover on gray-50', brand.blue, colors.gray[50], AA_TEXT],
+  ['navy focus outline on gray-50', brand.navy, colors.gray[50], AA_NON_TEXT],
   ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
   ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
   ['loading bar on gray-50', LOADING_BAR, colors.gray[50], AA_NON_TEXT],

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import GlobalMenu from '../components/PageHeader/GlobalMenu.vue'
+import PageHeader from '../components/PageHeader/index.vue'
 import Card from '../components/Node/PressRelease/Card/index.vue'
 
 mockNuxtImport('useEasyTexts', () => () => ({
@@ -23,6 +24,19 @@ describe('main navigation', () => {
     const wrapper = await mountSuspended(GlobalMenu)
 
     expect(wrapper.get('nav').attributes('aria-label')).toBe('mainNavigation')
+  })
+})
+
+mockNuxtImport('useTicketsLink', () => async () => ref(null))
+
+describe('header logo', () => {
+  it('names the home link by the logo text only', async () => {
+    const wrapper = await mountSuspended(PageHeader)
+    const link = wrapper.get('a.page-header-logo')
+
+    expect(link.text()).toBe('')
+    expect(link.findAll('img')).toHaveLength(1)
+    expect(link.get('img').attributes('alt')).toBe('Mountain Camp 2027')
   })
 })
 

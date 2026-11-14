@@ -39,6 +39,11 @@
     min-height: 0 !important;
   }
 
+  /* The header logo is white artwork, so on paper it prints black. */
+  .page-header-logo img {
+    filter: brightness(0);
+  }
+
   /* Without its fill a call to action is plain text; the outline keeps it a button. */
   .ticket-button {
     outline: 2px solid currentColor;
