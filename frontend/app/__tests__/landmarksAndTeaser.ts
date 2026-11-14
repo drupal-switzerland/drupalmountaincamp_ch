@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import GlobalMenu from '../components/PageHeader/GlobalMenu.vue'
 import PageHeader from '../components/PageHeader/index.vue'
@@ -37,6 +37,23 @@ describe('header logo', () => {
     expect(link.text()).toBe('')
     expect(link.findAll('img')).toHaveLength(1)
     expect(link.get('img').attributes('alt')).toBe('Mountain Camp 2027')
+  })
+
+  it('shows its bottom edge only once the page is scrolled', async () => {
+    window.scrollTo(0, 0)
+    const wrapper = await mountSuspended(PageHeader)
+    const header = wrapper.get('header')
+    expect(header.classes()).toContain('border-b-primary-500')
+    expect(header.classes()).not.toContain('border-b-primary-300')
+
+    document.documentElement.scrollTop = 400
+    window.dispatchEvent(new Event('scroll'))
+    await vi.waitFor(() =>
+      expect(header.classes()).toContain('border-b-primary-300'),
+    )
+
+    document.documentElement.scrollTop = 0
+    window.dispatchEvent(new Event('scroll'))
   })
 })
 

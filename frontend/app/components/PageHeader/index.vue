@@ -1,8 +1,11 @@
 <template>
   <header
     ref="container"
-    class="on-dark top-0 z-10 border-b-2 border-b-primary-500 bg-primary-500 text-white transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
+    class="on-dark top-0 z-10 border-b-2 bg-primary-500 text-white transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
     :class="{
+      // Scrolled, the edge keeps the header apart from navy sections below it.
+      'border-b-primary-300': isScrolled,
+      'border-b-primary-500': !isScrolled,
       '-translate-y-10 md:translate-y-[-50px]':
         isHeaderShiftedUp && !isMenuOpen,
       'h-[var(--page-header-height)] md:max-h-screen': !isMenuOpen,
@@ -64,12 +67,14 @@
 </template>
 
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useWindowScroll } from '@vueuse/core'
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
 
 const route = useRoute()
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
+const { y: scrollTop } = useWindowScroll()
+const isScrolled = computed(() => scrollTop.value > 0)
 const container = ref<HTMLElement | null>(null)
 const isGlobalSticky = ref(false)
 const isMenuOpen = useMainMenuOpen()

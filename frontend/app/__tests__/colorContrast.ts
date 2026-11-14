@@ -14,6 +14,7 @@ const AA_LARGE_TEXT = 3
 const AA_NON_TEXT = 3
 // The colour loading-indicator.css gives the navigation loading bar.
 const LOADING_BAR = colors.primary[400]
+const LOADING_BAR_EDGE = WHITE
 
 function relativeLuminance(hex: string): number {
   const channels = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
@@ -52,12 +53,12 @@ const pairs: [string, string, string, number][] = [
   // Get tickets: navy pill on the ice hero bar, white pill on navy.
   ['navy ticket button on ice', brand.navy, brand.ice, AA_NON_TEXT],
   ['white ticket button on navy', WHITE, brand.navy, AA_NON_TEXT],
-  // Navigation loading bar (blue) over the event strip, header and menus.
   // Navy header: white links, sky hover and current mark, white Tickets pill
   // turning ice on hover, white focus ring; submenus are gray-50 panels.
   ['header link on navy', WHITE, brand.navy, AA_TEXT],
   ['header link hover on navy', brand.sky, brand.navy, AA_TEXT],
   ['header current mark on navy', brand.sky, brand.navy, AA_NON_TEXT],
+  ['header scrolled edge on navy', brand.sky, brand.navy, AA_NON_TEXT],
   ['header tickets pill on navy', WHITE, brand.navy, AA_NON_TEXT],
   ['header tickets text on white', brand.navy, WHITE, AA_TEXT],
   ['header tickets hover text on ice', brand.navy, brand.ice, AA_TEXT],
@@ -65,9 +66,13 @@ const pairs: [string, string, string, number][] = [
   ['submenu link on gray-50', brand.navy, colors.gray[50], AA_TEXT],
   ['submenu link hover on gray-50', brand.blue, colors.gray[50], AA_TEXT],
   ['navy focus outline on gray-50', brand.navy, colors.gray[50], AA_NON_TEXT],
+  // Navigation loading bar (blue) over the event strip, header and menus.
+  // Over the navy header its white bottom edge is what stands out.
   ['loading bar on white', LOADING_BAR, WHITE, AA_NON_TEXT],
   ['loading bar on tint', LOADING_BAR, brand.tint, AA_NON_TEXT],
   ['loading bar on gray-50', LOADING_BAR, colors.gray[50], AA_NON_TEXT],
+  ['loading bar edge on navy', LOADING_BAR_EDGE, brand.navy, AA_NON_TEXT],
+  ['loading bar on its edge', LOADING_BAR, LOADING_BAR_EDGE, AA_NON_TEXT],
   // Image and video copyright captions.
   ['gray-600 caption on white', colors.gray[600], WHITE, AA_TEXT],
   ['gray-600 caption on ice', colors.gray[600], brand.ice, AA_TEXT],
@@ -104,5 +109,16 @@ describe('brand colour contrast', () => {
       'utf8',
     )
     expect(css.toUpperCase()).toContain(`--SKY-HANDOVER: ${SKY_HANDOVER}`)
+  })
+
+  it('gives the loading bar the colour and edge measured above', () => {
+    const css = readFileSync(
+      join(process.cwd(), 'app/assets/css/components/loading-indicator.css'),
+      'utf8',
+    )
+    expect(css).toContain("background: theme('colors.primary.400') !important;")
+    expect(css).toContain(
+      "box-shadow: 0 1px 0 theme('colors.white') !important;",
+    )
   })
 })
