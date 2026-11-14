@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { SCREENS } from '../tailwind/screens'
+import { brand } from '../../tailwind.config'
 
 type RouteRule = {
   headers?: Record<string, string>
@@ -25,6 +26,7 @@ let postcssPlugins: Record<string, unknown>
 let sourcemap: unknown
 let rokkaViewports: unknown
 let devServerHost: unknown
+let themeColor: string | undefined
 
 // nuxt.config.ts calls the defineNuxtConfig global, which only exists while
 // Nuxt loads it.
@@ -37,6 +39,7 @@ beforeAll(async () => {
     sourcemap: unknown
     rokka: { viewports: unknown }
     devServer: { host: unknown }
+    app: { head: { meta: { name?: string; content?: string }[] } }
   }
   routeRules = config.routeRules
   multiCache = config.multiCache
@@ -44,6 +47,9 @@ beforeAll(async () => {
   sourcemap = config.sourcemap
   rokkaViewports = config.rokka.viewports
   devServerHost = config.devServer.host
+  themeColor = config.app.head.meta.find(
+    (meta) => meta.name === 'theme-color',
+  )?.content
   vi.unstubAllGlobals()
 })
 
@@ -54,6 +60,12 @@ function cacheControl(route: string) {
 function maxAge(route: string) {
   return Number(/(?:^|,)max-age=(\d+)/.exec(cacheControl(route))?.[1])
 }
+
+describe('theme-color', () => {
+  it('is the navy of the header, so the mobile browser bar matches it', () => {
+    expect(themeColor).toBe(brand.navy)
+  })
+})
 
 describe('rokka viewports', () => {
   it('are the Tailwind screens, so image sizes and breakpoints cannot drift', () => {

@@ -17,7 +17,7 @@
     <div class="page-header-grid container mx-auto grid max-w-none">
       <div class="grid-area-logo h-10 md:h-20">
         <div
-          class="flex h-full items-center pr-1 pt-2 transition-all duration-250 ease-in-out md:pt-0"
+          class="flex h-full items-center pr-1 pt-1 transition-all duration-250 ease-in-out md:pt-0"
           :class="{
             'sticky top-0': isGlobalSticky,
           }"
@@ -28,7 +28,7 @@
               alt="Mountain Camp 2027"
               width="417"
               height="168"
-              class="h-8 w-auto md:h-14"
+              class="h-9 w-auto md:h-14"
             />
           </nuxt-link>
         </div>
@@ -67,14 +67,23 @@
 </template>
 
 <script setup lang="ts">
-import { useEventListener, useWindowScroll } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
 
 const route = useRoute()
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
-const { y: scrollTop } = useWindowScroll()
-const isScrolled = computed(() => scrollTop.value > 0)
+const isScrolled = ref(false)
+const updateIsScrolled = () => {
+  isScrolled.value = window.scrollY > 0
+}
+useEventListener(
+  () => (import.meta.client ? window : null),
+  'scroll',
+  updateIsScrolled,
+  { passive: true },
+)
+onMounted(updateIsScrolled)
 const container = ref<HTMLElement | null>(null)
 const isGlobalSticky = ref(false)
 const isMenuOpen = useMainMenuOpen()

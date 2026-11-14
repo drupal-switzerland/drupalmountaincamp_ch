@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import GlobalMenu from '../components/PageHeader/GlobalMenu.vue'
 import PageHeader from '../components/PageHeader/index.vue'
@@ -43,16 +43,22 @@ describe('header logo', () => {
     window.scrollTo(0, 0)
     const wrapper = await mountSuspended(PageHeader)
     const header = wrapper.get('header')
+    expect(header.classes()).toContain('on-dark')
     expect(header.classes()).toContain('border-b-primary-500')
     expect(header.classes()).not.toContain('border-b-primary-300')
 
-    document.documentElement.scrollTop = 400
+    Object.defineProperty(window, 'scrollY', {
+      value: 400,
+      configurable: true,
+    })
     window.dispatchEvent(new Event('scroll'))
-    await vi.waitFor(() =>
-      expect(header.classes()).toContain('border-b-primary-300'),
-    )
+    await nextTick()
+    expect(header.classes()).toContain('border-b-primary-300')
 
-    document.documentElement.scrollTop = 0
+    Object.defineProperty(window, 'scrollY', {
+      value: 0,
+      configurable: true,
+    })
     window.dispatchEvent(new Event('scroll'))
   })
 })

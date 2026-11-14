@@ -28,6 +28,7 @@ describe('skip link', () => {
     expect(first?.tagName).toBe('A')
     expect(first?.getAttribute('href')).toBe('#main-content')
     expect(first?.textContent?.trim()).toBe('layout.skipToContent')
+    expect(first?.classList.contains('skip-link')).toBe(true)
   })
 
   it('points at a main element that can take focus', async () => {

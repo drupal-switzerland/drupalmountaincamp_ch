@@ -11,6 +11,7 @@ const ENTRY_CSS = read('app/assets/css/tailwind.css')
 // carries the fill. The print rules remove fills from .on-dark and turn the
 // text inside it navy, so the marker has to sit on the element with the fill.
 const DARK_SECTIONS = [
+  ['page header', 'app/components/PageHeader/index.vue', 'bg-primary-500'],
   ['inner-page hero', 'app/components/PageHero/index.vue', 'brand-hero'],
   ['homepage hero', 'app/components/HomeHero/index.vue', 'home-hero'],
   ['footer', 'app/components/PageFooter/index.vue', 'brand-hero'],

@@ -63,6 +63,10 @@ const pairs: [string, string, string, number][] = [
   ['header tickets text on white', brand.navy, WHITE, AA_TEXT],
   ['header tickets hover text on ice', brand.navy, brand.ice, AA_TEXT],
   ['white focus outline on navy', WHITE, brand.navy, AA_NON_TEXT],
+  // Skip link: white ring over the navy header, its navy rim over the light
+  // event strip and the white page.
+  ['skip link rim on event strip', brand.navy, colors.primary[50], AA_NON_TEXT],
+  ['skip link rim on white', brand.navy, WHITE, AA_NON_TEXT],
   ['submenu link on gray-50', brand.navy, colors.gray[50], AA_TEXT],
   ['submenu link hover on gray-50', brand.blue, colors.gray[50], AA_TEXT],
   ['navy focus outline on gray-50', brand.navy, colors.gray[50], AA_NON_TEXT],
@@ -120,5 +124,15 @@ describe('brand colour contrast', () => {
     expect(css).toContain(
       "box-shadow: 0 1px 0 theme('colors.white') !important;",
     )
+  })
+
+  it('gives the skip link the white ring and navy rim measured above', () => {
+    const css = readFileSync(
+      join(process.cwd(), 'app/assets/css/components/brand.css'),
+      'utf8',
+    )
+    const rule = /\.skip-link:focus-visible \{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(rule).toContain('outline-color: theme(colors.white);')
+    expect(rule).toMatch(/box-shadow:[^;]*theme\(colors\.brand\.navy\);/)
   })
 })
