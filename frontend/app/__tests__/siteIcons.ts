@@ -20,6 +20,8 @@ const PNG_HEIGHT_OFFSET = 20
 const COLOUR_TYPE_OFFSET = 25
 // Greyscale with alpha and RGBA; type 2 is RGB without alpha.
 const PNG_ALPHA_COLOUR_TYPES = [4, 6]
+// A palette or RGB PNG carries its transparency in this chunk.
+const PNG_TRANSPARENCY_CHUNK = 'tRNS'
 const ICO_COUNT_OFFSET = 4
 const ICO_HEADER_SIZE = 6
 const ICO_ENTRY_SIZE = 16
@@ -35,8 +37,10 @@ function pngSize(path: string) {
 }
 
 function pngHasAlpha(path: string) {
-  return PNG_ALPHA_COLOUR_TYPES.includes(
-    readFileSync(path)[COLOUR_TYPE_OFFSET] ?? -1,
+  const data = readFileSync(path)
+  return (
+    PNG_ALPHA_COLOUR_TYPES.includes(data[COLOUR_TYPE_OFFSET] ?? -1) ||
+    data.includes(PNG_TRANSPARENCY_CHUNK)
   )
 }
 
@@ -113,7 +117,9 @@ describe('web manifest', () => {
   })
 
   it('has 192 and 512 icons and an opaque maskable one', () => {
-    const sizes = manifest.icons.map((icon) => icon.sizes)
+    const sizes = manifest.icons
+      .filter((icon) => !icon.purpose)
+      .map((icon) => icon.sizes)
     expect(sizes).toEqual(expect.arrayContaining(['192x192', '512x512']))
     const maskable = manifest.icons.find((icon) => icon.purpose === 'maskable')
     expect(maskable).toBeDefined()
