@@ -14,6 +14,10 @@
   }
 
   /* A light panel inside a dark area, such as the header's submenus. */
+  .on-dark .on-light :focus-visible {
+    outline-color: theme(colors.brand.navy);
+  }
+
   /* Fixed over the navy header on the homepage and the light event strip
      elsewhere: a white ring with a navy rim shows on both. */
   .skip-link:focus-visible {
@@ -21,10 +25,6 @@
     box-shadow: 0 0 0
       calc(var(--focus-ring-offset) + 2 * var(--focus-ring-width))
       theme(colors.brand.navy);
-  }
-
-  .on-dark .on-light :focus-visible {
-    outline-color: theme(colors.brand.navy);
   }
 }
 
