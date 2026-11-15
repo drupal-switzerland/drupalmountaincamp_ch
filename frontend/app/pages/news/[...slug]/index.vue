@@ -4,6 +4,10 @@
 
 <script lang="ts" setup>
 import type { NodePressReleaseFragment } from '#graphql-operations'
+import {
+  descriptionFromParagraphs,
+  hasMetaDescription,
+} from '~/helpers/metaDescription'
 import { NEWS_OVERVIEW_PATH } from '~/helpers/navigation'
 
 defineOptions({
@@ -23,9 +27,20 @@ const query = await useRouteQuery(nuxtRoute.path, () =>
   ),
 )
 
-const { entity: node } = await useDrupalRoute<NodePressReleaseFragment>(
-  query.value ?? null,
+const { entity: node, metatags } =
+  await useDrupalRoute<NodePressReleaseFragment>(query.value ?? null)
+
+const fallbackDescription = computed(() =>
+  node.value && !hasMetaDescription(metatags.value.meta)
+    ? (descriptionFromParagraphs(node.value.paragraphs) ?? node.value.title)
+    : undefined,
 )
+useHead({
+  meta: () =>
+    fallbackDescription.value
+      ? [{ name: 'description', content: fallbackDescription.value }]
+      : [],
+})
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
 if (node.value) {
