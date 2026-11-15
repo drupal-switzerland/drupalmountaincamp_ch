@@ -4,6 +4,7 @@ import {
   ogDescriptionFallback,
   shareImageAltTags,
   shareImageSizeTags,
+  twitterImageFallback,
 } from '../helpers/shareTags'
 
 const meta = (props: Record<string, string>) => ({ tag: 'meta', props })
@@ -151,5 +152,33 @@ describe('shareImageSizeTags', () => {
     const fromDrupal = meta({ property: 'og:image:width', content: '800' })
     expect(sizes([image(PATH), fromDrupal])).toEqual([height])
     expect(sizes([image(PATH), width, height])).toEqual([])
+  })
+})
+
+describe('twitterImageFallback', () => {
+  const card = meta({ name: 'twitter:card', content: 'summary_large_image' })
+  const ogImage = meta({
+    property: 'og:image',
+    content: 'https://drupalmountaincamp.ch/images/share.jpg',
+  })
+
+  it('copies the og:image when the page sends Twitter tags', () => {
+    expect(twitterImageFallback([card, ogImage])).toEqual(
+      meta({
+        name: 'twitter:image',
+        content: 'https://drupalmountaincamp.ch/images/share.jpg',
+      }),
+    )
+  })
+
+  it.each([
+    [
+      'a twitter:image is already there',
+      [card, ogImage, meta({ name: 'twitter:image', content: 'x' })],
+    ],
+    ['no Twitter tags', [ogImage]],
+    ['no og:image', [card]],
+  ])('gives nothing with %s', (_, tags) => {
+    expect(twitterImageFallback(tags)).toBeUndefined()
   })
 })
