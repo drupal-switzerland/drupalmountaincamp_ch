@@ -29,6 +29,11 @@ export const EVENT: Readonly<EventFacts> = {
   imagePath: '/images/mountain-camp-og-1200x630.jpg',
 }
 
+// Mirror the Early bird and Regular ticket prices on the pretix shop.
+export const TICKET_PRICE_LOW = 90
+export const TICKET_PRICE_HIGH = 120
+export const TICKET_CURRENCY = 'CHF'
+
 /** schema.org Event for the homepage, serialised for a JSON-LD script. */
 export function buildEventSchema(
   event: EventFacts = EVENT,
@@ -61,8 +66,11 @@ export function buildEventSchema(
       url: `${siteUrl}/`,
     },
     offers: {
-      '@type': 'Offer',
+      '@type': 'AggregateOffer',
       url: new URL(ticketsHref, siteUrl).href,
+      lowPrice: TICKET_PRICE_LOW,
+      highPrice: TICKET_PRICE_HIGH,
+      priceCurrency: TICKET_CURRENCY,
     },
   }
 }

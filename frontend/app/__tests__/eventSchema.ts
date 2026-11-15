@@ -41,10 +41,7 @@ describe('buildEventSchema', () => {
     expect(schema.image).toEqual([
       `${SITE_URL}/images/mountain-camp-og-1200x630.jpg`,
     ])
-    expect(schema.offers).toEqual({
-      '@type': 'Offer',
-      url: `${SITE_URL}/tickets`,
-    })
+    expect(schema.offers.url).toBe(`${SITE_URL}/tickets`)
     for (const url of [schema.url, ...schema.image, schema.offers.url]) {
       expect(url).toMatch(ABSOLUTE_URL)
     }
@@ -66,6 +63,16 @@ describe('buildEventSchema', () => {
     expect(other.name).toBe('Other')
     expect(other.startDate).toBe('2028-01-01')
     expect(other.offers.url).toBe('https://example.org/tickets')
+  })
+
+  it('offers the ticket price range only, nothing that can go stale', () => {
+    expect(schema.offers).toEqual({
+      '@type': 'AggregateOffer',
+      url: `${SITE_URL}/tickets`,
+      lowPrice: 90,
+      highPrice: 120,
+      priceCurrency: 'CHF',
+    })
   })
 
   it('offers tickets at the ticket shop the button uses', () => {
