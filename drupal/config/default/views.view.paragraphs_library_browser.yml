@@ -377,8 +377,9 @@ display:
           sort_asc_label: Aufsteigend
           sort_desc_label: Absteigend
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'administer paragraphs library'
       cache:
         type: tag
         options: {  }
