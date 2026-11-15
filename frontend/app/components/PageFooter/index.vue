@@ -98,16 +98,20 @@
             Mountain Camp <span class="text-primary-300">2027</span>
           </p>
           <nav
-            v-if="footerMenuLinks.length"
+            v-if="footerLinks.length"
             :aria-label="$texts('footer.navigation', 'Footer')"
           >
             <ul class="flex flex-wrap gap-x-5 gap-y-1">
-              <li v-for="(link, i) in footerMenuLinks" :key="`footer_${i}`">
+              <li v-for="(link, i) in footerLinks" :key="`footer_${i}`">
                 <VuepalLink
-                  :to="link.link?.url?.path"
+                  :to="link.path"
+                  :target="link.target"
                   class="inline-block py-3 underline-offset-4 hover:underline"
                 >
-                  {{ link.link.label }}
+                  {{ link.label }}
+                  <span v-if="opensNewTab(link.target)" class="sr-only">
+                    ({{ $texts('newTabHint', 'opens in a new tab') }})
+                  </span>
                 </VuepalLink>
               </li>
             </ul>
@@ -124,11 +128,15 @@
 
 <script lang="ts" setup>
 import type { NodeSponsorFragment } from '#graphql-operations'
+import { defaultLinkTarget, opensNewTab } from '~/helpers/navigation'
 import { LOGO_BOXES, SPONSORSHIP_PATH, SPONSOR_YEAR } from '~/helpers/sponsors'
 
 const { $texts } = useEasyTexts()
 const data = await useInitData()
-const footerMenuLinks = data.value.footerMenuLinks
+const footerLinks = data.value.footerMenuLinks.map(({ link }) => {
+  const path = link.url?.path ?? ''
+  return { path, label: link.label, target: defaultLinkTarget(path) }
+})
 const newTabHintId = useId()
 
 // Fixed legal line. The Drupal-side easy_texts value still carries the Liip

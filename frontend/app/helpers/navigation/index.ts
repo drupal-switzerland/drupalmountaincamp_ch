@@ -31,6 +31,19 @@ export function linkTarget(url: string, target?: string | null) {
   return (isExternalUrl(url) && target) || SAME_TAB_TARGET
 }
 
+const SAME_TAB_PREFIXES = ['mailto:', 'tel:']
+
+/**
+ * VuepalLink's own target for a URL, except that mail and phone links stay in
+ * the tab: they open another app, not a page.
+ */
+export function defaultLinkTarget(url: string) {
+  if (SAME_TAB_PREFIXES.some((prefix) => url.startsWith(prefix))) {
+    return SAME_TAB_TARGET
+  }
+  return isExternalUrl(url) ? NEW_TAB_TARGET : SAME_TAB_TARGET
+}
+
 export function opensNewTab(target: string) {
   return target === NEW_TAB_TARGET
 }
