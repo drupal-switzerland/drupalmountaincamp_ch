@@ -64,6 +64,19 @@ describe('share tags in a real head, rendered on the server', () => {
     expect(html).toContain(SHARE_IMAGE_ALT.slice(0, 40))
   })
 
+  it('copies the og:image to twitter:image, once', () => {
+    const image = `https://drupalmountaincamp.ch${SHARE_IMAGE_PATH}`
+    const html = renderOnServer({
+      meta: [
+        { property: 'og:image', content: image },
+        { name: 'twitter:card', content: 'summary_large_image' },
+      ],
+    })
+
+    expect(count(html, 'name="twitter:image"')).toBe(1)
+    expect(html).toContain(`<meta name="twitter:image" content="${image}">`)
+  })
+
   it("adds no alt next to a page's own image", () => {
     const html = renderOnServer({
       meta: [

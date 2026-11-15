@@ -34,6 +34,30 @@ export function ogDescriptionFallback(
     : undefined
 }
 
+const sendsTwitterTags = (tags: HeadTagLike[]) =>
+  tags.some(
+    (tag) => tag.tag === 'meta' && tag.props.name?.startsWith('twitter:'),
+  )
+
+/**
+ * The twitter:image to add to a resolved head that sends Twitter tags but no
+ * twitter:image: the page's first og:image. One set by Drupal still wins.
+ */
+export function twitterImageFallback(tags: HeadTagLike[]): MetaTag | undefined {
+  if (
+    !sendsTwitterTags(tags) ||
+    tags.some((tag) => isMeta(tag, 'name', 'twitter:image'))
+  ) {
+    return undefined
+  }
+  const content = tags
+    .find((tag) => isMeta(tag, 'property', 'og:image'))
+    ?.props.content?.trim()
+  return content
+    ? { tag: 'meta', props: { name: 'twitter:image', content } }
+    : undefined
+}
+
 function isImageAt(url: string | undefined, path: string): boolean {
   if (!url || !URL.canParse(url, ANY_ORIGIN)) {
     return false
@@ -70,11 +94,8 @@ export function shareImageAltTags(
       props: { property: 'og:image:alt', content: alt },
     })
   }
-  const sendsTwitterTags = tags.some(
-    (tag) => tag.tag === 'meta' && tag.props.name?.startsWith('twitter:'),
-  )
   if (
-    sendsTwitterTags &&
+    sendsTwitterTags(tags) &&
     !tags.some((tag) => isMeta(tag, 'name', 'twitter:image:alt'))
   ) {
     added.push({
@@ -128,8 +149,10 @@ type ResolvingHead = {
 export function registerShareTags(head: ResolvingHead) {
   head.hooks?.hook('tags:resolve', (context) => {
     const fallback = ogDescriptionFallback(context.tags)
+    const twitterImage = twitterImageFallback(context.tags)
     const added = [
       ...(fallback ? [fallback] : []),
+      ...(twitterImage ? [twitterImage] : []),
       ...shareImageAltTags(
         fallback ? [...context.tags, fallback] : context.tags,
         SHARE_IMAGE_PATH,
