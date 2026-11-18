@@ -43,7 +43,8 @@ cleanup() {
 trap cleanup EXIT
 
 # A docroot with one file per kind nginx serves from disk, and a front
-# controller that answers like Drupal, with a Cache-Control of its own.
+# controller that answers like Drupal, with a Cache-Control and security
+# headers of its own.
 mkdir -p "$WORK_DIR/docroot/core/misc" "$WORK_DIR/docroot/sites/default/files"
 cat > "$WORK_DIR/docroot/index.php" <<'PHP'
 <?php
@@ -51,6 +52,8 @@ cat > "$WORK_DIR/docroot/index.php" <<'PHP'
 // access denied, or a page, each with a Cache-Control of its own.
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 header('Cache-Control: no-cache, private');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
 if (str_ends_with($path, '/user/register')) {
   header('Location: /user/login?destination=/user/register', true, 307);
 }
@@ -69,6 +72,9 @@ server {
   listen 3000;
   location / {
     add_header Cache-Control "public, max-age=300";
+    add_header X-Content-Type-Options nosniff;
+    add_header X-Frame-Options DENY;
+    add_header Referrer-Policy no-referrer;
     return 200 "frontend $request_uri";
   }
 }
@@ -147,6 +153,7 @@ check() {
   expect "strict-transport-security" "$(header_value "$headers" strict-transport-security)" "max-age=31536000"
   expect "x-content-type-options" "$(header_value "$headers" x-content-type-options)" "nosniff"
   expect "referrer-policy" "$(header_value "$headers" referrer-policy)" "strict-origin-when-cross-origin"
+  expect "x-frame-options" "$(header_value "$headers" x-frame-options)" ""
   expect "permissions-policy" "$(header_value "$headers" permissions-policy)" "camera=(), microphone=(), geolocation=()"
 }
 
