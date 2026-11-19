@@ -41,7 +41,7 @@
     "serialize-javascript": "^7.0.3"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^3.4.4",
+    "@nuxt/devtools": "^4.2.0",
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/test-utils": "^4.4.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
