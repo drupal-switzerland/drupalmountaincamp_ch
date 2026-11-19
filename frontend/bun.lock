@@ -18,7 +18,7 @@
         "svgo": "^4.1.0",
         "swiper": "^14.4.0",
         "vue3-click-away": "^1.2.4",
-        "vuepal": "^3.0.6",
+        "vuepal": "^3.1.0",
       },
       "devDependencies": {
         "@nuxt/devtools": "^3.4.4",
@@ -2239,7 +2239,7 @@
 
     "vue3-click-away": ["vue3-click-away@1.2.4", "", {}, "sha512-O9Z2KlvIhJT8OxaFy04eiZE9rc1Mk/bp+70dLok68ko3Kr8AW5dU+j8avSk4GDQu94FllSr4m5ul4BpzlKOw1A=="],
 
-    "vuepal": ["vuepal@3.0.6", "", { "dependencies": { "change-case": "^5.4.4", "fzf": "^0.5.2", "nuxt-graphql-middleware": "^5.3.2", "nuxt-language-negotiation": "^2.0.2", "yaml": "^2.8.2" } }, "sha512-rCVgUVWWwBpA6DpJnY6Ez/j3bMlx0OiW2e9FFWzOUQ7E+vCPthEMG+fvcvu+u8/LzMDFHEvoHY0CvbnhCYw5ow=="],
+    "vuepal": ["vuepal@3.1.0", "", { "dependencies": { "change-case": "^5.4.4", "fzf": "^0.5.2", "nuxt-graphql-middleware": "^5.3.2", "nuxt-language-negotiation": "^2.0.2", "ufo": "^1.6.3" } }, "sha512-pWyTPQwlVkaLPrgqCmdv/98DlvClSBZ9GZbadw6aI8MY8/XCTdcCFgtWQvVWtXHb7UHD+GXlianIjCTQRChCeg=="],
 
     "w3c-keyname": ["w3c-keyname@2.2.8", "", {}, "sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ=="],
 
