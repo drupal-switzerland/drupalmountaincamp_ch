@@ -13,6 +13,7 @@ the parts fit together is in [ARCHITECTURE.md](ARCHITECTURE.md); setup is in
 | `drupal/config/default` | Exported Drupal configuration.                          |
 | `.ddev/`                | Local environment used by the READMEs.                  |
 | `.lagoon/`              | Production images and nginx config.                     |
+| `agentic/`              | Static site served on agenticmountaincamp.ch.           |
 | `.github/workflows/`    | The five CI workflows.                                  |
 | `scripts/ci/`           | Shell scripts that CI calls.                            |
 
