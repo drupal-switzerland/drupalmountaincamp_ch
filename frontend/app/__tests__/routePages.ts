@@ -137,7 +137,7 @@ describe('route pages', () => {
 
     expect(navigate).toHaveBeenCalledOnce()
     const [target, options] = navigate.mock.calls[0]!
-    expect(target.path).toBe('/new-path')
+    expect(target).toBe('/new-path')
     expect(options.redirectCode).toBe(302)
   })
 })
