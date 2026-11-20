@@ -277,9 +277,13 @@ svg {
   list-style: none;
 }
 
+/* At least 48px tall and wide, so short labels like FAQ are easy to tap. */
 .nav-list a:not(.button) {
-  display: inline-block;
-  padding-block: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 3rem;
+  min-inline-size: 3rem;
   color: var(--white);
   font-weight: 700;
   text-decoration: none;

@@ -1,0 +1,13 @@
+{
+  "name": "Agentic Mountain Camp 2027, Davos",
+  "short_name": "Agentic MC",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#12285F",
+  "background_color": "#12285F",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
