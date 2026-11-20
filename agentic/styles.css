@@ -103,7 +103,7 @@ a:hover {
   color: var(--navy);
 }
 
-:where(a, summary):focus-visible {
+:where(a, summary, input):focus-visible {
   outline: 3px solid var(--sky);
   outline-offset: 3px;
   border-radius: 4px;
@@ -263,25 +263,8 @@ svg {
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--white);
-  text-decoration: none;
-}
-
-.brand img {
   block-size: 3.5rem;
   inline-size: auto;
-}
-
-.brand-tag {
-  padding: 0.25rem 0.75rem;
-  border: 2px solid var(--sky);
-  border-radius: 999px;
-  font-family: var(--heading);
-  font-size: 1rem;
-  letter-spacing: 0.05em;
 }
 
 .nav-list {
@@ -350,27 +333,80 @@ svg {
   padding-top: 0.5rem;
 }
 
-.hero-art {
-  inline-size: 100%;
-  block-size: clamp(12rem, 26vw, 25rem);
+.hero-stage {
+  position: relative;
   margin-top: 1.5rem;
+}
+
+/* The art keeps the viewBox's 18:5 shape, so wide screens never crop the
+   top (where the third agent stands). Narrow screens crop the left side. */
+.hero-art {
+  display: block;
+  inline-size: 100%;
+  /* 100vw * 5 / 18. aspect-ratio with a min height widens the box instead. */
+  block-size: max(12rem, 27.78vw);
   background: linear-gradient(180deg, var(--navy), #0b5a9a 55%, var(--sky));
 }
 
-/* The signal between the agents draws in once on load. Finite, so no pause
-   control is needed (WCAG 2.2.2), and only for users who allow motion. */
+.motion-toggle {
+  display: none;
+  position: absolute;
+  inset-block-end: 0.75rem;
+  inset-inline-start: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--white);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.motion-toggle input {
+  accent-color: var(--sky);
+}
+
+/* Continuous motion, only for users who allow it. It runs longer than five
+   seconds, so the toggle above pauses it (WCAG 2.2.2). */
 @media (prefers-reduced-motion: no-preference) {
+  .motion-toggle {
+    display: inline-flex;
+  }
   .hero-art .signal {
-    animation: signal 2.4s ease-out 0.4s both;
+    animation:
+      signal 2.4s ease-out 0.4s both,
+      flow 1.4s linear 2.8s infinite;
   }
   .hero-art use {
-    animation: rise 0.8s ease-out both;
+    animation:
+      rise 0.8s ease-out both,
+      bob 3s ease-in-out 0.8s infinite alternate;
   }
   .hero-art use:nth-of-type(2) {
-    animation-delay: 0.15s;
+    animation-delay: 0.15s, 1.8s;
   }
   .hero-art use:nth-of-type(3) {
-    animation-delay: 0.3s;
+    animation-delay: 0.3s, 1.3s;
+  }
+  .hero-stage:has(#pause-motion:checked) .hero-art * {
+    animation-play-state: paused;
+  }
+}
+
+/* One dash period (2 + 12), so the loop has no jump. */
+@keyframes flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+@keyframes bob {
+  to {
+    translate: 0 -6px;
   }
 }
 
@@ -674,8 +710,7 @@ svg {
 }
 
 @media (forced-colors: active) {
-  .button,
-  .brand-tag {
+  .button {
     border-color: ButtonText;
   }
 }

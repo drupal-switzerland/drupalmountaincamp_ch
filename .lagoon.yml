@@ -2,6 +2,11 @@ docker-compose-yaml: docker-compose.yml
 
 project: drupalmountaincamp-ch
 
+# Lagoon's generated *.amazeeio.cloud routes allow http by default.
+routes:
+  autogenerate:
+    insecure: Redirect
+
 tasks:
   # pre-rollout:
   #   - run:
@@ -48,8 +53,13 @@ environments:
             service: cli
       routes:
           - nginx:
-              - "drupalmountaincamp.ch"
-              - "www.drupalmountaincamp.ch"
-              - "cfp.drupalmountaincamp.ch"
-              - "agenticmountaincamp.ch"
-              - "www.agenticmountaincamp.ch"
+              - "drupalmountaincamp.ch":
+                  insecure: Redirect
+              - "www.drupalmountaincamp.ch":
+                  insecure: Redirect
+              - "cfp.drupalmountaincamp.ch":
+                  insecure: Redirect
+              - "agenticmountaincamp.ch":
+                  insecure: Redirect
+              - "www.agenticmountaincamp.ch":
+                  insecure: Redirect
