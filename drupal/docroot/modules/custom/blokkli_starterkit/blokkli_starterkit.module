@@ -7,7 +7,13 @@
 
 declare(strict_types=1);
 
+use Drupal\blokkli_starterkit\ImageAltHelp;
+use Drupal\blokkli_starterkit\RedirectFreshness;
+use Drupal\blokkli_starterkit\RokkaFileMigration;
+use Drupal\blokkli_starterkit\SitemapLinks;
+use Drupal\blokkli_starterkit\UnpublishedPageRedirects;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -16,6 +22,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field_group\FormatterHelper;
 use Drupal\paragraphs_blokkli\Form\ParagraphsBlokkliFormBase;
+use Drupal\path_alias\PathAliasInterface;
+use Drupal\redirect\Entity\Redirect;
+use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
 use Drupal\user\UserInterface;
 use Drupal\webform\Entity\Webform;
 
@@ -41,6 +50,10 @@ function blokkli_starterkit_field_widget_single_element_form_alter(&$element, Fo
 
   if (in_array($field_definition->getType(), _allowed_formats_field_types()) && !$is_default_value_widget) {
     $element['#after_build'][] = '_blokkli_starterkit_remove_textarea_help';
+  }
+
+  if (ImageAltHelp::applies($field_definition) && isset($element['#process'])) {
+    $element['#process'][] = [ImageAltHelp::class, 'process'];
   }
 }
 
@@ -85,15 +98,7 @@ function blokkli_starterkit_form_alter(array &$form, FormStateInterface $form_st
       ];
 
       field_group_attach_groups($form, $context);
-      if (method_exists(FormatterHelper::class, 'formProcess')) {
-        $form['#process'][] = [FormatterHelper::class, 'formProcess'];
-      }
-      elseif (function_exists('field_group_form_pre_render')) {
-        $form['#pre_render'][] = 'field_group_form_pre_render';
-      }
-      elseif (function_exists('field_group_form_process')) {
-        $form['#process'][] = 'field_group_form_process';
-      }
+      $form['#process'][] = [FormatterHelper::class, 'formProcess'];
     }
   }
 }
@@ -110,22 +115,17 @@ function blokkli_starterkit_entity_field_access(
   $field_name = $field_definition->getName();
   $entity = $items?->getEntity();
 
-  if ($field_name === 'status' && $operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
-    // Allow viewing the status field.
-    return AccessResult::allowedIf($account->hasPermission('view user status'));
-  }
-
   if ($entity instanceof UserInterface) {
     $isSameAccount = (int) $entity->id() === (int) $account->id();
 
     if ($field_name === 'roles' && $operation === 'view') {
       // Every user can see their own roles.
-      return AccessResult::allowedIf($isSameAccount);
+      return AccessResult::allowedIf($isSameAccount)->cachePerUser();
     }
 
     if ($field_name === 'mail' && $operation === 'edit') {
       // Users are allowed to edit their own email.
-      return AccessResult::allowedIf($isSameAccount);
+      return AccessResult::allowedIf($isSameAccount)->cachePerUser();
     }
 
     return AccessResult::neutral();
@@ -140,8 +140,8 @@ function blokkli_starterkit_entity_field_access(
 function blokkli_starterkit_rokka_metadata_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // Since we don't store sensitive files on rokka we can allow anonymous users
   // access to rokka_metadata entities via this custom permission.
-  if ($operation === 'view' && $account->hasPermission('view rokka metadata entities')) {
-    return AccessResult::allowed();
+  if ($operation === 'view') {
+    return AccessResult::allowedIfHasPermission($account, 'view rokka metadata entities');
   }
   return AccessResult::neutral();
 }
@@ -171,8 +171,8 @@ function blokkli_starterkit_menu_access(EntityInterface $entity, $operation, Acc
  * Implements hook_ENTITY_TYPE_access().
  */
 function blokkli_starterkit_webform_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($operation === 'view' && $entity instanceof Webform && $entity->status()) {
-    return AccessResult::allowed();
+  if ($operation === 'view' && $entity instanceof Webform) {
+    return AccessResult::allowedIf($entity->status())->addCacheableDependency($entity);
   }
   return AccessResult::neutral();
 }
@@ -182,7 +182,112 @@ function blokkli_starterkit_webform_access(EntityInterface $entity, $operation, 
  */
 function blokkli_starterkit_paragraphs_type_access(EntityInterface $entity, $operation, AccountInterface $account) {
   if ($operation === 'view') {
-    return AccessResult::allowedIf($account->isAuthenticated());
+    return AccessResult::allowedIf($account->isAuthenticated())->addCacheContexts(['user.roles:authenticated']);
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Retries rokka:// files that the deploy's post update couldn't move.
+ */
+function blokkli_starterkit_cron() {
+  \Drupal::classResolver(RokkaFileMigration::class)->retryOnCron();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ *
+ * The node_rss views row renders a node without its template, so the title,
+ * author and date, which no view display can hide, would repeat inside every
+ * feed item's description. The RSS item carries them as its own elements.
+ */
+function blokkli_starterkit_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($display->getMode() === 'rss') {
+    unset($build['title'], $build['uid'], $build['created']);
+  }
+}
+
+/**
+ * Implements hook_simple_sitemap_arbitrary_links_alter().
+ *
+ * The news overview is a page of the frontend without a Drupal route, and
+ * simple_sitemap's custom links skip paths that Drupal can't route.
+ */
+function blokkli_starterkit_simple_sitemap_arbitrary_links_alter(array &$arbitrary_links, SimpleSitemapInterface $sitemap) {
+  if ($sitemap->id() !== SitemapLinks::CONTENT_SITEMAP) {
+    return;
+  }
+  $base_url = \Drupal::config('simple_sitemap.settings')->get('base_url') ?: $GLOBALS['base_url'];
+  $arbitrary_links[] = ['url' => $base_url . SitemapLinks::NEWS_OVERVIEW_PATH];
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function blokkli_starterkit_views_data_alter(array &$data) {
+  $translation_links_field = [
+    'title' => t('Translations'),
+    'field' => [
+      'title' => t('Translations'),
+      'help' => t('Views field plugin to display a list of translation links.'),
+      'id' => 'translation_links_field',
+    ],
+  ];
+
+  $data['node']['translation_links_field'] = $translation_links_field;
+  $data['block_content']['translation_links_field'] = $translation_links_field;
+  $data['media']['translation_links_field'] = $translation_links_field;
+  $data['taxonomy_term_field_data']['translation_links_field'] = $translation_links_field;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the redirect add form.
+ */
+function blokkli_starterkit_form_redirect_redirect_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['#validate'][] = [UnpublishedPageRedirects::class, 'validateRedirectForm'];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the redirect edit form.
+ */
+function blokkli_starterkit_form_redirect_redirect_edit_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['#validate'][] = [UnpublishedPageRedirects::class, 'validateRedirectForm'];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for redirect.
+ */
+function blokkli_starterkit_redirect_insert(Redirect $redirect) {
+  UnpublishedPageRedirects::redirectCreated($redirect);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for redirect.
+ */
+function blokkli_starterkit_redirect_update(Redirect $redirect) {
+  UnpublishedPageRedirects::redirectChanged($redirect);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for path_alias.
+ */
+function blokkli_starterkit_path_alias_insert(PathAliasInterface $path_alias) {
+  RedirectFreshness::aliasChanged($path_alias);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for path_alias.
+ */
+function blokkli_starterkit_path_alias_update(PathAliasInterface $path_alias) {
+  UnpublishedPageRedirects::aliasUpdating($path_alias);
+  RedirectFreshness::aliasChanged($path_alias);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for path_alias.
+ */
+function blokkli_starterkit_path_alias_delete(PathAliasInterface $path_alias) {
+  RedirectFreshness::aliasChanged($path_alias);
 }

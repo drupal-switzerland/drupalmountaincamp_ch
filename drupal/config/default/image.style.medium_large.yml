@@ -1,0 +1,21 @@
+uuid: c50b0d9b-18e3-4b55-8885-75546e8715aa
+langcode: de
+status: true
+dependencies: {  }
+name: medium_large
+label: 'Mittelgross (672)'
+effects:
+  9bda67cf-4156-446a-8f05-c17862d79542:
+    uuid: 9bda67cf-4156-446a-8f05-c17862d79542
+    id: image_scale
+    weight: 1
+    data:
+      width: 672
+      height: null
+      upscale: false
+  056f0eb7-c205-4afc-8bb7-19c56911e1c5:
+    uuid: 056f0eb7-c205-4afc-8bb7-19c56911e1c5
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

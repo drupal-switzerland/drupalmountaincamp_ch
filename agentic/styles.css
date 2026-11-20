@@ -1,0 +1,720 @@
+/* Agentic Mountain Camp. Colours and type follow the Mountain Camp style
+   guide (frontend/tailwind.config.ts, frontend/app/assets/css/typography.css). */
+
+@font-face {
+  font-family: 'ZT Gatha';
+  src: url('/assets/zt-gatha-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Arial scaled to ZT Gatha Bold, same values as the main site, so headings
+   keep their line breaks when the web font swaps in. */
+@font-face {
+  font-family: 'ZT Gatha Fallback';
+  src: local('Arial');
+  size-adjust: 106.9985%;
+  ascent-override: 84.1134%;
+  descent-override: 30.8416%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Source Sans 3';
+  src: url('/assets/source-sans-3-latin-wght.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light;
+  --navy: #12285f;
+  --blue: #006aa9;
+  --sky: #009cde;
+  --ice: #ccedf9;
+  --lilac: #ccbaf4;
+  --tint: #f0f8ff;
+  --white: #fff;
+  --text: #12285f;
+  --muted: #353f57;
+  --line: #c8d3e6;
+  --heading: 'ZT Gatha', 'ZT Gatha Fallback', system-ui, sans-serif;
+  --body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --radius: 1rem;
+  --gutter: clamp(1rem, 4vw, 5rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 1.125rem;
+  line-height: 1.55;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--heading);
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--blue);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--navy);
+}
+
+:where(a, summary, input):focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link {
+  position: fixed;
+  inset: 1rem auto auto 1rem;
+  z-index: 10;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.container.stack {
+  gap: 2.5rem;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 48rem;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.eyebrow {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.eyebrow-on-dark {
+  color: var(--ice);
+}
+
+/* Buttons: pills, as on drupalmountaincamp.ch */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 3rem;
+  padding: 0.625rem 1.5rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.button-light {
+  background: var(--white);
+  color: var(--navy);
+}
+
+.button-light:hover {
+  background: var(--ice);
+  color: var(--navy);
+}
+
+.button-dark {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.button-dark:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.button-outline-light {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.button-outline-light:hover {
+  background: var(--white);
+  color: var(--navy);
+}
+
+.button-outline-dark {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.button-outline-dark:hover {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.actions-end {
+  justify-content: flex-start;
+}
+
+/* Header */
+.site-header {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-block: 1rem;
+}
+
+.brand {
+  block-size: 3.5rem;
+  inline-size: auto;
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* At least 48px tall and wide, so short labels like FAQ are easy to tap. */
+.nav-list a:not(.button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 3rem;
+  min-inline-size: 3rem;
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-list a:not(.button):hover {
+  color: var(--ice);
+  text-decoration: underline;
+}
+
+/* Hero: navy into blue, like the main site. The gradient sits behind the
+   artwork only, so text stays on navy at any zoom (white on sky is ~3:1). */
+.hero {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding-block: clamp(3rem, 8vw, 6rem) 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2.75rem, 1.5rem + 5.5vw, 6rem);
+  line-height: 1;
+}
+
+.hero .accent {
+  color: var(--sky);
+}
+
+.hero-sub {
+  font-family: var(--heading);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1rem + 2.2vw, 2.75rem);
+  line-height: 1.1;
+  color: var(--ice);
+}
+
+.lead {
+  max-width: 40rem;
+  font-size: 1.25rem;
+}
+
+.hero .actions {
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+.hero-stage {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+/* The art keeps the viewBox's 18:5 shape, so wide screens never crop the
+   top (where the third agent stands). Narrow screens crop the left side. */
+.hero-art {
+  display: block;
+  inline-size: 100%;
+  /* 100vw * 5 / 18. aspect-ratio with a min height widens the box instead. */
+  block-size: max(12rem, 27.78vw);
+  background: linear-gradient(180deg, var(--navy), #0b5a9a 55%, var(--sky));
+}
+
+.motion-toggle {
+  display: none;
+  position: absolute;
+  inset-block-end: 0.75rem;
+  inset-inline-start: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--white);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.motion-toggle input {
+  accent-color: var(--sky);
+}
+
+/* Continuous motion, only for users who allow it. It runs longer than five
+   seconds, so the toggle above pauses it (WCAG 2.2.2). */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-toggle {
+    display: inline-flex;
+  }
+  .hero-art .signal {
+    animation:
+      signal 2.4s ease-out 0.4s both,
+      flow 1.4s linear 2.8s infinite;
+  }
+  .hero-art use {
+    animation:
+      rise 0.8s ease-out both,
+      bob 3s ease-in-out 0.8s infinite alternate;
+  }
+  .hero-art use:nth-of-type(2) {
+    animation-delay: 0.15s, 1.8s;
+  }
+  .hero-art use:nth-of-type(3) {
+    animation-delay: 0.3s, 1.3s;
+  }
+  .hero-stage:has(#pause-motion:checked) .hero-art * {
+    animation-play-state: paused;
+  }
+}
+
+/* One dash period (2 + 12), so the loop has no jump. */
+@keyframes flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+@keyframes bob {
+  to {
+    translate: 0 -6px;
+  }
+}
+
+@keyframes signal {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 280;
+  }
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.facts {
+  background: var(--ice);
+  color: var(--navy);
+}
+
+.facts-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  padding-block: 1.5rem;
+}
+
+.facts-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  margin: 0;
+}
+
+.facts-list dt {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.facts-list dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Sections */
+.section {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.section-tint {
+  background: var(--tint);
+}
+
+.section-theme {
+  background: linear-gradient(110deg, var(--ice), var(--lilac));
+}
+
+.section-theme .eyebrow {
+  color: var(--navy);
+}
+
+.section-navy {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.sub {
+  font-family: var(--heading);
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cards-3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.cards-2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 2rem;
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.card p:not(.eyebrow, .talk, .day) {
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+
+.card-icon {
+  margin-bottom: 0.5rem;
+}
+
+.card-outline {
+  border: 2px solid var(--line);
+}
+
+.card-dashed {
+  justify-content: center;
+  border: 2px dashed var(--line);
+  background: transparent;
+}
+
+.card-navy {
+  background: #1d3a7a;
+}
+
+.section-navy .card p,
+.section-navy .card li {
+  color: var(--white);
+}
+
+.card-navy ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.day {
+  font-weight: 700;
+  color: var(--ice);
+}
+
+.section-navy .intro p {
+  color: var(--ice);
+}
+
+.link-on-dark {
+  color: var(--white);
+  font-weight: 700;
+}
+
+.link-on-dark:hover {
+  color: var(--ice);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  inline-size: 4.5rem;
+  block-size: 4.5rem;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--heading);
+  font-size: 1.5rem;
+}
+
+.talk {
+  font-weight: 700;
+}
+
+/* Hack steps */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  display: flex;
+  gap: 1.25rem;
+  align-items: baseline;
+  padding: 1.125rem 1.5rem;
+  border-radius: 0.75rem;
+  background: var(--white);
+}
+
+.steps strong {
+  display: block;
+  font-size: 1.125rem;
+}
+
+.step-n {
+  font-family: var(--heading);
+  font-size: 1.5rem;
+  color: var(--blue);
+}
+
+/* Ticket */
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2.25rem;
+  border-radius: 1.25rem;
+  background: var(--navy);
+  color: var(--white);
+}
+
+.ticket ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+/* FAQ: native details, marker drawn before the label */
+.faq details {
+  border-bottom: 1px solid var(--line);
+  padding-block: 1rem;
+}
+
+.faq summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75ch;
+  cursor: pointer;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  list-style: none;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::before {
+  content: '';
+  flex-shrink: 0;
+  inline-size: 0.6em;
+  block-size: 0.6em;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  rotate: -45deg;
+  @media (prefers-reduced-motion: no-preference) {
+    transition: rotate 0.2s;
+  }
+}
+
+.faq details[open] > summary::before {
+  rotate: 45deg;
+}
+
+.faq details p {
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+/* Footer */
+.site-footer {
+  background: var(--navy);
+  color: var(--ice);
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-block: 2.5rem;
+  font-size: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-links a {
+  color: var(--white);
+}
+
+.footer-links a:hover {
+  color: var(--ice);
+}
+
+@media (forced-colors: active) {
+  .button {
+    border-color: ButtonText;
+  }
+}

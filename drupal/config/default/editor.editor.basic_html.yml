@@ -25,15 +25,20 @@ settings:
       - subscript
       - superscript
       - removeFormat
+      - drupalInsertImage
       - code
+      - insertTable
       - sourceEditing
       - '|'
+      - style
   plugins:
     ckeditor5_heading:
       enabled_headings:
         - heading2
         - heading3
         - heading4
+    ckeditor5_imageResize:
+      allow_resize: true
     ckeditor5_list:
       properties:
         reversed: false
@@ -53,6 +58,21 @@ settings:
         - '<h4 id>'
         - '<h5 id>'
         - '<h6 id>'
+        - '<span>'
+    ckeditor5_style:
+      styles:
+        -
+          label: Label
+          element: '<p class="label">'
+        -
+          label: Highlight
+          element: '<span class="highlight">'
+        -
+          label: Button
+          element: '<a class="button is-filled">'
+        -
+          label: 'Button (outline)'
+          element: '<a class="button is-outline">'
     editor_advanced_link_link:
       enabled_attributes:
         - target

@@ -49,7 +49,6 @@ describe('The Nuxt page component', async () => {
       ignore: [path.resolve(__dirname, './../blokkli/**/*.vue')],
     },
   ).then((pageFilePaths) => {
-    console.log(pageFilePaths)
     return Promise.all(
       pageFilePaths.map((filePath) => {
         return fsp.readFile(filePath, { encoding: 'utf8' }).then((content) => {
@@ -62,8 +61,12 @@ describe('The Nuxt page component', async () => {
     )
   })
 
+  it('finds the page components', () => {
+    expect(pageComponentFiles.length).toBeGreaterThan(0)
+  })
+
   pageComponentFiles.forEach(({ filePath, content }) => {
-    it(`"${filePath}" should call useDrupalRouteQuery()`, () => {
+    it(`"${filePath}" should call useDrupalRoute()`, () => {
       expect(functionIsCalledAtLeastOnce(content, 'useDrupalRoute')).toEqual(
         true,
       )
@@ -71,9 +74,13 @@ describe('The Nuxt page component', async () => {
     it(`"${filePath}" should call setBreadcrumbLinksFromRoute()`, () => {
       expect(
         functionIsCalledAtLeastOnce(content, 'setBreadcrumbLinksFromRoute') ||
-          functionIsCalledAtLeastOnce(content, 'setBreadcrumbLinks') ||
-          functionIsCalledAtLeastOnce(content, 'useDrupalRoute'),
+          functionIsCalledAtLeastOnce(content, 'setBreadcrumbLinks'),
       ).toEqual(true)
+    })
+    it(`"${filePath}" should call setPageHasHero()`, () => {
+      expect(functionIsCalledAtLeastOnce(content, 'setPageHasHero')).toEqual(
+        true,
+      )
     })
   })
 })

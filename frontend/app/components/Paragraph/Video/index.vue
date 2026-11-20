@@ -13,7 +13,9 @@
         <figure class="w-full max-w-[1920px]">
           <iframe
             v-if="embedUrl && isPlaying"
+            ref="player"
             :src="embedUrl"
+            :title="playerTitle"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowfullscreen
             class="aspect-video w-full lg:px-0"
@@ -22,14 +24,15 @@
           <button
             v-if="!isPlaying"
             class="relative flex aspect-video w-full cursor-pointer items-center justify-center lg:px-0"
-            :aria-label="$texts('video.load', 'Video laden')"
-            @click.prevent="isPlaying = true"
+            :aria-label="loadLabel"
+            @click.prevent="play"
           >
             <ImageItem
               v-if="video?.thumbnailCustom"
               :image-style="imageStyle"
               loading="lazy"
               v-bind="video.thumbnailCustom"
+              alt=""
               class="absolute left-0 top-0 w-full"
             />
 
@@ -37,14 +40,20 @@
               v-else-if="thumbnailUrl"
               :src="thumbnailUrl"
               class="absolute left-0 top-0 size-full object-cover"
-              :alt="videoDescription"
+              alt=""
+              loading="lazy"
             />
 
             <img
               v-else
-              :src="video?.thumbnailOriginal?.entity?.uri?.first?.url"
+              :src="
+                toDrupalFilePath(
+                  video?.thumbnailOriginal?.entity?.uri?.first?.url,
+                )
+              "
               class="absolute left-0 top-0 size-full object-cover"
-              :alt="videoDescription"
+              alt=""
+              loading="lazy"
             />
 
             <SpriteSymbol name="play" class="z-10 size-[75px]" />
@@ -57,7 +66,7 @@
             <div v-if="videoDescription">
               {{ videoDescription }}
             </div>
-            <div v-if="source" class="mt-2 text-gray-900/60 md:mt-0">
+            <div v-if="source" class="mt-2 text-gray-600 md:mt-0">
               &copy; {{ source }}
             </div>
           </figcaption>
@@ -69,17 +78,19 @@
 
 <script lang="ts" setup>
 import type { ParagraphVideoFragment } from '#graphql-operations'
+import { toDrupalFilePath } from '~/helpers/drupalFiles'
+import { SCREENS } from '~/tailwind/screens'
 
 const { options } = defineBlokkli({
   bundle: 'video',
   editor: {
-    editTitle: (el) => el.querySelector('h2')?.innerText,
+    noPreview: true,
   },
   globalOptions: ['spacing'],
   options: {
     format: {
       type: 'radios',
-      label: 'Bildformat',
+      label: 'Format',
       default: 'full',
       displayAs: 'icons',
       options: {
@@ -109,8 +120,8 @@ const bigGrid = defineImageStyle({
   sizes: {
     xs: 770,
     sm: 984,
-    md: 1380,
-    lg: 1380,
+    md: SCREENS.xl,
+    lg: SCREENS.xl,
   },
 })
 
@@ -146,6 +157,7 @@ const fullWidth = defineImageStyle({
 })
 
 const props = defineProps<{
+  title?: ParagraphVideoFragment['title']
   video?: ParagraphVideoFragment['video']
   videoDescription?: ParagraphVideoFragment['videoDescription']
   source?: ParagraphVideoFragment['source']
@@ -168,6 +180,26 @@ const imageStyle = computed(() => {
 })
 
 const isPlaying = ref(false)
+const player = ref<HTMLIFrameElement | null>(null)
+
+const playerTitle = computed(
+  () =>
+    props.title || props.videoDescription || $texts('video.player', 'Video'),
+)
+
+// The thumbnail inside is decorative: the button carries the video's name.
+const loadLabel = computed(() => {
+  const load = $texts('video.load', 'Load video')
+  const name = props.title || props.videoDescription
+  return name ? `${load}: ${name}` : load
+})
+
+// The play button disappears, so focus moves on to the player.
+async function play() {
+  isPlaying.value = true
+  await nextTick()
+  player.value?.focus()
+}
 
 const videoUrl = computed(() => props.video?.url)
 

@@ -1,6 +1,6 @@
 ## INTRODUCTION
 
-The blökkli starterkit module is helper module for the blokkli distribution..
+The blökkli starterkit module is a helper module for the blökkli distribution.
 
 ## INSTALLATION
 
@@ -13,7 +13,7 @@ Currently you just need to enable the module.
 
 ## MAINTAINERS
 
-Current maintainers for Drupal 10:
+Current maintainers:
 
 - ayalon - https://www.drupal.org/u/ayalon
 

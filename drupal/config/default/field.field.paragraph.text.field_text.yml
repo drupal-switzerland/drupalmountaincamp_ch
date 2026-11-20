@@ -5,13 +5,10 @@ dependencies:
   config:
     - field.storage.paragraph.field_text
     - filter.format.basic_html
+    - filter.format.full_html
     - paragraphs.paragraphs_type.text
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.text.field_text
 field_name: field_text
 entity_type: paragraph
@@ -28,4 +25,5 @@ default_value_callback: ''
 settings:
   allowed_formats:
     - basic_html
+    - full_html
 field_type: text_long

@@ -1,0 +1,5 @@
+services:
+  blokkli_starterkit.session_configuration:
+    class: Drupal\blokkli_starterkit\Session\HostOnlySessionConfiguration
+    decorates: session_configuration
+    arguments: ['%session.storage.options%']

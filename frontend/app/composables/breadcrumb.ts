@@ -41,3 +41,16 @@ export function setBreadcrumbLinks(newLinks?: BreadcrumbFragment[] | null) {
   const links = useBreadcrumbLinks()
   links.value = newLinks || []
 }
+
+/**
+ * The trail with a link added at its end, unless it already leads there.
+ * For parent pages that exist only in the frontend, which Drupal's breadcrumb
+ * can't know.
+ */
+export function withBreadcrumbLink(
+  links: BreadcrumbFragment[],
+  link: BreadcrumbFragment,
+): BreadcrumbFragment[] {
+  const hasLink = links.some((item) => item.url?.path === link.url?.path)
+  return hasLink ? links : [...links, link]
+}

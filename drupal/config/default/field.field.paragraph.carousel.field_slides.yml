@@ -8,10 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.text_image
   module:
     - entity_reference_revisions
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.carousel.field_slides
 field_name: field_slides
 entity_type: paragraph

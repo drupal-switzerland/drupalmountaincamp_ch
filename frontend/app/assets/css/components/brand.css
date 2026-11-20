@@ -1,0 +1,426 @@
+@layer base {
+  :root {
+    --focus-ring-width: 3px;
+    --focus-ring-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring-width) solid theme(colors.brand.navy);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .on-dark :focus-visible {
+    outline-color: theme(colors.white);
+  }
+
+  /* A light panel inside a dark area, such as the header's submenus. */
+  .on-dark .on-light :focus-visible {
+    outline-color: theme(colors.brand.navy);
+  }
+
+  /* Fixed over the navy header on the homepage and the light event strip
+     elsewhere: a white ring with a navy rim shows on both. */
+  .skip-link:focus-visible {
+    outline-color: theme(colors.white);
+    box-shadow: 0 0 0
+      calc(var(--focus-ring-offset) + 2 * var(--focus-ring-width))
+      theme(colors.brand.navy);
+  }
+}
+
+@layer components {
+  /* Rounded gradient border: the fill and edge are two background layers, so
+     the border keeps its radius. Set --gradient-fill for a tinted fill. */
+  .gradient-border {
+    --gradient-fill: linear-gradient(theme(colors.white), theme(colors.white));
+    --gradient-edge: linear-gradient(
+      135deg,
+      theme(colors.brand.navy),
+      theme(colors.brand.sky)
+    );
+    border: 3px solid transparent;
+    background:
+      var(--gradient-fill) padding-box,
+      var(--gradient-edge) border-box;
+
+    &.is-lilac {
+      --gradient-edge: linear-gradient(
+        135deg,
+        theme(colors.brand.navy),
+        theme(colors.brand.lilac)
+      );
+    }
+
+    /* Tint fill, keeps the navy-to-sky edge (homepage sponsors card). */
+    &.is-light {
+      --gradient-fill: linear-gradient(
+        theme(colors.brand.tint),
+        theme(colors.brand.tint)
+      );
+    }
+
+    &.is-tint {
+      --gradient-fill: linear-gradient(
+        theme(colors.brand.tint),
+        theme(colors.brand.tint)
+      );
+      --gradient-edge: linear-gradient(
+        135deg,
+        theme(colors.brand.ice),
+        theme(colors.brand.sky)
+      );
+    }
+
+    /* Conference theme band: lilac only behind navy text (lilac fails as text). */
+    &.is-theme {
+      --gradient-fill: linear-gradient(
+        90deg,
+        theme(colors.brand.ice),
+        theme(colors.brand.lilac)
+      );
+      --gradient-edge: linear-gradient(
+        135deg,
+        theme(colors.brand.navy),
+        theme(colors.brand.lilac)
+      );
+
+      .label {
+        @apply text-primary-500;
+      }
+    }
+  }
+
+  /* A leading "Label" paragraph becomes the tag pill in the card header. */
+  .day-card .ck-content > p.label:first-child {
+    @apply absolute right-6 top-5 m-0 rounded-full bg-primary-100 px-3 text-primary-500;
+  }
+
+  .brand-card-header {
+    background: linear-gradient(
+      160deg,
+      theme(colors.brand.navy),
+      theme(colors.brand.blue)
+    );
+  }
+
+  .brand-strip {
+    height: 6px;
+    background: linear-gradient(
+      90deg,
+      theme(colors.brand.navy) 0%,
+      theme(colors.brand.blue) 45%,
+      theme(colors.brand.sky) 100%
+    );
+  }
+
+  .brand-hero {
+    --brand-hero-gradient: linear-gradient(
+      160deg,
+      theme(colors.brand.navy) 0%,
+      theme(colors.brand.navy) 50%,
+      theme(colors.brand.blue) 100%
+    );
+    background: var(--brand-hero-gradient);
+  }
+
+  /* Shared horizon (helpers/heroSky): navy behind the label, title and theme, blue
+     rising behind the lead, sky behind the ridge. Plain navy, not .brand-hero's
+     diagonal, because the sky-coloured year only reaches 4.5:1 on navy. */
+  .home-hero {
+    --sky-from: theme(colors.brand.blue);
+    --sky-mid: theme(colors.brand.sky);
+    --home-hero-rise: 10rem;
+    /* The ridge's height (set in tailwind.config from helpers/ridge) and how
+       far it reaches up over the text. */
+    --home-hero-ridge: var(--ridge-height-narrow);
+    --home-hero-overlap: 6px;
+    --home-hero-pad: theme(spacing.10);
+    /* From the hero's bottom edge up to the text, less the buttons' focus ring
+       and what a scrollbar takes from 100vw. */
+    --home-hero-scrollbar-slack: 6px;
+    --home-hero-clearance: calc(
+      var(--focus-ring-width) + var(--focus-ring-offset) +
+        var(--home-hero-scrollbar-slack)
+    );
+    --home-hero-horizon: calc(
+      var(--home-hero-ridge) - var(--home-hero-overlap) + var(--home-hero-pad) -
+        var(--home-hero-clearance)
+    );
+    /* The hero's bottom edge rarely lands on a whole device pixel at 125% or
+       150% scaling. The browser then covers the last pixel row only partly
+       with the ridge, so whatever is under it shows as a line above the ice
+       bar: the box's own background, and through that the page behind the
+       hero. Navy and both layers therefore stop --home-hero-edge above the
+       edge, where the box's own colour is the ridge's ice, and the box's
+       shadow puts ice behind the edge row. The ice bar paints over it. */
+    --home-hero-edge: 2px;
+    --home-hero-backdrop: 1px;
+    background: linear-gradient(
+        theme(colors.brand.navy),
+        theme(colors.brand.navy)
+      )
+      top / 100% calc(100% - var(--home-hero-edge)) no-repeat
+      theme(colors.brand.ice);
+    box-shadow: 0 var(--home-hero-backdrop) 0 theme(colors.brand.ice);
+
+    @screen xs {
+      --home-hero-ridge: var(--ridge-height-wide);
+      --home-hero-overlap: min(190px, 14.8vw);
+      --home-hero-pad: theme(spacing.4);
+    }
+
+    @screen md {
+      --home-hero-pad: 0px;
+    }
+
+    /* Desktop heroes are tall: a short rise would be done by the buttons and
+       leave a band of flat blue above the sky. This one ends near the ridge's
+       valleys, so navy, blue and sky read as one fade. */
+    @screen lg {
+      --home-hero-rise: calc(4.5rem + 17.5vw);
+    }
+  }
+
+  .home-hero-screen {
+    min-height: var(--first-screen);
+  }
+
+  /* The box under the theme line. Without a lead it is only its padding, and
+     the wide ridge, which reaches up by --home-hero-overlap, would lift its
+     tall peak over the theme. This keeps the peak's top a gap below the
+     theme line; with a lead the box is taller than this anyway. */
+  @screen xs {
+    .home-hero-body {
+      --home-hero-peak-gap: theme(spacing.4);
+      min-height: calc(
+        var(--home-hero-overlap) - var(--ridge-summit-wide) +
+          var(--home-hero-peak-gap)
+      );
+    }
+  }
+
+  /* The lead's buttons sit centred: an even gap on both sides instead of the
+     rich text's right margin. */
+  .ck-content.home-hero-lead a.button {
+    @apply mx-[0.375rem];
+  }
+
+  /* Both layers sit under the ridge and the text, in the box under the theme
+     line, so the blue starts there however the title wraps. */
+  .home-hero-rise,
+  .home-hero-horizon {
+    @apply pointer-events-none absolute inset-x-0 z-[-1] block;
+    bottom: var(--home-hero-edge);
+  }
+
+  /* Its gradient's stops are lengths and blue carries on below them. */
+  .home-hero-rise {
+    @apply top-0;
+    background-image: var(--home-hero-rise-sky-fallback);
+  }
+
+  .home-hero-horizon {
+    height: calc(var(--home-hero-horizon) - var(--home-hero-edge));
+    background-image: var(--home-hero-horizon-sky-fallback);
+  }
+
+  /* The fallbacks above are plain stops from the same curve. */
+  @supports (background: linear-gradient(in oklch, #000, #fff)) {
+    .home-hero-rise {
+      background-image: var(--home-hero-rise-sky);
+    }
+
+    .home-hero-horizon {
+      background-image: var(--home-hero-horizon-sky);
+    }
+  }
+
+  /* The lead sits on the rising blue, where the sky colour that highlights
+     take on dark sections fails as text. Ice holds 4.5:1 on full blue. */
+  .on-dark
+    .ck-content.home-hero-lead
+    .highlight:not(
+      :where(
+        .ck-content > table *,
+        [data-scrollable-table] *,
+        figure.table *,
+        a.button *
+      )
+    ) {
+    @apply text-primary-100;
+  }
+
+  /* Text paragraph "Navy band": .brand-hero fades to blue, where sky fails at
+     any text size. Not in a table's white panel or a button (ck-content.css). */
+  .navy-band
+    .ck-content
+    .highlight:not(
+      :where(
+        .ck-content > table *,
+        [data-scrollable-table] *,
+        figure.table *,
+        a.button *
+      )
+    ) {
+    @apply text-primary-100;
+  }
+
+  /* The one oversized call to action: Get tickets in the hero bar and footer. */
+  .ticket-button {
+    @apply inline-flex min-h-14 items-center justify-center gap-[10px] rounded-full bg-primary-500 px-9 text-lg font-bold text-white transition-colors duration-250 hover:bg-primary-400 motion-reduce:transition-none;
+    box-shadow:
+      0 0 0 5px rgb(0 156 222 / 0.35),
+      0 12px 24px -12px rgb(18 40 95 / 0.6);
+
+    .on-dark & {
+      @apply bg-white text-primary-500 hover:bg-primary-100;
+      box-shadow: 0 0 0 5px rgb(0 156 222 / 0.45);
+    }
+  }
+
+  /* Hero buttons sit side by side on phones so the whole hero fits one screen.
+     Ends just below xs, so at exactly 640px the phone grid and the xs layout
+     don't both apply. */
+  @media (max-width: calc(theme('screens.xs') - 0.02px)) {
+    .home-hero-lead p:has(> .button) {
+      @apply grid grid-cols-2 gap-[10px];
+
+      .button {
+        @apply m-0 justify-center px-3 text-sm;
+      }
+
+      /* Below 340px two buttons side by side wrap their labels; stack them. */
+      @media (max-width: 339.98px) {
+        @apply grid-cols-1;
+      }
+    }
+  }
+
+  /* Text paragraph "Theme band, full width": the conference theme as a statement. */
+  .theme-band {
+    background: linear-gradient(
+      110deg,
+      theme(colors.brand.ice),
+      theme(colors.brand.lilac)
+    );
+
+    .ck-content h2 {
+      @apply text-4xl leading-none md:text-6xl lg:text-7xl xl:text-8xl;
+    }
+
+    .label {
+      @apply text-primary-500;
+    }
+
+    /* Sky and blue fail on lilac; navy is the only text colour here. */
+    .ck-content .highlight,
+    .ck-content a:not(.button) {
+      @apply text-primary-500;
+    }
+  }
+
+  /* The snow carries on: the hero bar's ice continues behind the first
+     homepage blocks and fades to white, instead of a hard cut after the hero. */
+  .home-blocks {
+    /* Keeps the first block's top margin inside, so no white gap shows. */
+    display: flow-root;
+    background: linear-gradient(
+        theme(colors.brand.ice) 0,
+        theme(colors.brand.tint) 360px,
+        theme(colors.white) 640px
+      )
+      no-repeat;
+  }
+
+  /* Ice with 3% sky: where the inner-page hero's sky ends, behind its ridge
+     (helpers/heroSky). */
+  .page-hero {
+    --sky-handover: #c7ebf8;
+  }
+
+  /* Under the inner-page hero's ridge the snow keeps getting lighter: from
+     the ridge's ice to the homepage's tint and white. Sized, not stopped in
+     px, so a page shorter than the fade still ends in white. */
+  .snow-blocks {
+    --snow-fade-height: clamp(720px, 640px + 12vw, 840px);
+    /* Keeps the first block's top margin inside, so no white gap shows. */
+    display: flow-root;
+    background: linear-gradient(
+        theme(colors.brand.ice) 0 18%,
+        theme(colors.brand.tint) 62%,
+        theme(colors.white) 100%
+      )
+      no-repeat;
+    background-size: 100% min(var(--snow-fade-height), 100%);
+  }
+
+  /* A full-width band as the last block runs straight into the footer,
+     without the white gap the footer keeps above it after normal content. */
+  :has(
+      > main
+        :is(.home-blocks, .snow-blocks)
+        > :is(.week-band, .news-band, .theme-band, .navy-band):last-child
+    )
+    + footer {
+    margin-top: 0;
+  }
+
+  /* Homepage sponsor card across the edge of the band above it. It only
+     overlaps the bands listed here, by less than their smallest bottom
+     padding, so it never covers content: week timeline and news 64px (96px
+     from lg), theme band 72px (112px), navy text band 64px. After any other
+     block, or as the first block, it sits in the normal flow. */
+  .sponsor-overlap {
+    --sponsor-overlap: 48px;
+  }
+
+  :is(.week-band, .news-band, .theme-band, .navy-band) + .sponsor-overlap {
+    @apply relative z-[1];
+    margin-top: calc(-1 * var(--sponsor-overlap));
+  }
+
+  @screen lg {
+    :is(.week-band, .news-band, .theme-band) + .sponsor-overlap {
+      --sponsor-overlap: 72px;
+    }
+  }
+
+  /* Small uppercase label above a heading (also the CKEditor "Label" style). */
+  .label {
+    @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-400;
+
+    .on-dark
+      &:not(
+        :where(.ck-content > table *, [data-scrollable-table] *, figure.table *)
+      ) {
+      @apply text-primary-100;
+    }
+  }
+
+  /* The conference theme under a page title, in the heading face. Sizes are
+     set where it is used. Ice on the dark heroes, brand blue on white. */
+  .theme-line {
+    @apply font-heading font-bold leading-[1.05] text-primary-400 [text-wrap:balance];
+
+    :where(.on-dark) & {
+      @apply text-primary-100;
+    }
+  }
+
+  /* Forced colours drop backgrounds, which would erase gradient edges. */
+  @media (forced-colors: active) {
+    .gradient-border {
+      border-color: CanvasText;
+    }
+
+    .brand-strip {
+      background: CanvasText;
+    }
+
+    /* The logo is white pixels; on a light system Canvas it would vanish. */
+    .page-header-logo {
+      forced-color-adjust: none;
+      background: theme(colors.brand.navy);
+    }
+  }
+}

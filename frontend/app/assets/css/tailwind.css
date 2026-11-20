@@ -7,14 +7,52 @@
 @import './components/ck-content.css';
 @import './components/link.css';
 @import './components/button.css';
+@import './components/brand.css';
+@import './components/week-timeline.css';
+@import './components/loading-indicator.css';
+@import './components/print.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* The logo row plus the header's bottom border. */
+    --page-header-height: calc(theme(spacing.14) + theme(borderWidth.2));
+    --event-strip-height: theme(spacing.12);
+    /* What the first screen shows of a hero: below the header, and on pages
+       other than home, below the event strip. svh, so a phone's collapsing
+       address bar does not push the next section into view. */
+    --first-screen: calc(100vh - var(--page-header-height));
+  }
+
+  @supports (height: 100svh) {
+    :root {
+      --first-screen: calc(100svh - var(--page-header-height));
+    }
+  }
+
+  @media (min-width: 390px) {
+    :root {
+      --event-strip-height: theme(spacing.10);
+    }
+  }
+
+  @screen md {
+    :root {
+      --page-header-height: theme(spacing.20);
+    }
+  }
+
   html {
     @apply hyphens-auto bg-white font-sans text-primary-500;
+    /* Focus and anchor scrolling stop below the sticky header, with room for
+       the focus ring. */
+    scroll-padding-top: calc(
+      var(--page-header-height) + var(--focus-ring-width) +
+        var(--focus-ring-offset)
+    );
   }
 
   h1,
@@ -27,6 +65,20 @@
   h5,
   h6 {
     @apply font-heading font-medium;
+  }
+
+  /* Reduced motion: transitions and keyframes finish at once. A near-zero
+     duration instead of none keeps transitionend and animationend firing,
+     which Vue transitions, Swiper and the menu icon wait for. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

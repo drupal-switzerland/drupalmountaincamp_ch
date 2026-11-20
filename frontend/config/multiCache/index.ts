@@ -1,6 +1,8 @@
 import type { NuxtConfig } from '@nuxt/schema'
 const IS_DEV = process.env.NODE_ENV === 'development'
 
+export const CDN_CACHE_CONTROL_HEADER = 'CDN-Cache-Control'
+
 const multiCache: NuxtConfig['multiCache'] = {
   component: {
     enabled: false,
@@ -13,13 +15,15 @@ const multiCache: NuxtConfig['multiCache'] = {
   },
   api: {
     enabled: true,
-    authorization: 'overriden-at-runtime',
+    // No token in the build: NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN sets it at
+    // runtime, and without one the API refuses every request.
+    authorization: '',
     prefix: '/api/multi-cache',
     cacheTagInvalidationDelay: 5000,
   },
   cdn: {
     enabled: true,
-    cacheControlHeader: 'CDN-Cache-Control',
+    cacheControlHeader: CDN_CACHE_CONTROL_HEADER,
     cacheTagHeader: 'Cache-Tag',
   },
   debug: IS_DEV,

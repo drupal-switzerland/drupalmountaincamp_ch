@@ -17,20 +17,27 @@ type_settings:
   states:
     archived:
       label: Archived
+      weight: 1
       published: false
       default_revision: true
-      weight: 1
     draft:
       label: Draft
+      weight: -1
       published: false
       default_revision: false
-      weight: -1
     published:
       label: Published
+      weight: 0
       published: true
       default_revision: true
-      weight: 0
   transitions:
+    archive:
+      label: Archive
+      from:
+        - draft
+        - published
+      to: archived
+      weight: 2
     create_new_draft:
       label: 'Create new draft'
       from:
@@ -45,25 +52,18 @@ type_settings:
         - published
       to: published
       weight: 1
-    archive:
-      label: Archive
-      from:
-        - draft
-        - published
-      to: archived
-      weight: 2
-    restore_to_draft:
-      label: 'Restore to Draft'
-      from:
-        - archived
-      to: draft
-      weight: 3
     restore:
       label: Restore
       from:
         - archived
       to: published
       weight: 4
+    restore_to_draft:
+      label: 'Restore to Draft'
+      from:
+        - archived
+      to: draft
+      weight: 3
   entity_types:
     ai_context_item:
       - ai_context_item

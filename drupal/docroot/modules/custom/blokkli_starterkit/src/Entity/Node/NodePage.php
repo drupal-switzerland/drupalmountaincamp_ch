@@ -8,6 +8,9 @@ use Drupal\media\MediaInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs_blokkli_search\BlokkliSearchThumbnailAwareEntityInterface;
 
+/**
+ * Bundle class for page nodes.
+ */
 #[Bundle(
   entityType: 'node',
   bundle: 'page',

@@ -1,0 +1,13 @@
+uuid: dd7a61d1-df1a-4825-8451-480f0ba6930d
+langcode: en
+status: true
+dependencies: {  }
+id: ai_ckeditor_summarize__default
+label: 'Default prompt for summarizing CKEditor text'
+type: ai_ckeditor_summarize
+prompt: |-
+  Summarize the following text in the same language,
+  do not return the original text or restate it word-for-word.
+  Here is the original text:
+
+  {inputText}

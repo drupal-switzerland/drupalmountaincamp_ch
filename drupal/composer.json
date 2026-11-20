@@ -8,35 +8,31 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
-        "asset-packagist": {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        },
-        "anchor-link": {
+        "chosen": {
             "type": "package",
             "package": {
-                "name": "northernco/ckeditor5-anchor-drupal",
-                "version": "0.5.0",
+                "name": "harvesthq/chosen",
+                "version": "1.8.7",
                 "type": "drupal-library",
                 "dist": {
-                    "url": "https://registry.npmjs.org/@northernco/ckeditor5-anchor-drupal/-/ckeditor5-anchor-drupal-0.5.0.tgz",
-                    "type": "tar"
+                    "url": "https://github.com/harvesthq/bower-chosen/archive/refs/tags/v1.8.7.zip",
+                    "type": "zip"
                 }
             }
         }
     },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.5",
         "ext-curl": "*",
         "ext-fileinfo": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "amazeeio/drupal_integrations": "*",
-        "bower-asset/chosen": "^1.8",
+        "composer/installers": "^2.3",
         "cweagans/composer-patches": "^2.0",
         "drupal/address": "^2.0",
         "drupal/admin_toolbar": "~3.0",
-        "drupal/ai": "~1.4.0",
+        "drupal/ai": "~1.5.0",
         "drupal/ai_context": "^1.0@beta",
         "drupal/ai_provider_amazeeio": "~1.4.0",
         "drupal/allowed_formats": "^3.0",
@@ -44,8 +40,6 @@
         "drupal/artifact_deployment": "^1.0@dev",
         "drupal/bca": "^1.1",
         "drupal/chosen": "^5.0",
-        "drupal/coder": "^8.3",
-        "drupal/config_devel": "^1.2",
         "drupal/config_ignore": "^3.3",
         "drupal/config_import_locale": "^2.1",
         "drupal/config_patch": "3.0.x-dev",
@@ -53,8 +47,6 @@
         "drupal/core-composer-scaffold": "^11",
         "drupal/core-recommended": "^11",
         "drupal/crop": "~2.0",
-        "drupal/devel": "^5.1",
-        "drupal/devel_entity_updates": "5.0.x-dev@dev",
         "drupal/diff": "^2.1",
         "drupal/editor_advanced_link": "^2.1",
         "drupal/entity_browser": "~2.0",
@@ -92,7 +84,7 @@
         "drupal/migrate_tools": "~6.0",
         "drupal/nuxt_multi_cache": "^2.0@beta",
         "drupal/paragraphs": "^1.15",
-        "drupal/paragraphs_blokkli": "2.0.x-dev",
+        "drupal/paragraphs_blokkli": "2.0.x-dev#1b08d602de4c4e0f85d824f8d2efd86f6f8d7a39",
         "drupal/pathauto": "^1.6",
         "drupal/pathologic": "^2.0@alpha",
         "drupal/purge": "^3.5",
@@ -114,33 +106,33 @@
         "drupal/telephone_validation": "^2.4",
         "drupal/term_sidebar": "^1.0",
         "drupal/texts": "^1.0",
-        "drupal/tmgmt": "^1.15",
-        "drupal/tmgmt_deepl": "^2.2",
         "drupal/token": "^1.5",
         "drupal/token_or": "^2.1",
         "drupal/translatable_config_pages": "^1.0",
-        "drupal/upgrade_status": "^4.3",
+        "drupal/upgrade_status": "^5.0",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_operations": "^4.2",
         "drupal/views_data_export": "^1.3",
         "drupal/webform": "^6.3",
         "drush/drush": "^13",
         "elasticsearch/elasticsearch": "^9.3",
+        "harvesthq/chosen": "^1.8",
         "loophp/phposinfo": "^1.8",
         "mglaman/composer-drupal-lenient": "^2.0",
-        "northernco/ckeditor5-anchor-drupal": "^0.5.0",
-        "oomphinc/composer-installers-extender": "^2.0",
-        "phpstan/phpstan-deprecation-rules": "^2.0",
         "rokka/client-cli": "^1.8",
         "ronanguilloux/isocodes": "^2.3",
         "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
-        "composer/installers": "^1 || ^2",
+        "drupal/coder": "^8.3",
+        "drupal/config_devel": "^1.2",
         "drupal/core-dev": "^11",
+        "drupal/devel": "^5.1",
+        "drupal/devel_entity_updates": "5.0.x-dev@dev",
         "palantirnet/drupal-rector": "^1.1",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpspec/prophecy-phpunit": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
         "weitzman/drupal-test-traits": "^2.1"
     },
     "minimum-stability": "dev",
@@ -154,8 +146,6 @@
             "drupal/core-composer-scaffold": true,
             "drupalspoons/composer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
-            "mglaman/composer-drupalse-lenient": true,
-            "oomphinc/composer-installers-extender": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
             "tbachert/spi": true,
@@ -165,9 +155,8 @@
         "optimize-autoloader": false,
         "apcu-autoloader": false,
         "discard-changes": true,
-        "secure-http": false,
         "platform": {
-            "php": "8.3"
+            "php": "8.5"
         },
         "preferred-install": {
             "drupal/search_api_elasticsearch_client": "source",
@@ -178,6 +167,9 @@
             "drupal/texts": "source",
             "drupal/rokka": "source",
             "drupal/media_icon_deliver": "source"
+        },
+        "audit": {
+            "abandoned": "report"
         }
     },
     "extra": {
@@ -204,9 +196,7 @@
                 "type:drupal-custom-theme"
             ],
             "docroot/libraries/{$name}": [
-                "type:drupal-library",
-                "type:bower-asset",
-                "type:npm-asset"
+                "type:drupal-library"
             ],
             "drush/Commands/contrib/{$name}": [
                 "type:drupal-drush"
@@ -239,20 +229,6 @@
                 "[web-root]/README.txt": false
             }
         },
-        "drush": {
-            "services": {
-                "drush.services.yml": "^9 || ^10 || ^11"
-            }
-        },
-        "composer-exit-on-patch-failure": false,
-        "patchLevel": {
-            "drupal/core": "-p2"
-        },
-        "enable-patching": true,
-        "installer-types": [
-            "bower-asset",
-            "npm-asset"
-        ],
         "patches": {
         },
         "drupal-lenient": {

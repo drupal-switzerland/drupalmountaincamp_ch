@@ -25,17 +25,15 @@ definePageMeta({
 
 const nuxtRoute = useRoute()
 
-const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
-  return await useGraphqlQuery('routeNodeCanonical', {
-    path: nuxtRoute.path,
-  }).then((v) => {
-    return v.data
-  })
-})
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('routeNodeCanonical', { path: nuxtRoute.path }).then(
+    (v) => v.data,
+  ),
+)
 
 const pageType = computed(() => {
   const route = query?.value?.route as EntityUrlFragment
-  return route.entityGlobal?.__typename
+  return route?.entityGlobal?.__typename
 })
 
 const { entity: node } = await useDrupalRoute<
@@ -43,6 +41,7 @@ const { entity: node } = await useDrupalRoute<
 >(query.value ?? null)
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
+setPageHasHero(!!unref(node) && pageType.value === 'NodePage')
 setLanguageLinksFromRoute(query.value ?? null)
 await renderPageDependencies()
 </script>

@@ -758,8 +758,6 @@ $settings['entity_update_backup'] = TRUE;
  */
 $settings['migrate_node_migrate_type_classic'] = FALSE;
 
-$settings['entity_update_backup'] = TRUE;
-
 $settings['config_sync_directory'] = '../config/default';
 
 $databases['default']['default'] = array (
@@ -816,12 +814,16 @@ if (!empty($env)) {
 $settings['reverse_proxy'] = TRUE;
 $settings['reverse_proxy_addresses'] = [$_SERVER['REMOTE_ADDR'] ?? ''];
 
-// See https://symfony.com/doc/current/deployment/proxies.html.
-$settings['reverse_proxy_trusted_headers'] = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_FORWARDED;
+// See https://symfony.com/doc/current/deployment/proxies.html. "Forwarded"
+// stays untrusted: no proxy here sets it, and a visitor's own value that
+// disagrees with X-Forwarded-* makes Symfony reject the request (HTTP 500).
+$settings['reverse_proxy_trusted_headers'] = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
 
 $settings['access_graphql.token'] = getenv('DRUPAL_GRAPHQL_TOKEN');
+// The token Drupal sends when it purges the frontend's caches; the frontend
+// reads the same variable. Without it no token is sent.
+$config['nuxt_multi_cache.settings']['token'] = (string) getenv('NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN');
 $config['rokka.settings']['api_key'] = getenv('ROKKA_API_KEY');
-$config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY');
 $config['rokka.settings']['organization_name'] = getenv('ROKKA_ORGANIZATION_NAME');
 // amazee.ai LLM endpoint (region specific, not committed: the provider
 // config-ignores it). The API key itself is a Key entity reading AMAZEEAI_API_KEY.
@@ -840,4 +842,11 @@ foreach (['postgres_host', 'postgres_port', 'postgres_default_database', 'postgr
 $ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
 if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
+}
+
+// nuxi dev downloads the schema through introspection. The export keeps both
+// off, so every other environment fails safe.
+if (getenv('IS_DDEV_PROJECT') == 'true') {
+  $config['graphql.graphql_servers.graphql']['debug_flag'] = 1;
+  $config['graphql.graphql_servers.graphql']['disable_introspection'] = FALSE;
 }

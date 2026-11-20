@@ -1,20 +1,77 @@
 import { resolve } from 'node:path'
-import { pathPrefix, acceptLanguage } from 'nuxt-language-negotiation/negotiators'
+import type { Nuxt, NuxtHooks } from 'nuxt/schema'
+import {
+  pathPrefix,
+  acceptLanguage,
+} from 'nuxt-language-negotiation/negotiators'
 import blokkliDrupal from '@blokkli/editor/drupal'
 import { runtimeConfig } from './config/runtimeConfig'
 import graphqlMiddleware from './config/graphqlMiddleware'
 import multiCache from './config/multiCache'
+import { SITE_DESCRIPTION, SITE_TITLE } from './app/helpers/site'
+import { SCREENS } from './app/tailwind/screens'
+import { brand } from './tailwind.config'
 
 const ONE_YEAR = 31_536_000
-const IS_DEV = process.env.NODE_ENV === 'development'
+const ONE_DAY = 60 * 60 * 24
+const ONE_WEEK = ONE_DAY * 7
 const NUXT_REQUEST_HOST = process.env.NUXT_REQUEST_HOST
+// @nuxt/schema 4.6.4 resolves an unset devServer.host to {}, and nuxi dev then
+// fails on hostname.toLowerCase. The env order is the one @nuxt/schema reads.
+const DEV_SERVER_HOST =
+  process.env.NUXT_HOST ||
+  process.env.NITRO_HOST ||
+  process.env.HOST ||
+  'localhost'
 
 const LANGCODES = [{ code: 'en', prefix: '' }]
+
+// The files of the text painted above the fold, preloaded so it is not laid
+// out in a fallback font first: ZT Gatha bold for headings, and the latin
+// file of Source Sans 3 for body text. The build gives both content-hashed
+// names, so they are marked as preloads in the build manifest, which puts the
+// links into every HTML response: pages, error pages and the shell for
+// logged-in users. The dev server preloads no font.
+export const FONT_PRELOADS = {
+  'ZT Gatha bold': /^ZTGatha-Bold\.[\w-]+\.woff2$/,
+  'the latin file of Source Sans 3':
+    /^source-sans-3-latin-wght-normal\.[\w-]+\.woff2$/,
+}
+
+type BuildManifest = Parameters<NuxtHooks['build:manifest']>[0]
+
+export function markFontPreloads(manifest: BuildManifest) {
+  const entry = Object.values(manifest).find((chunk) => chunk.isEntry)
+  for (const [font, pattern] of Object.entries(FONT_PRELOADS)) {
+    const file = entry?.assets?.find((asset) => pattern.test(asset))
+    // No preload is a slower first paint on every page; better no build.
+    if (!file) {
+      throw new Error(
+        `${font} is not among the entry assets, so it cannot be preloaded.`,
+      )
+    }
+    manifest[file] = {
+      file,
+      resourceType: 'font',
+      mimeType: 'font/woff2',
+      preload: true,
+    }
+  }
+}
+
+// The dev server calls build:manifest too, with entries that list no assets.
+export function fontPreloadModule(_options: unknown, nuxt: Nuxt) {
+  if (nuxt.options.dev) {
+    return
+  }
+  nuxt.hook('build:manifest', markFontPreloads)
+}
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   telemetry: false,
+  devServer: { host: DEV_SERVER_HOST },
   graphqlMiddleware,
   multiCache,
   runtimeConfig,
@@ -27,24 +84,29 @@ export default defineNuxtConfig({
 
   app: {
     rootId: 'nuxt-root',
-    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: 'Mountain Camp 2027, Davos, Switzerland',
+      title: SITE_TITLE,
       htmlAttrs: {
         lang: 'en',
       },
+      link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
+      ],
       meta: [
-        { name: 'theme-color', content: '#184759' },
+        { name: 'theme-color', content: brand.navy },
+        {
+          name: 'google-site-verification',
+          content: 'SCUdRugj-xdUAPc-l5QvGazhSoLCk41JiDAOoztuT8I',
+        },
+        {
+          name: 'msvalidate.01',
+          content: '43CC5D0A5D1436DBF68D869408DF0A34',
+        },
         {
           name: 'description',
-          content:
-            'Mountain Camp 2027 is the Swiss Drupal community conference in Davos, Switzerland. Open Source on top of the world, March 02–04, 2027.',
-        },
-      ],
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300..900;1,300..900&family=Zilla+Slab:wght@500;600;700&display=swap',
+          content: SITE_DESCRIPTION,
         },
       ],
     },
@@ -55,7 +117,6 @@ export default defineNuxtConfig({
    */
   modules: [
     '@nuxt/test-utils/module',
-    '@formkit/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-graphql-middleware',
     'nuxt-easy-texts',
@@ -67,6 +128,7 @@ export default defineNuxtConfig({
     'nuxt-svg-icon-sprite',
     '@blokkli/editor',
     '@nuxt/eslint',
+    fontPreloadModule,
   ],
 
   tailwindcss: {
@@ -78,6 +140,7 @@ export default defineNuxtConfig({
       './app/components/**/*.{js,ts,vue}',
       './app/pages/**/*.{js,ts,vue}',
       './app/composables/**/*.{js,ts,vue}',
+      './app/layouts/**/*.{js,ts,vue}',
       './app/*.{js,ts,vue}',
     ],
     generators: [
@@ -89,14 +152,10 @@ export default defineNuxtConfig({
   },
 
   rokka: {
-    host: '',
-    viewports: {
-      xs: 640,
-      sm: 768,
-      md: 1024,
-      lg: 1280,
-      xl: 1380,
-    },
+    // Overridable per environment with NUXT_PUBLIC_ROKKA_HOST; an empty value
+    // renders every image from the Drupal derivatives.
+    host: 'mountaincamp.rokka.io',
+    viewports: SCREENS,
     dpr: ['', '1.5', '2'],
   },
 
@@ -126,7 +185,7 @@ export default defineNuxtConfig({
     },
   },
 
-  sourcemap: true,
+  sourcemap: { server: true, client: false },
 
   nitro: {
     compressPublicAssets: true,
@@ -134,9 +193,8 @@ export default defineNuxtConfig({
 
   hooks: {
     'vite:extend'({ config }) {
-      if (config.server && config.server.hmr) {
-        // @ts-ignore
-        config.server.hmr.protocol = 'wss'
+      if (config.server?.hmr && typeof config.server.ws === 'object') {
+        config.server.ws.protocol = 'wss'
       }
     },
   },
@@ -162,10 +220,6 @@ export default defineNuxtConfig({
     },
   },
 
-  formkit: {
-    autoImport: true,
-  },
-
   languageNegotiation: {
     languages: LANGCODES,
 
@@ -175,6 +229,8 @@ export default defineNuxtConfig({
   },
 
   svgIconSprite: {
+    // Every symbol is decorative; controls get their name from text.
+    ariaHidden: true,
     sprites: {
       default: {
         importPatterns: ['./app/assets/symbols/**/*.svg'],
@@ -185,7 +241,11 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       'postcss-import': {},
-      'tailwindcss/nesting': {},
+      // Nuxt imports PostCSS plugins as ES modules, which cannot resolve the
+      // directory 'tailwindcss/nesting'. The file is named instead, and the
+      // entry @nuxtjs/tailwindcss adds under the directory name is switched off.
+      'tailwindcss/nesting': false,
+      'tailwindcss/nesting/index.js': {},
       tailwindcss: {},
       'postcss-hexrgba': {
         colorFunctionNotation: 'modern',
@@ -198,20 +258,21 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // Build assets have content-hashed file names. Nuxt's own, more specific
+    // /_nuxt/builds/** rules keep the unhashed latest.json short-lived.
     '/_nuxt/**': {
       cache: {
         maxAge: ONE_YEAR,
       },
       headers: {
-        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR}`,
+        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR},immutable`,
       },
     },
-    '/fonts/**': {
-      cache: {
-        maxAge: ONE_YEAR,
-      },
+    // public/images has no content hash in its file names: short browser cache,
+    // then revalidate in the background.
+    '/images/**': {
       headers: {
-        'cache-control': `public,max-age=${ONE_YEAR},s-maxage=${ONE_YEAR}`,
+        'cache-control': `public,max-age=${ONE_DAY},stale-while-revalidate=${ONE_WEEK}`,
       },
     },
   },
@@ -278,9 +339,12 @@ export default defineNuxtConfig({
     storageDefaults: {
       blockFavorites: ['text'],
     },
-    schemaOptionsPath: IS_DEV
-      ? '../drupal/docroot/modules/custom/blokkli_starterkit/data/schema.json'
-      : undefined,
+    // Generated on every build: Drupal's paragraph form drops any option that
+    // is missing from this file when a paragraph is saved there.
+    schemaOptionsPath: resolve(
+      import.meta.dirname,
+      '../drupal/docroot/modules/custom/blokkli_starterkit/data/schema.json',
+    ),
     defaultLanguage: 'en',
     // Make sure the editor is always rendered in the default language
     // instead of the current page language.

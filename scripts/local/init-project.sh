@@ -185,12 +185,6 @@ if [ "$rokka_option" != "3" ]; then
   $TYPE drush rim --force
 fi
 
-# Convert the database language to english.
-if prompt_yes_no "The default demo database is in german. Do you prefer to convert it to english"; then
-  display_command "$TYPE drush blokkli_starterkit:convert-db-language de en"
-  $TYPE drush blokkli_starterkit:convert-db-language de en
-fi
-
 # Install the frontend.
 print_separator "Running bun install within the frontend container."
 display_command "$TYPE bun install"

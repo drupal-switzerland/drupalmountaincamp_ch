@@ -1,0 +1,44 @@
+uuid: 68cd5b29-9936-4336-b32b-331a8ea53ba7
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.speaker_list.field_content
+    - field.field.paragraph.speaker_list.field_title
+    - paragraphs.paragraphs_type.speaker_list
+  module:
+    - paragraphs
+id: paragraph.speaker_list.default
+targetEntityType: paragraph
+bundle: speaker_list
+mode: default
+content:
+  field_content:
+    type: paragraphs
+    weight: 1
+    region: content
+    settings:
+      title: Speaker
+      title_plural: Speakers
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: speaker_card
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

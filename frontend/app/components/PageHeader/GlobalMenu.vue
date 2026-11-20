@@ -1,39 +1,84 @@
 <template>
   <nav
-    class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-10 [&_.router-link-active]:text-accent-500"
+    :aria-label="$texts('mainNavigation', 'Main')"
+    class="relative pb-8 transition-all duration-250 ease-in-out md:pb-0 md:pl-4 lg:pl-10"
   >
     <ul
-      class="flex h-full flex-col gap-4 pt-24 text-2xl md:flex-row md:justify-end md:gap-2 md:pt-0 md:text-base md:font-medium"
+      class="flex flex-col pt-4 text-xl font-medium md:h-full md:flex-row md:items-center md:justify-end md:gap-1 md:pt-0 md:text-base lg:gap-2"
     >
       <li
-        v-for="(link, i) in menuLinks"
-        :key="`global_${i}`"
-        class="flex items-stretch px-8 md:px-0"
+        v-for="item in items"
+        :key="`global_${item.index}`"
+        :inert="isCovered(item.index) || undefined"
+        class="flex items-stretch border-b border-white/20 px-outer md:border-0 md:px-0"
       >
         <div
-          v-if="link.subtree.length > 0"
+          v-if="item.link.subtree.length > 0"
           class="min-w-[60px] transition-all duration-250 ease-in-out md:relative"
         >
-          <PageHeaderGlobalMenuLinkGroup :link-index="i" />
+          <PageHeaderGlobalMenuLinkGroup :link-index="item.index" />
         </div>
 
-        <div
+        <VuepalLink
           v-else
-          class="flex h-10 min-w-[60px] items-center hover:text-accent-500 md:h-20 lg:justify-between"
+          :to="item.path"
+          :aria-current="item.isCurrent ? 'page' : undefined"
+          class="flex min-h-14 w-full items-center decoration-primary-300 decoration-[3px] underline-offset-8 hover:text-primary-300 md:min-h-0 md:whitespace-nowrap md:p-2 lg:px-3"
+          :class="{
+            'border-l-4 border-primary-300 pl-3 md:border-l-0 md:underline':
+              item.isActive,
+          }"
         >
-          <VuepalLink
-            :to="link.link?.url?.path"
-            class="flex h-[50px] w-full items-center px-4 pl-2 transition-all duration-250 ease-in-out md:size-auto md:px-3"
-          >
-            {{ link.link.label }}
-          </VuepalLink>
-        </div>
+          {{ item.link.link.label }}
+        </VuepalLink>
+      </li>
+      <li
+        v-if="ticketsLink"
+        :inert="isCovered(null) || undefined"
+        class="mt-8 px-outer md:mt-0 md:pl-2 md:pr-0 lg:pl-3"
+      >
+        <TicketsButton
+          v-slot="{ label }"
+          class="button is-on-navy w-full justify-center md:w-auto md:whitespace-nowrap md:px-5 md:py-2 lg:px-6"
+        >
+          {{ label }}
+        </TicketsButton>
       </li>
     </ul>
   </nav>
 </template>
 
 <script lang="ts" setup>
+import { isActivePath } from '~/helpers/navigation'
+
 const data = await useInitData()
 const menuLinks = data.value.mainMenuLinks
+const route = useRoute()
+const { $texts } = useEasyTexts()
+
+// An open phone submenu covers every other item, so they leave the tab order.
+const phoneSubmenuOpen = usePhoneSubmenuOpen()
+function isCovered(index: number | null) {
+  return phoneSubmenuOpen.value !== null && phoneSubmenuOpen.value !== index
+}
+
+// Tickets is rendered as the call-to-action button at the end, wherever
+// editors place it in the Drupal menu.
+const ticketsLink = await useTicketsLink()
+
+const items = computed(() =>
+  menuLinks
+    // index: position in the Drupal menu, used by GlobalMenuLinkGroup.
+    .map((link, index) => {
+      const path = link.link.url?.path
+      return {
+        link,
+        index,
+        path,
+        isCurrent: !!path && route.path === path,
+        isActive: isActivePath(route.path, path),
+      }
+    })
+    .filter((item) => item.link !== ticketsLink.value?.item),
+)
 </script>

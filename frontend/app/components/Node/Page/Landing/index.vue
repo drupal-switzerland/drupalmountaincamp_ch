@@ -1,7 +1,15 @@
 <template>
   <BlokkliProvider v-slot="{ entity }" v-bind="blokkliProps" :entity="props">
-    <div class="mt-[-88px]">
-      <div class="gradient-overlay relative my-8 max-h-screen overflow-hidden">
+    <div :class="{ 'mt-[-88px]': !isFront }">
+      <HomeHero
+        v-if="isFront"
+        :title="entity?.title || title"
+        :lead="entity?.lead || lead"
+      />
+      <div
+        v-else
+        class="gradient-overlay relative my-8 max-h-screen overflow-hidden"
+      >
         <MediaImage
           v-if="hero"
           v-blokkli-droppable:field_hero_image
@@ -23,7 +31,7 @@
           </div>
         </Container>
       </div>
-      <div v-if="lead" class="grid-container">
+      <div v-if="lead && !isFront" class="grid-container">
         <div
           class="col-span-4 pb-10 sm:col-span-6 md:col-span-6 md:col-start-2 lg:col-span-8 lg:col-start-3"
         >
@@ -35,7 +43,12 @@
         </div>
       </div>
       <div>
-        <BlokkliField :list="paragraphs" name="field_paragraphs" />
+        <BlokkliField
+          :list="paragraphs"
+          name="field_paragraphs"
+          :allowed-fragments="PAGE_FRAGMENTS"
+          :class="{ 'home-blocks': isFront }"
+        />
       </div>
     </div>
   </BlokkliProvider>
@@ -43,16 +56,24 @@
 
 <script lang="ts" setup>
 import type { NodePageFragment } from '#graphql-operations'
+import { PAGE_FRAGMENTS } from '~/composables/pageFragments'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
+import { SCREENS } from '~/tailwind/screens'
 
 const props = defineProps<{
   uuid: string
   title?: string
   lead?: string
+  isFront?: boolean
   hero?: NodePageFragment['hero']
   paragraphs?: NodePageFragment['paragraphs']
   body?: string
   blokkliProps: NodePageFragment['blokkliProps']
 }>()
+
+// The homepage hero and the hero image of other pages push the blocks below
+// the fold.
+provide(FIRST_PARAGRAPH_IN_FIRST_VIEWPORT, !props.isFront && !props.hero)
 
 const bigGrid = defineImageStyle({
   type: 'sizes',
@@ -60,8 +81,8 @@ const bigGrid = defineImageStyle({
   sizes: {
     xs: 770,
     sm: 984,
-    md: 1380,
-    lg: 1380,
+    md: SCREENS.xl,
+    lg: SCREENS.xl,
   },
 })
 </script>

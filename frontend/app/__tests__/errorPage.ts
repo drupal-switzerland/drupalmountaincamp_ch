@@ -1,0 +1,79 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, h } from 'vue'
+import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import { createError } from '#app'
+import ErrorPage from '../error.vue'
+import { SITE_NAME } from '../helpers/site'
+
+// The easy-texts build transform strips the default text from $texts()
+// calls, so the mock answers with the key the component asked for.
+mockNuxtImport('useEasyTexts', () => () => ({
+  $texts: (key: string) => key,
+}))
+
+// The real layout fetches menus from Drupal; the stub only proves the error
+// page renders inside it.
+const LayoutStub = defineComponent({
+  setup(_, { slots }) {
+    return () => h('div', { 'data-test': 'layout' }, slots.default?.())
+  },
+})
+
+const unmounts: (() => void)[] = []
+
+async function mountError(statusCode: number) {
+  const wrapper = await mountSuspended(ErrorPage, {
+    props: { error: createError({ statusCode, message: 'internal detail' }) },
+    global: { stubs: { NuxtLayout: LayoutStub } },
+  })
+  unmounts.push(() => wrapper.unmount())
+  return wrapper
+}
+
+// The tab title and the route announcer outlive a mounted page, so each test
+// starts without the ones an earlier test left.
+beforeEach(() => {
+  document.title = ''
+})
+
+afterEach(() => {
+  unmounts.splice(0).forEach((unmount) => unmount())
+})
+
+describe('error page', () => {
+  it.each([404, 500])('renders a %i inside the site layout', async (code) => {
+    const wrapper = await mountError(code)
+
+    expect(wrapper.find('[data-test="layout"] h1').exists()).toBe(true)
+    expect(wrapper.get('.label').text()).toBe(`error.code ${code}`)
+    expect(wrapper.get('a[href="/"]').text()).toBe('error.home')
+  })
+
+  it('names a missing page as not found', async () => {
+    const wrapper = await mountError(404)
+    expect(wrapper.get('h1').text()).toBe('error.notFoundTitle')
+  })
+
+  it('titles the tab like the other pages', async () => {
+    await mountError(404)
+    await vi.waitFor(() =>
+      expect(document.title).toBe(`error.notFoundTitle | ${SITE_NAME}`),
+    )
+  })
+
+  it('announces the title to assistive technology', async () => {
+    const wrapper = await mountError(404)
+    const region = wrapper.get('.nuxt-route-announcer [aria-live="polite"]')
+
+    expect(region.attributes('role')).toBe('status')
+    await vi.waitFor(() =>
+      expect(region.text()).toBe(`error.notFoundTitle | ${SITE_NAME}`),
+    )
+  })
+
+  it('shows fixed copy for server errors, not the error message', async () => {
+    const wrapper = await mountError(500)
+    expect(wrapper.get('h1').text()).toBe('error.title')
+    expect(wrapper.text()).not.toContain('internal detail')
+  })
+})

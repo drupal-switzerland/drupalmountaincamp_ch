@@ -8,7 +8,10 @@
     <div class="container">
       <p>Administrative title</p>
       <h1 v-blokkli-editable:label>
-        {{ (entity as any).libraryItemLabel || data.libraryItemLabel }}
+        {{
+          (entity as { libraryItemLabel?: string }).libraryItemLabel ||
+          data.libraryItemLabel
+        }}
       </h1>
     </div>
     <BlokkliField name="paragraphs" :list="data.paragraphs" />

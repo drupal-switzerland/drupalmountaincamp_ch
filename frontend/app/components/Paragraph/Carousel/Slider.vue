@@ -1,28 +1,50 @@
 <template>
   <div
-    class="2xl:!w-[70%] 2xl:!max-w-[1920px] container relative w-4/5 transition sm:w-full"
+    class="2xl:!w-[70%] 2xl:!max-w-[1920px] container relative w-4/5 transition sm:w-full xl:w-[theme(screens.xl)]"
     data-allow-mismatch
     :class="{
       'opacity-0': !isLoaded,
     }"
   >
-    <Swiper v-bind="options" @swiper="getRef">
+    <!-- A pseudo-element spans the whole strip the carousel root clips to, so
+         a press beside the active slide lands on the container and starts a
+         swipe. The container's own box stays the slide's width: the slide
+         animation measures it (Animation.ts). -->
+    <Swiper
+      v-bind="options"
+      class="before:absolute before:inset-x-[-100vw] before:inset-y-0 before:content-['']"
+      @swiper="getRef"
+      @after-init="exposeActiveSlideOnly"
+      @active-index-change="exposeActiveSlideOnly"
+    >
       <SwiperSlide v-for="(slide, i) in slidesToRender" :key="'first_' + i">
-        <BlokkliItem v-bind="slide" />
+        <!-- The field is in proxy mode, so blökkli does not render the items
+             and they get their parent and position here. Every copy of a
+             slide carries the position of the slide it repeats. The
+             isInViewAtLoad flag only reaches a block that declares it as a
+             prop (text_image, the only block slides allow); on another block
+             it would land on its root element as an attribute. -->
+        <BlokkliItem
+          v-bind="slide"
+          :props="{
+            ...slide.props,
+            isInViewAtLoad: eagerFirstSlide && i === startIndex,
+          }"
+          :parent-type="PARENT_BUNDLE"
+          :index="i % slides.length"
+        />
       </SwiperSlide>
     </Swiper>
-    <div class="mt-6 hidden grid-cols-12 gap-3 sm:grid">
+    <div class="mt-6 grid grid-cols-12 gap-3">
       <div class="col-span-7">
         <div class="flex gap-4 md:justify-end">
-          <button @click="goPrev">
+          <button type="button" @click="goPrev">
             <SpriteSymbol name="arrow-left" class="size-7 text-primary-500" />
-            <span class="sr-only">{{
-              $texts('slides.prev', 'Vorherige')
-            }}</span>
+            <span class="sr-only">{{ $texts('slides.prev', 'Previous') }}</span>
           </button>
-          <button @click="goNext">
+          <button type="button" @click="goNext">
             <SpriteSymbol name="arrow-right" class="size-7 text-primary-500" />
-            <span class="sr-only">{{ $texts('slides.next', 'Nächste') }}</span>
+            <span class="sr-only">{{ $texts('slides.next', 'Next') }}</span>
           </button>
         </div>
       </div>
@@ -39,7 +61,11 @@ import type { FieldListItemTyped } from '#blokkli-build/generated-types'
 
 const props = defineProps<{
   slides: FieldListItemTyped[]
+  // The carousel is in the first viewport, so the slide it starts on is too.
+  eagerFirstSlide?: boolean
 }>()
+
+const PARENT_BUNDLE = 'carousel'
 
 const isLoaded = ref(false)
 const { $texts } = useEasyTexts()
@@ -57,10 +83,34 @@ const slidesToRender = computed(() => {
   return Array(repetitionsNeeded).fill(props.slides).flat()
 })
 
+// The one rendered copy the slider starts on: the first slide of the second
+// round. initialSlide names it as slides.length, which is past the end when
+// nothing is repeated (six slides or more); Swiper then rotates the loop so the
+// last slide peeks left of the first, and the copy active is rendered index 0
+// (checked in a browser with 6 and 7 slides). The peek is part of the layout,
+// so initialSlide stays as it is and this says which copy that is.
+const startIndex = computed(() =>
+  slidesToRender.value.length
+    ? props.slides.length % slidesToRender.value.length
+    : 0,
+)
+
 const swiper = ref<SwiperClass | null>(null)
 
 function getRef(swiperInstance: SwiperClass) {
   swiper.value = swiperInstance
+}
+
+// The loop needs every slide several times over. Only the active one is left
+// to the keyboard and to assistive technology. An inert slide takes no
+// pointer either, which is why touches go to the container (see options).
+function exposeActiveSlideOnly(swiperInstance: SwiperClass) {
+  const active = swiperInstance.slides[swiperInstance.activeIndex]
+  swiperInstance.slides.forEach((slide) => {
+    // Without a known active slide nothing is hidden: better every copy
+    // reachable than none.
+    slide.toggleAttribute('inert', !!active && slide !== active)
+  })
 }
 
 function goNext() {
@@ -80,6 +130,7 @@ const options = computed<SwiperProps>(() => {
   return {
     speed: 600,
     modules: [Parallax],
+    touchEventsTarget: 'container',
     initialSlide: props.slides.length - 0,
     slidesPerView: 1,
     spaceBetween: 0,

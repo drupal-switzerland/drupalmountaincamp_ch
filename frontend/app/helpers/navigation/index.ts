@@ -1,0 +1,64 @@
+/** Main menu link rendered as the Tickets button: the page or the shop. */
+export const TICKETS_PATH = '/tickets'
+export const TICKET_SHOP_URL = 'https://pretix.eu/mountain-camp/2027/'
+
+const NEW_TAB_TARGET = '_blank'
+// VuepalLink opens every external URL in a new tab unless given a target.
+const SAME_TAB_TARGET = '_self'
+
+const withoutTrailingSlash = (url: string) =>
+  url.endsWith('/') ? url.slice(0, -1) : url
+
+export function isTicketsUrl(path?: string | null) {
+  return (
+    path === TICKETS_PATH ||
+    (!!path &&
+      withoutTrailingSlash(path) === withoutTrailingSlash(TICKET_SHOP_URL))
+  )
+}
+
+// VuepalLink routes clicks on other URLs with router.push, ignoring target.
+const EXTERNAL_URL_PREFIXES = ['http', 'www', 'mailto:', 'tel:']
+
+const isExternalUrl = (url: string) =>
+  EXTERNAL_URL_PREFIXES.some((prefix) => url.startsWith(prefix))
+
+/**
+ * The Drupal menu link target for an external URL, or the same tab when none
+ * is set or the URL is internal.
+ */
+export function linkTarget(url: string, target?: string | null) {
+  return (isExternalUrl(url) && target) || SAME_TAB_TARGET
+}
+
+const SAME_TAB_PREFIXES = ['mailto:', 'tel:']
+
+/**
+ * VuepalLink's own target for a URL, except that mail and phone links stay in
+ * the tab: they open another app, not a page.
+ */
+export function defaultLinkTarget(url: string) {
+  if (SAME_TAB_PREFIXES.some((prefix) => url.startsWith(prefix))) {
+    return SAME_TAB_TARGET
+  }
+  return isExternalUrl(url) ? NEW_TAB_TARGET : SAME_TAB_TARGET
+}
+
+export function opensNewTab(target: string) {
+  return target === NEW_TAB_TARGET
+}
+
+/** The news overview, parent of the news articles. */
+export const NEWS_OVERVIEW_PATH = '/news'
+
+/** RSS feed of the news, served by Drupal (views.view.news). */
+export const NEWS_FEED_PATH = '/news/planet_drupal.xml'
+export const NEWS_FEED_TITLE = 'Drupal Mountain Camp'
+
+/** A menu link is active on its own page and on pages below it. */
+export function isActivePath(currentPath: string, linkPath?: string | null) {
+  if (!linkPath || linkPath === '/') {
+    return currentPath === linkPath
+  }
+  return currentPath === linkPath || currentPath.startsWith(`${linkPath}/`)
+}

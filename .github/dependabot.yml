@@ -1,0 +1,55 @@
+version: 2
+updates:
+  - package-ecosystem: composer
+    directory: /drupal
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    # drupal/core releases skip the cooldown so a security release is offered
+    # at once: while composer.lock holds a core version with an advisory,
+    # every other composer update fails.
+    cooldown:
+      default-days: 3
+      exclude:
+        - "drupal/core"
+        - "drupal/core-*"
+    ignore:
+      # Dev branches installed from git. Dependabot's proxy does not allow
+      # git.drupalcode.org, so checking them fails the run; they get no updates.
+      - dependency-name: drupal/config_patch
+      - dependency-name: drupal/devel_entity_updates
+      - dependency-name: drupal/paragraphs_blokkli
+
+  # Dependabot supports version updates for bun, not security updates or alerts.
+  - package-ecosystem: bun
+    directory: /frontend
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    ignore:
+      # Tailwind 4 is a separate migration; eslint-plugin-tailwindcss 4 requires it.
+      - dependency-name: tailwindcss
+        update-types: ["version-update:semver-major"]
+      - dependency-name: eslint-plugin-tailwindcss
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+
+  # .lagoon/Dockerfile: only the Elasticsearch image has a version tag; the
+  # uselagoon images use :latest and get no pull requests.
+  - package-ecosystem: docker
+    directory: /.lagoon
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+
+  # docker-compose.yml: the local database image.
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3

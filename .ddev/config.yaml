@@ -1,7 +1,7 @@
 name: mountaincamp
 type: drupal11
 docroot: drupal/docroot
-php_version: "8.3"
+php_version: "8.5"
 webserver_type: nginx-fpm
 xdebug_enabled: false
 additional_hostnames: []
@@ -31,10 +31,8 @@ web_environment:
     - NUXT_REQUEST_HOST=mountaincamp.ddev.site
     - DRUPAL_GRAPHQL_TOKEN=local-development
     - NUXT_MULTI_CACHE_API_AUTHORIZATION_TOKEN=local-development
-    - NUXT_ELASTICSEARCH_URL=http://elasticsearch:9200
     - SIMPLETEST_DB=mysql://db:db@db/db
-    - SIMPLETEST_BASE_URL=https://mountaincamp.ddev.site
-nodejs_version: "20"
+nodejs_version: "26"
 corepack_enable: true
 
 # Key features of DDEV's config.yaml:

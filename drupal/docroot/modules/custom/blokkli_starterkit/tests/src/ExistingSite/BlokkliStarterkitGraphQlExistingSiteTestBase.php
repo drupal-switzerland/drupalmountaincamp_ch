@@ -8,6 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Tests\blokkli_starterkit\Traits\BlokkliStarterkitGraphqlTestTrait;
+use Drupal\graphql\Entity\ServerInterface;
 use Drupal\graphql\GraphQL\Execution\ExecutionResult;
 use GraphQL\Server\OperationParams;
 
@@ -17,6 +18,11 @@ use GraphQL\Server\OperationParams;
 abstract class BlokkliStarterkitGraphQlExistingSiteTestBase extends BlokkliStarterkitExistingSiteBase {
 
   use BlokkliStarterkitGraphqlTestTrait;
+
+  /**
+   * The GraphQL server the queries run against.
+   */
+  protected ServerInterface $server;
 
   /**
    * {@inheritdoc}
@@ -82,14 +88,14 @@ abstract class BlokkliStarterkitGraphQlExistingSiteTestBase extends BlokkliStart
   /**
    * {@inheritdoc}
    */
-  protected function defaultCacheMaxAge() {
+  protected function defaultCacheMaxAge(): int {
     return Cache::PERMANENT;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function defaultCacheTags() {
+  protected function defaultCacheTags(): array {
     return Cache::mergeTags([
       'graphql_response',
     ], $this->server->getCacheTags());
@@ -98,7 +104,7 @@ abstract class BlokkliStarterkitGraphQlExistingSiteTestBase extends BlokkliStart
   /**
    * {@inheritdoc}
    */
-  protected function defaultCacheContexts() {
+  protected function defaultCacheContexts(): array {
     return [
       'user.permissions',
       'languages:language_interface',

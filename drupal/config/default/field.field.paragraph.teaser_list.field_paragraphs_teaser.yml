@@ -8,10 +8,6 @@ dependencies:
     - paragraphs.paragraphs_type.teaser_list
   module:
     - entity_reference_revisions
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.teaser_list.field_paragraphs_teaser
 field_name: field_paragraphs_teaser
 entity_type: paragraph

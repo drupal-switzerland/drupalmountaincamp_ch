@@ -10,15 +10,6 @@ if (getenv('LAGOON')) {
   // "https://drupalmountaincamp.ch,https://nginx.prod.drupalmountaincamp-ch.ch4.amazee.io".
   $routes = array_filter(array_map('trim', explode(',', getenv('LAGOON_ROUTES') ?: '')));
 
-  // CORS.
-  $settings['cors_config']['allowedOrigins'] = $routes ?: ['*'];
-  $settings['cors_config']['enabled'] = TRUE;
-  $settings['cors_config']['allowedMethods'] = ['*'];
-  $settings['cors_config']['allowedHeaders'] = ['*'];
-  $settings['cors_config']['exposedHeaders'] = FALSE;
-  $settings['cors_config']['maxAge'] = FALSE;
-  $settings['cors_config']['supportsCredentials'] = FALSE;
-
   // Multi-cache and Vuepal settings.
   // We use the first route for the frontend if not otherwise specified.
   if ($routes) {
@@ -39,4 +30,10 @@ if (getenv('LAGOON')) {
   // not exist on Lagoon - without this nothing is ever delivered. native://
   // hands the mail to PHP's configured sendmail, which the cluster relays.
   $config['symfony_mailer_lite.symfony_mailer_lite_transport.dsn']['configuration']['dsn'] = 'native://default';
+
+  // Keep exception details out of GraphQL responses, which Nuxt can pass on to
+  // visitors. The exported config is already off; this keeps it off on Lagoon
+  // even if a DDEV value is exported by mistake.
+  $config['graphql.graphql_servers.graphql']['debug_flag'] = 0;
+  $config['graphql.graphql_servers.graphql']['disable_introspection'] = TRUE;
 }

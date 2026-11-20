@@ -5,6 +5,7 @@ dependencies:
   config:
     - filter.format.restricted_html
   module:
+    - blokkli_starterkit
     - filter
     - media
     - system
@@ -18,3 +19,4 @@ permissions:
   - 'access content'
   - 'use text format restricted_html'
   - 'view media'
+  - 'view rokka metadata entities'

@@ -5,17 +5,12 @@ dependencies:
   config:
     - field.storage.media.field_copyright
     - media.type.image
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: media.image.field_copyright
 field_name: field_copyright
 entity_type: media
 bundle: image
 label: Copyright
-description: ''
+description: 'Photographer or source. Shown under the image in news articles and behind a © button in page content. Not shown on news cards and teaser cards, in lists and in the page header image. Do not put it in the alternative text.'
 required: false
 translatable: true
 default_value: {  }

@@ -1,6 +1,4 @@
 <template>
-  <!-- Pages with a hero image get the landing treatment (e.g. the front
-       page, which Drupal serves via its alias after the / redirect). -->
   <NodePageLanding v-if="node?.hero" v-bind="node" />
   <NodePage v-else-if="node" v-bind="node" />
 </template>
@@ -20,18 +18,18 @@ definePageMeta({
 const nuxtRoute = useRoute()
 
 // Get the data.
-const { data: query } = await useAsyncData(nuxtRoute.path, async () => {
-  return await useGraphqlQuery('route', {
-    path: nuxtRoute.path,
-  }).then((v) => {
-    return v.data
-  })
-})
+const query = await useRouteQuery(nuxtRoute.path, () =>
+  useGraphqlQuery('route', { path: nuxtRoute.path }).then((v) => v.data),
+)
 
 // Handles redirects and metatags.
-const { entity: node } = await useDrupalRoute<NodePageFragment>(query.value ?? null)
+const { entity: node } = await useDrupalRoute<NodePageFragment>(
+  query.value ?? null,
+)
 
 setBreadcrumbLinksFromRoute(query.value ?? null)
+// NodePage renders the hero band; NodePageLanding (hero image) does not.
+setPageHasHero(!!unref(node) && !unref(node)?.hero)
 setLanguageLinksFromRoute(query.value ?? null)
 await renderPageDependencies()
 </script>

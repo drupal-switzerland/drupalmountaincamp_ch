@@ -3,6 +3,12 @@ import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import { SCREENS } from './app/tailwind/screens'
+import { heroSkyProperties } from './app/helpers/heroSky'
+import {
+  RIDGE_NARROW_HEIGHT,
+  RIDGE_SIZE,
+  RIDGE_SUMMIT_TOP,
+} from './app/helpers/ridge'
 
 const fontSize: Record<string, [string, string]> = {
   xs: ['12px', '15px'],
@@ -20,40 +26,34 @@ const fontSize: Record<string, [string, string]> = {
   '9xl': ['128px', '128px'],
 }
 
-const colors = {
-  // Brand navy (Mountain Camp 2027). Base color #0E2D40 sits at 500 because
-  // components reference primary-500 for text/headings.
+// Mountain Camp style guide. Usage rules (checked in colorContrast.test.ts):
+// sky is text only on navy or as large headings on white; ice, lilac and
+// tint are backgrounds with navy text.
+export const brand = {
+  navy: '#12285F',
+  blue: '#006AA9',
+  sky: '#009CDE',
+  ice: '#CCEDF9',
+  lilac: '#CCBAF4',
+  tint: '#F0F8FF',
+} as const
+
+export const colors = {
+  brand,
+  // Kept as a scale because components reference primary-* by role:
+  // 500 text and fills, 400 small accent text, 300 borders and decoration.
   primary: {
-    50: '#ecf5fa',
-    100: '#d4e7f2',
-    200: '#a9cfe4',
-    300: '#74aec9',
-    400: '#35708f',
-    500: '#0e2d40',
-    600: '#0c2839',
-    700: '#0a2230',
-    800: '#071a26',
-    900: '#05131c',
-    950: '#030c12',
+    50: brand.tint,
+    100: brand.ice,
+    300: brand.sky,
+    400: brand.blue,
+    500: brand.navy,
+    600: '#0E2050',
+    700: '#0B1A43',
   },
-  // Brand red-orange accent (date banners, CTAs, prominent headings).
-  accent: {
-    50: '#fdf0ee',
-    100: '#fbdcd9',
-    200: '#f6b6b0',
-    300: '#f08b81',
-    400: '#ea5f52',
-    500: '#e03628',
-    600: '#c02b1f',
-    700: '#9c2319',
-    800: '#781b13',
-    900: '#54130e',
-    950: '#380c09',
-  },
-  // Link blue from the beaker theme.
   link: {
-    DEFAULT: '#0094f0',
-    hover: '#007ecc',
+    DEFAULT: brand.blue,
+    hover: brand.navy,
   },
   gray: {
     50: '#FBFBFB',
@@ -138,11 +138,10 @@ const config: Config = {
     './app/pages/**/*.{vue,ts,js}',
     './app/layouts/**/*.{vue,ts,js}',
     './app/helpers/**/*.{vue,ts,js}',
-
-    // We also need to check the formkit config to not
-    // purge classes away that are only used there.
-    './formkit.config.ts',
   ],
+  // CKEditor marks rich text tables with class="table"; the display: table
+  // utility would disable their overflow scrolling.
+  blocklist: ['table'],
   theme: {
     screens: Object.fromEntries(
       Object.entries(SCREENS).map(([key, minWidth]) => {
@@ -166,6 +165,7 @@ const config: Config = {
       current: 'currentColor',
       transparent: 'transparent',
       body: colors.gray['900'],
+      'table-border': '#4B5262',
 
       ...colors,
     },
@@ -179,7 +179,12 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['"Source Sans 3"', ...defaultTheme.fontFamily.sans],
-        heading: ['"Zilla Slab"', ...defaultTheme.fontFamily.serif],
+        heading: [
+          '"ZT Gatha"',
+          '"ZT Gatha Fallback Arial"',
+          '"ZT Gatha Fallback Roboto"',
+          ...defaultTheme.fontFamily.sans,
+        ],
       },
       transitionDuration: {
         250: '250ms',
@@ -198,9 +203,29 @@ const config: Config = {
       addVariant('not-last', '&:not(:last-child)')
       addVariant('not-first', '&:not(:first-child)')
     }),
+    /**
+     * The heroes' sky, generated from one curve (helpers/heroSky) into the
+     * stylesheet.
+     */
+    plugin(({ addBase, addComponents }) => {
+      // The ridge's height, shared by BrandRidge and the homepage hero's sky.
+      addBase({
+        ':root': {
+          '--ridge-height-narrow': RIDGE_NARROW_HEIGHT,
+          '--ridge-height-wide': `${(RIDGE_SIZE.height / RIDGE_SIZE.width) * 100}vw`,
+          // How far below the wide ridge's top edge its tall peak begins.
+          '--ridge-summit-wide': `${(RIDGE_SUMMIT_TOP / RIDGE_SIZE.width) * 100}vw`,
+        },
+      })
+      addComponents(heroSkyProperties({ from: brand.blue, mid: brand.sky }))
+    }),
   ],
   corePlugins: {
     textOpacity: false,
+    // Our own .container (assets/css/components/container.css) is fluid up
+    // to xl. Tailwind's adds a max-width that jumps at every breakpoint, which
+    // left the content narrower than the page between breakpoints.
+    container: false,
   },
 }
 

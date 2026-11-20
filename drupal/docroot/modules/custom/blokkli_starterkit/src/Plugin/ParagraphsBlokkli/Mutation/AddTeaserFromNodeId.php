@@ -4,37 +4,46 @@ declare(strict_types=1);
 
 namespace Drupal\blokkli_starterkit\Plugin\ParagraphsBlokkli\Mutation;
 
+use Drupal\Core\Plugin\Context\ContextDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\paragraphs_blokkli\Attribute\ParagraphMutation;
+use Drupal\paragraphs_blokkli\Exception\MutationAccessException;
+use Drupal\paragraphs_blokkli\Exception\MutationMissingEntityException;
 use Drupal\paragraphs_blokkli\ParagraphMutationContextInterface;
 use Drupal\paragraphs_blokkli\ParagraphMutationPluginBase;
 use Drupal\paragraphs_blokkli\ParagraphProxy;
 
 /**
  * Adds a new teaser paragraph from a node ID.
- *
- * @ParagraphMutation(
- *   id = "add_teaser_from_node_id",
- *   label = @Translation("Add teaser paragraph from a node ID."),
- *   description = @Translation("Adds a new paragraph of type teaser for a node ID."),
- *   arguments = {
- *     "nid" = @ContextDefinition("string",
- *       label = @Translation("The node ID."),
- *     ),
- *     "hostType" = @ContextDefinition("string",
- *       label = @Translation("The entity type of the target host.")
- *     ),
- *     "hostUuid" = @ContextDefinition("string",
- *       label = @Translation("The UUID of the target host.")
- *     ),
- *     "hostFieldName" = @ContextDefinition("string",
- *       label = @Translation("The field name of the target host.")
- *     ),
- *     "afterUuid" = @ContextDefinition("string",
- *       label = @Translation("The UUID of the paragraph after which to add this one."),
- *       required = FALSE,
- *     ),
- *   }
- * )
  */
+#[ParagraphMutation(
+  id: 'add_teaser_from_node_id',
+  label: new TranslatableMarkup('Add teaser paragraph from a node ID.'),
+  description: new TranslatableMarkup('Adds a new paragraph of type teaser for a node ID.'),
+  arguments: [
+    'nid' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The node ID.'),
+    ),
+    'hostType' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The entity type of the target host.'),
+    ),
+    'hostUuid' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The UUID of the target host.'),
+    ),
+    'hostFieldName' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The field name of the target host.'),
+    ),
+    'afterUuid' => new ContextDefinition(
+      data_type: 'string',
+      label: new TranslatableMarkup('The UUID of the paragraph after which to add this one.'),
+      required: FALSE,
+    ),
+  ],
+)]
 class AddTeaserFromNodeId extends ParagraphMutationPluginBase {
 
   /**
@@ -51,7 +60,8 @@ class AddTeaserFromNodeId extends ParagraphMutationPluginBase {
    * @param string $hostFieldName
    *   The name of the host paragraph field where the paragraph will be added.
    * @param string|null $afterUuid
-   *   The UUID of the paragraph after which the new paragraph will be added. Can be null for adding at the end.
+   *   The UUID of the paragraph after which the new paragraph will be added.
+   *   Can be null for adding at the start.
    */
   public function execute(
     ParagraphMutationContextInterface $context,
@@ -61,6 +71,16 @@ class AddTeaserFromNodeId extends ParagraphMutationPluginBase {
     string $hostFieldName,
     ?string $afterUuid,
   ): void {
+    // Loaded without an access check, so that the mutation replays for every
+    // user; view access is checked once, when the editor adds the teaser.
+    $node = $this->entityTypeManager->getStorage('node')->load($nid);
+    if (!$node) {
+      throw new MutationMissingEntityException('node', $nid);
+    }
+    if ($this->isFirstRun() && !$node->access('view')) {
+      throw new MutationAccessException('Access denied: cannot view the node.');
+    }
+
     $paragraph = $this->createNewParagraph([
       'type' => 'teaser',
       'uuid' => $this->getUuidForNewEntity(),

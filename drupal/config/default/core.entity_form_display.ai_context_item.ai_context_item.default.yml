@@ -97,8 +97,10 @@ content:
     third_party_settings: {  }
 hidden:
   priority: true
+  publish_on: true
   publish_state: true
   publish_status: true
   scope: true
   status: true
+  unpublish_on: true
   unpublish_state: true

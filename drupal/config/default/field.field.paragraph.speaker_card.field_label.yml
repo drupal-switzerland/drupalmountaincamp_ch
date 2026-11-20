@@ -1,0 +1,19 @@
+uuid: 8fdf0ee2-cd75-4e0b-905e-ec5eda3246c9
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_label
+    - paragraphs.paragraphs_type.speaker_card
+id: paragraph.speaker_card.field_label
+field_name: field_label
+entity_type: paragraph
+bundle: speaker_card
+label: Format
+description: 'Shown under the speaker name, for example Keynote or Fireside Chat.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

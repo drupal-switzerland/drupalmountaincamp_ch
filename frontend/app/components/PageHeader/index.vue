@@ -1,57 +1,64 @@
 <template>
   <header
     ref="container"
-    class="top-0 z-10 border-b-2 border-b-primary-500 bg-white text-primary-500 transition-all duration-250 ease-in-out md:h-20"
+    class="on-dark top-0 z-10 border-b-2 bg-primary-500 text-white transition-all duration-250 ease-in-out md:h-[var(--page-header-height)]"
     :class="{
+      // Scrolled, the edge keeps the header apart from navy sections below it.
+      'border-b-primary-300': isScrolled,
+      'border-b-primary-500': !isScrolled,
       '-translate-y-10 md:translate-y-[-50px]':
         isHeaderShiftedUp && !isMenuOpen,
-      'h-12 md:max-h-screen': !isMenuOpen,
+      'h-[var(--page-header-height)] md:max-h-screen': !isMenuOpen,
       'h-screen overflow-y-auto': isMenuOpen,
       'fixed w-full': isGlobalSticky,
       sticky: !isGlobalSticky,
     }"
   >
-    <div class="page-header-grid container mx-auto grid">
-      <div class="grid-area-logo h-7 md:h-20">
+    <div class="page-header-grid container mx-auto grid max-w-none">
+      <div class="grid-area-logo h-14 md:h-20">
         <div
-          class="flex h-full items-center pr-1 pt-5 transition-all duration-250 ease-in-out md:pt-0"
+          class="flex h-full items-center pr-1 transition-all duration-250 ease-in-out"
           :class="{
             'sticky top-0': isGlobalSticky,
           }"
         >
-          <nuxt-link
-            :to="{ name: 'home' }"
-            :class="{
-              hidden: isMenuOpen,
-            }"
-            :aria-label="$texts('home', 'Home')"
-            class="flex items-center gap-2"
-          >
+          <nuxt-link :to="{ name: 'home' }" class="page-header-logo flex">
             <img
-              src="/images/icon-mountain.png"
-              alt="Mountain Camp logo"
-              class="size-8 md:size-10"
+              src="/images/logo-mountain-camp-white.webp"
+              alt="Mountain Camp 2027"
+              width="417"
+              height="168"
+              class="h-9 w-auto md:h-14"
             />
-            <span
-              class="font-heading text-lg font-bold uppercase leading-none tracking-wide text-primary-500 md:text-xl"
-            >
-              Mountain Camp 2027
-            </span>
           </nuxt-link>
-          <h2 class="sr-only">Mountain Camp 2027 Logo</h2>
         </div>
       </div>
       <div
-        class="grid-area-hamburger flex items-center justify-between px-4 pt-2 transition-all duration-250 ease-in-out md:px-0 md:pt-0 md:text-lg"
-        @click.prevent="toggleMenu"
+        class="grid-area-hamburger flex items-center justify-between pl-2 transition-all duration-250 ease-in-out md:px-0 md:text-lg"
       >
-        <button class="flex items-center gap-3 leading-none md:hidden">
+        <TicketsButton
+          v-if="!isMenuOpen"
+          v-slot="{ label }"
+          class="button is-on-navy mr-1 px-4 py-2 text-sm md:hidden"
+        >
+          {{ label }}
+        </TicketsButton>
+        <button
+          ref="menuToggle"
+          type="button"
+          class="flex size-11 items-center justify-center gap-3 leading-none [--focus-ring-offset:calc(var(--focus-ring-width)_*_-1)] md:hidden"
+          :aria-label="$texts('menu', 'Menu')"
+          :aria-expanded="isMenuOpen"
+          aria-controls="global-menu"
+          @click.prevent="toggleMenu"
+        >
           <PageHeaderMenuIcon :is-in-closable-state="isMenuOpen" />
         </button>
       </div>
 
       <PageHeaderGlobalMenu
         v-show="isMenuOpen"
+        id="global-menu"
         ref="globalMenu"
         class="grid-area-global md:!block"
       />
@@ -60,13 +67,26 @@
 </template>
 
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
 import { checkIfRefIsNotNull } from '~/helpers/checkIfRefIsNotNull'
 
 const route = useRoute()
+const menuToggle = ref<HTMLButtonElement | null>(null)
 const isHeaderShiftedUp = ref(false)
+const isScrolled = ref(false)
+const updateIsScrolled = () => {
+  isScrolled.value = window.scrollY > 0
+}
+useEventListener(
+  () => (import.meta.client ? window : null),
+  'scroll',
+  updateIsScrolled,
+  { passive: true },
+)
+onMounted(updateIsScrolled)
 const container = ref<HTMLElement | null>(null)
 const isGlobalSticky = ref(false)
-const isMenuOpen = ref(false)
+const isMenuOpen = useMainMenuOpen()
 const { $texts } = useEasyTexts()
 
 let timeout: number | null = null
@@ -108,6 +128,32 @@ function closeMenu() {
   }, 250)
 }
 
+function closeMenuAndFocusToggle() {
+  if (!isMenuOpen.value) {
+    return
+  }
+  closeMenu()
+  menuToggle.value?.focus()
+}
+
+// On window: with the page behind the menu inert, focus can leave the header
+// for the browser's own controls. An open phone submenu takes Escape first.
+const phoneSubmenuOpen = usePhoneSubmenuOpen()
+useEventListener(
+  () => (isMenuOpen.value ? window : null),
+  'keydown',
+  (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && phoneSubmenuOpen.value === null) {
+      closeMenuAndFocusToggle()
+    }
+  },
+)
+
+// After the DOM update, so a submenu that asked while closing is closed.
+watch(useMainMenuToggleFocusRequests(), () => menuToggle.value?.focus(), {
+  flush: 'post',
+})
+
 function openMenu() {
   isMenuOpen.value = true
   isGlobalSticky.value = true
@@ -118,14 +164,13 @@ function openMenu() {
 <style lang="postcss">
 .page-header-grid {
   grid-template:
-    'logo hamburger' theme(space.10)
+    'logo hamburger' theme(space.14)
     'global global' 1fr
-    'search search' auto
     'language language' auto
     / 1fr auto;
 
   @screen md {
-    grid-template: 'logo global search language' auto / auto 1fr auto auto;
+    grid-template: 'logo global language' auto / auto 1fr auto;
   }
 }
 
@@ -139,10 +184,6 @@ function openMenu() {
 
 .grid-area-global {
   grid-area: global;
-}
-
-.grid-area-search {
-  grid-area: search;
 }
 
 .grid-area-language {

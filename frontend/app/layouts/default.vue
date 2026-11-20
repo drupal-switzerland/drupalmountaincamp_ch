@@ -1,38 +1,39 @@
 <template>
   <div>
-    <PageHeader
-      @menu:open="menuOpen"
-      @menu:close:start="menuCloseStart"
-      @menu:close:finished="menuCloseFinish"
-    />
-
-    <div
-      :class="{
-        'pt-[100px]': (isMenuOpen || !hasMenuFinishedClosing) && isLessThanLg,
-      }"
+    <!-- Hidden while the phone menu is open: main is inert then. -->
+    <a
+      v-if="!isMainMenuOpen"
+      href="#main-content"
+      class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-white focus:px-6 focus:py-3 focus:font-bold focus:text-primary-500 focus:shadow-lg"
     >
-      <NuxtPageDependency>
-        <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
-      </NuxtPageDependency>
+      {{ $texts('layout.skipToContent', 'Skip to content') }}
+    </a>
+    <!-- The homepage hero bar shows the same dates and venue. -->
+    <PageHeaderEventStrip v-if="route.name !== 'home'" />
+    <PageHeader />
 
-      <div class="page-content">
-        <ClientOnly>
-          <DrupalMessages v-if="!isEditing" />
-        </ClientOnly>
+    <div :inert="isMainMenuOpen || undefined">
+      <PageDependency>
+        <Breadcrumb v-if="showBreadcrumb" :links="breadcrumb" />
+      </PageDependency>
+
+      <!-- tabindex lets the skip link move focus here, not only scroll. -->
+      <main id="main-content" tabindex="-1" class="page-content outline-none">
+        <DrupalMessages v-if="!isEditing" />
 
         <slot />
-      </div>
+      </main>
     </div>
-    <PageFooter />
+    <PageFooter :inert="isMainMenuOpen || undefined" />
   </div>
 </template>
 
 <script setup lang="ts">
 const route = useRoute()
+const { $texts } = useEasyTexts()
 const drupalUser = useDrupalUser()
 const language = useCurrentLanguage()
-const breadcrumb = useBreadcrumbLinks()
-const { isLessThanLg } = useViewport()
+const breadcrumb = useDisplayedBreadcrumbLinks()
 
 const isEditing = computed(
   () =>
@@ -40,33 +41,19 @@ const isEditing = computed(
     drupalUser.value.accessToolbar,
 )
 
-const showBreadcrumb = computed(() => !route.meta.hideBreadcrumb)
+const pageHasHero = useDisplayedPageHasHero()
+const isMainMenuOpen = useMainMenuOpen()
+const showBreadcrumb = computed(
+  () => !route.meta.hideBreadcrumb && !pageHasHero.value,
+)
 
+// The open phone menu covers the page, which is inert behind it. Without the
+// lock a wheel or swipe over the menu scrolls the page away from where the
+// reader was.
 useHead({
   htmlAttrs: {
     lang: language.value,
+    class: computed(() => (isMainMenuOpen.value ? 'overflow-hidden' : '')),
   },
 })
-
-const isMenuOpen = ref(false)
-const hasMenuFinishedClosing = ref(true)
-
-function menuOpen() {
-  window.document.body.classList.add('overflow-y-hidden')
-  isMenuOpen.value = true
-}
-
-function menuCloseStart() {
-  if (isLessThanLg) {
-    isMenuOpen.value = false
-    hasMenuFinishedClosing.value = false
-  }
-}
-
-function menuCloseFinish() {
-  if (isLessThanLg) {
-    window.document.body.classList.remove('overflow-y-hidden')
-    hasMenuFinishedClosing.value = true
-  }
-}
 </script>

@@ -4,4 +4,7 @@ fragment paragraphIconTextItem on ParagraphIconTextItem {
   icon: fieldIcon {
     ...mediaIcon
   }
+  image: fieldImage {
+    ...mediaImage
+  }
 }

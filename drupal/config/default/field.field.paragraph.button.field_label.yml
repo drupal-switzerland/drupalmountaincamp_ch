@@ -5,11 +5,6 @@ dependencies:
   config:
     - field.storage.paragraph.field_label
     - paragraphs.paragraphs_type.button
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.button.field_label
 field_name: field_label
 entity_type: paragraph

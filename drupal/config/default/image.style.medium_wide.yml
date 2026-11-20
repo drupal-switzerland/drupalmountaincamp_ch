@@ -1,0 +1,21 @@
+uuid: fbcceff6-9e39-4fd0-8400-636d568e1362
+langcode: de
+status: true
+dependencies: {  }
+name: medium_wide
+label: 'Mittelbreit (768)'
+effects:
+  762492e2-9978-41c6-b2c1-2e0031f007b6:
+    uuid: 762492e2-9978-41c6-b2c1-2e0031f007b6
+    id: image_scale
+    weight: 1
+    data:
+      width: 768
+      height: null
+      upscale: false
+  10b18295-1df8-48ac-bbca-79530e4eb67c:
+    uuid: 10b18295-1df8-48ac-bbca-79530e4eb67c
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

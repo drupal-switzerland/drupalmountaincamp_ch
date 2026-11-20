@@ -17,6 +17,7 @@
 
 <script lang="ts" setup>
 import type { ParagraphImageFragment } from '#graphql-operations'
+import { SCREENS } from '~/tailwind/screens'
 
 defineOptions({
   name: 'ParagraphImage',
@@ -34,7 +35,6 @@ const { parentType, options } = defineBlokkli({
       const img = el.querySelector('img')
       return img?.alt || img?.title
     },
-    getDraggableElement: (el) => el.querySelector('figure'),
     determineVisibleOptions: (ctx) => {
       if (!ctx.parentType) {
         return ['imageFormat', 'spacing']
@@ -46,27 +46,15 @@ const { parentType, options } = defineBlokkli({
 
 const bigGrid = defineImageStyle({
   type: 'sizes',
-  aspectRatio: 16 / 9,
   sizes: {
     xs: 770,
     sm: 984,
-    md: 1380,
-    lg: 1380,
+    md: SCREENS.xl,
+    lg: SCREENS.xl,
   },
 })
 
 const textGrid = defineImageStyle({
-  type: 'sizes',
-  aspectRatio: 16 / 9,
-  sizes: {
-    xs: 728,
-    sm: 1000,
-    md: 912,
-    lg: 912,
-  },
-})
-
-const textGridOriginal = defineImageStyle({
   type: 'sizes',
   sizes: {
     xs: 728,
@@ -78,7 +66,6 @@ const textGridOriginal = defineImageStyle({
 
 const smallGrid = defineImageStyle({
   type: 'sizes',
-  aspectRatio: 16 / 9,
   sizes: {
     xs: 400,
     sm: 767,
@@ -87,7 +74,6 @@ const smallGrid = defineImageStyle({
 
 const fullWidth = defineImageStyle({
   type: 'sizes',
-  aspectRatio: 16 / 9,
   sizes: {
     xs: 728,
     sm: 984,
@@ -102,12 +88,13 @@ const fullWidth = defineImageStyle({
 const imageStyle = computed(() => {
   if (options.value.imageFormat === 'big') {
     return bigGrid
-  } else if (options.value.imageFormat === 'text') {
+  } else if (
+    options.value.imageFormat === 'text' ||
+    options.value.imageFormat === 'full'
+  ) {
     return textGrid
   } else if (options.value.imageFormat === 'small') {
     return smallGrid
-  } else if (options.value.imageFormat === 'full') {
-    return textGridOriginal
   }
   return fullWidth
 })

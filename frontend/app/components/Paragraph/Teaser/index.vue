@@ -1,7 +1,12 @@
 <template>
   <div
-    class="flex flex-col border transition-[border-color] duration-250 ease-in-out"
+    v-if="(url && title) || isEditing"
+    class="paragraph-teaser flex flex-col"
+    :class="{ border: !(url && title) }"
   >
+    <!-- Nothing to link to (an unpublished or deleted node): no empty box.
+         The card draws its own frame; while editing without one the box
+         keeps a border. -->
     <TeaserDefault
       v-if="url && title"
       :to="url"
@@ -28,18 +33,16 @@ const props = defineProps<{
   node?: ParagraphTeaserFragment['node']
 }>()
 
+const isEditing = import.meta.blokkliEditing
+
 defineBlokkli({
   bundle: 'teaser',
   editor: {
-    editTitle: (el) => el.querySelector('h3')?.innerText,
+    editTitle: (el) => el.querySelector<HTMLElement>('h2, h3')?.innerText,
     mockProps: (text) => {
       return {
-        overrideTitle: text || 'Teaser Titel',
-        link: {
-          uri: {
-            path: '/',
-          },
-        },
+        title: text || 'Teaser title',
+        node: { url: { path: '/' } },
       }
     },
   },

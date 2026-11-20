@@ -1,5 +1,39 @@
 <template>
-  <div class="sm:grid sm:grid-cols-12">
+  <div v-if="isTopLevel" class="container" :class="spacingClassList">
+    <div class="grid gap-8 md:grid-cols-2 md:items-start lg:gap-16">
+      <div class="min-w-0 text-lg lg:text-xl">
+        <h2
+          v-if="hasText(title) || isEditing"
+          v-blokkli-editable:field_title
+          class="mb-4 text-3xl lg:text-4xl"
+        >
+          {{ title }}
+        </h2>
+        <div
+          v-if="text || isEditing"
+          ref="content"
+          v-blokkli-editable:field_text
+          class="ck-content hyphens-auto lg:hyphens-none"
+          v-html="text"
+        />
+      </div>
+      <div
+        v-blokkli-droppable:field_image
+        class="min-w-0"
+        :class="{ 'md:order-first': options.imagePosition === 'left' }"
+      >
+        <MediaImage
+          v-if="image"
+          v-bind="image"
+          :image-style="pageImageStyle"
+          :loading="loading"
+          :preload="preload"
+          img-class="rounded-[18px]"
+        />
+      </div>
+    </div>
+  </div>
+  <div v-else class="sm:grid sm:grid-cols-12">
     <div class="col-span-7">
       <div class="swiper-carousel-left relative z-50 origin-bottom-left">
         <ImageItem
@@ -11,7 +45,7 @@
         />
         <div
           v-if="copyright"
-          class="absolute left-0 top-full w-full pt-1 text-right text-xs text-gray-500"
+          class="absolute left-0 top-full w-full pt-1 text-right text-xs text-gray-600"
         >
           &copy; {{ copyright }}
         </div>
@@ -20,11 +54,19 @@
     <div
       class="2xl:pl-10 col-start-8 col-end-[-1] mt-7 sm:mt-0 sm:pl-6 lg:mt-6 xl:pl-9"
     >
-      <div class="swiper-carousel-content">
-        <h2 class="mb-4 text-2xl md:text-4xl">
+      <div class="swiper-carousel-content text-lg lg:text-xl">
+        <component
+          :is="slideHeading"
+          v-if="hasText(title)"
+          class="mb-4 text-2xl font-bold md:text-4xl"
+        >
           {{ title }}
-        </h2>
-        <div class="ck-content hyphens-auto" v-html="text" />
+        </component>
+        <div
+          ref="content"
+          class="ck-content hyphens-auto lg:hyphens-none"
+          v-html="text"
+        />
       </div>
     </div>
   </div>
@@ -32,11 +74,16 @@
 
 <script lang="ts" setup>
 import type { ParagraphTextImageFragment } from '#graphql-operations'
+import { CAROUSEL_SLIDE_HEADING } from '~/composables/carouselSlideHeading'
+import { FIRST_PARAGRAPH_IN_FIRST_VIEWPORT } from '~/composables/firstViewport'
+import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
   title?: string
   text?: string
-  image: ParagraphTextImageFragment['image']
+  image?: ParagraphTextImageFragment['image']
+  // Set by the carousel on the one slide it starts on.
+  isInViewAtLoad?: boolean
 }>()
 
 const imageStyle = defineImageStyle({
@@ -49,13 +96,78 @@ const imageStyle = defineImageStyle({
   },
 })
 
-const { index, parentType } = defineBlokkli({
-  bundle: 'text_image',
+// On a page: text beside the image, image left or right by option. Inside a
+// carousel the paragraph keeps its slide layout.
+const pageImageStyle = defineImageStyle({
+  type: 'sizes',
+  aspectRatio: 3 / 2,
+  sizes: {
+    xs: 640,
+    sm: 768,
+    md: 680,
+  },
 })
 
-const preload = computed(() => index.value === 0 && !parentType.value)
+const { index, parentType, options } = defineBlokkli({
+  bundle: 'text_image',
+  globalOptions: ['spacing'],
+  options: {
+    imagePosition: {
+      type: 'radios',
+      label: 'Image position',
+      default: 'right',
+      options: {
+        left: 'Image left',
+        right: 'Image right',
+      },
+    },
+  },
+  editor: {
+    // Position and spacing only apply on a page, not inside a carousel.
+    determineVisibleOptions: (ctx) =>
+      ctx.parentType ? [] : ['imagePosition', 'spacing'],
+  },
+})
 
-// If the index is 0, the image is most probably above the fold
+const isEditing = import.meta.blokkliEditing
+const isTopLevel = computed(() => !parentType.value)
+// Under the carousel's own title the slides are one level below it.
+const slideHeading = inject(
+  CAROUSEL_SLIDE_HEADING,
+  computed(() => 'h2' as const),
+)
+
+const spacingClassList = computed(() => {
+  if (options.value.spacing === 'small') {
+    return ['py-6', 'lg:py-10']
+  }
+  if (options.value.spacing === 'large') {
+    return ['py-12', 'lg:py-20']
+  }
+  return []
+})
+
+const content = ref<HTMLElement | null>(null)
+
+useScrollableTables(content, {
+  breakout: false,
+  enabled: !import.meta.blokkliEditing,
+  content: () => props.text,
+})
+
+// The first paragraph's image is in the first viewport unless the node renders
+// a hero or top image above it. In a carousel the carousel decides: its other
+// slides and their copies are off screen.
+const firstParagraphInFirstViewport = inject(
+  FIRST_PARAGRAPH_IN_FIRST_VIEWPORT,
+  true,
+)
+const preload = computed(() =>
+  parentType.value
+    ? !!props.isInViewAtLoad
+    : index.value === 0 && firstParagraphInFirstViewport,
+)
+
 const loading = computed(() => (preload.value ? 'eager' : 'lazy'))
 
 const copyright = computed(() => {

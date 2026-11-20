@@ -1,4 +1,4 @@
 User-agent: *
-Crawl-delay: 10
+Disallow:
 
 Sitemap: https://drupalmountaincamp.ch/sitemap.xml

@@ -5,4 +5,4 @@ dist
 node_modules
 schema.graphql
 modules/vuepal3
-queries/translations.graphql
+app/queries/translations.graphql

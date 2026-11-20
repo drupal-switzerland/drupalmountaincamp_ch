@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_image
+    - media.type.icon
     - media.type.image
     - node.type.sponsor
 id: node.sponsor.field_image
@@ -11,7 +12,7 @@ field_name: field_image
 entity_type: node
 bundle: sponsor
 label: Logo
-description: ''
+description: 'Best as SVG: choose the Icon tab and upload the SVG. Use the Image tab only when no SVG exists (PNG, JPG, WebP).'
 required: false
 translatable: false
 default_value: {  }
@@ -20,6 +21,7 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
+      icon: icon
       image: image
     sort:
       field: _none

@@ -7,10 +7,6 @@ dependencies:
     - node.type.page
   module:
     - metatag
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: node.page.field_metatags
 field_name: field_metatags
 entity_type: node

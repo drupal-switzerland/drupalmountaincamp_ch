@@ -1,28 +1,40 @@
 import { defineVitestConfig } from '@nuxt/test-utils/config'
-import path from 'path'
+
+// Each test file starts its own Nuxt app in a beforeAll hook. Measured on 32
+// cores: 2.2s at load 15, 4.5s at load 40, 7.9s at load 50, and past vitest's
+// 10s default from load 55, which fails the whole file with its tests skipped.
+const HOOK_TIMEOUT_MS = 60_000
+
+// About three points under the measured 86.4 / 74.5 / 84.8 / 86.3, so an
+// unrelated change does not fail the run. Raise them when coverage rises.
+const COVERAGE_THRESHOLDS = {
+  lines: 83,
+  branches: 71,
+  functions: 81,
+  statements: 83,
+}
 
 export default defineVitestConfig({
   test: {
+    hookTimeout: HOOK_TIMEOUT_MS,
     globals: true,
     environment: 'nuxt',
-    alias: {
-      '~': path.resolve(__dirname, './'),
+    environmentOptions: {
+      nuxt: {
+        overrides: {
+          modules: ['./app/__tests__/support/keepCdnHeadersCalls'],
+        },
+      },
     },
+    setupFiles: ['./vitest.setup.ts'],
     include: ['**/__tests__/*.*'],
     coverage: {
       all: true,
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      include: [
-        'app/**/*.*',
-        'components/**/*.*',
-        'composables/**/*.*',
-        'config/**/*.*',
-        'layouts/**/*.*',
-        'middleware/**/*.*',
-        'plugins/**/*.*',
-        '/**/*.*',
-      ],
+      reporter: ['text', 'json', 'json-summary', 'html'],
+      include: ['app/**/*.{ts,vue}', 'server/**/*.ts', 'config/**/*.ts'],
+      exclude: ['**/__tests__/**', '**/*.d.ts'],
+      thresholds: COVERAGE_THRESHOLDS,
     },
   },
 })

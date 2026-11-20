@@ -37,22 +37,17 @@ parameters:
     # @default none
     # cookie_domain: '.example.com'
     #
-    # Set the session ID string length. The length can be between 22 to 256. The
-    # PHP recommended value is 48. See
-    # https://www.php.net/manual/session.security.ini.php for more information.
-    # This value should be kept in sync with
-    # \Drupal\Core\Session\SessionConfiguration::__construct()
-    # @default 48
-    sid_length: 48
-    #
-    # Set the number of bits in encoded session ID character. The possible
-    # values are '4' (0-9, a-f), '5' (0-9, a-v), and '6' (0-9, a-z, A-Z, "-",
-    # ","). The PHP recommended value is 6. See
-    # https://www.php.net/manual/session.security.ini.php for more information.
-    # This value should be kept in sync with
-    # \Drupal\Core\Session\SessionConfiguration::__construct()
-    # @default 6
-    sid_bits_per_character: 6
+    # Set the SameSite cookie attribute: 'None', 'Lax', or 'Strict'. If set,
+    # this value will override the server value. See
+    # https://www.php.net/manual/en/session.security.ini.php for more
+    # information.
+    # @default no value
+    cookie_samesite: Lax
+    # By default, Drupal generates a session cookie name based on the full
+    # domain name. Set the name_suffix to a short random string to ensure this
+    # session cookie name is unique on different installations on the same
+    # domain and path (for example, when migrating from Drupal 7).
+    name_suffix: ''
   twig.config:
     # Twig debugging:
     #

@@ -18,14 +18,12 @@ dependencies:
     - role_delegation
     - simple_sitemap
     - system
-    - tmgmt
     - translatable_config_pages
 id: administrator_client
 label: 'Administrator (Client)'
 weight: 4
 is_admin: null
 permissions:
-  - 'accept translation jobs'
   - 'access administration pages'
   - 'access comments'
   - 'admin queue_ui'
@@ -36,9 +34,7 @@ permissions:
   - 'assign content_editor role'
   - 'bypass graphql access'
   - 'create paragraphs blokkli edit state'
-  - 'create translation jobs'
   - 'delete paragraphs blokkli edit state'
-  - 'delete translation jobs'
   - 'edit behavior plugin settings'
   - 'edit own comments'
   - 'edit paragraphs blokkli edit state'
@@ -48,7 +44,6 @@ permissions:
   - 'masquerade as content_editor'
   - 'post comments'
   - 'skip comment approval'
-  - 'submit translation jobs'
   - 'take ownership of paragraphs blokkli edit state'
   - 'translate interface'
   - 'use graphql graphql explorer'

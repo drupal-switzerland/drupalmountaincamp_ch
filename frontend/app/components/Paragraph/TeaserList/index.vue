@@ -1,6 +1,6 @@
 <template>
   <div class="my-7 overflow-hidden md:mb-12 lg:mb-20">
-    <Container class="mx-auto">
+    <Container v-if="hasText(title)" class="mx-auto">
       <h2 class="col-span-12 mb-10 text-3xl md:text-4xl lg:mb-14">
         {{ title }}
       </h2>
@@ -10,9 +10,12 @@
       class="paragraph-teaser-list container relative mx-auto"
       :class="{
         'is-slider-mobile': options.sliderStyle === 'sliderMobile',
-        'is-slider-desktop': options.teaserStyle === 'sliderDesktop',
+        'is-slider-desktop': isSliderDesktop,
+        // Until Swiper runs, and without it, the row scrolls natively.
+        'is-swiper-running': isSliderActive,
         'is-staggered': options.teaserStyle === 'staggered',
       }"
+      @focusin="showFocusedTeaser"
     >
       <BlokkliField
         v-if="options.teaserStyle === 'sliderDesktop'"
@@ -24,6 +27,7 @@
       >
         <div
           v-if="isSliderDesktop"
+          ref="list"
           class="paragraph-teaser-list-list swiper-wrapper"
         >
           <div v-for="item in items" :key="item.uuid" class="swiper-slide">
@@ -40,45 +44,71 @@
       />
     </div>
 
-    <nav v-if="isSliderDesktop" class="container mx-auto mt-6 hidden md:block">
+    <!-- Only with a running slider: without one there is nothing to move. -->
+    <div v-if="isSliderActive" class="container mx-auto mt-6">
       <div class="flex justify-end">
-        <button :aria-label="$texts('slides.prev', 'Vorherige')" @click="prev">
+        <button
+          type="button"
+          :aria-label="$texts('slides.prev', 'Previous')"
+          @click="prev"
+        >
           <SpriteSymbol name="arrow-left" class="size-7 text-primary-500" />
         </button>
 
-        <button :aria-label="$texts('slides.next', 'Nächste')" @click="next">
+        <button
+          type="button"
+          :aria-label="$texts('slides.next', 'Next')"
+          @click="next"
+        >
           <SpriteSymbol name="arrow-right" class="size-7 text-primary-500" />
         </button>
       </div>
-    </nav>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { ParagraphTeaserListFragment } from '#graphql-operations'
-import Swiper from 'swiper'
+import type Swiper from 'swiper'
+// Slide layout styles stay static so slides don't shift while the JS loads.
 import 'swiper/css'
+import { TEASER_HEADING } from '~/composables/teaserHeading'
+import { loadSwiper } from '~/helpers/swiper'
+import { hasText } from '~/helpers/text'
+import { SCREENS } from '~/tailwind/screens'
 
-defineProps<{
+const SLIDES_PER_VIEW = 2
+const SLIDES_PER_VIEW_MD = 3
+
+const props = defineProps<{
   title?: string
   paragraphs?: ParagraphTeaserListFragment['paragraphs']
 }>()
 
-const { options, isEditing } = defineBlokkli({
+const isEditing = import.meta.blokkliEditing
+
+// Teasers are one level below the list title, or take its place without one.
+provide(
+  TEASER_HEADING,
+  computed(() => (hasText(props.title) ? 'h3' : 'h2')),
+)
+const { options } = defineBlokkli({
   bundle: 'teaser_list',
   propsFieldMapping: {
+    // The title is rendered but not editable inline.
+    title: null,
     paragraphs: { type: 'field', name: 'field_paragraphs_teaser' },
   },
   options: {
     teaserStyle: {
       type: 'radios',
-      label: 'Darstellung',
+      label: 'Display',
       default: 'grid',
       displayAs: 'icons',
       options: {
-        grid: { label: 'grid', icon: 'bk_mdi_grid_view' },
+        grid: { label: 'Grid', icon: 'bk_mdi_grid_view' },
         staggered: {
-          label: 'Versetzt',
+          label: 'Staggered',
           icon: 'bk_mdi_dashboard',
         },
         sliderDesktop: {
@@ -89,11 +119,11 @@ const { options, isEditing } = defineBlokkli({
     },
     sliderStyle: {
       type: 'radios',
-      label: 'Slider Darstellung',
+      label: 'Mobile display',
       default: 'stack',
       displayAs: 'icons',
       options: {
-        stack: { label: 'Stapel', icon: 'bk_mdi_view_agenda' },
+        stack: { label: 'Stack', icon: 'bk_mdi_view_agenda' },
         sliderMobile: {
           label: 'Slider mobile',
           icon: 'bk_mdi_swipe',
@@ -102,6 +132,7 @@ const { options, isEditing } = defineBlokkli({
     },
   },
   editor: {
+    noPreview: true,
     editTitle: (el) => el.querySelector('h2')?.innerText,
     addBehaviour: 'no-form',
   },
@@ -116,27 +147,90 @@ const isSliderDesktop = computed(
 )
 
 let swiperInstance: Swiper | null = null
+const isSliderActive = ref(false)
+const list = ref<HTMLElement>()
+
+// One view's worth of teasers is shown as the grid: there is nothing to slide.
+const hasMoreThanOneView = computed(
+  () =>
+    (props.paragraphs?.length ?? 0) >
+    (isMdUpwards.value ? SLIDES_PER_VIEW_MD : SLIDES_PER_VIEW),
+)
 
 const shouldMountSwiper = computed(() => {
   return (
-    container.value && isSliderDesktop.value && isSmUpwards.value && !isEditing
+    container.value &&
+    isSliderDesktop.value &&
+    isSmUpwards.value &&
+    hasMoreThanOneView.value &&
+    !isEditing
   )
 })
 
-watch(shouldMountSwiper, function (shouldMount) {
-  if (swiperInstance) {
-    swiperInstance.destroy()
+// Swiper does not follow keyboard focus: a teaser reached by Tab is moved
+// into view, and the browser's own scrolling of the clipped container undone.
+function showFocusedTeaser(event: FocusEvent) {
+  if (!swiperInstance || !container.value) {
+    return
   }
+  const slide = (event.target as Element).closest('.swiper-slide')
+  const index = swiperInstance.slides.findIndex((s) => s === slide)
+  container.value.scrollLeft = 0
+  if (index !== -1 && !swiperInstance.visibleSlidesIndexes?.includes(index)) {
+    swiperInstance.slideTo(index)
+  }
+}
+
+function destroySwiper() {
+  swiperInstance?.destroy()
+  swiperInstance = null
+  isSliderActive.value = false
+}
+
+// Also starts the slider once the container is mounted. Across md the gap
+// changes, so the slider starts again to measure it.
+watch([shouldMountSwiper, isMdUpwards], function ([shouldMount]) {
+  destroySwiper()
   if (shouldMount) {
     initSwiper()
   }
 })
 
-function initSwiper() {
-  if (shouldMountSwiper.value && container.value) {
-    swiperInstance = new Swiper(container.value, {
-      slidesPerView: isMdUpwards.value ? 3 : 2,
+// The CSS gap of the natively scrolling row, which Swiper takes over.
+function measureGap() {
+  return list.value
+    ? parseFloat(getComputedStyle(list.value).columnGap) || 0
+    : 0
+}
+
+// Swiper's JS is only loaded when a list is actually shown as a slider.
+async function initSwiper() {
+  if (!shouldMountSwiper.value || !container.value) {
+    return
+  }
+  try {
+    const SwiperClass = await loadSwiper()
+    // The option or viewport may have changed, or the list unmounted, meanwhile.
+    if (!shouldMountSwiper.value || !container.value) {
+      return
+    }
+    destroySwiper()
+    await nextTick()
+    const spaceBetween = measureGap()
+    list.value?.scrollTo({ left: 0 })
+    swiperInstance = new SwiperClass(container.value, {
+      slidesPerView: SLIDES_PER_VIEW,
+      spaceBetween,
+      // Fills visibleSlidesIndexes, see showFocusedTeaser.
+      watchSlidesProgress: true,
+      // Keyed like useViewport, so a resize across md changes the view too.
+      breakpoints: { [SCREENS.md]: { slidesPerView: SLIDES_PER_VIEW_MD } },
     })
+    isSliderActive.value = true
+  } catch (error) {
+    // Without Swiper the row keeps scrolling natively.
+    destroySwiper()
+    console.error('The teaser slider could not be started.', error)
   }
 }
 
@@ -152,15 +246,7 @@ function next() {
   }
 }
 
-onMounted(() => {
-  initSwiper()
-})
-
-onBeforeUnmount(() => {
-  if (swiperInstance) {
-    swiperInstance.destroy()
-  }
-})
+onBeforeUnmount(destroySwiper)
 </script>
 
 <style lang="postcss">
@@ -212,6 +298,18 @@ onBeforeUnmount(() => {
     }
   }
 
+  &.is-slider-desktop:not(.is-swiper-running) {
+    .paragraph-teaser-list-list {
+      @screen sm {
+        @apply overflow-x-auto;
+        scroll-snap-type: x mandatory;
+        .swiper-slide {
+          scroll-snap-align: start;
+        }
+      }
+    }
+  }
+
   &.is-slider-desktop {
     .paragraph-teaser-list-list {
       @screen sm {
@@ -233,6 +331,14 @@ onBeforeUnmount(() => {
       @screen md {
         --slides-per-view: 3;
       }
+    }
+  }
+
+  /* Swiper sizes and spaces the slides itself (spaceBetween, inline width). */
+  &.is-slider-desktop.is-swiper-running .paragraph-teaser-list-list {
+    gap: 0;
+    .swiper-slide {
+      flex: 0 0 auto;
     }
   }
 

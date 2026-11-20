@@ -16,28 +16,28 @@ content:
   content:
     type: ai_context_markdown
     label: above
-    weight: 3
     settings: {  }
     third_party_settings: {  }
+    weight: 3
     region: content
   content_moderation_control:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   description:
     type: basic_string
     label: above
-    weight: 1
     settings: {  }
     third_party_settings: {  }
+    weight: 1
     region: content
   purpose:
     type: basic_string
     label: above
-    weight: 2
     settings: {  }
     third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   entity_items: true

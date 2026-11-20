@@ -7,6 +7,8 @@ provider_config:
   provider: ''
   model: ''
   config: {  }
+main_menu_enabled: false
+main_menu_title: Context
 show_overview_page: true
 context_prefix: 'The following site-specific context applies to this task. Use it strictly when relevant; do not override user intent.'
 selection_mode: relevant
@@ -18,4 +20,3 @@ subcontext_enabled: true
 conditional_subcontext_enabled: true
 conditional_max_parents: 3
 default_status: true
-new_revision: true

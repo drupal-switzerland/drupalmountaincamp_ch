@@ -6,11 +6,6 @@ dependencies:
     - field.storage.paragraph.field_media_image
     - media.type.image
     - paragraphs.paragraphs_type.quote
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: paragraph.quote.field_media_image
 field_name: field_media_image
 entity_type: paragraph

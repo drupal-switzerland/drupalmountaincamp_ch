@@ -12,9 +12,10 @@
           }"
         >
           <div class="basis-full sm:basis-1/4">
-            <div
+            <ImageCredit
               v-if="image"
-              class="mx-auto size-[207px] overflow-hidden sm:me-0"
+              :copyright="isCreditOnImage ? copyright : ''"
+              class="mx-auto size-[207px] overflow-hidden sm:me-0 print:h-auto print:overflow-visible"
               :class="{
                 'sm:me-0': options.alignment === 'left',
                 'sm:ms-0': options.alignment === 'right',
@@ -25,10 +26,10 @@
                 :image-style="imageStyle"
                 loading="lazy"
               />
-            </div>
+            </ImageCredit>
             <div
-              v-if="copyright"
-              class="w-full pt-2 text-right text-xs text-gray-500"
+              v-if="copyright && !isCreditOnImage"
+              class="w-full pt-2 text-right text-xs text-gray-600"
             >
               &copy; {{ copyright }}
             </div>
@@ -36,7 +37,10 @@
           <div class="col-span-4 sm:col-span-8 sm:col-start-3">
             <figure
               class="flex flex-col text-left"
-              :class="`sm:text-${options.alignment}`"
+              :class="{
+                'sm:text-left': options.alignment === 'left',
+                'sm:text-right': options.alignment === 'right',
+              }"
             >
               <blockquote>
                 <span
@@ -74,6 +78,8 @@ const props = defineProps<{
 const copyright = computed(() => {
   return props.image?.copyright ?? ''
 })
+
+const isCreditOnImage = useImageCreditOnImage()
 
 const imageStyle = defineImageStyle({
   type: 'sizes',
