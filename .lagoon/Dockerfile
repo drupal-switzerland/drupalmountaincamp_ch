@@ -58,6 +58,8 @@ ENV WEBROOT=drupal/docroot
 # Replace the stock Drupal server block with our reverse-proxy config
 # (the base image puts its server block at conf.d/app.conf)
 COPY .lagoon/nginx-lagoon.conf /etc/nginx/conf.d/app.conf
+# Static site for agenticmountaincamp.ch (own server block in nginx-lagoon.conf)
+COPY agentic /app/agentic
 
 # Stage 6: Frontend image (Nuxt SSR)
 FROM uselagoon/node-26:latest AS frontend
