@@ -51,5 +51,7 @@ environments:
               - "drupalmountaincamp.ch"
               - "www.drupalmountaincamp.ch"
               - "cfp.drupalmountaincamp.ch"
-              - "agenticmountaincamp.ch"
-              - "www.agenticmountaincamp.ch"
+              - "agenticmountaincamp.ch":
+                  insecure: Redirect
+              - "www.agenticmountaincamp.ch":
+                  insecure: Redirect
