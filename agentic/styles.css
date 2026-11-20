@@ -263,25 +263,8 @@ svg {
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--white);
-  text-decoration: none;
-}
-
-.brand img {
   block-size: 3.5rem;
   inline-size: auto;
-}
-
-.brand-tag {
-  padding: 0.25rem 0.75rem;
-  border: 2px solid var(--sky);
-  border-radius: 999px;
-  font-family: var(--heading);
-  font-size: 1rem;
-  letter-spacing: 0.05em;
 }
 
 .nav-list {
@@ -727,8 +710,7 @@ svg {
 }
 
 @media (forced-colors: active) {
-  .button,
-  .brand-tag {
+  .button {
     border-color: ButtonText;
   }
 }
