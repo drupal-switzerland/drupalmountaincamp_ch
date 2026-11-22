@@ -13,9 +13,11 @@ export type LogoBox = {
 export const LOGO_BOXES = {
   // Homepage card, 140px tall tiles in a 3-column grid.
   card: { area: 14000, maxWidth: 260, maxHeight: 100 },
-  // Sponsors page tiles: 360x140, 320x120, then large and medium.
-  huge: { area: 18000, maxWidth: 326, maxHeight: 114 },
-  xlarge: { area: 14000, maxWidth: 286, maxHeight: 94 },
+  // Sponsors page pills (3px border, 32px side and 16px top and bottom
+  // padding): 320x150, 250x116, 190x88.
+  pillPlatinum: { area: 16000, maxWidth: 250, maxHeight: 112 },
+  pillLarge: { area: 9500, maxWidth: 180, maxHeight: 78 },
+  pillSmall: { area: 5000, maxWidth: 120, maxHeight: 50 },
   // Footer tiles: 280x100, 240x88, 200x72, 160x60.
   large: { area: 11000, maxWidth: 248, maxHeight: 72 },
   medium: { area: 9000, maxWidth: 208, maxHeight: 60 },

@@ -21,8 +21,8 @@ mockNuxtImport('useAllSponsors', () => async () => ({
   ),
 }))
 
-describe('sponsor list tile sizes', () => {
-  it('shows each tier a size bigger than the footer', async () => {
+describe('sponsor list panels', () => {
+  it('shows Platinum largest, then Gold and Silver, then the rest', async () => {
     const wrapper = await mountSuspended(SponsorList, { props: { year: 2027 } })
     const widths = TIERS.map((tier) =>
       wrapper
@@ -31,11 +31,22 @@ describe('sponsor list tile sizes', () => {
         .find((c) => c.startsWith('w-[')),
     )
     expect(widths).toEqual([
-      'w-[360px]',
       'w-[320px]',
-      'w-[280px]',
-      'w-[240px]',
-      'w-[240px]',
+      'w-[250px]',
+      'w-[250px]',
+      'w-[190px]',
+      'w-[190px]',
     ])
+  })
+
+  it('fills the current Platinum panel with open spots and a CTA', async () => {
+    const wrapper = await mountSuspended(SponsorList, { props: { year: 2027 } })
+    // Two open spots next to the one Platinum sponsor, plus the CTA.
+    expect(wrapper.findAll('a[href="/sponsorship"]')).toHaveLength(3)
+  })
+
+  it('shows no open spots or CTA for another year', async () => {
+    const wrapper = await mountSuspended(SponsorList, { props: { year: 2026 } })
+    expect(wrapper.findAll('a[href="/sponsorship"]')).toHaveLength(0)
   })
 })
