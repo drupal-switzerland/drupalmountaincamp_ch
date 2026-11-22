@@ -154,12 +154,6 @@ const STANDARD_TILE = 'h-[72px] w-[200px]'
 const sponsorTiers = computed(() =>
   [
     {
-      key: 'diamond',
-      label: $texts('sponsors.diamond', 'Diamond'),
-      box: LOGO_BOXES.large,
-      tileClass: 'h-[100px] w-[280px]',
-    },
-    {
       key: 'platinum',
       label: $texts('sponsors.platinum', 'Platinum'),
       box: LOGO_BOXES.large,

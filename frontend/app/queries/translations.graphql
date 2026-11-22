@@ -52,7 +52,6 @@ fragment easyTexts on TextsLoader {
   speakerCard__external: getText(key: "external", context: "speakerCard", default: "opens an external site")
   sponsors__bronze: getText(key: "bronze", context: "sponsors", default: "Bronze")
   sponsors__cta: getText(key: "cta", context: "sponsors", default: "Become a sponsor")
-  sponsors__diamond: getText(key: "diamond", context: "sponsors", default: "Diamond")
   sponsors__gold: getText(key: "gold", context: "sponsors", default: "Gold")
   sponsors__label: getText(key: "label", context: "sponsors", default: "Sponsors 2027")
   sponsors__openSpot: getText(key: "openSpot", context: "sponsors", default: "Platinum spot available")

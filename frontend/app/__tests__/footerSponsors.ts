@@ -11,12 +11,12 @@ mockNuxtImport('useInitData', () => async () => ref({ footerMenuLinks: [] }))
 
 mockNuxtImport('useTicketsLink', () => async () => ref(null))
 
-const TIERS = ['diamond', 'platinum', 'gold', 'silver', 'bronze']
+const TIERS = ['platinum', 'gold', 'silver', 'bronze']
 
 mockNuxtImport('useCurrentSponsors', () => async () => ({
   currentByTier: ref(
     Object.fromEntries(
-      ['diamond', 'platinum', 'gold', 'silver', 'bronze'].map((tier) => [
+      ['platinum', 'gold', 'silver', 'bronze'].map((tier) => [
         tier,
         [
           {
