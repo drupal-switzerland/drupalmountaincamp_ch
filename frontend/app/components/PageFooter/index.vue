@@ -150,7 +150,7 @@ const { currentByTier } = await useCurrentSponsors()
 
 const STANDARD_TILE = 'h-[72px] w-[200px]'
 
-// Platinum, Gold and Silver as one panel; Silver tiles match the partner tiles.
+// The paid tiers as one panel; Silver and Bronze tiles match the partner tiles.
 const sponsorTiers = computed(() =>
   [
     {
@@ -168,6 +168,12 @@ const sponsorTiers = computed(() =>
     {
       key: 'silver',
       label: $texts('sponsors.silver', 'Silver'),
+      box: LOGO_BOXES.standard,
+      tileClass: STANDARD_TILE,
+    },
+    {
+      key: 'bronze',
+      label: $texts('sponsors.bronze', 'Bronze'),
       box: LOGO_BOXES.standard,
       tileClass: STANDARD_TILE,
     },
