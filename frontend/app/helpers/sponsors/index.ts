@@ -1,6 +1,13 @@
 export const SPONSOR_YEAR = 2027
 export const SPONSORSHIP_PATH = '/sponsorship'
-export const PLATINUM_SPOTS = 3
+// Spots per package on /sponsorship; Bronze has no limit.
+export const TIER_SPOTS: Record<string, number> = {
+  platinum: 3,
+  gold: 5,
+  silver: 8,
+  bronze: Infinity,
+}
+export const PLATINUM_SPOTS = TIER_SPOTS.platinum!
 
 export type LogoBox = {
   area: number

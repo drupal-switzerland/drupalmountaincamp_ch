@@ -39,10 +39,13 @@ describe('sponsor list panels', () => {
     ])
   })
 
-  it('fills the current Platinum panel with open spots and a CTA', async () => {
+  it('ends each sellable tier with one open spot in the current year', async () => {
     const wrapper = await mountSuspended(SponsorList, { props: { year: 2027 } })
-    // Two open spots next to the one Platinum sponsor, plus the CTA.
-    expect(wrapper.findAll('a[href="/sponsorship"]')).toHaveLength(3)
+    // Texts are mocked away; the counts show which spots are left.
+    const open = wrapper
+      .findAll('a[href="/sponsorship"]')
+      .map((a) => a.text().match(/\d+/g)?.join('/') ?? '')
+    expect(open).toEqual(['2/3', '4/5', '7/8', '', ''])
   })
 
   it('shows no open spots or CTA for another year', async () => {
