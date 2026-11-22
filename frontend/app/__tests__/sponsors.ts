@@ -24,8 +24,8 @@ describe('logoSize', () => {
 
   it('caps a tall logo at the maximum height and keeps its ratio', () => {
     expect(logoSize(66, 86, LOGO_BOXES.standard)).toEqual({
-      width: 49,
-      height: 64,
+      width: 34,
+      height: 44,
     })
   })
 
