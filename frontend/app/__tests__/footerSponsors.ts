@@ -43,4 +43,15 @@ describe('footer sponsors', () => {
     expect(headings).toEqual(TIERS.map((tier) => `sponsors.${tier}`))
     expect(wrapper.text()).toContain('Sponsor bronze')
   })
+
+  it('gives each tier a smaller tile than the one above', async () => {
+    const wrapper = await mountSuspended(PageFooter)
+    const widths = TIERS.map((tier) =>
+      wrapper
+        .find(`a[href="https://${tier}.example.org/"]`)
+        .classes()
+        .find((c) => c.startsWith('w-[')),
+    )
+    expect(widths).toEqual(['w-[280px]', 'w-[240px]', 'w-[200px]', 'w-[160px]'])
+  })
 })
