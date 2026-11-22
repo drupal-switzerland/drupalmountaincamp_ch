@@ -797,7 +797,7 @@ if (file_exists(__DIR__ . '/settings.lagoon.php')) {
 
 // settings.lagoon.php is scaffolded by amazeeio/drupal_integrations and falls
 // back to MARIADB_HOST, a guessable service name, when HASH_SALT is missing.
-if (getenv('LAGOON') && !getenv('HASH_SALT')) {
+if (getenv('LAGOON') && trim((string) getenv('HASH_SALT')) === '') {
   throw new \RuntimeException('HASH_SALT must be set on Lagoon.');
 }
 

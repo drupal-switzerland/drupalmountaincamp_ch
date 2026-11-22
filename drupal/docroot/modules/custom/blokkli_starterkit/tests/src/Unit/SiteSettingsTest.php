@@ -249,7 +249,7 @@ class SiteSettingsTest extends UnitTestCase {
     $withoutSalt = self::LAGOON;
     unset($withoutSalt['HASH_SALT']);
 
-    foreach ([$withoutSalt, ['HASH_SALT' => ''] + self::LAGOON] as $environment) {
+    foreach ([$withoutSalt, ['HASH_SALT' => ''] + self::LAGOON, ['HASH_SALT' => '  '] + self::LAGOON] as $environment) {
       $message = NULL;
       try {
         $this->loadSettings($environment);
