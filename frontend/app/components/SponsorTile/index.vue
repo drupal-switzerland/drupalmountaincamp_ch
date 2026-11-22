@@ -5,11 +5,8 @@
     :target="href ? '_blank' : undefined"
     :rel="href ? 'sponsored noopener' : undefined"
     :aria-describedby="href ? describedBy : undefined"
-    class="flex items-center justify-center rounded-xl border px-4 py-3 shadow-[0_2px_6px_rgba(18,40,95,0.12)]"
-    :class="[
-      isDark ? 'border-gray-900 bg-gray-900' : 'border-primary-500/25 bg-white',
-      tileClass,
-    ]"
+    class="flex items-center justify-center"
+    :class="[shapeClass, tileClass]"
   >
     <template v-if="image || icon">
       <!-- The logo is decorative; the sponsor name below names the tile. -->
@@ -49,10 +46,27 @@ const props = defineProps<{
   box: LogoBox
   tileClass?: string
   describedBy?: string
+  pill?: boolean
 }>()
 
 const href = computed(() => props.sponsor.link?.uri?.path)
 const isDark = computed(() => props.sponsor.logoBackground === 'dark')
+const shapeClass = computed(() => {
+  if (props.pill) {
+    return [
+      'gradient-border rounded-full px-8 py-4',
+      isDark.value
+        ? '[--gradient-fill:linear-gradient(theme(colors.gray.900),theme(colors.gray.900))]'
+        : '',
+    ]
+  }
+  return [
+    'rounded-xl border px-4 py-3 shadow-[0_2px_6px_rgba(18,40,95,0.12)]',
+    isDark.value
+      ? 'border-gray-900 bg-gray-900'
+      : 'border-primary-500/25 bg-white',
+  ]
+})
 const media = computed(() => props.sponsor.logo?.first?.entity)
 
 const image = computed(() => {
