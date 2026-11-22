@@ -109,6 +109,16 @@ describe('SPA middleware', () => {
     expect(event.context.nuxt).toBeUndefined()
   })
 
+  it('keeps what an earlier handler put on the Nuxt context', () => {
+    const event = createEvent('/news', { cookie: 'SSESSabc=def' })
+    const nuxt = { islandContext: 'kept' }
+    event.context.nuxt = nuxt as SpaEvent['context']['nuxt']
+    handler(event)
+
+    expect(event.context.nuxt).toBe(nuxt)
+    expect(event.context.nuxt).toEqual({ islandContext: 'kept', noSSR: true })
+  })
+
   it('removes a client-sent header that forces SPA mode', () => {
     const event = createEvent('/news', {
       cookie: 'a=1',

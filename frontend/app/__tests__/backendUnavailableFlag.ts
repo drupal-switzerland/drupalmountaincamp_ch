@@ -1,7 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import type { H3Event } from 'h3'
-import { useBackendUnavailable } from '../composables/backendUnavailable'
+import {
+  useBackendUnavailable,
+  useRetryAfterHeader,
+} from '../composables/backendUnavailable'
+import {
+  BACKEND_RETRY_AFTER_SECONDS,
+  BACKEND_UNAVAILABLE_STATUS,
+} from '../helpers/backendUnavailable'
+import { createResponseRecorder } from './support/cdnHeaders'
 
 const { request } = vi.hoisted(() => ({
   request: { event: undefined as H3Event | undefined },
@@ -58,5 +66,38 @@ describe('Drupal unavailable flag', () => {
     expect(flag.value).toBe(true)
     // Nothing is shared between two flags outside a request.
     expect(useBackendUnavailable().value).toBe(false)
+  })
+})
+
+describe('Retry-After on a 503 a page sets itself', () => {
+  function createEventWithResponse() {
+    const response = createResponseRecorder()
+    request.event = {
+      context: {},
+      node: { req: { headers: {} }, res: response.res },
+    } as unknown as H3Event
+    return response.headers
+  }
+
+  it('is sent with a 503', () => {
+    const headers = createEventWithResponse()
+
+    useRetryAfterHeader(BACKEND_UNAVAILABLE_STATUS)
+
+    expect(headers.get('retry-after')).toBe(BACKEND_RETRY_AFTER_SECONDS)
+  })
+
+  it.each([200, 500, undefined])('is not sent with %s', (status) => {
+    const headers = createEventWithResponse()
+
+    useRetryAfterHeader(status)
+
+    expect(headers.has('retry-after')).toBe(false)
+  })
+
+  it('is skipped without a request, as in the browser', () => {
+    request.event = undefined
+
+    expect(() => useRetryAfterHeader(BACKEND_UNAVAILABLE_STATUS)).not.toThrow()
   })
 })
