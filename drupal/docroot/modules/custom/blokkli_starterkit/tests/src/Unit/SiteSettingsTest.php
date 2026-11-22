@@ -238,15 +238,27 @@ class SiteSettingsTest extends UnitTestCase {
    * On Lagoon the hash salt comes from the environment, not from the repo.
    */
   public function testHashSaltComesFromTheLagoonEnvironment(): void {
-    $committed = $this->loadSettings([])['settings']['hash_salt'];
-    $lagoon = $this->loadSettings(self::LAGOON)['settings']['hash_salt'];
+    $this->assertSame('', $this->loadSettings([])['settings']['hash_salt']);
+    $this->assertSame(hash('sha256', 'salt-from-lagoon'), $this->loadSettings(self::LAGOON)['settings']['hash_salt']);
+  }
 
-    $this->assertSame(hash('sha256', 'salt-from-lagoon'), $lagoon);
-    $this->assertNotSame($committed, $lagoon);
-
+  /**
+   * Lagoon without HASH_SALT fails instead of using a guessable salt.
+   */
+  public function testLagoonWithoutHashSaltFails(): void {
     $withoutSalt = self::LAGOON;
     unset($withoutSalt['HASH_SALT']);
-    $this->assertSame(hash('sha256', 'mariadb-host'), $this->loadSettings($withoutSalt)['settings']['hash_salt']);
+
+    foreach ([$withoutSalt, ['HASH_SALT' => ''] + self::LAGOON] as $environment) {
+      $message = NULL;
+      try {
+        $this->loadSettings($environment);
+      }
+      catch (\RuntimeException $exception) {
+        $message = $exception->getMessage();
+      }
+      $this->assertSame('HASH_SALT must be set on Lagoon.', $message);
+    }
   }
 
   /**

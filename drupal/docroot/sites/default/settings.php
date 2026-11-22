@@ -255,7 +255,7 @@ $databases = [];
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = 'G6aBpqYVKAscP1JwGZ3usn_iIp8kOTcvOc5_b8DoEvzk2rnsUEnWpdFw8T31fJePpjut0IGyEw';
+$settings['hash_salt'] = '';
 
 /**
  * Deployment identifier.
@@ -793,6 +793,12 @@ $settings['file_private_path'] = '../files-private';
 
 if (file_exists(__DIR__ . '/settings.lagoon.php')) {
   include __DIR__ . '/settings.lagoon.php';
+}
+
+// settings.lagoon.php is scaffolded by amazeeio/drupal_integrations and falls
+// back to MARIADB_HOST, a guessable service name, when HASH_SALT is missing.
+if (getenv('LAGOON') && !getenv('HASH_SALT')) {
+  throw new \RuntimeException('HASH_SALT must be set on Lagoon.');
 }
 
 // Ensure a fallback for CI.
