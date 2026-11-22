@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.sponsor.field_image
     - field.field.node.sponsor.field_link
+    - field.field.node.sponsor.field_logo_background
     - field.field.node.sponsor.field_sponsor_tier
     - field.field.node.sponsor.field_teaser
     - field.field.node.sponsor.field_year
@@ -64,6 +65,7 @@ content:
     weight: 3
     region: content
 hidden:
+  field_logo_background: true
   langcode: true
   links: true
   search_api_excerpt: true

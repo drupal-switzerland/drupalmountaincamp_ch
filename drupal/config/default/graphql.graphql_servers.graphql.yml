@@ -113,6 +113,7 @@ schema_configuration:
         field_job_title: field_job_title
         field_lead: field_lead
         field_link: field_link
+        field_logo_background: field_logo_background
         field_paragraphs: field_paragraphs
         field_phone_number: field_phone_number
         field_photo: field_photo
