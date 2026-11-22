@@ -1,0 +1,23 @@
+uuid: 3ba2cbf7-0bab-4e7b-a12f-0bed627a5f1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_logo_background
+    - node.type.sponsor
+  module:
+    - options
+id: node.sponsor.field_logo_background
+field_name: field_logo_background
+entity_type: node
+bundle: sponsor
+label: 'Logo background'
+description: 'White for almost every logo. Dark only when the sponsor has no version of the logo that works on white.'
+required: true
+translatable: false
+default_value:
+  -
+    value: light
+default_value_callback: ''
+settings: {  }
+field_type: list_string
