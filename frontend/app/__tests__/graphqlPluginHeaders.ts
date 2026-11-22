@@ -2,7 +2,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 
 const { incoming } = vi.hoisted(() => ({
-  incoming: { headers: {} as Record<string, string | string[] | undefined> },
+  incoming: {
+    headers: {} as Record<string, string | string[] | null | undefined>,
+  },
 }))
 
 // In the browser useRequestHeaders gives nothing; during a server render it
@@ -47,6 +49,12 @@ describe('GraphQL plugin: headers of the page request', () => {
 
   it('skip a header without a value', () => {
     incoming.headers = { cookie: undefined, accept: 'text/html' }
+
+    expect(forwardedHeaders()).toEqual({ accept: 'text/html' })
+  })
+
+  it('skip a header that is null', () => {
+    incoming.headers = { cookie: null, accept: 'text/html' }
 
     expect(forwardedHeaders()).toEqual({ accept: 'text/html' })
   })

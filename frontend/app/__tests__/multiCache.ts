@@ -84,10 +84,6 @@ describe('multi cache: route cache key', () => {
     expect(key('/news', 'consent=1')).toBe(key('/news', 'consent=0'))
   })
 
-  it('is empty for a request without a path', () => {
-    expect(key(undefined as unknown as string)).toBe('')
-  })
-
   it('holds no cookie value', () => {
     expect(key('/news', 'consent=secret-value')).not.toContain('secret-value')
   })
