@@ -18,6 +18,7 @@ fragment nodeSponsor on NodeSponsor {
   title
   year: fieldYear
   tier: fieldSponsorTier
+  logoBackground: fieldLogoBackground
   link: fieldLink {
     uri {
       path

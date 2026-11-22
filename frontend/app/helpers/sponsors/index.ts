@@ -9,14 +9,14 @@ export type LogoBox = {
 }
 
 // Logos get the same visual area whatever their shape, capped to their tile
-// (tile size minus the 2px border and 16px side padding).
+// (tile size minus the 1px border, 16px side and 12px top and bottom padding).
 export const LOGO_BOXES = {
   // Homepage card, 140px tall tiles in a 3-column grid.
   card: { area: 14000, maxWidth: 260, maxHeight: 100 },
   // Footer tiles: 280x100, 240x88, 200x72.
-  large: { area: 11000, maxWidth: 248, maxHeight: 84 },
-  medium: { area: 9000, maxWidth: 208, maxHeight: 72 },
-  standard: { area: 7000, maxWidth: 168, maxHeight: 64 },
+  large: { area: 11000, maxWidth: 248, maxHeight: 72 },
+  medium: { area: 9000, maxWidth: 208, maxHeight: 60 },
+  standard: { area: 7000, maxWidth: 168, maxHeight: 44 },
 } satisfies Record<string, LogoBox>
 
 export function logoSize(width: number, height: number, box: LogoBox) {

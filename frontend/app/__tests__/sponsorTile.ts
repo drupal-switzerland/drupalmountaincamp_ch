@@ -42,3 +42,30 @@ describe('SponsorTile logo', () => {
     expect(wrapper.get('img').classes()).toContain('size-full')
   })
 })
+
+describe('SponsorTile background', () => {
+  const mountWith = (logoBackground?: string) =>
+    mountSuspended(SponsorTile, {
+      props: {
+        sponsor: { ...sponsor(400, 173), logoBackground },
+        box: LOGO_BOXES.standard,
+      },
+    })
+
+  it.each([undefined, 'light', 'unknown'])('is white for %s', async (value) => {
+    const tile = (await mountWith(value)).get('a')
+    expect(tile.classes()).toContain('bg-white')
+    expect(tile.classes()).not.toContain('bg-gray-900')
+  })
+
+  it('is charcoal only for dark', async () => {
+    const tile = (await mountWith('dark')).get('a')
+    expect(tile.classes()).toContain('bg-gray-900')
+    expect(tile.classes()).not.toContain('bg-white')
+  })
+
+  it('keeps the sponsor name on a dark tile', async () => {
+    const wrapper = await mountWith('dark')
+    expect(wrapper.get('.sr-only').text()).toBe('The DropTimes')
+  })
+})

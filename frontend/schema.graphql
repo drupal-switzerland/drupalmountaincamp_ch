@@ -3422,6 +3422,12 @@ type NodeSponsor implements Entity & EntityLinkable & EntityRevisionable & Node 
   """{field: field_link} """
   fieldLinkRawField: FieldItemListLink
 
+  """{value} {field: field_logo_background} """
+  fieldLogoBackground: String
+
+  """{field: field_logo_background} """
+  fieldLogoBackgroundRawField: FieldItemListListString
+
   """{value} {field: field_sponsor_tier} """
   fieldSponsorTier: String
 

@@ -5,8 +5,11 @@
     :target="href ? '_blank' : undefined"
     :rel="href ? 'sponsored noopener' : undefined"
     :aria-describedby="href ? describedBy : undefined"
-    class="flex items-center justify-center rounded-xl border-2 border-primary-100 bg-white px-4"
-    :class="tileClass"
+    class="flex items-center justify-center rounded-xl border px-4 py-3 shadow-[0_2px_6px_rgba(18,40,95,0.12)]"
+    :class="[
+      isDark ? 'border-gray-900 bg-gray-900' : 'border-primary-500/25 bg-white',
+      tileClass,
+    ]"
   >
     <template v-if="image || icon">
       <!-- The logo is decorative; the sponsor name below names the tile. -->
@@ -26,7 +29,11 @@
       </span>
       <span class="sr-only">{{ sponsor.title }}</span>
     </template>
-    <span v-else class="text-center font-bold text-primary-500">
+    <span
+      v-else
+      class="text-center font-bold"
+      :class="isDark ? 'text-white' : 'text-primary-500'"
+    >
       {{ sponsor.title }}
     </span>
   </component>
@@ -45,6 +52,7 @@ const props = defineProps<{
 }>()
 
 const href = computed(() => props.sponsor.link?.uri?.path)
+const isDark = computed(() => props.sponsor.logoBackground === 'dark')
 const media = computed(() => props.sponsor.logo?.first?.entity)
 
 const image = computed(() => {
