@@ -240,6 +240,17 @@ class SiteSettingsTest extends UnitTestCase {
   public function testHashSaltComesFromTheLagoonEnvironment(): void {
     $this->assertSame('', $this->loadSettings([])['settings']['hash_salt']);
     $this->assertSame(hash('sha256', 'salt-from-lagoon'), $this->loadSettings(self::LAGOON)['settings']['hash_salt']);
+    $this->assertSame(hash('sha256', ' padded '), $this->loadSettings(['HASH_SALT' => ' padded '] + self::LAGOON)['settings']['hash_salt']);
+  }
+
+  /**
+   * A falsy HASH_SALT is used as is, not replaced by MARIADB_HOST.
+   */
+  public function testFalsyHashSaltIsNotReplaced(): void {
+    $salt = $this->loadSettings(['HASH_SALT' => '0'] + self::LAGOON)['settings']['hash_salt'];
+
+    $this->assertSame(hash('sha256', '0'), $salt);
+    $this->assertNotSame(hash('sha256', 'mariadb-host'), $salt);
   }
 
   /**
