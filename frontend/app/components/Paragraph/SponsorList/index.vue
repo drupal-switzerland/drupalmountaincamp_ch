@@ -18,8 +18,8 @@
           <li v-for="sponsor in group.sponsors" :key="sponsor.uuid">
             <SponsorTile
               :sponsor
-              :box="LOGO_BOXES.standard"
-              tile-class="h-[72px] w-[200px]"
+              :box="group.tile.box"
+              :tile-class="group.tile.tileClass"
               :described-by="newTabHintId"
             />
           </li>
@@ -37,7 +37,7 @@ import type {
   NodeSponsorFragment,
   ParagraphSponsorListFragment,
 } from '#graphql-operations'
-import { LOGO_BOXES } from '~/helpers/sponsors'
+import { LOGO_BOXES, type LogoBox } from '~/helpers/sponsors'
 import { hasText } from '~/helpers/text'
 
 const props = defineProps<{
@@ -71,6 +71,14 @@ const TIERS: Record<string, string> = {
 }
 const TIER_ORDER = Object.keys(TIERS)
 
+const TILE_BY_TIER: Record<string, { box: LogoBox; tileClass: string }> = {
+  diamond: { box: LOGO_BOXES.huge, tileClass: 'h-[140px] w-[360px]' },
+  platinum: { box: LOGO_BOXES.huge, tileClass: 'h-[140px] w-[360px]' },
+  gold: { box: LOGO_BOXES.xlarge, tileClass: 'h-[120px] w-[320px]' },
+  silver: { box: LOGO_BOXES.large, tileClass: 'h-[100px] w-[280px]' },
+}
+const DEFAULT_TILE = { box: LOGO_BOXES.medium, tileClass: 'h-[88px] w-[240px]' }
+
 const { sponsors: allSponsors } = await useAllSponsors()
 
 const groups = computed(() => {
@@ -99,6 +107,7 @@ const groups = computed(() => {
         // The year is only part of the heading when several years are shown.
         label: props.year ? label : `${label} ${y}`,
         sponsors: list,
+        tile: TILE_BY_TIER[tier!] ?? DEFAULT_TILE,
       }
     })
 })
