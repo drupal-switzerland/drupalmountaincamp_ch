@@ -1,5 +1,5 @@
 <template>
-  <!-- At most 60% of the screen tall, so the page content starts on the first screen. -->
+  <!-- As tall as its content, and at least 60% of the screen. -->
   <section
     class="on-dark brand-hero page-hero relative isolate flex flex-col overflow-hidden text-white"
   >

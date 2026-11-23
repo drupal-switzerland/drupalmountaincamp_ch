@@ -42,7 +42,7 @@ describe('heroes fill the first screen', () => {
   })
 
   // Inner pages show content on the first screen; home keeps its full hero.
-  it('caps the inner hero at 60% of the screen, svh where supported', () => {
+  it('sets the inner hero floor to 60% of the screen (svh)', () => {
     expect(PAGE_HERO).toMatch(
       /min-height: min\([^;]*var\(--page-hero-screen-share\)\s*\);/,
     )
