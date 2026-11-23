@@ -36,9 +36,22 @@ describe('heroes fill the first screen', () => {
   it('sizes the event strip with the variable the inner hero subtracts', () => {
     expect(EVENT_STRIP).toContain('h-[var(--event-strip-height)]')
     expect(EVENT_STRIP).not.toMatch(/(^|\s)(min-\[390px\]:)?h-1[02](\s|")/)
-    expect(PAGE_HERO).toContain(
-      'min-height: calc(var(--first-screen) - var(--event-strip-height));',
+    expect(PAGE_HERO).toMatch(
+      /min-height: min\(\s*calc\(var\(--first-screen\) - var\(--event-strip-height\)\),/,
     )
+  })
+
+  // Inner pages show content on the first screen; home keeps its full hero.
+  it('sets the inner hero floor to 60% of the screen (svh)', () => {
+    expect(PAGE_HERO).toMatch(
+      /min-height: min\([^;]*var\(--page-hero-screen-share\)\s*\);/,
+    )
+    expect(PAGE_HERO).toContain('--page-hero-screen-share: 60vh;')
+    expect(PAGE_HERO).toMatch(
+      /@supports \(height: 100svh\) \{\s*\.page-hero \{\s*--page-hero-screen-share: 60svh;/,
+    )
+    expect(PAGE_HERO).not.toContain('Fills the first screen')
+    expect(HOME_HERO).toContain('home-hero-screen')
   })
 
   // The strip is above every page but home, which has the homepage hero.

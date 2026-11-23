@@ -1,5 +1,5 @@
 <template>
-  <!-- Fills the first screen, so the page below starts after a scroll. -->
+  <!-- As tall as its content, and at least 60% of the screen. -->
   <section
     class="on-dark brand-hero page-hero relative isolate flex flex-col overflow-hidden text-white"
   >
@@ -94,8 +94,12 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-edge: 2px;
   --page-hero-backdrop: 1px;
   --page-hero-edge-colour: theme(colors.brand.ice);
+  --page-hero-screen-share: 60vh;
   padding-bottom: var(--page-hero-fade);
-  min-height: calc(var(--first-screen) - var(--event-strip-height));
+  min-height: min(
+    calc(var(--first-screen) - var(--event-strip-height)),
+    var(--page-hero-screen-share)
+  );
 
   /* From md the ridge reaches up into the empty sky beside the lead, so the
      hero fits a laptop screen. Narrower, its peaks would reach the lead;
@@ -107,6 +111,12 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 
   @screen lg {
     --page-hero-pad: theme(spacing.20);
+  }
+}
+
+@supports (height: 100svh) {
+  .page-hero {
+    --page-hero-screen-share: 60svh;
   }
 }
 
