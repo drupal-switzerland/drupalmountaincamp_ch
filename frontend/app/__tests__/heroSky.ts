@@ -542,14 +542,8 @@ describe('inner-page ridge', () => {
   // The lead is the widest last line of the text (max-w-2xl); the space
   // between it and the zone is the text column's bottom padding.
   const LEAD_WIDTH = 672
-  const LEAD_GAP = 24
-  const BOTTOM_PADDING = [
-    [SCREENS.lg, 80, 'lg:pb-20'],
-    [SCREENS.md, 64, 'md:pb-16'],
-    [0, 40, 'py-10'],
-  ] as const
-  const bottomPadding = (width: number) =>
-    BOTTOM_PADDING.find(([from]) => width >= from)![1]
+  const LEAD_GAP = 8
+  const BOTTOM_PADDING = 40
   const REM = 16
   const raisePx = (width: number) =>
     Math.min(
@@ -581,10 +575,14 @@ describe('inner-page ridge', () => {
     return (RIDGE_SIZE.height - top + RIDGE_STROKE_WIDTH / 2) * scale
   }
   const roomUnderLead = (width: number) =>
-    RIDGE_VW * width - raisePx(width) + bottomPadding(width) - LEAD_GAP
+    RIDGE_VW * width - raisePx(width) + BOTTOM_PADDING - LEAD_GAP
 
   it('uses the padding classes the test assumes', () => {
-    for (const [, , cls] of BOTTOM_PADDING) expect(PAGE_HERO).toContain(cls)
+    expect(PAGE_HERO).toContain('class="grid-container my-0 pb-10 pt-8"')
+    expect(PAGE_HERO).not.toMatch(/\b(md|lg):p[bty]-/)
+    expect(PAGE_HERO.match(/--page-hero-pad:[^;]*;/g)).toEqual([
+      '--page-hero-pad: theme(spacing.10);',
+    ])
   })
 
   it.each([SCREENS.md, 1100, SCREENS.lg, 1366, 1440, 1680, 1920, 2560, 3840])(

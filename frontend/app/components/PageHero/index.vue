@@ -1,12 +1,9 @@
 <template>
-  <!-- As tall as its content, and at least 60% of the screen. -->
+  <!-- As tall as its content. -->
   <section
     class="on-dark brand-hero page-hero relative isolate flex flex-col overflow-hidden text-white"
   >
-    <!-- A taller screen adds the space evenly above and below the text. -->
-    <div
-      class="grid-container my-0 flex-1 content-center py-10 md:pb-16 md:pt-12 lg:pb-20"
-    >
+    <div class="grid-container my-0 pb-10 pt-8">
       <div
         class="grid-container-8 flex flex-col items-center gap-3 text-center md:gap-4"
       >
@@ -94,29 +91,13 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-edge: 2px;
   --page-hero-backdrop: 1px;
   --page-hero-edge-colour: theme(colors.brand.ice);
-  --page-hero-screen-share: 60vh;
   padding-bottom: var(--page-hero-fade);
-  min-height: min(
-    calc(var(--first-screen) - var(--event-strip-height)),
-    var(--page-hero-screen-share)
-  );
 
   /* From md the ridge reaches up into the empty sky beside the lead, so the
      hero fits a laptop screen. Narrower, its peaks would reach the lead;
-     on a 4K screen a full 10vw would come within 24px of it, hence the cap. */
+     on a 4K screen a full 10vw would reach it, hence the cap. */
   @screen md {
     --page-hero-fade: calc(var(--ridge-height-narrow) - min(10vw, 12rem));
-    --page-hero-pad: theme(spacing.16);
-  }
-
-  @screen lg {
-    --page-hero-pad: theme(spacing.20);
-  }
-}
-
-@supports (height: 100svh) {
-  .page-hero {
-    --page-hero-screen-share: 60svh;
   }
 }
 
