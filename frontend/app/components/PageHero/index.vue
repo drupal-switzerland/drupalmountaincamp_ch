@@ -65,8 +65,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
    through tailwind.config (--page-hero-sky), the horizon the homepage hero
    shares: brand blue fades in behind the text (never fully, so the ice lead
    keeps a dark background) and from the end of the lead turns sky behind the
-   ridge and eases into the handover colour. Both sides reach the same blue at
-   the same height, so the hero's diagonal gradient leaves no band. Below md
+   ridge and eases into the handover colour. Below md
    the zone below the lead is the ridge's height, so the ridge stands in it;
    from md it is up to 12rem shorter and the peaks rise into the blue beside
    the lead. */
@@ -74,8 +73,11 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-fade: var(--ridge-height-narrow);
   --page-hero-pad: theme(spacing.10);
   --page-hero-zone: calc(var(--page-hero-fade) + var(--page-hero-pad));
-  --page-hero-sky-height: calc(
-    var(--page-hero-zone) * (1 + var(--page-hero-rise))
+  /* Never taller than the hero: a sky cut off at the top edge would start
+     part-way into the blue, a step under the navy header. */
+  --page-hero-sky-height: min(
+    calc(var(--page-hero-zone) * (1 + var(--page-hero-rise))),
+    100%
   );
   --sky-from: theme(colors.brand.blue);
   --sky-mid: theme(colors.brand.sky);
@@ -104,6 +106,12 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
 /* Both classes, so this wins over .brand-hero's background whichever of the
    two stylesheets loads first. */
 .brand-hero.page-hero {
+  /* Plain navy under the sky. .brand-hero's diagonal turns blue in the top
+     right corner of a hero more than about 2.75 times as wide as tall. */
+  --brand-hero-gradient: linear-gradient(
+    theme(colors.brand.navy),
+    theme(colors.brand.navy)
+  );
   background: var(--brand-hero-gradient) top / 100%
     calc(100% - var(--page-hero-edge)) no-repeat var(--page-hero-edge-colour);
   box-shadow: 0 var(--page-hero-backdrop) 0 var(--page-hero-edge-colour);

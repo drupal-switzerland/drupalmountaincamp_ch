@@ -42,6 +42,7 @@ describe('hero heights', () => {
     expect(PAGE_HERO).not.toContain('min-height')
     expect(PAGE_HERO).not.toMatch(/\d(vh|svh|dvh|lvh)\b/)
     expect(PAGE_HERO).not.toContain('--first-screen')
+    expect(PAGE_HERO).not.toMatch(/\b(min-)?h-(screen|\[|\d)/)
     expect(HOME_HERO).toContain('home-hero-screen')
   })
 

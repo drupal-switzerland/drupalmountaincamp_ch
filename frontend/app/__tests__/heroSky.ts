@@ -446,7 +446,7 @@ describe('homepage hero text on what the layers put behind it', () => {
 describe('hero bottom edge at fractional device pixel ratios', () => {
   it('ends the dark base above the edge and backs the edge row with the next colour', () => {
     expect(PAGE_HERO).toMatch(
-      /\.brand-hero\.page-hero \{\s*background: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--page-hero-edge-colour\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
+      /\.brand-hero\.page-hero \{[^}]*?\sbackground: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--page-hero-edge-colour\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
     )
     expect(PAGE_HERO).toContain(
       '--page-hero-edge-colour: theme(colors.brand.ice);',
@@ -576,6 +576,17 @@ describe('inner-page ridge', () => {
   }
   const roomUnderLead = (width: number) =>
     RIDGE_VW * width - raisePx(width) + BOTTOM_PADDING - LEAD_GAP
+
+  // A hero shorter than its sky, or much wider than tall, must still start
+  // in the header's navy.
+  it('starts in plain navy at the top edge whatever the hero height', () => {
+    expect(PAGE_HERO).toMatch(
+      /--page-hero-sky-height: min\(\s*calc\(var\(--page-hero-zone\) \* \(1 \+ var\(--page-hero-rise\)\)\),\s*100%\s*\);/,
+    )
+    expect(PAGE_HERO).toMatch(
+      /--brand-hero-gradient: linear-gradient\(\s*theme\(colors\.brand\.navy\),\s*theme\(colors\.brand\.navy\)\s*\);/,
+    )
+  })
 
   it('uses the padding classes the test assumes', () => {
     expect(PAGE_HERO).toContain('class="grid-container my-0 pb-10 pt-8"')
