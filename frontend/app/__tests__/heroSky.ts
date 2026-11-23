@@ -446,7 +446,7 @@ describe('homepage hero text on what the layers put behind it', () => {
 describe('hero bottom edge at fractional device pixel ratios', () => {
   it('ends the dark base above the edge and backs the edge row with the next colour', () => {
     expect(PAGE_HERO).toMatch(
-      /\.brand-hero\.page-hero \{\s*background: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--page-hero-edge-colour\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
+      /\.brand-hero\.page-hero \{[^}]*?\sbackground: var\(--brand-hero-gradient\) top \/ 100%\s*calc\(100% - var\(--page-hero-edge\)\) no-repeat var\(--page-hero-edge-colour\);\s*box-shadow: 0 var\(--page-hero-backdrop\) 0 var\(--page-hero-edge-colour\);/,
     )
     expect(PAGE_HERO).toContain(
       '--page-hero-edge-colour: theme(colors.brand.ice);',
@@ -542,14 +542,8 @@ describe('inner-page ridge', () => {
   // The lead is the widest last line of the text (max-w-2xl); the space
   // between it and the zone is the text column's bottom padding.
   const LEAD_WIDTH = 672
-  const LEAD_GAP = 24
-  const BOTTOM_PADDING = [
-    [SCREENS.lg, 80, 'lg:pb-20'],
-    [SCREENS.md, 64, 'md:pb-16'],
-    [0, 40, 'py-10'],
-  ] as const
-  const bottomPadding = (width: number) =>
-    BOTTOM_PADDING.find(([from]) => width >= from)![1]
+  const LEAD_GAP = 8
+  const BOTTOM_PADDING = 40
   const REM = 16
   const raisePx = (width: number) =>
     Math.min(
@@ -581,10 +575,25 @@ describe('inner-page ridge', () => {
     return (RIDGE_SIZE.height - top + RIDGE_STROKE_WIDTH / 2) * scale
   }
   const roomUnderLead = (width: number) =>
-    RIDGE_VW * width - raisePx(width) + bottomPadding(width) - LEAD_GAP
+    RIDGE_VW * width - raisePx(width) + BOTTOM_PADDING - LEAD_GAP
+
+  // A hero shorter than its sky, or much wider than tall, must still start
+  // in the header's navy.
+  it('starts in plain navy at the top edge whatever the hero height', () => {
+    expect(PAGE_HERO).toMatch(
+      /--page-hero-sky-height: min\(\s*calc\(var\(--page-hero-zone\) \* \(1 \+ var\(--page-hero-rise\)\)\),\s*100%\s*\);/,
+    )
+    expect(PAGE_HERO).toMatch(
+      /--brand-hero-gradient: linear-gradient\(\s*theme\(colors\.brand\.navy\),\s*theme\(colors\.brand\.navy\)\s*\);/,
+    )
+  })
 
   it('uses the padding classes the test assumes', () => {
-    for (const [, , cls] of BOTTOM_PADDING) expect(PAGE_HERO).toContain(cls)
+    expect(PAGE_HERO).toContain('class="grid-container my-0 pb-10 pt-8"')
+    expect(PAGE_HERO).not.toMatch(/\b(md|lg):p[bty]-/)
+    expect(PAGE_HERO.match(/--page-hero-pad:[^;]*;/g)).toEqual([
+      '--page-hero-pad: theme(spacing.10);',
+    ])
   })
 
   it.each([SCREENS.md, 1100, SCREENS.lg, 1366, 1440, 1680, 1920, 2560, 3840])(

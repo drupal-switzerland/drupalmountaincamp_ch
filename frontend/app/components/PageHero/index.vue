@@ -1,12 +1,9 @@
 <template>
-  <!-- As tall as its content, and at least 60% of the screen. -->
+  <!-- As tall as its content. -->
   <section
     class="on-dark brand-hero page-hero relative isolate flex flex-col overflow-hidden text-white"
   >
-    <!-- A taller screen adds the space evenly above and below the text. -->
-    <div
-      class="grid-container my-0 flex-1 content-center py-10 md:pb-16 md:pt-12 lg:pb-20"
-    >
+    <div class="grid-container my-0 pb-10 pt-8">
       <div
         class="grid-container-8 flex flex-col items-center gap-3 text-center md:gap-4"
       >
@@ -68,8 +65,7 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
    through tailwind.config (--page-hero-sky), the horizon the homepage hero
    shares: brand blue fades in behind the text (never fully, so the ice lead
    keeps a dark background) and from the end of the lead turns sky behind the
-   ridge and eases into the handover colour. Both sides reach the same blue at
-   the same height, so the hero's diagonal gradient leaves no band. Below md
+   ridge and eases into the handover colour. Below md
    the zone below the lead is the ridge's height, so the ridge stands in it;
    from md it is up to 12rem shorter and the peaks rise into the blue beside
    the lead. */
@@ -77,8 +73,11 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-fade: var(--ridge-height-narrow);
   --page-hero-pad: theme(spacing.10);
   --page-hero-zone: calc(var(--page-hero-fade) + var(--page-hero-pad));
-  --page-hero-sky-height: calc(
-    var(--page-hero-zone) * (1 + var(--page-hero-rise))
+  /* Never taller than the hero: a sky cut off at the top edge would start
+     part-way into the blue, a step under the navy header. */
+  --page-hero-sky-height: min(
+    calc(var(--page-hero-zone) * (1 + var(--page-hero-rise))),
+    100%
   );
   --sky-from: theme(colors.brand.blue);
   --sky-mid: theme(colors.brand.sky);
@@ -94,35 +93,25 @@ const breadcrumb = computed<BreadcrumbFragment[]>(() =>
   --page-hero-edge: 2px;
   --page-hero-backdrop: 1px;
   --page-hero-edge-colour: theme(colors.brand.ice);
-  --page-hero-screen-share: 60vh;
   padding-bottom: var(--page-hero-fade);
-  min-height: min(
-    calc(var(--first-screen) - var(--event-strip-height)),
-    var(--page-hero-screen-share)
-  );
 
   /* From md the ridge reaches up into the empty sky beside the lead, so the
      hero fits a laptop screen. Narrower, its peaks would reach the lead;
-     on a 4K screen a full 10vw would come within 24px of it, hence the cap. */
+     on a 4K screen a full 10vw would reach it, hence the cap. */
   @screen md {
     --page-hero-fade: calc(var(--ridge-height-narrow) - min(10vw, 12rem));
-    --page-hero-pad: theme(spacing.16);
-  }
-
-  @screen lg {
-    --page-hero-pad: theme(spacing.20);
-  }
-}
-
-@supports (height: 100svh) {
-  .page-hero {
-    --page-hero-screen-share: 60svh;
   }
 }
 
 /* Both classes, so this wins over .brand-hero's background whichever of the
    two stylesheets loads first. */
 .brand-hero.page-hero {
+  /* Plain navy under the sky. .brand-hero's diagonal turns blue in the top
+     right corner of a hero more than about 2.75 times as wide as tall. */
+  --brand-hero-gradient: linear-gradient(
+    theme(colors.brand.navy),
+    theme(colors.brand.navy)
+  );
   background: var(--brand-hero-gradient) top / 100%
     calc(100% - var(--page-hero-edge)) no-repeat var(--page-hero-edge-colour);
   box-shadow: 0 var(--page-hero-backdrop) 0 var(--page-hero-edge-colour);
